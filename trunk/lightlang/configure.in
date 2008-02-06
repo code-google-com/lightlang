@@ -16,7 +16,7 @@ AC_PREFIX_DEFAULT(/usr)
 dnl ################# Options #################
 
 AC_ARG_WITH(default_config,
-	[AC_HELP_STRING([--with-default-config], [set default configuretion, default: normal,
+	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal,
 available: normal, liksys, kde, console])],
 	DEFAULT_CONFIG=$withval, DEFAULT_CONFIG="normal")
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then

@@ -59,6 +59,9 @@ class GoogleTranslate(Qt.QObject) :
 		self.http.request(http_request_header)
 		self.http.close()
 
+	def setNetworkProxy(self, network_proxy) :
+		self.http.setNetworkProxy(network_proxy)
+
 
 	### Private ###
 
