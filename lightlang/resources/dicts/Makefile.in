@@ -1,0 +1,40 @@
+# Dictionaries Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MKDIR=@MKDIR_PROG@
+CP=@CP_PROG@
+RM=@RM_PROG@
+CAT=@CAT_PROG@
+LS=@LS_PROG@
+SL=../../sl
+
+TMP_FILE=tmpdict
+
+DICTS_SRC_DIR=src
+DICTS_DIR=dicts
+
+INS_DICTS_DIR=@prefix@/share/sl/dicts
+
+#####
+all :
+	for file in `$(LS) $(DICTS_SRC_DIR)`; do \
+		$(SL) --print-index $(DICTS_SRC_DIR)/"$$file" 1> $(TMP_FILE) && \
+		$(CAT) $(DICTS_SRC_DIR)/"$$file" 1>> $(TMP_FILE) && \
+		$(SL) --print-index $(TMP_FILE) 1> $(DICTS_DIR)/"$$file" && \
+		$(CAT) $(DICTS_SRC_DIR)/"$$file" 1>> $(DICTS_DIR)/"$$file"; \
+	done
+	$(RM) -f $(TMP_FILE)
+
+install :
+	$(MKDIR) -p $(INS_DICTS_DIR)
+	-$(CP) -r $(DICTS_DIR)/* $(INS_DICTS_DIR)
+
+uninstall :
+	$(RM) -rf $(INS_DICTS_DIR)
+
+clean :
+	$(RM) -f $(DICTS_DIR)/*
+

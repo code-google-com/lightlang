@@ -1,0 +1,23 @@
+# HTML-documentation Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MKDIR=@MKDIR_PROG@
+CP=@CP_PROG@
+RM=@RM_PROG@
+
+RU_HTML_DOC_DIR=html
+
+INS_DOC_DIR=@prefix@/share/doc/lightlang
+INS_RU_HTML_DOC_DIR=@prefix@/share/doc/lightlang/html/ru
+
+#####
+install :
+	$(MKDIR) -p $(INS_RU_HTML_DOC_DIR)
+	$(CP) -r $(RU_HTML_DOC_DIR)/* $(INS_RU_HTML_DOC_DIR)
+
+uninstall :
+	$(RM) -rf $(INS_DOC_DIR)
+

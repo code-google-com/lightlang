@@ -1,0 +1,44 @@
+# Applications Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+CD=@CD_PROG@
+
+GUI_FLAG=@GUI_FLAG@
+
+SL_DIR=sl
+LLREPO_DIR=llrepo
+XSL_DIR=xsl
+
+#####
+all :
+	$(CD) $(SL_DIR) && $(MAKE)
+	$(CD) $(LLREPO_DIR) && $(MAKE)
+	if [[ $(GUI_FLAG) = "yes" ]]; then \
+		$(CD) $(XSL_DIR) && $(MAKE); \
+	fi
+
+install :
+	$(CD) $(SL_DIR) && $(MAKE) install
+	$(CD) $(LLREPO_DIR) && $(MAKE) install
+	if [[ $(GUI_FLAG) = "yes" ]]; then \
+		$(CD) $(XSL_DIR) && $(MAKE) install; \
+	fi
+
+uninstall :
+	$(CD) $(SL_DIR) && $(MAKE) uninstall
+	$(CD) $(LLREPO_DIR) && $(MAKE) uninstall
+	if [[ $(GUI_FLAG) = "yes" ]]; then \
+		$(CD) $(XSL_DIR) && $(MAKE) uninstall; \
+	fi
+
+clean :
+	$(CD) $(SL_DIR) && $(MAKE) clean
+	$(CD) $(LLREPO_DIR) && $(MAKE) clean
+	if [[ $(GUI_FLAG) = "yes" ]]; then \
+		$(CD) $(XSL_DIR) && $(MAKE) clean; \
+	fi
+
