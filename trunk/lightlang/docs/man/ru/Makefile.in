@@ -20,14 +20,14 @@ install :
 	$(MKDIR) -p $(INS_RU_MAN_DOC_DIR)
 	$(CP) $(RU_MAN_DOC_DIR)/sl.1.gz $(INS_RU_MAN_DOC_DIR)/man1
 	$(CP) $(RU_MAN_DOC_DIR)/llrepo.1.gz $(INS_RU_MAN_DOC_DIR)/man1
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(CP) $(RU_MAN_DOC_DIR)/xsl.1.gz $(INS_RU_MAN_DOC_DIR)/man1; \
 	fi
 
 uninstall :
 	$(RM) -f $(INS_RU_MAN_DOC_DIR)/man1/sl.1.gz
 	$(RM) -f $(INS_RU_MAN_DOC_DIR)/man1/llrepo.1.gz
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(RM) -f $(INS_RU_MAN_DOC_DIR)/man1/xsl.1.gz; \
 	fi
 
