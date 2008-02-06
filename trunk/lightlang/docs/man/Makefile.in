@@ -1,0 +1,27 @@
+# MAN-documentation Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+CD=@CD_PROG@
+
+EN_DIR=en
+RU_DIR=ru
+
+#####
+install :
+	$(CD) $(EN_DIR) && $(MAKE) install
+	$(CD) $(RU_DIR) && $(MAKE) install
+
+uninstall :
+	$(CD) $(EN_DIR) && $(MAKE) uninstall
+	$(CD) $(RU_DIR) && $(MAKE) uninstall
+
+_pack_en_mans :
+	-gzip $(EN_DIR)/man/*.?
+
+_pack_ru_mans :
+	-gzip $(RU_DIR)/man/*.?
+

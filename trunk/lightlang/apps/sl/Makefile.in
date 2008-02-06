@@ -1,0 +1,50 @@
+# SL Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+CC=@CC_PROG@
+CFLAGS=@CFLAGS@
+MKDIR=@MKDIR_PROG@
+CP=@CP_PROG@
+INS=@INSTALL@
+LN=@LN_PROG@
+RM=@RM_PROG@
+PWD=@PWD_PROG@
+
+SL_SRC=src/cs/main.c src/cs/manager.c src/cs/mstring.c src/cs/settings.c src/cs/find.c src/cs/info.c
+SL_OBJ=src/cs/main.o src/cs/manager.o src/cs/mstring.o src/cs/settings.o src/cs/find.o src/cs/info.o
+SL_CONFIG=src/cs/config.h
+SL_PROG=sl
+SL_ICONS_DIR=src/icons
+
+INS_SL_PROG_DIR=@prefix@/bin
+INS_SL_LIBS_DIR=@prefix@/lib/sl
+INS_SL_ICONS_DIR=@prefix@/lib/sl/icons
+INS_SL_SHARES_DIR=@prefix@/share/sl
+INS_SL_DICTS_DIR=@prefix@/share/sl/dicts
+INS_SL_SOUNDS_DIR=@prefix@/share/sl/sounds
+
+#####
+all : $(SL_OBJ)
+	$(CC) $(CFLAGS) -o $(SL_PROG) $(SL_SRC)
+	-$(LN) -s `$(PWD)`/$(SL_PROG) ../../$(SL_PROG)
+
+install :
+	$(MKDIR) -p $(INS_SL_PROG_DIR)
+	$(MKDIR) -p $(INS_SL_ICONS_DIR)
+	$(MKDIR) -p $(INS_SL_DICTS_DIR)
+	$(MKDIR) -p $(INS_SL_SOUNDS_DIR)
+	$(INS) $(SL_PROG) $(INS_SL_PROG_DIR)
+	$(CP) -r $(SL_ICONS_DIR)/*.png $(INS_SL_ICONS_DIR)
+
+uninstall :
+	$(RM) -f $(INS_SL_PROG_DIR)/$(SL_PROG)
+	$(RM) -rf $(INS_SL_SHARES_DIR)
+	$(RM) -rf $(INS_SL_LIBS_DIR)
+
+clean :
+	$(RM) -f $(SL_PROG) $(SL_OBJ) $(SL_CONFIG)
+	-$(RM) -f ../../$(SL_PROG)
+

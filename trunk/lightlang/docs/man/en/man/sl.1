@@ -1,0 +1,273 @@
+.TH SL 1 "20 September, 2007" "LightLang 0.8.5" "USER COMMANDS"
+
+.SH NAME
+.B SL
+\- system of electronic dictionaries
+
+.SH SYNOPSIS
+.B sl
+.B [\-u|\-\-usualy word]
+.B [\-f|\-\-first\-concurrence word]
+.B [\-c|\-\-word\-combinations word]
+.B [\-l|\-\-list word]
+.B [\-i|\-\-ill\-defined word]
+.B [\-s|\-\-sound set:word]
+.B [\-\-connect dictionary]
+.B [\-\-disconnect dictionary]
+.B [\-\-print-info]
+.B [\-\-install file]
+.B [\-\-uninstall dictionary]
+.B [\-\-use\-list list]
+.B [\-\-print\-index]
+.B [\-p|\-\-percent percent]
+.B [\-t|\-\-show\-time]
+.B [\-\-output\-format=html|text]
+.B [\-\-use\-terminal\-escapes=yes|no]
+.B [\-h|\-\-help]
+.B [\-v|\-\-version]
+.B [\-d|\-\-debug]
+
+.SH DESCRIPTION
+.B SL
+\- the search kernel, the main program in the LightLang package. It provides the entire principal functionality of the dictionary - search, dictionary management, assembly of indexes. SL can be effectively used in console, using the command-line options.
+
+.SH SEARCH OPTIONS
+.TP
+.B \-u|\-\-usualy|without_options word
+An ordinary word search. If you want to search for a word-combination you should include it in quotation marks.
+.TP
+.B \-f|\-\-first\-concurrence word
+An ordinary search for the first word, that begins with entered symbols. It also starts automatically if an ordinary search gave no results.
+.TP
+.B \-c|\-\-word\-combinations word
+A word-combination search for the word-combinations, containing the entered word.
+.TP
+.B \-l|\-\-list word
+A word list search, using word's first letters. First letters of the word can be, for example, "hell". After you have entered the first letters, the program will list all the words, that begin with specified letters. Among them, without fail, you'll find the sought word, such as "hello" in our example. If you couldn't find the sought word try to reduce symbols from the end of the word (hell \-> hel).
+.TP
+.B \-i|\-\-ill\-defined word
+Uneven search (search of the look-alike words using additional argument - percent of mismatching symbols).
+.TP
+.B \-s|\-\-sound set:word
+Voice transcription search, can be used only if a set of sound files is installed. The set parameter - is the name of a sound set, for example en.
+
+.SH DICTIONARY MANAGEMENT OPTIONS
+.TP
+.B \-\-connect dictionary
+Connects the existing dictionary for its further use.
+.TP
+.B \-\-disconnect dictionary
+Disconnects the dictionary from search.
+.TP
+.B \-\-print\-info
+Displays information about connected and installed dictionaries.
+.TP
+.B \-\-install file
+Installs specified file (dictionary). You can specify an absolute path or simply type the file-name, if it is located in the current folder. If you want to connect it, use proper option. File extension must accord to the SL file extension, for the dictionary cannot support other file extensions.
+.TP
+.B \-\-uninstall dictionary
+Deletes the specified dictionary from the system. Before deleting disconnect the dictionary.
+.TP
+.B \-\-use\-list dictionary|list
+Lists the dictionaries, which are used for search. The words are sought in these dictionaries no matter whether the dictionaries connected or not. Elements of the list are separated with "|" symbols and the list itself is enclosed by quotation marks, for example:
+.br
+.B sl --use-list 'dictionary1|dictionary2|dictionary3' ...
+.TP
+.B \-\-print\-index file
+Displays index of the specified file (dictionary). Displayed index should be written in the beginning of the dictionary file. After you have written the index you should index the file again, for the file offset will be changed after writing. The new index must be written over the old one. If you are using other developer's dictionary and don't want to perform indexing, you should write a [noindex] tag in the beginning of the file.
+
+.SH SETUP OPTIONS
+.TP
+.B \-p|\-\-percent percent
+Sets the percent of mismatching symbols for the uneven search. It is \- 40 by default. It is the best value.
+.TP
+.B \-\-output\-format=html|text|native
+Sets the program output format. It is \- text by default.
+.TP
+.B \-\-use\-terminal\-escapes=yes|no
+Sets the permition of using terminal's ESC-sequences for colored formatting. It is permitted by default if the standart output is a terminal, but the option is used for forced resolution setting.
+.TP
+.B \-t|\-\-show\-time
+Makes program show how much time was spent for search.
+
+.SH HELP OPTIONS
+.TP
+.B \-h|\-\-help
+Displays short program options help.
+.TP
+.B \-v|\-\-version
+Displays program's version.
+.TP
+.B \-d|\-\-debug
+Displays debug information.
+
+.SH ENVIRONMENT
+.TP 10
+.B COLUMNS
+This variable defines terminal width. Its value is set by the shell. If you want to justify the translation text by the terminal window width, you should export this variable:
+.br
+.B export COLUMNS
+.TP 10
+.B HOME
+This variable shows path to user's home folder.
+
+.SH TAGS AND INDEX FORMAT
+SL format represents modified Mova format. Every record forms one line in the dictionary, word and its translation are separated by two spaces. Special tags, that manage search and formatting, are used.
+.PP
+Search managing tags:
+.TP
+.B
+.nf
+[index]
+.fi
+Marks the beginning of the index.
+.TP
+.B
+.nf
+[/index]
+.fi
+Marks the end of the index.
+.TP
+.B
+.nf
+[noindex]
+.fi
+Marks an unindexed file.
+.TP
+.B
+.nf
+#
+.fi
+Commentary. It is ignored as well as empty lines during the search.
+.PP
+Formatting tags:
+.TP
+.B
+.nf
+\\{ ... \\}
+.fi
+Blocks. If the text is enclosed by blocks it will differ from the other text: it will be placed on the new line, while other will be tabulated. Can be inserted making grouped text inside large block-groups.
+.TP
+.B
+.nf
+\\[ ... \\]
+.fi
+Makes the enclosed text bold.
+.TP
+.B
+.nf
+\\( ... \\)
+.fi
+Makes the enclosed text cursive.
+.TP
+.B
+.nf
+\\< ... \\>
+.fi
+Text, enclosed in these tags, will be marked as official (which usually is marked by green color).
+.TP
+.B
+.nf
+\\_ ... \\_
+.fi
+Underlines the enclosed text.
+.TP
+.B
+.nf
+\\@ ... \\@
+.fi
+Makes enclosed text a link to another word.
+.TP
+.B
+.nf
+\\s ... \\s
+.fi
+Enclosed text will be presented as a link to voice transcription. Request syntax is the same as -s option's.
+.TP
+.B
+.nf
+\\n
+.fi
+New line symbol.
+.TP
+.B
+.nf
+\\t
+.fi
+Tabulation symbol.
+.TP
+.B
+.nf
+\\\\
+.fi
+Slash symbol.
+.PP
+Index has the following format:
+.nf
+.br
+.B [index]
+.br
+.B ...
+.br
+.B char value
+.br
+.B ...
+.br
+.B [/index]
+.br
+.fi
+where char \- is some symbol, value \- is the symbol offset.
+
+.SH BUGS
+There aren't any :-)
+.br
+If you'll find a bug, please, inform us about it using our feedback e-mail
+.IR bugtrack@lightlang.org.ru.
+Describe your bug clearly, adding the description of conditions when the bug appeared and your actions. Also include information, that displays the command
+.B sl \-\-debug.
+
+.SH ACKNOWLEDGMENTS
+The author of this program and of all the rest in the LightLang package \- Devaev Maxim.
+.br
+Thanks to my loved Elisabeth! I wouldn't have finished this program if she doesn't inspire me.
+.TP
+Assistants:
+Vladimir Fomkin
+.br
+Sergey Tihonov
+.TP
+Translators:
+Kirill Nebogin
+
+.SH INTERNET ADDRESSES
+.IR mdevaev@lightlang.org.ru
+\- The Developer (only for private letters).
+.br
+.IR developers@lightlang.org.ru
+\- For offers.
+.br
+.IR bugtrack@lightlang.org.ru
+\- For bug reports.
+.br
+.IR http://lightlang.org.ru
+\- Project's homepage.
+.br
+
+.SH TERMS OF DISTRIBUTION
+SL \- system of electronic dictionaries for Linux
+.br
+Copyright (C) 2007-2016 Devaev Maxim
+.PP
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.

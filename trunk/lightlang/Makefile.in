@@ -1,0 +1,70 @@
+# Main Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+RM=@RM_PROG@
+CD=@CD_PROG@
+FIND=@FIND_PROG@
+XARGS=@XARGS_PROG@
+DOWNLOAD_PY=download.py
+
+APPS_DIR=apps
+RESOURCES_DIR=resources
+DOCS_DIR=docs
+
+#####
+all :
+	@echo "+---------------------------------------------------------------------+"
+	@echo " Building LightLang..."
+	@echo "+---------------------------------------------------------------------+"
+	$(CD) $(APPS_DIR) && $(MAKE)
+	$(CD) $(RESOURCES_DIR) && $(MAKE)
+	@echo "+---------------------------------------------------------------------+"
+	@echo " OK. Type \"make install\" to install."
+	@echo "+---------------------------------------------------------------------+"
+
+install :
+	@echo "+---------------------------------------------------------------------+"
+	@echo " Installing LightLang..."
+	@echo "+---------------------------------------------------------------------+"
+	$(CD) $(APPS_DIR) && $(MAKE) install
+	$(CD) $(RESOURCES_DIR) && $(MAKE) install
+	$(CD) $(DOCS_DIR) && $(MAKE) install
+	@echo "+---------------------------------------------------------------------+"
+	@echo " OK. Installation complete"
+	@echo
+	@echo " To start program with graphical interface, run \"xsl\". If you want"
+	@echo " to do queries from console, use command \"sl\" (before it recommended"
+	@echo " to visit man-page). And to update dict-bases, use command \"llrepo\"."
+	@echo "+---------------------------------------------------------------------+"
+
+uninstall :
+	@echo "+---------------------------------------------------------------------+"
+	@echo " Uninstalling LightLang..."
+	@echo "+---------------------------------------------------------------------+"
+	$(CD) $(APPS_DIR) && $(MAKE) uninstall
+	$(CD) $(RESOURCES_DIR) && $(MAKE) uninstall
+	$(CD) $(DOCS_DIR) && $(MAKE) uninstall
+	@echo "+---------------------------------------------------------------------+"
+	@echo " OK. Uninstallation complete"
+	@echo "+---------------------------------------------------------------------+"
+
+clean :
+	$(CD) $(APPS_DIR) && $(MAKE) clean
+	$(CD) $(RESOURCES_DIR) && $(MAKE) clean
+
+	$(FIND) . -name *\~ | $(XARGS) $(RM) -f
+	$(FIND) . -name Makefile | $(XARGS) $(RM) -f
+	$(RM) -f config.log config.status
+	$(RM) -f $(DOWNLOAD_PY)
+
+_release :
+	cd apps/xsl && make _create_ru_qm
+	cd docs/text && make _create_en_texts
+	cd docs/text && make _create_ru_texts
+	cd docs/man && make _pack_en_mans
+	cd docs/man && make _pack_ru_mans
+

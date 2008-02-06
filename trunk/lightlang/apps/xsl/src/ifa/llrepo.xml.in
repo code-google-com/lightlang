@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app>
+	<title>LLRepo Console</title>
+	<title lang="ru">Консоль LLRepo</title>
+	<icon>@prefix@/lib/xsl/icons/console_16.png</icon>
+	<description>LLRepo - root terminal mode</description>
+	<description lang="ru">LLRepo - терминал root</description>
+	<path>@GUI_TERMINAL_PROG@</path>
+	<options>@LLREPO_GUI_TERMINAL_OPTIONS@</options>
+	<postcode lang="python">
+		main.main_window.dicts_manager.update()
+	</postcode>
+</app>
