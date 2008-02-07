@@ -31,6 +31,7 @@ import HistoryPanel
 import TextBrowser
 import TranslateWindow
 import DictsManager
+import Settings
 import IFAMenu
 import TranslateSitesMenu
 import InternetLinksMenu
@@ -90,6 +91,8 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.dicts_manager = DictsManager.DictsManager()
 
+		self.settings_window = Settings.SettingsWindow()
+
 		self.help_browser = Help.HelpBrowser()
 
 		self.about = Help.About()
@@ -127,6 +130,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.spy, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
 
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsChanged()"), self.find_in_sl_panel.lFind)
+
+		self.connect(self.settings_window, Qt.SIGNAL("settingsChanged()"), self.find_in_sl_panel.lFind)
 
 		#########################
 		##### Creating Menu #####
@@ -200,6 +205,9 @@ class MainWindow(Qt.QMainWindow) :
 		self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
 		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
 		self.tools_menu.addMenu(self.ifa_menu)
+		self.tools_menu.addSeparator()
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"settings_16.png"), self.tr("Settings"),
+			self.showSettingsWindow)
 
 		### Help Menu
 
@@ -253,6 +261,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.google_translate_panel.saveSettings()
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
+		self.settings_window.saveSettings()
 
 	def load(self) :
 		self.loadSettings()
@@ -260,6 +269,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.status_bar.showMessage(self.tr("Ready"), 2000)
+		self.settings_window.loadSettings()
 		
 
 	def exit(self) :
@@ -386,6 +396,11 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager.show()
 		self.dicts_manager.raise_()
 		self.dicts_manager.activateWindow()
+
+	def showSettingsWindow(self) :
+		self.settings_window.show()
+		self.settings_window.raise_()
+		self.settings_window.activateWindow()
 
 	def showHelpBrowser(self) :
 		self.help_browser.show()
