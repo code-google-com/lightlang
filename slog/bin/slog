@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+# -*- mode: python; coding: utf-8; -*-
+
+import sys
+import os
+import getopt
+import dbus, _dbus_bindings as dbus_bindings
+
+SLOG_PREFIX = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+SLOG_PYTHON = os.path.join(SLOG_PREFIX, "lib/python"+sys.version[:3], "site-packages")
+sys.path.insert(0, SLOG_PYTHON) #HACK
+
+from slog.MainWindow import __version__ as VERSION
+from slog.MainWindow import SLogDBus
+from slog.remote import Remote
+
+def print_version():
+	print "Version" + ": SLog", VERSION
+	print "Website: http://lightlang.org.ru/"
+
+def print_usage():
+	print_version()
+	print ""
+	print "Usage: slog [OPTION]"
+	print ""
+	print "Options" + ":"
+	print "  -h, --help        " + "Show this help and exit"
+	print "  -v, --version     " + "Show version information and exit"
+	print "  -r, --remote cmd  " + "Execute remote command: [toggle, spy-toggle]"
+
+if __name__ == "__main__":
+
+	# Process command line
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], "hvr:", ["help", "version", "remote="])
+	except getopt.GetoptError:
+		self.print_usage()
+		sys.exit(1)
+
+	if opts != []:
+		for o, a in opts:
+			if o in ("-h", "--help"):
+				print_usage()
+			elif o in ("-v", "--version"):
+				print_version()
+			elif o in ("-r", "--remote"):
+				try:
+					remote = Remote()
+					remote.execute(a)
+				except dbus.DBusException, err:
+					print >> sys.stderr, err
+					sys.exit(1)
+		sys.exit()
+
+	try:
+		dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+		bus = dbus.SessionBus()
+	
+		#Check double running	
+		retval = bus.request_name("org.LightLang.SLog", dbus_bindings.NAME_FLAG_DO_NOT_QUEUE)
+		if retval in (dbus_bindings.REQUEST_NAME_REPLY_PRIMARY_OWNER, dbus_bindings.REQUEST_NAME_REPLY_ALREADY_OWNER):
+			pass
+		elif retval in (dbus_bindings.REQUEST_NAME_REPLY_EXISTS, dbus_bindings.REQUEST_NAME_REPLY_IN_QUEUE):
+			remote = Remote()
+			remote.execute("show")
+			sys.exit()
+
+		name = dbus.service.BusName("org.LightLang.SLog", bus)
+		app = SLogDBus(bus, "/SLog", SLOG_PREFIX)
+	except SystemExit:
+		sys.exit()
+
+	try:
+		app.run()
+	except KeyboardInterrupt:
+		pass
+
