@@ -1,0 +1,10 @@
+## MANIFEST.in for SLog
+
+include bin/slog
+include COPYING README ChangeLog TODO
+include setup.py MANIFEST.in
+
+include slog/*.py
+include po/*
+recursive-include data *
+

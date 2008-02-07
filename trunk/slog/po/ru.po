@@ -1,0 +1,185 @@
+# Russian translations for SLog package
+# Английские переводы для пакета SLog.
+# Copyright (C) 2007 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Nasyrov Renat <renatn@gmail.com>, 2007.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SLog 0.8\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-01-21 16:11+0300\n"
+"PO-Revision-Date: 2007-12-25 23:52+0300\n"
+"Last-Translator: Renat <renatn@gmail.com>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../slog/DictsDialog.py:33
+msgid "Manage dictionaries"
+msgstr "Управление словарями"
+
+#: ../slog/DictsDialog.py:40
+msgid " Available "
+msgstr " Доступны "
+
+#: ../slog/DictsDialog.py:42
+msgid " Installed "
+msgstr " Установлены "
+
+#: ../slog/DictsDialog.py:54 ../slog/DictsDialog.py:83
+msgid "Name"
+msgstr "Название"
+
+#: ../slog/DictsDialog.py:58
+msgid "Target"
+msgstr "Направление"
+
+#: ../slog/DictsDialog.py:60
+msgid "Size"
+msgstr "Размер"
+
+#: ../slog/DictsDialog.py:70
+msgid "Used"
+msgstr "Использовать"
+
+#: ../slog/DictsDialog.py:78
+msgid "Spy"
+msgstr "Spy"
+
+#: ../slog/DictsDialog.py:86
+msgid "Refresh"
+msgstr "Обновить"
+
+#: ../slog/DictsDialog.py:88
+msgid "Add"
+msgstr "Добавить"
+
+#: ../slog/DictsDialog.py:90
+msgid "Remove"
+msgstr "Удалить"
+
+#: ../slog/DictsDialog.py:92
+msgid "Up"
+msgstr "Поднять"
+
+#: ../slog/DictsDialog.py:94
+msgid "Down"
+msgstr "Опустить"
+
+#: ../slog/DictsDialog.py:184
+msgid "Dictionary already installed!"
+msgstr "Словарь уже установлен!"
+
+#: ../slog/DictsDialog.py:190 ../slog/DictsDialog.py:213
+msgid "You do not have permissions!"
+msgstr "У вас не хватает прав на запись!"
+
+#: ../slog/google.py:98
+msgid "Translate"
+msgstr "Перевести"
+
+#: ../slog/google.py:117
+msgid "Wrong parameters"
+msgstr "Не правильные параметры"
+
+#: ../slog/MainWindow.py:168
+msgid "_File"
+msgstr "_Файл"
+
+#: ../slog/MainWindow.py:169
+msgid "_Tools"
+msgstr "_Инструменты"
+
+#: ../slog/MainWindow.py:170
+msgid "_Help"
+msgstr "_Помощь"
+
+#: ../slog/MainWindow.py:171
+msgid "New _Tab"
+msgstr "_Новая вкладка"
+
+#: ../slog/MainWindow.py:172
+msgid "_Preferences"
+msgstr "_Параметры"
+
+#: ../slog/MainWindow.py:174
+msgid "_Close"
+msgstr "_Закрыть"
+
+#: ../slog/MainWindow.py:175
+msgid "_Quit"
+msgstr "_Выход"
+
+#: ../slog/MainWindow.py:176
+msgid "_Manage dictionaries"
+msgstr "_Управление словарями"
+
+#: ../slog/MainWindow.py:178
+msgid "_About..."
+msgstr "О _программе..."
+
+#: ../slog/PrefsDialog.py:11
+msgid "Preferences"
+msgstr "Параметры"
+
+#: ../slog/PrefsDialog.py:55
+msgid "Terminate instead of minimizing to tray icon"
+msgstr ""
+
+#: ../slog/PrefsDialog.py:62
+msgid "Notify when minimizing to tray icon"
+msgstr "Сообщить при сворачивании в системный трей"
+
+#: ../slog/PrefsDialog.py:72
+msgid "Path not exists!"
+msgstr "Путь не существует!"
+
+#: ../slog/PrefsDialog.py:80
+msgid "Need SLog restart"
+msgstr "Требуется перезапуск SLog"
+
+#: ../slog/slengine.py:97
+msgid "Clear field"
+msgstr "Очистить"
+
+#: ../slog/slengine.py:118 ../slog/slengine.py:136
+msgid "Enter the word, please..."
+msgstr "Пожалуйста, введите слово"
+
+#: ../slog/slengine.py:188
+msgid "This word is not found"
+msgstr "Слово не найдено"
+
+#: ../slog/slengine.py:190
+#, python-format
+msgid "Total: %i"
+msgstr "Всего: %i"
+
+#: ../slog/TransPanel.py:40
+msgid "Welcome"
+msgstr "Приветствие"
+
+#~ msgid "Version"
+#~ msgstr "Версия"
+
+#~ msgid "Website: http://lightlang.org.ru/"
+#~ msgstr "Сайт: http://lightlang.org.ru/"
+
+#~ msgid "Usage: slog [OPTION]"
+#~ msgstr "Использование: slog [ОПЦИИ]"
+
+#~ msgid "Options"
+#~ msgstr "Опции"
+
+#~ msgid "Show this help and exit"
+#~ msgstr "Показать данное сообщение"
+
+#~ msgid "Show version information and exit"
+#~ msgstr "Показать информацию о текущей версии"
+
+#~ msgid "Toggles Spy mode (on/off)"
+#~ msgstr "Переключить режим Spy (вкл/выкл)"
