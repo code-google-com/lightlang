@@ -18,7 +18,16 @@ class PluginManager:
 			path = os.path.join(plugins_dir, modname)
 			self.plugins.append(path)
 			if "__init__.py" in os.listdir(path):
-				mod = __import__(modname, globals(), locals(), [""])
+
+				
+				(stream, path, desc) = imp.find_module("__init__", [path])
+				try:
+					mod = imp.load_module("__init__", stream, "__init__.py", desc)
+				finally:
+					stream.close()
+
+
+				#mod = __import__(modname, globals(), locals(), [""])
 				print mod.plugin_name
 
 
