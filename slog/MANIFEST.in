@@ -7,4 +7,5 @@ include setup.py MANIFEST.in
 include slog/*.py
 include po/*
 recursive-include data *
+recursive-include plugins *
 
