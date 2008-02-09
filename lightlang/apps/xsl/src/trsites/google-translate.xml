@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<title>Google Translate</title>
+	<title lang="ru">Переводчик Google</title>
+	<description>Universal multi-language translator</description>
+	<description lang="ru">Универсальный многоязыковой переводчик</description>
+	<url>http://translate.google.com/</url>
+</site>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>Requirements and configuration</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><img src="lightlang.png" align="top" border="0"></h2></td></tr></table>
+<hr>
+<h2>Requirements and configuration</h2>
+<hr>
+<h3>Installing LightLang</h3>
+&nbsp;&nbsp;&nbsp;<strong>Qt4</strong> graphical library, its <strong>Python</strong> layer - <strong>PyQt4</strong>, which is in need of <strong>SIP</strong> (do not confuse with <strong>IP</strong> telephony). All these packages can be found in your distributive's repositories, so installing these packages can be brought to typing commands, containing a few words. But if you won't find the libraries, then you'll have to install them yourself. At that moment <strong>SIP</strong> and <strong>Qt4</strong> are rare, but they can be always found in the repositories of modern distributives. <strong>PyQt4</strong>, the necessary component for <strong>LightLang</strong>, is often missing. So you can download <strong>Qt4</strong>, <strong>SIP</strong> and <strong>PyQt4</strong> using the following links:<br>
+<ul><li><a href='http://trolltech.com/developer/downloads/qt/x11' target='http://trolltech.com/developer/downloads/qt/x11'>http://trolltech.com/developer/downloads/qt/x11</a></li>
+<li><a href='http://www.riverbankcomputing.co.uk/sip/download.php' target='http://www.riverbankcomputing.co.uk/sip/download.php'>http://www.riverbankcomputing.co.uk/sip/download.php</a></li>
+<li><a href='http://www.riverbankcomputing.co.uk/pyqt/download.php' target='http://www.riverbankcomputing.co.uk/pyqt/download.php'>http://www.riverbankcomputing.co.uk/pyqt/download.php</a></li></ul>
+&nbsp;&nbsp;&nbsp;Libraries should be compiled and installed in the order they are shown here. Installing is not described here, for it  doesn't differ from the usual one.<br>
+&nbsp;&nbsp;&nbsp;Remember that it would be best to find them as prepared packages for your distributive.<br>
+&nbsp;&nbsp;&nbsp;Required versions:<br>
+<ul><b><li>Qt4 >= 4.2.2</li>
+<li>SIP >= 4.6</li>
+<li>PyQt4 >= 4.2.2</li></b></ul>
+&nbsp;&nbsp;&nbsp;After the installation of libraries is finished, you can start installing <strong>LightLang</strong>.<br>
+&nbsp;&nbsp;&nbsp;There are several configure options available, which can be sent by using <strong>configure</strong> script:
+<ul><li><em>--prefix=prefix_dir</em> - specifies the install directory prefix, by default - <strong>/usr</strong></li>;</li>
+<li><em>--with-default-config=normal|liksys|kde|console</em> - used to select a configuration preset. These presets were made and named by developers to be suitable for your system. Default preset is <em>normal</em>, because this configuration is suitable for the majority of users, but you can also use other options, for example <em>liksys</em> - this configuration is used by the main developer;</li>
+<li><em>--with-audio-player=player_prog</em> - specifies the audio player, which is used for playing voice transcriptions of the words. Player is required to be able to be run in console suing look alike command:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player filename</td></tr></table>
+&nbsp;&nbsp;&nbsp;it is also required to be able to run <strong>OGG</strong>, for <strong>LightLang</strong> stores its voice transcription files in that format (what differs it from other dictionaries, for they use lossless <strong>WAV</strong>). For example, you can specify <strong>MPlayer</strong> as a player: <em>--with-audio-player=mplayer</em>. A the same time, path to executable player file must be located in your <strong>PATH</strong> variable. Default player is <strong>play</strong>;</li>
+<li><em>--with-gui-terminal=terminal_prog</em> - used fro specifying the graphical terminal. Default is <strong>XTerm</strong>, but <strong>KDE</strong> fans can specify <strong>Konsole</strong> for example;</li>
+<li><a name="gui"></a><em>--with-gui-flag=no</em> - used for choosing whether the graphical interface will be installed or not (and calculate dependencies for it). Default is <em>yes</em>. Disabling installation of the graphical interface is generally used on machines that do not support graphical systems or when user wants to install another graphical interface for <strong>SL</strong>.</li></ul>
+&nbsp;&nbsp;&nbsp;You can download the dictionaries from our repositories during the install using <b>download.py</b> script, which must be executed between <strong>configure</strong> and <strong>make</strong>. If you want to see the list of dictionaries and sounds that we have in our repositories, execute from <b>LightLang</b> directory the following commands:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist dicts</td></tr></table>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist sounds</td></tr></table>
+&nbsp;&nbsp;&nbsp;After that you can add, for example, a dictionary to <b>LightLang</b> sources tree using this command:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py install dicts Mueller-24.en-ru</td></tr></table>
+&nbsp;&nbsp;&nbsp;It will be automatically unpacked and added to the sources catalog and then, during the build phase, it will be compiled. To browse available options for working with repositories type:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py help</td></tr></table>
+&nbsp;&nbsp;&nbsp;Usually, <strong>LightLang</strong> is installed as it is shown below (we'll also download <strong>en</strong> sounds and <strong>Mueller-24.en-ru</strong> dictionary):
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max ~]$ tar -xjvf lightlang-0.8.5.tar.bz2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max ~]$ cd lightlang-0.8.5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./configure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./download.py install dicts Mueller-24.en-ru<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./download.py install sounds en<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ make<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ su<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: enter root password<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[root@max lightlang-0.8.5]$ make install</td></tr></table>
+<br>
+<br>
+<h3>Possible problems: Fedora 7</h3>
+&nbsp;&nbsp;&nbsp;While installing <strong>PyQt4</strong> you can get an error. I've solved this problem, but I don't remember how <strong>:-)</strong> Trying to remember. But this problem can be solved.<br>
+<br>
+<br>
+<h3>Possible problems: Mandriva 2007</h3>
+&nbsp;&nbsp;&nbsp;<strong>Mandriva</strong> (<strong>2007.0</strong> and <strong>1</strong>) users will have to download the specified libraries from <strong>Cooker</strong> and install them from the sources. Also, <strong>Python-KDE</strong>, <strong>Python-Qt3</strong> and <strong>QScintilla</strong> problems may appear. All this should be installed. Or just wait for <strong>2008.0</strong>.<br>
+<br>
+<br>
+<h3>Possible Problems: (K)Ubuntu</h3>
+&nbsp;&nbsp;&nbsp;A problem may appear at the configuration phase:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for gcc... gcc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for C compiler default output file name...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configure: error: C compiler cannot create executables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See `config.log' for more details.</td></tr></table>
+&nbsp;&nbsp;&nbsp;In that case you should install <strong>libstdc++-&lt;version&gt;-dev</strong> including its dependencies.<br>
+<br>
+&nbsp;&nbsp;&nbsp;Another problem may appear at the configuration phase:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for play... error: play is not found</td></tr></table>
+&nbsp;&nbsp;&nbsp;This problem can be solved by installing <strong>SOX</strong> or <strong>SND</strong> package, or you can simply specify another audio-player.<br>
+<br>
+&nbsp;&nbsp;&nbsp;And one more problem may appear at the configuration phase:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Traceback (most recent call last):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/bin/xsl", line 24, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import Main<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/lib/xsl/pyqt4/Main.py", line 6, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from PyQt4 import Qt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/lib/python2.5/site-packages/PyQt4/Qt.py", line 4, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from PyQt4.QtOpenGL import *<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImportError: No module named QtOpenGL</td></tr></table>
+&nbsp;&nbsp;&nbsp;This problem can be solved by installing <b>python-qt4-gl</b> and <b>python-qt4-sql</b> including their dependencies.<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;Remember, that if some component won't be found during the configuration, the problem will display an error and tell you where you can get it.
+<hr>
+</body>
+</html>

@@ -1,0 +1,100 @@
+# XSL Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MKDIR=@MKDIR_PROG@
+INS=@INSTALL@
+CP=@CP_PROG@
+LN=@LN_PROG@
+RM=@RM_PROG@
+PWD=@PWD_PROG@
+CHMOD=@CHMOD_PROG@
+LS=@LS_PROG@
+PYTHON=@PYTHON_PROG@
+
+XSL_PROG=xsl
+XSL_PROG_ALIAS=lightlang
+XSL_MAIN=src/pyqt4/xsl.py
+XSL_CONFIG=src/pyqt4/Config.py
+XSL_PYQT4_DIR=src/pyqt4
+XSL_TR_DIR=src/tr
+XSL_IFA_DIR=src/ifa
+XSL_TRSITES_DIR=src/trsites
+XSL_ICONS_DIR=src/icons
+XSL_PICTURES_DIR=src/pictures
+XSL_DESKTOP_SCRIPT=src/desktop/xsl.desktop
+XSL_DESKTOP_ICON=src/desktop/xsl.png
+
+INS_XSL_PROG_DIR=@prefix@/bin
+INS_XSL_PROG_ALIAS_DIR=@prefix@/bin
+INS_XSL_LIBS_DIR=@prefix@/lib/xsl
+INS_XSL_PYQT4_DIR=@prefix@/lib/xsl/pyqt4
+INS_XSL_TR_DIR=@prefix@/lib/xsl/tr
+INS_XSL_IFA_DIR=@prefix@/lib/xsl/ifa
+INS_XSL_TRSITES_DIR=@prefix@/lib/xsl/trsites
+INS_XSL_ICONS_DIR=@prefix@/lib/xsl/icons
+INS_XSL_PICTURES_DIR=@prefix@/lib/xsl/pictures
+INS_XSL_DESKTOP_SCRIPT_DIR=@prefix@/share/applications
+INS_XSL_DESKTOP_ICON_DIR=@prefix@/share/icons
+
+#####
+all :
+	-for file in `$(LS) $(XSL_PYQT4_DIR)/*.py`; do \
+		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
+	done
+	$(CP) $(XSL_MAIN) $(XSL_PROG)
+	$(CHMOD) +x $(XSL_PROG)
+	-$(LN) -s `$(PWD)`/$(XSL_PROG) ../../$(XSL_PROG)
+
+install :
+	$(MKDIR) -p $(INS_XSL_PROG_DIR)
+	$(MKDIR) -p $(INS_XSL_PROG_ALIAS_DIR)
+	$(MKDIR) -p $(INS_XSL_PYQT4_DIR)
+	$(MKDIR) -p $(INS_XSL_TR_DIR)
+	$(MKDIR) -p $(INS_XSL_IFA_DIR)
+	$(MKDIR) -p $(INS_XSL_TRSITES_DIR)
+	$(MKDIR) -p $(INS_XSL_ICONS_DIR)
+	$(MKDIR) -p $(INS_XSL_PICTURES_DIR)
+	$(MKDIR) -p $(INS_XSL_DESKTOP_SCRIPT_DIR)
+	$(MKDIR) -p $(INS_XSL_DESKTOP_ICON_DIR)
+	$(INS) $(XSL_PROG) $(INS_XSL_PROG_DIR)
+	-$(LN) $(INS_XSL_PROG_DIR)/$(XSL_PROG) $(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
+	$(CP) -r $(XSL_PYQT4_DIR)/*.py $(INS_XSL_PYQT4_DIR)
+	for file in `$(LS) $(INS_XSL_PYQT4_DIR)/*.py`; do \
+		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
+	done
+	-$(CP) -r $(XSL_TR_DIR)/*.qm $(INS_XSL_TR_DIR)
+	-$(CP) -r $(XSL_IFA_DIR)/*.xml $(INS_XSL_IFA_DIR)
+	-$(CP) -r $(XSL_IFA_DIR)/*.ifa $(INS_XSL_IFA_DIR)
+	-$(CP) -r $(XSL_TRSITES_DIR)/*.xml $(INS_XSL_TRSITES_DIR)
+	$(CP) -r $(XSL_ICONS_DIR)/*.png $(INS_XSL_ICONS_DIR)
+	$(CP) -r $(XSL_PICTURES_DIR)/*.png $(INS_XSL_PICTURES_DIR)
+	$(CP) -r $(XSL_PICTURES_DIR)/*.gif $(INS_XSL_PICTURES_DIR)
+	$(INS) $(XSL_DESKTOP_SCRIPT) $(INS_XSL_DESKTOP_SCRIPT_DIR)
+	$(INS) $(XSL_DESKTOP_ICON) $(INS_XSL_DESKTOP_ICON_DIR)
+
+uninstall :
+	$(RM) -f $(INS_XSL_DESKTOP_ICON_DIR)/xsl.png
+	$(RM) -f $(INS_XSL_DESKTOP_SCRIPT_DIR)/xsl.desktop
+	$(RM) -rf $(INS_XSL_LIBS_DIR)
+	$(RM) -f $(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
+	$(RM) -f $(INS_XSL_PROG_DIR)/$(XSL_PROG)
+
+clean :
+	$(RM) -f $(XSL_PROG) $(XSL_MAIN) $(XSL_CONFIG)
+	$(RM) -f $(XSL_PYQT4_DIR)/*.pyc
+	$(RM) -f $(XSL_IFA_DIR)/*.xml
+	$(RM) -f $(XSL_IFA_DIR)/*.ifa
+	$(RM) -f ../../$(XSL_PROG)
+
+_update_ru_ts :
+	pylupdate4 -verbose $(XSL_PYQT4_DIR)/*.py -ts $(XSL_TR_DIR)/ru.ts
+
+_update_ru_ts_noobsolete :
+	pylupdate4 -verbose -noobsolete $(XSL_PYQT4_DIR)/*.py -ts $(XSL_TR_DIR)/ru.ts
+
+_create_ru_qm :
+	lrelease-qt4 -verbose $(XSL_TR_DIR)/ru.ts -qm $(XSL_TR_DIR)/ru.qm
+

@@ -1,0 +1,36 @@
+# LLREPO Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MKDIR=@MKDIR_PROG@
+CP=@CP_PROG@
+INS=@INSTALL@
+LN=@LN_PROG@
+RM=@RM_PROG@
+PWD=@PWD_PROG@
+CHMOD=@CHMOD_PROG@
+
+LLREPO_PROG=llrepo
+LLREPO_MAIN=src/llrepo.py
+
+INS_LLREPO_PROG_DIR=@prefix@/bin/
+
+#####
+all : $(LLREPO_MAIN)
+	$(CP) $(LLREPO_MAIN) $(LLREPO_PROG)
+	$(CHMOD) +x $(LLREPO_PROG)
+	-$(LN) -s `$(PWD)`/$(LLREPO_PROG) ../../$(LLREPO_PROG)
+
+install :
+	$(MKDIR) -p $(INS_LLREPO_PROG_DIR)
+	$(INS) $(LLREPO_PROG) $(INS_LLREPO_PROG_DIR)
+
+uninstall :
+	$(RM) -f $(INS_LLREPO_PROG_DIR)/$(LLREPO_PROG)
+
+clean :
+	$(RM) -f $(LLREPO_PROG) $(LLREPO_MAIN)
+	$(RM) -f ../../$(LLREPO_PROG)
+
