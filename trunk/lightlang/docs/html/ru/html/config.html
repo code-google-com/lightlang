@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>Требования и конфигурация</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><img src="lightlang.png" align="top" border="0"></h2></td></tr></table>
+<hr>
+<h2>Требования и конфигурация</h2>
+<hr>
+<h3>Установка LightLang</h3>
+&nbsp;&nbsp;&nbsp;Для работы системы необходима графическая библиотека <strong>Qt4</strong> и прослойка для нее для <strong>Python</strong> - <strong>PyQt4</strong>, в свою очередь нуждающаяся в <strong>SIP</strong><sup><a href="#gui">*</a></sup>. Все эти пакеты вы можете найти в репозиториях своего дистрибутива, тогда установка этих библиотек сведется к вводе команды из нескольких слов. Но если этих библиотек не оказалось, то придется все устанавливать вручную. На данный момент <strong>SIP</strong> и <strong>Qt4</strong> присутствуют если не по умолчанию, то в репозиориях современных дистрибутивов. Чаще всего отсутствует <strong>PyQt4</strong>, жизнено важный для <strong>LightLang</strong> компонент. И так, по следующим ссылкам вы можете скачать исходный текст <strong>Qt4</strong>, <strong>SIP</strong> и <strong>PyQt4</strong>:<br>
+<ul><li><a href='http://trolltech.com/developer/downloads/qt/x11' target='http://trolltech.com/developer/downloads/qt/x11'>http://trolltech.com/developer/downloads/qt/x11</a></li>
+<li><a href='http://www.riverbankcomputing.co.uk/sip/download.php' target='http://www.riverbankcomputing.co.uk/sip/download.php'>http://www.riverbankcomputing.co.uk/sip/download.php</a></li>
+<li><a href='http://www.riverbankcomputing.co.uk/pyqt/download.php' target='http://www.riverbankcomputing.co.uk/pyqt/download.php'>http://www.riverbankcomputing.co.uk/pyqt/download.php</a></li></ul>
+&nbsp;&nbsp;&nbsp;Компилировать и устанавливать данные библиотеки необходимо в той последовательности в какой они даны здесь. Сдесь их установка не описывается, поскольку она выполняется совершенно стандартными методами.<br>
+&nbsp;&nbsp;&nbsp;Следует помнить, что лучше всего найти их в уже готовых пакетах для вашего дистрибутива.<br>
+&nbsp;&nbsp;&nbsp;Необходимые версии:<br>
+<ul><b><li>Qt4 >= 4.2.2</li>
+<li>SIP >= 4.6</li>
+<li>PyQt4 >= 4.2.2</li></b></ul>
+&nbsp;&nbsp;&nbsp;Затем, после установки этих библиотек можно перейти к установке собственно <strong>LightLang</strong>.<br>
+&nbsp;&nbsp;&nbsp;Вам доступно несколько опций конфигурации, которые можно передавать скрипту <strong>configure</strong>:
+<ul><li><em>--prefix=prefix_dir</em> - используется для указания префикса каталога установки, по умолчанию - <strong>/usr</strong>;</li>
+<li><em>--with-default-config=normal|liksys|kde|console</em> - используется для указания пресета конфигурации. Это настройки, которые разработчики сочли наиболее подходящими и дали им имена. По умолчанию используется пресет <em>normal</em>, эта конфигурация оптимальна для больштнства пользователей, но вы можете воспользоваться и другими опциями, например <em>liksys</em> - эта конфигцрация по умолчанию, которой пользуется главный разработчик;</li>
+<li><em>--with-audio-player=player_prog</em> - используется для указания аудио плеера, которым осуществляетс проигрывание файлов голосовой транскрипции. Плеер должен быть обязательно консольным и запускаться командой вида:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player filename</td></tr></table>
+&nbsp;&nbsp;&nbsp;Еще одним требованием является обязательная поддержка формата <strong>OGG</strong>, в котором <strong>LightLang</strong> хранит файлы голосовой транскрипции (в отличие от многих других словарей, которые используют несжатый формат <strong>WAV</strong>. Например можно указать использовать в качестве плеера <strong>MPlayer</strong> таким образом: <em>--with-audio-player=mplayer</em>. При этом путь к исполняемому файлу плеера должен находиться в вашей переменной <strong>PATH</strong>. По умолчанию используется плеер <strong>play</strong>;</li>
+<li><em>--with-gui-terminal=terminal_prog</em> - используется для указания программы графического терминала. По умолчанию используется <strong>XTerm</strong>, однако любители <strong>KDE</strong> могут установить, например, <strong>Konsole</strong>;</li>
+<li><a name="gui"></a><em>--with-gui-flag=no</em> - используется для указания того, следует ли включить в сборку программы графический интерфейс (и проверять на необходимые для него библиотеки). По умолчанию используется значение <em>yes</em>. Отключение сборки графического интерфейса обычно нужно на тех системах, которые не поддерживают графическую систему или пользователь хочет установить другой графический интерфейс для <strong>SL</strong>.</li></ul>
+&nbsp;&nbsp;&nbsp;Во время установки вы можете скачать словари и установить их из нашего репозитория, для этого создан скрипт <b>download.py</b>, который нужно выполнять между выполнением <strong>configure</strong> и <strong>make</strong>. Если вы хотите посмотреть, какие словари и звуки есть в нашем репозитории, выполните из каталога с <b>LightLang</b> команды:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist dicts</td></tr></table>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist sounds</td></tr></table>
+&nbsp;&nbsp;&nbsp;Потом можете скачать например словарь и добавить его в дерево исходных текстов <b>LightLang</b> командой:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py install dicts Mueller-24.en-ru</td></tr></table>
+&nbsp;&nbsp;&nbsp;Он будет автоматически распакован и встроен в каталог исходных текстов, затем, на этапе сборки, откомпилирован. Для просмотра доступных опций работы с репозиторием наберите:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py help</td></tr></table>
+&nbsp;&nbsp;&nbsp;В общем случае, устанавливать <strong>LightLang</strong> можно следующими командами (скачает звук <strong>en</strong> и словарь <strong>Mueller-24.en-ru</strong>):
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max ~]$ tar -xjvf lightlang-0.8.5.tar.bz2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max ~]$ cd lightlang-0.8.5<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./configure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./download.py install dicts Mueller-24.en-ru<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ ./download.py install sounds en<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ make<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max lightlang-0.8.5]$ su<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: введите пароль root<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[root@max lightlang-0.8.5]$ make install</td></tr></table>
+<br>
+<br>
+<h3>Возможные проблемы: Fedora 7</h3>
+&nbsp;&nbsp;&nbsp;При установке библиотеки <strong>PyQt4</strong> из исходников выдавалась ошибка. Как-то решил, но как - не помню <strong>:-)</strong> Вспоминаю. В принципе, решаемо. Но лучше установить <strong>PyQt4</strong> из репозиториев.<br>
+<br>
+<br>
+<h3>Возможные проблемы: Mandriva 2007</h3>
+&nbsp;&nbsp;&nbsp;Пользователям <strong>Mandriva</strong> (<strong>2007.0</strong> и <strong>1</strong>) придется качать из <strong>Кукера</strong> указанные библиотеки или ставить их из исходных текстов. Также будут проблемы с зависимостями из-за <strong>Python-KDE</strong>, <strong>Python-Qt3</strong> и <strong>QScintilla</strong>. Все это нужно установить. Как вариант - ждать <strong>2008.0</strong>.<br>
+<br>
+<br>
+<h3>Возможные проблемы: (K)Ubuntu</h3>
+&nbsp;&nbsp;&nbsp;На стадии конфигурации происходит ошибка вида:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for gcc... gcc<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for C compiler default output file name...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configure: error: C compiler cannot create executables<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;See `config.log' for more details.</td></tr></table>
+&nbsp;&nbsp;&nbsp;В этом случае необходимо установить <strong>libstdc++-&lt;version&gt;-dev</strong> со всеми его зависимостями.<br>
+<br>
+&nbsp;&nbsp;&nbsp;На стадии конфигурации происходит ошибка вида:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;checking for play... error: play is not found</td></tr></table>
+&nbsp;&nbsp;&nbsp;Эта проблема решается установкой пакета <strong>SOX</strong> или <strong>SND</strong>, как вариант можно выбрать другой аудио-плеер.<br>
+<br>
+&nbsp;&nbsp;&nbsp;На стадии конфигурации происходит ошибка вида:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Traceback (most recent call last):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/bin/xsl", line 24, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import Main<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/lib/xsl/pyqt4/Main.py", line 6, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from PyQt4 import Qt<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File "/usr/lib/python2.5/site-packages/PyQt4/Qt.py", line 4, in &lt;module&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from PyQt4.QtOpenGL import *<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ImportError: No module named QtOpenGL</td></tr></table>
+&nbsp;&nbsp;&nbsp;Эта проблема решается установкой пакетов <b>python-qt4-gl</b> и <b>python-qt4-sql</b> с их зависимостями.<br>
+<br>
+<br>
+&nbsp;&nbsp;&nbsp;Следует отметить, что при конфигурировании в случае отсутствия нужного компонента программа выдаст сообщение об этом и где его можно взять.
+<hr>
+</body>
+</html>

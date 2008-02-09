@@ -1,0 +1,17 @@
+# XSL - graphic interface for SL
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+[Desktop Entry]
+Version=1.1
+Encoding=UTF-8
+Type=Application
+Name=XSL
+Name[ru]=XSL
+GenericName=Electronic dictionary
+GenericName[ru]=Электронный словарь
+Comment=Lightlang SL-based dictionary system
+Comment[ru]=Система электронных словарей на основе LighLang SL
+Exec=xsl
+Icon=xsl.png
+Terminal=false
+Categories=Utility;Dictionary;

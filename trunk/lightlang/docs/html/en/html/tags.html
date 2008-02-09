@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>Tags and dictionary format</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><img src="lightlang.png" align="top" border="0"></h2></td></tr></table>
+<hr>
+<h2>Tags and dictionary format</h2>
+<hr>
+&nbsp;&nbsp;&nbsp;<strong>SL</strong> format represents modified <strong>Mova</strong> format. Every record forms one line in the dictionary, word and its translation are separated by two spaces. Special tags, that manage search and formatting, are used.<br>
+<br>
+<table border=1>
+  <caption><h4>Search managing tags</h4></caption>
+  <tbody>
+    <tr>
+      <td><em>[index]</em></td>
+      <td>Marks the beginning of the index.</td>
+    </tr>
+    <tr>
+      <td><em>[/index]</em></td>
+      <td>Marks the end of the index.</td>
+    </tr>
+    <tr>
+      <td><em>[noindex]</em></td>
+      <td>Marks an unindexed file.</td>
+    </tr>
+    <tr>
+      <td><em>#</em></td>
+      <td>Commentary. It is ignored as well as empty lines during the search.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<table border=1>
+  <caption><h4>Formatting tags</h4></caption>
+  <tbody>
+    <tr>
+      <td><em>\{...\}</em></td>
+      <td>Blocks. If the text is enclosed by blocks it will differ from the other text: it will be placed on the new line, while other will be tabulated. Can be inserted making grouped text inside large block-groups.</td>
+    </tr>
+    <tr>
+      <td><em>\[...\]</em></td>
+      <td>Makes the enclosed text bold.</td>
+    </tr>
+    <tr>
+      <td><em>\(...\)</em></td>
+      <td>Makes the enclosed text cursive.</td>
+    </tr>
+    <tr>
+      <td><em>\&lt;...\&gt;</em></td>
+      <td>Text, enclosed in this tag, will be marked as official (which usually is marked by green color).</td>
+    </tr>
+    <tr>
+      <td><em>\_...\_</em></td>
+      <td>Underlines the enclosed text.</td>
+    </tr>
+    <tr>
+      <td><em>\@...\@</em></td>
+      <td>Makes enclosed text a link to another word.</td>
+    </tr>
+    <tr>
+    </tr>
+      <td><em>\s...\s</em></td>
+      <td>Text, enclosed in this tag, will be presented as a link to sound transcription. Request syntax is similar to <em>-s</em> option.</td>
+    <tr>
+      <td><em>\n</em></td>
+      <td>New line symbol.</td>
+    </tr>
+    <tr>
+      <td><em>\t</em></td>
+      <td>Tabulation symbol.</td>
+    </tr>
+    <tr>
+      <td><em>\\</em></td>
+      <td>Slash symbol.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+&nbsp;&nbsp;&nbsp;Index has the following format:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[index]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char value<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[/index]</td></tr></table>
+where <em>char</em> - is some symbol, <em>value</em> - is the symbol offset.
+<hr>
+</body>
+</html>

@@ -1,0 +1,123 @@
+
+
+             ***** [lightlang.png] *****
+===============================================================================
+***** Requirements and configuration *****
+===============================================================================
+**** Installing LightLang ****
+   Qt4 graphical library, its Python layer - PyQt4, which is in need of SIP (do
+not confuse with IP telephony). All these packages can be found in your
+distributive's repositories, so installing these packages can be brought to
+typing commands, containing a few words. But if you won't find the libraries,
+then you'll have to install them yourself. At that moment SIP and Qt4 are rare,
+but they can be always found in the repositories of modern distributives.
+PyQt4, the necessary component for LightLang, is often missing. So you can
+download Qt4, SIP and PyQt4 using the following links:
+    * http://trolltech.com/developer/downloads/qt/x11
+    * http://www.riverbankcomputing.co.uk/sip/download.php
+    * http://www.riverbankcomputing.co.uk/pyqt/download.php
+   Libraries should be compiled and installed in the order they are shown here.
+Installing is not described here, for it doesn't differ from the usual one.
+   Remember that it would be best to find them as prepared packages for your
+distributive.
+   Required versions:
+    * Qt4 >= 4.2.2
+    * SIP >= 4.6
+    * PyQt4 >= 4.2.2
+   After the installation of libraries is finished, you can start installing
+LightLang.
+   There are several configure options available, which can be sent by using
+configure script:
+    * --prefix=prefix_dir - specifies the install directory prefix, by default
+      - /usr
+    * ;
+--with-default-config=normal|liksys|kde|console - used to select a
+configuration preset. These presets were made and named by developers to be
+suitable for your system. Default preset is normal, because this configuration
+is suitable for the majority of users, but you can also use other options, for
+example liksys - this configuration is used by the main developer;
+--with-audio-player=player_prog - specifies the audio player, which is used for
+playing voice transcriptions of the words. Player is required to be able to be
+run in console suing look alike command:
+      player filename
+   it is also required to be able to run OGG, for LightLang stores its voice
+transcription files in that format (what differs it from other dictionaries,
+for they use lossless WAV). For example, you can specify MPlayer as a player: -
+-with-audio-player=mplayer. A the same time, path to executable player file
+must be located in your PATH variable. Default player is play;
+--with-gui-terminal=terminal_prog - used fro specifying the graphical terminal.
+Default is XTerm, but KDE fans can specify Konsole for example;
+--with-gui-flag=no - used for choosing whether the graphical interface will be
+installed or not (and calculate dependencies for it). Default is yes. Disabling
+installation of the graphical interface is generally used on machines that do
+not support graphical systems or when user wants to install another graphical
+interface for SL.
+   You can download the dictionaries from our repositories during the install
+using download.py script, which must be executed between configure and make. If
+you want to see the list of dictionaries and sounds that we have in our
+repositories, execute from LightLang directory the following commands:
+      ./download.py remotelist dicts
+      ./download.py remotelist sounds
+   After that you can add, for example, a dictionary to LightLang sources tree
+using this command:
+      ./download.py install dicts Mueller-24.en-ru
+   It will be automatically unpacked and added to the sources catalog and then,
+during the build phase, it will be compiled. To browse available options for
+working with repositories type:
+      ./download.py help
+   Usually, LightLang is installed as it is shown below (we'll also download en
+sounds and Mueller-24.en-ru dictionary):
+      [liksys@max ~]$ tar -xjvf lightlang-0.8.5.tar.bz2
+      [liksys@max ~]$ cd lightlang-0.8.5
+      [liksys@max lightlang-0.8.5]$ ./configure
+      [liksys@max lightlang-0.8.5]$ ./download.py install dicts Mueller-24.en-
+ru
+      [liksys@max lightlang-0.8.5]$ ./download.py install sounds en
+      [liksys@max lightlang-0.8.5]$ make
+      [liksys@max lightlang-0.8.5]$ su
+      Password: enter root password
+      [root@max lightlang-0.8.5]$ make install
+
+
+**** Possible problems: Fedora 7 ****
+   While installing PyQt4 you can get an error. I've solved this problem, but I
+don't remember how :-) Trying to remember. But this problem can be solved.
+
+
+**** Possible problems: Mandriva 2007 ****
+   Mandriva (2007.0 and 1) users will have to download the specified libraries
+from Cooker and install them from the sources. Also, Python-KDE, Python-Qt3 and
+QScintilla problems may appear. All this should be installed. Or just wait for
+2008.0.
+
+
+**** Possible Problems: (K)Ubuntu ****
+   A problem may appear at the configuration phase:
+      checking for gcc... gcc
+      checking for C compiler default output file name...
+      configure: error: C compiler cannot create executables
+      See `config.log' for more details.
+   In that case you should install libstdc++-<version>-dev including its
+dependencies.
+
+   Another problem may appear at the configuration phase:
+      checking for play... error: play is not found
+   This problem can be solved by installing SOX or SND package, or you can
+simply specify another audio-player.
+
+   And one more problem may appear at the configuration phase:
+      Traceback (most recent call last):
+      File "/usr/bin/xsl", line 24, in <module>
+      import Main
+      File "/usr/lib/xsl/pyqt4/Main.py", line 6, in <module>
+      from PyQt4 import Qt
+      File "/usr/lib/python2.5/site-packages/PyQt4/Qt.py", line 4, in <module>
+      from PyQt4.QtOpenGL import *
+      ImportError: No module named QtOpenGL
+   This problem can be solved by installing python-qt4-gl and python-qt4-sql
+including their dependencies.
+
+
+   Remember, that if some component won't be found during the configuration,
+the problem will display an error and tell you where you can get it.
+===============================================================================

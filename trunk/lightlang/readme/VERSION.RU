@@ -1,0 +1,1 @@
+../docs/text/ru/text/VERSION

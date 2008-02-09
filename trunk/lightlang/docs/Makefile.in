@@ -1,0 +1,24 @@
+# Documentation Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+CD=@CD_PROG@
+
+HTML_DOC_DIR=html
+TEXT_DOC_DIR=text
+MAN_DOC_DIR=man
+
+#####
+install :
+	$(CD) $(HTML_DOC_DIR) && $(MAKE) install
+	$(CD) $(TEXT_DOC_DIR) && $(MAKE) install
+	$(CD) $(MAN_DOC_DIR) && $(MAKE) install
+
+uninstall :
+	$(CD) $(HTML_DOC_DIR) && $(MAKE) uninstall
+	$(CD) $(TEXT_DOC_DIR) && $(MAKE) uninstall
+	$(CD) $(MAN_DOC_DIR) && $(MAKE) uninstall
+

@@ -1,0 +1,27 @@
+# Resources Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+CD=@CD_PROG@
+
+DICTS_RESOURCES_DIR=dicts
+SOUNDS_RESOURCES_DIR=sounds
+
+#####
+all :
+	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE)
+
+install :
+	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) install
+	$(CD) $(SOUNDS_RESOURCES_DIR) && $(MAKE) install
+
+uninstall :
+	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) uninstall
+	$(CD) $(SOUNDS_RESOURCES_DIR) && $(MAKE) uninstall
+
+clean :
+	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) clean
+

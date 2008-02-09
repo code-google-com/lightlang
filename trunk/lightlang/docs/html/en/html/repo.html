@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+  <title>Using repository manager LLRepo</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><img src="lightlang.png" align="top" border="0"></h2></td></tr></table>
+<hr>
+<h2>Using repository manager LLRepo</h2>
+<hr>
+&nbsp;&nbsp;&nbsp;<strong>LLRepo</strong> - is <strong>LightLang</strong> repository manager made for adding local glossary bases and other resources from <strong>LightLang</strong> <strong>FTP</strong> repository. You can easily add a new resource to the system using <strong>llrepo</strong>. Of course, your computer must be connected to the Internet <strong>:-)</strong>.<br>
+<br>
+&nbsp;&nbsp;&nbsp;At this moment <strong>LLRepo</strong> supports four resource managing operations: <em>remotelist</em>, <em>locallist</em>, <em>install</em>, <em>uninstall</em>. First two are informational, they are used for getting information about available and installed resources, the rest are for installing and uninstalling resources. For all the four options it is necessary to specify the type of resource - <em>dicts</em> or <em>sounds</em>. It is necessary to specify the name of the resource after its type for install and uninstall options (more than one resource can be specified).<br>
+<br>
+&nbsp;&nbsp;&nbsp;To browse available dictionaries in the repository use:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remotelist dicts</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To browse available sounds in the repository use:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remotelist sounds</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To install dictionaries from the repository use (last parameter is the names of dicts to install, which you can get by informational commands):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo install dicts file1 file2 fileN</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To install sound from the repository use (last parameter is the names of needed resources, which you can get by informational commands):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo install sounds file1 file2 fileN</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To browse installed dictionaries use:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo locallist dicts</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To browse installed sounds use:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo locallist sounds</td></tr></table>
+<br>
+
+&nbsp;&nbsp;&nbsp;To delete installed dictionaries use (last parameter is the names of needed resources, which you can get by informational commands):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall dicts file1 file2 fileN</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;To delete installed sounds use (last parameter is the names of needed resources, which you can get by informational commands):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall sounds file1 file2 fileN</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Commands <em>help</em> and <em>version</em> display short help and information about program version.
+<hr>
+</body>
+</html>

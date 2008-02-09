@@ -1,0 +1,49 @@
+# Text-documentation Makefile
+# @configure_input@
+# Copyright (C) 2007-2016 Devaev Maxim
+# See file "LICENSE" for details
+##
+
+MAKE=@MAKE_PROG@
+CD=@CD_PROG@
+
+EN_DIR=en
+RU_DIR=ru
+
+#####
+install :
+	$(CD) $(EN_DIR) && $(MAKE) install
+	$(CD) $(RU_DIR) && $(MAKE) install
+
+uninstall :
+	$(CD) $(EN_DIR) && $(MAKE) uninstall
+	$(CD) $(RU_DIR) && $(MAKE) uninstall
+
+_create_ru_texts :
+	echo > ru/text/README
+	for file in "about.html" "new.html" "config.html" "console.html" \
+		"repo.html" "tags.html" "gui.html" "ifa.html" "bugs.html" \
+		"trsites.html" "authors.html" "internet.html"; do \
+		iconv -f utf-8 -t koi8-r ../html/ru/html/$$file | html2text -nobs | \
+			iconv -f koi8-r -t utf-8 >> ru/text/README; \
+		echo >> ru/text/README; \
+	done
+	iconv -f utf-8 -t koi8-r ../html/ru/html/config.html | html2text -nobs | \
+		iconv -f koi8-r -t utf-8 > ru/text/INSTALL
+	iconv -f utf-8 -t koi8-r ../html/ru/html/new.html | html2text -nobs | \
+		iconv -f koi8-r -t utf-8 1> ru/text/VERSION
+
+_create_en_texts :
+	echo > en/text/README
+	for file in "about.html" "new.html" "config.html" "console.html" \
+		"repo.html" "tags.html" "gui.html" "ifa.html" "bugs.html" \
+		"trsites.html" "authors.html" "internet.html"; do \
+		iconv -f utf-8 -t koi8-r ../html/en/html/$$file | html2text -nobs | \
+			iconv -f koi8-r -t utf-8 >> en/text/README; \
+		echo >> en/text/README; \
+	done
+	iconv -f utf-8 -t koi8-r ../html/en/html/config.html | html2text -nobs | \
+		iconv -f koi8-r -t utf-8 > en/text/INSTALL
+	iconv -f utf-8 -t koi8-r ../html/en/html/new.html | html2text -nobs | \
+		iconv -f koi8-r -t utf-8 1> en/text/VERSION
+
