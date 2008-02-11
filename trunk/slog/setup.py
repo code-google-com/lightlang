@@ -1,7 +1,23 @@
 #!/usr/bin/env python
 
+import os
+
 from distutils.core import setup
 from slog.MainWindow import __version__ as VERSION
+
+data = [
+		('share/applications', ['data/slog.desktop']),
+		('share/pixmaps', ['data/icons/slog.png', 'data/icons/slog_spy.png']),
+		('share/locale/ru/LC_MESSAGES', ['po/slog.mo'])
+]
+
+for o in os.walk("plugins"):
+	path = o[0]
+	if not path.count("/.") and not path.count("\\."):
+		items = o[2]
+		for x in range(len(items)):
+			items[x] = path + "/" + items[x]
+			data.append(("share/slog/" + path, items))
 
 setup(
 	name = 'slog',
@@ -14,9 +30,5 @@ setup(
 	requires=['gtk (>=2.10.0)', 'pynotify', 'gtkhtml2'],
 	scripts = ['bin/slog'],
 	packages = ['slog'],
-	data_files = [
-			('share/applications', ['data/slog.desktop']),
-			('share/pixmaps', ['data/icons/slog.png', 'data/icons/slog_spy.png']),
-			('share/locale/ru/LC_MESSAGES', ['po/slog.mo'])
-		]
+	data_files = data
 	)
