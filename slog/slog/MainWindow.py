@@ -151,7 +151,7 @@ class MainWindow:
 		view.connect("changed", self.on_status_changed)
 		self.sidebar.append_page("Google Translate", view)
 
-		view = DCView()
+		view = plugin_mananer.enable_plugin("DICT Client")
 		view.connect("translate_it", self.on_translate)
 		view.connect("changed", self.on_status_changed)
 		self.sidebar.append_page("DICT client", view)
