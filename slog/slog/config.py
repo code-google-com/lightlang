@@ -1,10 +1,10 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import os
+import os, sys
 import ConfigParser
 import gtk.gdk as gdk
 
-SL_PREFIX = "/usr/local"
+SL_PREFIX = sys.prefix
 
 # Implementation Singleton pattern
 class SlogConf:
@@ -18,13 +18,14 @@ class SlogConf:
 			self.top = 0;
 			self.used_dicts_list = ""
 			self.spy_dicts_param = ""
+			self.enabled_plugins = "Google Translate:DICT Client"
 			self.sl_prefix = SL_PREFIX
 			self.google_target = 6
 			self.engine = 0
 			self.tray_exit = 0
 			self.tray_info = 1
 			self.mod_key = 0
-			self.prefix = "/usr"
+			self.prefix = sys.prefix
 
 			self.__load()
 
@@ -62,6 +63,8 @@ class SlogConf:
 				self.spy_dicts_param = conf.get("sl", "spy_dicts")
 			if conf.has_option("google", "target"):
 				self.google_target = conf.getint("google", "target")
+			if conf.has_option("plugins", "enabled"):
+				self.enabled_plugins = conf.get("plugins", "enabled")
 
 			# Try import used dict list from XSL configuration
 			if self.used_dicts_list == "":
@@ -89,6 +92,8 @@ class SlogConf:
 			conf.set("sl", "spy_dicts", self.spy_dicts_param)
 			conf.add_section("google")
 			conf.set("google", "target", self.google_target)
+			conf.add_section("plugins")
+			conf.set("plugins", "enabled", self.enabled_plugins)
 
 			conf.write(file(os.path.expanduser("~/.config/slog/slogrc"), "w"))
 
@@ -144,6 +149,9 @@ class SlogConf:
 
 		def get_data_dir(self):
 			return os.path.join(self.prefix, "share", "slog")
+
+		def get_enabled_plugins(self):
+			return self.enabled_plugins.split(":")
 
 	__instance = __impl( )
 

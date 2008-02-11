@@ -36,9 +36,7 @@ from slog.DictsDialog import DictsDialog
 from slog.MyNotebook import MyNotebook
 from slog.SideBar import SideBar
 from slog.slengine import SLView
-#from slog.google import GoogleView
 from slog.config import SlogConf
-#from slog.dict_client import DCView
 from slog.spy import Spy
 from slog.plugins import PluginManager
 
@@ -136,23 +134,12 @@ class MainWindow:
 		self.hpaned = gtk.HPaned()
 		vbox.pack_start(self.hpaned, True, True, 0)
 
-		plugin_manager = PluginManager()
-		plugin_manager.scan_for_plugins(self.conf.get_data_dir())
-
 		self.sidebar = SideBar()
 
 		view = SLView()
 		view.connect("translate_it", self.on_translate)
 		view.connect("changed", self.on_status_changed)
 		self.sidebar.append_page("LightLang", view)
-		
-		for plugin in plugin_manager.get_available():
-			view = plugin_manager.enable_plugin(plugin)
-			view.connect("translate_it", self.on_translate)
-			view.connect("changed", self.on_status_changed)
-			self.sidebar.append_page(plugin, view)
-
-		self.sidebar.set_active(self.conf.get_engine())
 
 		self.hpaned.add1(self.sidebar)
 		self.hpaned.add2(self.notebook)
@@ -163,9 +150,23 @@ class MainWindow:
 		vbox.pack_start(self.statusbar, False, False, 0)
 
 		self.window.show_all()
+		gobject.idle_add(self.__load_plugins)
 
-	def __append_plugin(self, name, view):
-		self.sidebar.append_page(name, view)
+	def __load_plugins(self):
+		plugin_manager = PluginManager()
+		plugin_manager.scan_for_plugins()
+
+		for plugin in plugin_manager.get_available():
+			if plugin not in self.conf.get_enabled_plugins():
+				continue
+				
+			view = plugin_manager.enable_plugin(plugin)
+			view.connect("translate_it", self.on_translate)
+			view.connect("changed", self.on_status_changed)
+			self.sidebar.append_page(plugin, view)
+			view.show_all()
+
+		self.sidebar.set_active(self.conf.get_engine())
 
 	def __create_action_group(self):
 		entries = (
