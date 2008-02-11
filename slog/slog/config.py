@@ -24,6 +24,7 @@ class SlogConf:
 			self.tray_exit = 0
 			self.tray_info = 1
 			self.mod_key = 0
+			self.prefix = "/usr"
 
 			self.__load()
 
@@ -137,6 +138,12 @@ class SlogConf:
 						2:gdk.SHIFT_MASK, 3:gdk.MOD4_MASK,
 						4:0}
 			return modkeys[self.mod_key]
+
+		def get_pixmap_dir(self):
+			return os.path.join(self.prefix, "share", "pixmaps")
+
+		def get_data_dir(self):
+			return os.path.join(self.prefix, "share", "slog")
 
 	__instance = __impl( )
 

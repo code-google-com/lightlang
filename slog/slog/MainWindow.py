@@ -40,6 +40,7 @@ from slog.google import GoogleView
 from slog.config import SlogConf
 from slog.dict_client import DCView
 from slog.spy import Spy
+from slog.plugins import PluginManager
 
 LOGO_ICON = "slog.png"
 LOGO_ICON_SPY = "slog_spy.png"
@@ -76,18 +77,18 @@ class MainWindow:
 
 	def __init__(self, slog_prefix=sys.prefix):
 		self.name = "SLog"
-		self.data_path = os.path.join(slog_prefix, "share", "pixmaps")
-		locale_path = os.path.join(slog_prefix, "share", "locale")
+	
+		self.conf = SlogConf()
+		self.conf.prefix = slog_prefix
 
 		# Translation stuff
+		locale_path = os.path.join(slog_prefix, "share", "locale")
 		try:
 			gettext.install("slog", locale_path, unicode=1)
 		except:
 			pass
 		gettext.textdomain("slog")
 
-		# Private objects
-		self.conf = SlogConf()
 		self.spy = Spy()
 
 		# Create tray icon 
@@ -137,15 +138,18 @@ class MainWindow:
 
 		self.sidebar = SideBar()
 
+		plugin_mananer = PluginManager()
+		plugin_mananer.scan_for_plugins(self.conf.get_data_dir())
+
 		view = SLView()
 		view.connect("translate_it", self.on_translate)
 		view.connect("changed", self.on_status_changed)
 		self.sidebar.append_page("LightLang", view)
 
-		view = GoogleView()
+		view = plugin_mananer.enable_plugin("Google Translate")
 		view.connect("translate_it", self.on_translate)
 		view.connect("changed", self.on_status_changed)
-		self.sidebar.append_page("Google", view)
+		self.sidebar.append_page("Google Translate", view)
 
 		view = DCView()
 		view.connect("translate_it", self.on_translate)
@@ -196,7 +200,8 @@ class MainWindow:
 		return n
 
 	def get_icon(self, filename):
-		return os.path.join(self.data_path, filename)
+		path = self.conf.get_pixmap_dir()
+		return os.path.join(path, filename)
 
 	#################
 	# GUI Callbacks #
@@ -242,11 +247,6 @@ class MainWindow:
 		dialog.destroy()
 
 	def on_about_activate(self, action):
-
-		dictc = DictClient()
-		dictc.match("sex")
-		return
-
 		dialog = gtk.AboutDialog()
 		dialog.set_name(self.name)
 		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(self.get_icon(LOGO_ICON)))
