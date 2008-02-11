@@ -7,6 +7,9 @@ from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
 plugin_name = "Google Translate"
+plugin_version = "0.1"
+plugin_author = "Nasyrov Renat"
+plugin_description = _("Client for Google Translate")
 
 def enable():
 	return GoogleView()
