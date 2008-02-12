@@ -98,7 +98,7 @@ class PrefsDialog(gtk.Dialog):
 		self.model = gtk.ListStore(gobject.TYPE_BOOLEAN, gobject.TYPE_STRING)
 		treeview = gtk.TreeView(self.model)
 		treeview.set_rules_hint(True)
-		treeview.set_size_request(260, 240)
+		treeview.set_size_request(260, 200)
 		selection = treeview.get_selection()
 		selection.connect("changed", self.on_plugin_clicked)
 
@@ -119,7 +119,8 @@ class PrefsDialog(gtk.Dialog):
 		sw.show()
 
 		vbox = gtk.VBox(False, 8)
-		vbox.set_size_request(200, 240)
+		vbox.set_border_width(8)
+		vbox.set_size_request(240, 200)
 		
 		label = gtk.Label()
 		label.set_markup("<b>Description:</b>");
@@ -142,6 +143,11 @@ class PrefsDialog(gtk.Dialog):
 		self.label_version = gtk.Label()
 		vbox.pack_start(self.label_version, False, False, 0)
 
+		self.btn_prop = gtk.Button(stock=gtk.STOCK_PROPERTIES)
+		self.btn_prop.set_sensitive(False)
+		self.btn_prop.connect("clicked", self.on_btn_prop_clicked, selection)
+		vbox.pack_start(self.btn_prop, False, False, 0)
+
 		hbox.pack_start(vbox, True, True, 0)
 		vbox.show_all()
 
@@ -155,13 +161,27 @@ class PrefsDialog(gtk.Dialog):
 			iter = self.model.append()
 			self.model.set(iter, 0, enabled, 1, plugin.plugin_name)
 
-	def on_plugin_clicked(self, selection):
+	def __get_selected_plugin(self, selection):
 		model, iter = selection.get_selected()
 		name = model.get_value(iter, 1)
 		plugin = self.plugins.get_plugin(name)
+		return plugin
+
+	def on_btn_prop_clicked(self, widget, selection):
+		plugin = self.__get_selected_plugin(selection)
+		plugin.configure(self)
+
+	def on_plugin_clicked(self, selection):
+		plugin = self.__get_selected_plugin(selection)
 		self.label_desc.set_text(plugin.plugin_description)
 		self.label_auth.set_text(plugin.plugin_author)
 		self.label_version.set_text(plugin.plugin_version)
+
+		if plugin.plugin_configurable:
+			self.btn_prop.set_sensitive(True)
+		else:
+			self.btn_prop.set_sensitive(False)
+
 
 	def on_item_toggled(self, cell, path, model):
 		l_iter = model.get_iter((int(path),))
