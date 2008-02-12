@@ -2,21 +2,41 @@
 
 import os
 import gtk, gtk.gdk as gdk
+import gobject
 
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
 class PrefsDialog(gtk.Dialog):
-	def __init__(self, parent):
+	def __init__(self, parent, plugins):
 		gtk.Dialog.__init__(self, _("Preferences"), parent,
 								gtk.DIALOG_MODAL, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
 
 		self.conf = SlogConf()
+		self.plugins = plugins
+
+		notebook = gtk.Notebook()
+		self.vbox.pack_start(notebook, True, True, 0)
+
+		main_page = self.__create_main_page()
+		notebook.append_page(main_page, gtk.Label(_("Main")))
+		main_page.show()
+
+		plugins_page = self.__create_plugins_page()
+		notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
+		plugins_page.show()
+
+		notebook.show()
+
+		gobject.idle_add(self.__load_plugins)
+
+	def __create_main_page(self):
+		vbox = gtk.VBox()
 
 		# SL stuff
 		hbox = gtk.HBox(False, 0)
 		hbox.set_border_width(4)
-		self.vbox.pack_start(hbox, False, True, 0)
+		vbox.pack_start(hbox, False, True, 0)
 
 		label = gtk.Label("SL_PREFIX:")
 		self.sl_prefix = gtk.Entry()
@@ -34,7 +54,7 @@ class PrefsDialog(gtk.Dialog):
 		# Spy stuff
 		hbox = gtk.HBox(False, 0)
 		hbox.set_border_width(4)
-		self.vbox.pack_start(hbox, False, True, 0)
+		vbox.pack_start(hbox, False, True, 0)
 
 		label = gtk.Label("Spy modifier key:")
 		cmb_keys = gtk.combo_box_new_text()
@@ -47,7 +67,7 @@ class PrefsDialog(gtk.Dialog):
 		cmb_keys.connect("changed", self.on_modkey_changed)
 		
 		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(cmb_keys, True, True, 0)
+		hbox.pack_start(cmb_keys, True, False, 0)
 
 		hbox.show_all()
 
@@ -56,15 +76,102 @@ class PrefsDialog(gtk.Dialog):
 		if self.conf.tray_exit != 0:
 			check_box.set_active(True)
 		check_box.connect("toggled", self.on_checkbox_toggled, "tray_exit")
-		self.vbox.pack_start(check_box, False, True, 0)
+		vbox.pack_start(check_box, False, True, 0)
 		check_box.show()
 
 		check_box = gtk.CheckButton(_("Notify when minimizing to tray icon"))
 		check_box.connect("toggled", self.on_checkbox_toggled, "tray_info")
 		if self.conf.tray_info != 0:
 			check_box.set_active(True)
-		self.vbox.pack_start(check_box, False, True, 0)
+		vbox.pack_start(check_box, False, True, 0)
 		check_box.show()
+
+		return vbox
+
+	def __create_plugins_page(self):
+		hbox = gtk.HBox()
+
+		sw = gtk.ScrolledWindow()
+		sw.set_shadow_type(gtk.SHADOW_IN)
+		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+
+		self.model = gtk.ListStore(gobject.TYPE_BOOLEAN, gobject.TYPE_STRING)
+		treeview = gtk.TreeView(self.model)
+		treeview.set_rules_hint(True)
+		treeview.set_size_request(260, 240)
+		selection = treeview.get_selection()
+		selection.connect("changed", self.on_plugin_clicked)
+
+		renderer = gtk.CellRendererToggle()
+		renderer.connect('toggled', self.on_item_toggled, self.model)
+		column = gtk.TreeViewColumn(_("Enabled"), renderer, active=0)
+		column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
+		column.set_fixed_width(64)
+		treeview.append_column(column)
+
+		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=1)
+		treeview.append_column(column)
+
+		sw.add(treeview)
+		treeview.show()
+		
+		hbox.pack_start(sw, True, True, 0)
+		sw.show()
+
+		vbox = gtk.VBox(False, 8)
+		vbox.set_size_request(200, 240)
+		
+		label = gtk.Label()
+		label.set_markup("<b>Description:</b>");
+		vbox.pack_start(label, False, False, 0)
+
+		self.label_desc = gtk.Label()
+		vbox.pack_start(self.label_desc, False, False, 0)
+
+		label = gtk.Label()
+		label.set_markup("<b>Author:</b>");
+		vbox.pack_start(label, False, False, 0)
+
+		self.label_auth = gtk.Label()
+		vbox.pack_start(self.label_auth, False, False, 0)
+
+		label = gtk.Label()
+		label.set_markup("<b>Version:</b>");
+		vbox.pack_start(label, False, False, 0)
+
+		self.label_version = gtk.Label()
+		vbox.pack_start(self.label_version, False, False, 0)
+
+		hbox.pack_start(vbox, True, True, 0)
+		vbox.show_all()
+
+		return hbox
+
+	def __load_plugins(self):
+		for pname in self.plugins.get_available():
+			plugin = self.plugins.get_plugin(pname)
+			enabled = pname in self.conf.get_enabled_plugins()
+
+			iter = self.model.append()
+			self.model.set(iter, 0, enabled, 1, plugin.plugin_name)
+
+	def on_plugin_clicked(self, selection):
+		model, iter = selection.get_selected()
+		name = model.get_value(iter, 1)
+		plugin = self.plugins.get_plugin(name)
+		self.label_desc.set_text(plugin.plugin_description)
+		self.label_auth.set_text(plugin.plugin_author)
+		self.label_version.set_text(plugin.plugin_version)
+
+	def on_item_toggled(self, cell, path, model):
+		l_iter = model.get_iter((int(path),))
+		enabled, plugin = model.get(l_iter, 0, 1)
+		enabled = not enabled
+		model.set(l_iter, 0, enabled)
+		if enabled:
+			self.plugins.enable_plugin(plugin)
+		else:
+			self.plugins.disable_plugin(plugin)
 
 	def on_focus_out(self, widget, data=None):
 		path = widget.get_text()

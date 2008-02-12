@@ -153,14 +153,14 @@ class MainWindow:
 		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
-		plugin_manager = PluginManager()
-		plugin_manager.scan_for_plugins()
+		self.plugin_manager = PluginManager()
+		self.plugin_manager.scan_for_plugins()
 
-		for plugin in plugin_manager.get_available():
+		for plugin in self.plugin_manager.get_available():
 			if plugin not in self.conf.get_enabled_plugins():
 				continue
 				
-			view = plugin_manager.enable_plugin(plugin)
+			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
 			self.sidebar.append_page(plugin, view)
@@ -237,7 +237,7 @@ class MainWindow:
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
-		dialog = PrefsDialog(self.window)
+		dialog = PrefsDialog(self.window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
 

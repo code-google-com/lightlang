@@ -29,6 +29,9 @@ class PluginManager:
 	def get_available(self):
 		return self.plugins.keys()
 
+	def get_plugin(self, name):
+		return self.plugins[name]
+
 	def enable_plugin(self, name):
 		plugin = self.plugins[name]
 
@@ -39,3 +42,7 @@ class PluginManager:
 
 		return plugin.enable()
 
+	def disable_plugin(self, name):
+		list_enabled = self.conf.get_enabled_plugins()
+		list_enabled.remove(name)
+		self.conf.enabled_plugins = ":".join(list_enabled)
