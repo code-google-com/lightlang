@@ -9,8 +9,9 @@ import slog.gui_helper as ghlp
 
 plugin_name = "DICT Client"
 plugin_version = "0.1"
-plugin_author = "Nasyrov Renat"
+plugin_author = "Nasyrov Renat <renatn@gmail.com>"
 plugin_description = _("Client for DICT")
+plugin_configurable = False
 
 def enable():
 	return DCView()
