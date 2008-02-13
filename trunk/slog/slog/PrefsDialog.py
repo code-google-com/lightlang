@@ -55,11 +55,13 @@ class PrefsDialog(gtk.Dialog):
 		frame = self.__create_hig_frame(_("Service Spy"))
 		vbox.pack_start(frame, False, True, 0)
 
-		hbox = gtk.HBox(False, 0)
-		hbox.set_border_width(4)
-		frame.add(hbox)
+		vbox_spy = gtk.VBox(False, 8)
+		vbox_spy.set_border_width(8)
 
-		label = gtk.Label("Spy modifier key:")
+		hbox = gtk.HBox(False, 0)
+		vbox_spy.pack_start(hbox, False, False, 0)
+
+		label = gtk.Label("Modifier key:")
 		cmb_keys = gtk.combo_box_new_text()
 		cmb_keys.append_text("Ctrl")
 		cmb_keys.append_text("Alt")
@@ -71,8 +73,13 @@ class PrefsDialog(gtk.Dialog):
 		
 		hbox.pack_start(label, False, True, 4)
 		hbox.pack_start(cmb_keys, True, False, 0)
-
 		hbox.show_all()
+
+		check_box = self.__create_check_box(_("Run when started"), self.conf.tray_exit, "spy_run")
+		vbox_spy.pack_start(check_box, False, True, 0)
+
+		frame.add(vbox_spy)
+		vbox_spy.show_all()
 
 		# Tray icon stuff
 		frame = self.__create_hig_frame(_("System Tray"))
