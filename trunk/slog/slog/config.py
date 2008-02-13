@@ -24,6 +24,7 @@ class SlogConf:
 			self.engine = 0
 			self.tray_exit = 0
 			self.tray_info = 1
+			self.tray_start = 0
 			self.mod_key = 0
 			self.prefix = sys.prefix
 

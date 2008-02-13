@@ -86,6 +86,13 @@ class PrefsDialog(gtk.Dialog):
 		vbox.pack_start(check_box, False, True, 0)
 		check_box.show()
 
+		check_box = gtk.CheckButton(_("Start in tray"))
+		check_box.connect("toggled", self.on_checkbox_toggled, "tray_start")
+		if self.conf.tray_start != 0:
+			check_box.set_active(True)
+		vbox.pack_start(check_box, False, True, 0)
+		check_box.show()
+
 		return vbox
 
 	def __create_plugins_page(self):
@@ -216,6 +223,8 @@ class PrefsDialog(gtk.Dialog):
 			self.conf.tray_exit = val
 		elif data == "tray_info":
 			self.conf.tray_info = val
+		elif data == "tray_start":
+			self.conf.tray_start = val
 
 	def on_browse_clicked(self, widget, data=None):
 		chooser = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,
