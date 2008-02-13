@@ -54,6 +54,8 @@ class SlogConf:
 				self.tray_exit = conf.getint("window", "tray_exit")
 			if conf.has_option("window", "tray_info"):
 				self.tray_info = conf.getint("window", "tray_info")
+			if conf.has_option("window", "tray_start"):
+				self.tray_start = conf.getint("window", "tray_start")
 			if conf.has_option("window", "mod_key"):
 				self.mod_key = conf.getint("window", "mod_key")
 			if conf.has_option("sl", "sl_prefix"):
@@ -86,6 +88,7 @@ class SlogConf:
 			conf.set("window", "top", self.top)
 			conf.set("window", "tray_exit", self.tray_exit)
 			conf.set("window", "tray_info", self.tray_info)
+			conf.set("window", "tray_start", self.tray_start)
 			conf.set("window", "mod_key", self.mod_key)
 			conf.add_section("sl")
 			conf.set("sl", "sl_prefix", self.sl_prefix)

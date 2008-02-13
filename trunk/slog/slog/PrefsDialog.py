@@ -52,9 +52,12 @@ class PrefsDialog(gtk.Dialog):
 		hbox.show_all()
 
 		# Spy stuff
+		frame = self.__create_hig_frame(_("Service Spy"))
+		vbox.pack_start(frame, False, True, 0)
+
 		hbox = gtk.HBox(False, 0)
 		hbox.set_border_width(4)
-		vbox.pack_start(hbox, False, True, 0)
+		frame.add(hbox)
 
 		label = gtk.Label("Spy modifier key:")
 		cmb_keys = gtk.combo_box_new_text()
@@ -72,12 +75,8 @@ class PrefsDialog(gtk.Dialog):
 		hbox.show_all()
 
 		# Tray icon stuff
-		label = self.__create_bold_label(_("System Tray"))
-		frame_tray = gtk.Frame()
-		frame_tray.set_shadow_type(gtk.SHADOW_NONE)
-		frame_tray.set_label_widget(label)
-		vbox.pack_start(frame_tray, False, True, 0)
-		frame_tray.show()
+		frame = self.__create_hig_frame(_("System Tray"))
+		vbox.pack_start(frame, False, True, 0)
 
 		vbox_tray = gtk.VBox(False, 8)
 		vbox_tray.set_border_width(8)
@@ -91,17 +90,24 @@ class PrefsDialog(gtk.Dialog):
 		check_box = self.__create_check_box(_("Start in tray"), self.conf.tray_start, "tray_start")
 		vbox_tray.pack_start(check_box, False, True, 0)
 
-		frame_tray.add(vbox_tray)
+		frame.add(vbox_tray)
 		vbox_tray.show_all()
 
 		return vbox
+
+	def __create_hig_frame(self, title):
+		label = self.__create_bold_label(title)
+		frame = gtk.Frame()
+		frame.set_shadow_type(gtk.SHADOW_NONE)
+		frame.set_label_widget(label)
+		frame.show()
+		return frame
 
 	def __create_bold_label(self, text):
 		label = gtk.Label()
 		label.set_markup("<b>%s</b>" % text)
 		label.show()
 		return label
-
 
 	def __create_check_box(self, text, state, name):
 		check_box = gtk.CheckButton(text)
@@ -144,22 +150,19 @@ class PrefsDialog(gtk.Dialog):
 		vbox.set_border_width(8)
 		vbox.set_size_request(240, 200)
 		
-		label = gtk.Label()
-		label.set_markup("<b>Description:</b>")
+		label = self.__create_bold_label(_("Description:"))
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_desc = gtk.Label()
 		vbox.pack_start(self.label_desc, False, False, 0)
 
-		label = gtk.Label()
-		label.set_markup("<b>Author:</b>")
+		label = self.__create_bold_label(_("Author:"))
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_auth = gtk.Label()
 		vbox.pack_start(self.label_auth, False, False, 0)
 
-		label = gtk.Label()
-		label.set_markup("<b>Version:</b>")
+		label = self.__create_bold_label(_("Version:"))
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_version = gtk.Label()
@@ -203,7 +206,6 @@ class PrefsDialog(gtk.Dialog):
 			self.btn_prop.set_sensitive(True)
 		else:
 			self.btn_prop.set_sensitive(False)
-
 
 	def on_item_toggled(self, cell, path, model):
 		l_iter = model.get_iter((int(path),))

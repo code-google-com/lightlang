@@ -149,7 +149,8 @@ class MainWindow:
 		self.context_id = self.statusbar.get_context_id("slog")
 		vbox.pack_start(self.statusbar, False, False, 0)
 
-		self.window.show_all()
+		if self.conf.tray_start == 0:
+			self.window.show_all()
 		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
