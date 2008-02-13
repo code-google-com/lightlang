@@ -72,28 +72,43 @@ class PrefsDialog(gtk.Dialog):
 		hbox.show_all()
 
 		# Tray icon stuff
-		check_box = gtk.CheckButton(_("Terminate instead of minimizing to tray icon"))
-		if self.conf.tray_exit != 0:
-			check_box.set_active(True)
-		check_box.connect("toggled", self.on_checkbox_toggled, "tray_exit")
-		vbox.pack_start(check_box, False, True, 0)
-		check_box.show()
+		label = self.__create_bold_label(_("System Tray"))
+		frame_tray = gtk.Frame()
+		frame_tray.set_shadow_type(gtk.SHADOW_NONE)
+		frame_tray.set_label_widget(label)
+		vbox.pack_start(frame_tray, False, True, 0)
+		frame_tray.show()
 
-		check_box = gtk.CheckButton(_("Notify when minimizing to tray icon"))
-		check_box.connect("toggled", self.on_checkbox_toggled, "tray_info")
-		if self.conf.tray_info != 0:
-			check_box.set_active(True)
-		vbox.pack_start(check_box, False, True, 0)
-		check_box.show()
+		vbox_tray = gtk.VBox(False, 8)
+		vbox_tray.set_border_width(8)
+		
+		check_box = self.__create_check_box(_("Terminate instead of minimizing to tray icon"), self.conf.tray_exit, "tray_exit")
+		vbox_tray.pack_start(check_box, False, True, 0)
 
-		check_box = gtk.CheckButton(_("Start in tray"))
-		check_box.connect("toggled", self.on_checkbox_toggled, "tray_start")
-		if self.conf.tray_start != 0:
-			check_box.set_active(True)
-		vbox.pack_start(check_box, False, True, 0)
-		check_box.show()
+		check_box = self.__create_check_box(_("Notify when minimizing to tray icon"), self.conf.tray_info, "tray_info")
+		vbox_tray.pack_start(check_box, False, True, 0)
+
+		check_box = self.__create_check_box(_("Start in tray"), self.conf.tray_start, "tray_start")
+		vbox_tray.pack_start(check_box, False, True, 0)
+
+		frame_tray.add(vbox_tray)
+		vbox_tray.show_all()
 
 		return vbox
+
+	def __create_bold_label(self, text):
+		label = gtk.Label()
+		label.set_markup("<b>%s</b>" % text)
+		label.show()
+		return label
+
+
+	def __create_check_box(self, text, state, name):
+		check_box = gtk.CheckButton(text)
+		check_box.connect("toggled", self.on_checkbox_toggled, name)
+		if state != 0:
+			check_box.set_active(True)
+		return check_box
 
 	def __create_plugins_page(self):
 		hbox = gtk.HBox()
@@ -130,21 +145,21 @@ class PrefsDialog(gtk.Dialog):
 		vbox.set_size_request(240, 200)
 		
 		label = gtk.Label()
-		label.set_markup("<b>Description:</b>");
+		label.set_markup("<b>Description:</b>")
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_desc = gtk.Label()
 		vbox.pack_start(self.label_desc, False, False, 0)
 
 		label = gtk.Label()
-		label.set_markup("<b>Author:</b>");
+		label.set_markup("<b>Author:</b>")
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_auth = gtk.Label()
 		vbox.pack_start(self.label_auth, False, False, 0)
 
 		label = gtk.Label()
-		label.set_markup("<b>Version:</b>");
+		label.set_markup("<b>Version:</b>")
 		vbox.pack_start(label, False, False, 0)
 
 		self.label_version = gtk.Label()
