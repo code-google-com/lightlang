@@ -25,6 +25,7 @@ class SlogConf:
 			self.tray_exit = 0
 			self.tray_info = 1
 			self.tray_start = 0
+			self.spy_auto = 0
 			self.mod_key = 0
 			self.prefix = sys.prefix
 
@@ -56,8 +57,10 @@ class SlogConf:
 				self.tray_info = conf.getint("window", "tray_info")
 			if conf.has_option("window", "tray_start"):
 				self.tray_start = conf.getint("window", "tray_start")
-			if conf.has_option("window", "mod_key"):
-				self.mod_key = conf.getint("window", "mod_key")
+			if conf.has_option("spy", "auto"):
+				self.spy_auto = conf.getint("spy", "auto")
+			if conf.has_option("spy", "mod_key"):
+				self.mod_key = conf.getint("spy", "mod_key")
 			if conf.has_option("sl", "sl_prefix"):
 				self.sl_prefix = conf.get("sl", "sl_prefix")
 			if conf.has_option("sl", "used_dicts"):
@@ -89,7 +92,9 @@ class SlogConf:
 			conf.set("window", "tray_exit", self.tray_exit)
 			conf.set("window", "tray_info", self.tray_info)
 			conf.set("window", "tray_start", self.tray_start)
-			conf.set("window", "mod_key", self.mod_key)
+			conf.add_section("spy")
+			conf.set("spy", "mod_key", self.mod_key)
+			conf.set("spy", "auto", self.spy_auto)
 			conf.add_section("sl")
 			conf.set("sl", "sl_prefix", self.sl_prefix)
 			conf.set("sl", "used_dicts", self.used_dicts_list)
