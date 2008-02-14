@@ -161,8 +161,9 @@ class MainWindow:
 		self.plugin_manager = PluginManager()
 		self.plugin_manager.scan_for_plugins()
 
+		list_enabled = self.conf.get_enabled_plugins()
 		for plugin in self.plugin_manager.get_available():
-			if plugin not in self.conf.get_enabled_plugins():
+			if plugin not in list_enabled:
 				continue
 				
 			view = self.plugin_manager.enable_plugin(plugin)
