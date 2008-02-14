@@ -151,6 +151,10 @@ class MainWindow:
 
 		if self.conf.tray_start == 0:
 			self.window.show_all()
+
+		if self.conf.spy_auto == 1:
+			self.spy_action.activate()
+
 		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):

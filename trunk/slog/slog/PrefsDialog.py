@@ -75,7 +75,7 @@ class PrefsDialog(gtk.Dialog):
 		hbox.pack_start(cmb_keys, True, False, 0)
 		hbox.show_all()
 
-		check_box = self.__create_check_box(_("Run when started"), self.conf.tray_exit, "spy_run")
+		check_box = self.__create_check_box(_("Autostart"), self.conf.spy_auto, "spy_auto")
 		vbox_spy.pack_start(check_box, False, True, 0)
 
 		frame.add(vbox_spy)
@@ -249,6 +249,8 @@ class PrefsDialog(gtk.Dialog):
 			self.conf.tray_info = val
 		elif data == "tray_start":
 			self.conf.tray_start = val
+		elif data == "spy_auto":
+			self.conf.spy_auto = val
 
 	def on_browse_clicked(self, widget, data=None):
 		chooser = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,
