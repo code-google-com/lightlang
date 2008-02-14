@@ -16,3 +16,8 @@ def create_speed_button(stock):
 		btn.add(img)
 		return btn
 
+def create_bold_label(text):
+	label = gtk.Label()
+	label.set_markup("<b>%s</b>" % text)
+	label.show()
+	return label

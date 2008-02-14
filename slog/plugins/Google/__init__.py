@@ -10,7 +10,6 @@ plugin_name = "Google Translate"
 plugin_version = "0.1.1"
 plugin_author = "Nasyrov Renat <renatn@gmail.com>"
 plugin_description = _("Client for Google Translate")
-plugin_configurable = True
 
 def enable():
 	return GoogleView()

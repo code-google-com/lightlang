@@ -9,8 +9,13 @@ from slog.config import SlogConf
 class PluginManager:
 	def __init__(self):
 		self.plugins = {}
+		self.enabled_plugins = {}
 		self.conf = SlogConf()
 		
+	def __sync_config(self):
+		list_enabled = self.get_enabled()
+		self.conf.enabled_plugins = ":".join(list_enabled)
+
 	def scan_for_plugins(self):
 		plugins_dir = os.path.join(self.conf.get_data_dir(), "plugins")
 
@@ -29,20 +34,28 @@ class PluginManager:
 	def get_available(self):
 		return self.plugins.keys()
 
+	def get_enabled(self):
+		return self.enabled_plugins.keys()
+
 	def get_plugin(self, name):
 		return self.plugins[name]
 
 	def enable_plugin(self, name):
 		plugin = self.plugins[name]
-
-		enabled = self.conf.get_enabled_plugins()
-		if name not in enabled:
-			enabled.append(name)
-			self.conf.enabled_plugins = ":".join(enabled)
-
-		return plugin.enable()
+		self.enabled_plugins[name] = plugin.enable()
+		self.__sync_config()
+		return self.enabled_plugins[name]
 
 	def disable_plugin(self, name):
-		list_enabled = self.conf.get_enabled_plugins()
-		list_enabled.remove(name)
-		self.conf.enabled_plugins = ":".join(list_enabled)
+		del self.enabled_plugins[name]
+		self.__sync_config()
+
+	def configure_plugin(self, name, window):
+		plugin = self.enabled_plugins[name]
+		plugin.configure(window)
+
+	def is_configurable(self, name):
+		plugin = self.enabled_plugins[name]
+		return ("configure" in dir(plugin))
+
+
