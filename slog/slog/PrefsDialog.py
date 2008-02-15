@@ -138,24 +138,7 @@ class PrefsDialog(gtk.Dialog):
 
 	def __create_main_page(self):
 		vbox = gtk.VBox()
-
-		# SL stuff
-		hbox = gtk.HBox(False, 0)
-		hbox.set_border_width(4)
-		vbox.pack_start(hbox, False, True, 0)
-
-		label = gtk.Label("SL_PREFIX:")
-		self.sl_prefix = gtk.Entry()
-		self.sl_prefix.set_text(self.conf.sl_prefix)
-		self.sl_prefix.connect("focus-out-event", self.on_focus_out)
-
-		btn_browse = gtk.Button("...")
-		btn_browse.connect("clicked", self.on_browse_clicked)
-
-		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(self.sl_prefix, True, True, 4)
-		hbox.pack_start(btn_browse, False, False, 0)
-		hbox.show_all()
+		vbox.set_border_width(8)
 
 		# Spy stuff
 		frame = self.__create_hig_frame(_("Service Spy"))
@@ -223,14 +206,6 @@ class PrefsDialog(gtk.Dialog):
 			check_box.set_active(True)
 		return check_box
 
-	def on_focus_out(self, widget, data=None):
-		path = widget.get_text()
-		if not os.path.exists(path):
-			ghlp.show_error(self, _("Path not exists!"))
-		
-		self.conf.sl_prefix = path
-		return False
-	
 	def on_modkey_changed(self, widget, data=None):
 		idx = widget.get_active()
 		self.conf.mod_key = idx
@@ -250,24 +225,4 @@ class PrefsDialog(gtk.Dialog):
 			self.conf.tray_start = val
 		elif data == "spy_auto":
 			self.conf.spy_auto = val
-
-	def on_browse_clicked(self, widget, data=None):
-		chooser = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,
-							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
-
-		sl_filter = gtk.FileFilter()
-		sl_filter.set_name("SL execute")
-		sl_filter.add_pattern("sl")
-		chooser.add_filter(sl_filter)
-
-		if os.path.exists(self.conf.sl_prefix):
-			chooser.set_current_folder(self.conf.sl_prefix)
-
-		response = chooser.run()
-		if response == gtk.RESPONSE_OK:
-			sl_path = chooser.get_filenames()[0]
-			sl_prefix = sl_path.split("/bin/sl")[0]
-			self.sl_prefix.set_text(sl_prefix)
-
-		chooser.destroy()
 

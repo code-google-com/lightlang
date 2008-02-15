@@ -6,6 +6,14 @@ import gtk, gobject
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
+plugin_name = "LightLang SL"
+plugin_version = "0.1.0"
+plugin_author = "Nasyrov Renat <renatn@gmail.com>"
+plugin_description = _("Client for LightLang SL dictionary")
+
+def enable():
+	return SLView()
+
 FMT_HTML = "html"
 FMT_TEXT = "text"
 MODE_LIST = "l"
@@ -158,4 +166,63 @@ class SLView(gtk.VBox):
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+
+	def configure(self, window):
+
+		conf = SlogConf()
+
+		dlg = gtk.Dialog(plugin_name, window, 0, (gtk.STOCK_OK, gtk.RESPONSE_OK))
+
+		hbox = gtk.HBox(False, 8)
+		hbox.set_border_width(8)
+		dlg.vbox.pack_start(hbox, False, False, 0)
+
+		stock = gtk.image_new_from_stock(
+				gtk.STOCK_DIALOG_QUESTION,
+				gtk.ICON_SIZE_DIALOG)
+		hbox.pack_start(stock, False, False, 0)
+
+		label = gtk.Label("SL_PREFIX:")
+		hbox.pack_start(label, False, False, 0)
+
+		prefix_entry = gtk.Entry()
+		prefix_entry.set_text(conf.sl_prefix)
+		hbox.pack_start(prefix_entry, True, True, 0)
+		
+		btn_browse = gtk.Button("...")
+		btn_browse.connect("clicked", self.on_browse_clicked, prefix_entry)
+		hbox.pack_start(btn_browse, False, False, 0)
+
+		label.set_mnemonic_widget(prefix_entry)
+		dlg.show_all()
+
+		response = dlg.run()
+		if response == gtk.RESPONSE_OK:
+			prefix = prefix_entry.get_text()
+			if not os.path.exists(prefix):
+				ghlp.show_error(window, _("Path not exists!"))
+			conf.sl_prefix = prefix
+
+		dlg.destroy()
+
+	def on_browse_clicked(self, widget, data):
+		chooser = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,
+							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+
+		sl_filter = gtk.FileFilter()
+		sl_filter.set_name("SL execute")
+		sl_filter.add_pattern("sl")
+		chooser.add_filter(sl_filter)
+
+		sl_prefix = data.get_text()
+		if os.path.exists(sl_prefix):
+			chooser.set_current_folder(sl_prefix)
+
+		response = chooser.run()
+		if response == gtk.RESPONSE_OK:
+			sl_path = chooser.get_filenames()[0]
+			sl_prefix = sl_path.split("/bin/sl")[0]
+			data.set_text(sl_prefix)
+
+		chooser.destroy()
 

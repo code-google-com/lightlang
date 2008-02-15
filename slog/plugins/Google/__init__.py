@@ -156,5 +156,5 @@ class GoogleView(gtk.VBox):
 		self.callbacks[event] = callback
 
 	def configure(self, window):
-		print "Show dialog!"
+		ghlp.show_error(window, "Under construction!")
 
