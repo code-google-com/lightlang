@@ -35,7 +35,6 @@ from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
 from slog.MyNotebook import MyNotebook
 from slog.SideBar import SideBar
-from slog.slengine import SLView
 from slog.config import SlogConf
 from slog.spy import Spy
 from slog.plugins import PluginManager
@@ -136,10 +135,10 @@ class MainWindow:
 
 		self.sidebar = SideBar()
 
-		view = SLView()
-		view.connect("translate_it", self.on_translate)
-		view.connect("changed", self.on_status_changed)
-		self.sidebar.append_page("LightLang", view)
+		#view = SLView()
+		#view.connect("translate_it", self.on_translate)
+		#view.connect("changed", self.on_status_changed)
+		#self.sidebar.append_page("LightLang", view)
 
 		self.hpaned.add1(self.sidebar)
 		self.hpaned.add2(self.notebook)
