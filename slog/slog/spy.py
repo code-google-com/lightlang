@@ -5,16 +5,15 @@ import gobject
 import re
 
 from slog.config import SlogConf
-from slog.slengine import SLEngine
 from slog.TransPanel import TransView
 
 class Spy:
-	def __init__(self):
+	def __init__(self, engine):
 		self.pattern = re.compile("\W+")
 		self.timer = 0;
 		self.prev_selection = ""
 		self.clipboard = gtk.clipboard_get(gdk.SELECTION_PRIMARY)
-		self.sl = SLEngine()
+		self.sl = engine
 		self.conf = SlogConf()
 		self.spy_view = SpyView()
 
