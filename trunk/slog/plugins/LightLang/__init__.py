@@ -167,6 +167,9 @@ class SLView(gtk.VBox):
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
 
+	def get_engine(self):
+		return self.sl
+
 	def configure(self, window):
 
 		conf = SlogConf()

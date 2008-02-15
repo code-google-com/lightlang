@@ -86,8 +86,6 @@ class MainWindow:
 			pass
 		gettext.textdomain("slog")
 
-		self.spy = Spy()
-
 		# Create tray icon 
 		self.status_icon = gtk.status_icon_new_from_file(self.get_icon(LOGO_ICON))
 		self.status_icon.set_tooltip(self.name)
@@ -135,11 +133,6 @@ class MainWindow:
 
 		self.sidebar = SideBar()
 
-		#view = SLView()
-		#view.connect("translate_it", self.on_translate)
-		#view.connect("changed", self.on_status_changed)
-		#self.sidebar.append_page("LightLang", view)
-
 		self.hpaned.add1(self.sidebar)
 		self.hpaned.add2(self.notebook)
 		self.new_translate_page()
@@ -164,12 +157,17 @@ class MainWindow:
 		for plugin in self.plugin_manager.get_available():
 			if plugin not in list_enabled:
 				continue
+		
 				
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
 			self.sidebar.append_page(plugin, view)
 			view.show_all()
+
+			if plugin == "LightLang SL":
+				engine = view.get_engine()
+				self.spy = Spy(engine)
 
 		self.sidebar.set_active(self.conf.get_engine())
 
