@@ -2,8 +2,8 @@
 
 import os
 
+import slog.common  as cmn
 from distutils.core import setup
-from slog.main import __version__ as VERSION
 
 data = [
 		('share/applications', ['data/slog.desktop']),
@@ -21,8 +21,8 @@ for o in os.walk("plugins"):
 
 setup(
 	name = 'slog',
-	version= VERSION,
-	url = 'http://lightlang.org.ru',
+	version= cmn.VERSION,
+	url = cmn.WEBSITE,
 	author = 'Nasyrov Renat',
 	author_email = 'renatn@gmail.com',
 	description = 'SLog is a PyGTK-based GUI for the LightLang SL',

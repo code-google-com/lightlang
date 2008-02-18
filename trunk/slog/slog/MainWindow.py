@@ -5,10 +5,9 @@ pygtk.require('2.0')
 
 import sys, os
 import gtk, gobject
-import dbus, dbus.service, dbus.mainloop.glib
 import pynotify
 import gettext
-import slog.main
+import slog.common as cmn
 
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
@@ -18,9 +17,7 @@ from slog.SideBar import SideBar
 from slog.config import SlogConf
 from slog.spy import Spy
 from slog.plugins import PluginManager
-
-LOGO_ICON = "slog.png"
-LOGO_ICON_SPY = "slog_spy.png"
+from slog.remote import SLogDBus
 
 ui_info = \
 '''<ui>
@@ -50,6 +47,9 @@ ui_info = \
 		</popup>
 </ui>'''
 
+def get_icon(filename):
+	return os.path.join(cmn.PIXMAP_DIR, filename)
+
 class MainWindow(gtk.Window):
 
 	def __init__(self, parent=None):
@@ -62,16 +62,15 @@ class MainWindow(gtk.Window):
 		self.conf = SlogConf()
 
 		# Translation stuff
-		locale_path = self.conf.get_locale_dir()
 		try:
-			gettext.install("slog", locale_path, unicode=1)
+			gettext.install("slog", cmn.LOCALE_DIR, unicode=1)
 		except:
 			pass
 		gettext.textdomain("slog")
 
 		# Create tray icon 
-		self.status_icon = gtk.status_icon_new_from_file(self.get_icon(LOGO_ICON))
-		self.status_icon.set_tooltip(slog.main.__app_name__)
+		self.status_icon = gtk.status_icon_new_from_file(get_icon(cmn.LOGO_ICON))
+		self.status_icon.set_tooltip(cmn.APP_NAME)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
@@ -79,9 +78,9 @@ class MainWindow(gtk.Window):
 		self.tooltips = gtk.Tooltips()
 		self.notebook = MyNotebook()
 
-		self.set_icon_from_file(self.get_icon(LOGO_ICON))
+		self.set_icon_from_file(get_icon(cmn.LOGO_ICON))
 		self.set_border_width(1)
-		self.set_title("%s %s" % (slog.main.__app_name__, slog.main.__version__))
+		self.set_title("%s %s" % (cmn.APP_NAME, cmn.VERSION))
 		self.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
@@ -139,7 +138,6 @@ class MainWindow(gtk.Window):
 		for plugin in self.plugin_manager.get_available():
 			if plugin not in list_enabled:
 				continue
-		
 				
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
@@ -181,12 +179,9 @@ class MainWindow(gtk.Window):
 		n.attach_to_status_icon(self.status_icon)
 		n.set_urgency(pynotify.URGENCY_NORMAL)
 		n.set_timeout(timeout)
-		n.set_icon_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(self.get_icon(LOGO_ICON), 48, 48))
+		n.set_icon_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(get_icon(cmn.LOGO_ICON), 48, 48))
 		return n
 
-	def get_icon(self, filename):
-		path = self.conf.get_pixmap_dir()
-		return os.path.join(path, filename)
 
 	#################
 	# GUI Callbacks #
@@ -215,10 +210,10 @@ class MainWindow(gtk.Window):
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
-			self.status_icon.set_from_file(self.get_icon(LOGO_ICON_SPY))
+			self.status_icon.set_from_file(get_icon(cmn.LOGO_ICON_SPY))
 			self.spy.start()
 		else:
-			self.status_icon.set_from_file(self.get_icon(LOGO_ICON))
+			self.status_icon.set_from_file(get_icon(cmn.LOGO_ICON))
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
@@ -233,12 +228,12 @@ class MainWindow(gtk.Window):
 
 	def on_about_activate(self, action):
 		dialog = gtk.AboutDialog()
-		dialog.set_name(slog.main.__app_name__)
-		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(self.get_icon(LOGO_ICON)))
+		dialog.set_name(cmn.APP_NAME)
+		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(get_icon(cmn.LOGO_ICON)))
 		dialog.set_copyright("\302\251 Copyright 2007 Renat Nasyrov (renatn@gmail.com)")
-		dialog.set_website("http://lightlang.org.ru/")
-		dialog.set_version(slog.main.__version__)
-		dialog.set_license(slog.main.__license__)
+		dialog.set_website(cmn.WEBSITE)
+		dialog.set_version(cmn.VERSION)
+		dialog.set_license(cmn.LICENSE)
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
 
@@ -282,6 +277,7 @@ class MainWindow(gtk.Window):
 		self.notebook.add_page(label, tv)
 
 	def run(self):
+		self.ipc = SLogDBus(self)
 		if not pynotify.init("SLog Notification"):
 			print "Failed init python-notify module"
 		gtk.main()
