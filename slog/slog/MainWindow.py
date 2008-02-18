@@ -50,9 +50,14 @@ ui_info = \
 		</popup>
 </ui>'''
 
-class MainWindow:
+class MainWindow(gtk.Window):
 
-	def __init__(self):
+	def __init__(self, parent=None):
+		gtk.Window.__init__(self)
+		try:
+			self.set_screen(parent.get_screen())
+		except AttributeError:
+			self.connect('destroy', lambda *w: gtk.main_quit())
 	
 		self.conf = SlogConf()
 
@@ -74,26 +79,25 @@ class MainWindow:
 		self.tooltips = gtk.Tooltips()
 		self.notebook = MyNotebook()
 
-		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-		self.window.set_icon_from_file(self.get_icon(LOGO_ICON))
-		self.window.set_border_width(1)
-		self.window.set_title("%s %s" % (slog.main.__app_name__, slog.main.__version__))
-		self.window.set_size_request(396, 256)
+		self.set_icon_from_file(self.get_icon(LOGO_ICON))
+		self.set_border_width(1)
+		self.set_title("%s %s" % (slog.main.__app_name__, slog.main.__version__))
+		self.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
 		(left, top) = self.conf.get_pos()
 		if left != 0 or top != 0:
-			self.window.move(left, top)
-		self.window.set_default_size(width, height)
+			self.move(left, top)
+		self.set_default_size(width, height)
 
-		self.window.connect("delete_event", self.delete_event)
-		self.window.connect("destroy", self.destroy)
+		self.connect("delete_event", self.delete_event)
+		self.connect("destroy", self.destroy)
 
 		# Create Actions
 		self.uimanager = gtk.UIManager()
-		self.window.set_data("ui-manager", self.uimanager)
+		self.set_data("ui-manager", self.uimanager)
 		self.uimanager.insert_action_group(self.__create_action_group(), 0)
-		self.window.add_accel_group(self.uimanager.get_accel_group())
+		self.add_accel_group(self.uimanager.get_accel_group())
 
 		try:
 			uimanagerid = self.uimanager.add_ui_from_string(ui_info)
@@ -101,7 +105,7 @@ class MainWindow:
 			print "building menus failed: %s" % msg
 
 		vbox = gtk.VBox(False, 4)
-		self.window.add(vbox)
+		self.add(vbox)
 
 		menubar = self.uimanager.get_widget("/MenuBar")
 		vbox.pack_start(menubar, False, False, 0)
@@ -120,7 +124,7 @@ class MainWindow:
 		vbox.pack_start(self.statusbar, False, False, 0)
 
 		if self.conf.tray_start == 0:
-			self.window.show_all()
+			self.show_all()
 
 		if self.conf.spy_auto == 1:
 			self.spy_action.activate()
@@ -197,12 +201,12 @@ class MainWindow:
 			if not n.show():
 				print "Failed to send notification"
 
-		self.window.hide()
+		self.hide()
 		return True
 
 	def destroy(self, widget, data=None):
-		(width, height) = self.window.get_size()
-		(left, top) = self.window.get_position()
+		(width, height) = self.get_size()
+		(left, top) = self.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
 		self.conf.set_engine(self.sidebar.get_active())
@@ -218,12 +222,12 @@ class MainWindow:
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
-		dialog = PrefsDialog(self.window, self.plugin_manager)
+		dialog = PrefsDialog(self, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
 
 	def on_dicts_manage_activate(self, widget, data=None):
-		dialog = DictsDialog(self.window)
+		dialog = DictsDialog(self)
 		dialog.run()
 		dialog.destroy()
 
@@ -259,18 +263,18 @@ class MainWindow:
 	###########
 
 	def window_toggle(self):
-		if self.window.get_property("visible"):
-			self.window.hide()
+		if self.get_property("visible"):
+			self.hide()
 		else:
 			self.app_show()
 
 	def app_show(self):
-		self.window.show_all()
+		self.show_all()
 		gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
-		self.window.present()
-		self.window.grab_focus()
+		self.present()
+		self.grab_focus()
 
 	def new_translate_page(self, args=None):
 		label = gtk.Label()
