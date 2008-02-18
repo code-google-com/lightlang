@@ -1,27 +1,5 @@
 # -*- mode: python; coding: utf-8; -*-
 
-__app_name__ = "SLog"
-__version__ = "0.9.2"
-
-__license__ = """
-SLog is a PyGTK-based GUI for the LightLang SL dictionary.
-Copyright 2007 Nasyrov Renat <renatn@gmail.com>
-
-This file is part of SLog.
-
-SLog is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-SLog is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-along with SLog; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-"""
 import pygtk
 pygtk.require('2.0')
 
@@ -30,6 +8,7 @@ import gtk, gobject
 import dbus, dbus.service, dbus.mainloop.glib
 import pynotify
 import gettext
+import slog.main
 
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
@@ -87,7 +66,7 @@ class MainWindow:
 
 		# Create tray icon 
 		self.status_icon = gtk.status_icon_new_from_file(self.get_icon(LOGO_ICON))
-		self.status_icon.set_tooltip(__app_name__)
+		self.status_icon.set_tooltip(slog.main.__app_name__)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
@@ -98,7 +77,7 @@ class MainWindow:
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.set_icon_from_file(self.get_icon(LOGO_ICON))
 		self.window.set_border_width(1)
-		self.window.set_title("%s %s" % (__app_name__, __version__))
+		self.window.set_title("%s %s" % (slog.main.__app_name__, slog.main.__version__))
 		self.window.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
@@ -250,12 +229,12 @@ class MainWindow:
 
 	def on_about_activate(self, action):
 		dialog = gtk.AboutDialog()
-		dialog.set_name(__app_name__)
+		dialog.set_name(slog.main.__app_name__)
 		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(self.get_icon(LOGO_ICON)))
 		dialog.set_copyright("\302\251 Copyright 2007 Renat Nasyrov (renatn@gmail.com)")
 		dialog.set_website("http://lightlang.org.ru/")
-		dialog.set_version(__version__)
-		dialog.set_license(__license__)
+		dialog.set_version(slog.main.__version__)
+		dialog.set_license(slog.main.__license__)
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
 
@@ -302,23 +281,4 @@ class MainWindow:
 		if not pynotify.init("SLog Notification"):
 			print "Failed init python-notify module"
 		gtk.main()
-
-class SLogDBus(dbus.service.Object, MainWindow):
-
-	def __init__(self, bus_name, obj_path):
-		dbus.service.Object.__init__(self, bus_name, obj_path)
-		MainWindow.__init__(self)
-
-	@dbus.service.method("org.LightLang.SLogInterface")
-	def dbus_spy_toggle(self):
-		self.spy_action.activate()
-
-	@dbus.service.method("org.LightLang.SLogInterface")
-	def toggle(self):
-		self.window_toggle()
-
-	@dbus.service.method("org.LightLang.SLogInterface")
-	def show(self):
-		self.window.hide()
-		self.app_show()
 

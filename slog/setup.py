@@ -3,7 +3,7 @@
 import os
 
 from distutils.core import setup
-from slog.MainWindow import __version__ as VERSION
+from slog.main import __version__ as VERSION
 
 data = [
 		('share/applications', ['data/slog.desktop']),
