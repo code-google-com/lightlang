@@ -5,6 +5,7 @@ import sys
 import imp
 
 from slog.config import SlogConf
+from slog.common import DATA_DIR
 
 class PluginManager:
 	def __init__(self):
@@ -17,7 +18,7 @@ class PluginManager:
 		self.conf.enabled_plugins = ":".join(list_enabled)
 
 	def scan_for_plugins(self):
-		plugins_dir = os.path.join(self.conf.get_data_dir(), "plugins")
+		plugins_dir = os.path.join(DATA_DIR, "plugins")
 
 		for modname in os.listdir(plugins_dir):
 			path = os.path.join(plugins_dir, modname)

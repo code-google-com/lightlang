@@ -4,8 +4,6 @@ import os, sys
 import ConfigParser
 import gtk.gdk as gdk
 
-SL_PREFIX = sys.prefix
-
 # Implementation Singleton pattern
 class SlogConf:
 
@@ -19,7 +17,7 @@ class SlogConf:
 			self.used_dicts_list = ""
 			self.spy_dicts_param = ""
 			self.enabled_plugins = "Google Translate:DICT Client"
-			self.sl_prefix = SL_PREFIX
+			self.sl_prefix = sys.prefix
 			self.google_target = 6
 			self.engine = 0
 			self.tray_exit = 0
@@ -27,7 +25,6 @@ class SlogConf:
 			self.tray_start = 0
 			self.spy_auto = 0
 			self.mod_key = 0
-			self.prefix = sys.prefix
 
 			self.__load()
 
@@ -136,10 +133,10 @@ class SlogConf:
 			return self.sl_prefix
 
 		def get_sl_exec(self):
-			return os.path.join(self.sl_prefix, "bin/sl")
+			return os.path.join(self.sl_prefix, "bin", "sl")
 
 		def get_sl_dicts_dir(self):
-			return os.path.join(self.sl_prefix, "share/sl/dicts")
+			return os.path.join(self.sl_prefix, "share", "sl", "dicts")
 
 		def get_engine(self):
 			return self.engine
@@ -152,15 +149,6 @@ class SlogConf:
 						2:gdk.SHIFT_MASK, 3:gdk.MOD4_MASK,
 						4:0}
 			return modkeys[self.mod_key]
-
-		def get_pixmap_dir(self):
-			return os.path.join(self.prefix, "share", "pixmaps")
-
-		def get_data_dir(self):
-			return os.path.join(self.prefix, "share", "slog")
-
-		def get_locale_dir(self):
-			return os.path.join(self.prefix, "share", "locale")
 
 		def get_enabled_plugins(self):
 			return self.enabled_plugins.split(":")
