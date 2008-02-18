@@ -31,24 +31,27 @@ from slog.remote import Remote
 from slog.config import SlogConf
 from slog.MainWindow import MainWindow
 
-class SLogDBus(dbus.service.Object, MainWindow):
+class SLogDBus(dbus.service.Object):
 
 	def __init__(self, bus_name, obj_path):
+		self.window = MainWindow()
 		dbus.service.Object.__init__(self, bus_name, obj_path)
-		MainWindow.__init__(self)
 
 	@dbus.service.method("org.LightLang.SLogInterface")
 	def dbus_spy_toggle(self):
-		self.spy_action.activate()
+		self.window.spy_action.activate()
 
 	@dbus.service.method("org.LightLang.SLogInterface")
 	def toggle(self):
-		self.window_toggle()
+		self.window.window_toggle()
 
 	@dbus.service.method("org.LightLang.SLogInterface")
 	def show(self):
 		self.window.hide()
-		self.app_show()
+		self.window.app_show()
+
+	def run(self):
+		self.window.run()
 
 def print_version():
 	print "Version:", __app_name__, __version__
