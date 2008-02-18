@@ -159,6 +159,9 @@ class SlogConf:
 		def get_data_dir(self):
 			return os.path.join(self.prefix, "share", "slog")
 
+		def get_locale_dir(self):
+			return os.path.join(self.prefix, "share", "locale")
+
 		def get_enabled_plugins(self):
 			return self.enabled_plugins.split(":")
 
