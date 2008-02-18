@@ -73,13 +73,12 @@ ui_info = \
 
 class MainWindow:
 
-	def __init__(self, slog_prefix=sys.prefix):
+	def __init__(self):
 	
 		self.conf = SlogConf()
-		self.conf.prefix = slog_prefix
 
 		# Translation stuff
-		locale_path = os.path.join(slog_prefix, "share", "locale")
+		locale_path = self.conf.get_locale_dir()
 		try:
 			gettext.install("slog", locale_path, unicode=1)
 		except:
@@ -306,9 +305,9 @@ class MainWindow:
 
 class SLogDBus(dbus.service.Object, MainWindow):
 
-	def __init__(self, bus_name, obj_path, slog_prefix):
+	def __init__(self, bus_name, obj_path):
 		dbus.service.Object.__init__(self, bus_name, obj_path)
-		MainWindow.__init__(self, slog_prefix)
+		MainWindow.__init__(self)
 
 	@dbus.service.method("org.LightLang.SLogInterface")
 	def dbus_spy_toggle(self):

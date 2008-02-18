@@ -13,6 +13,7 @@ sys.path.insert(0, SLOG_PYTHON) #HACK
 from slog.MainWindow import __version__ as VERSION
 from slog.MainWindow import SLogDBus
 from slog.remote import Remote
+from slog.config import SlogConf
 
 def print_version():
 	print "Version" + ": SLog", VERSION
@@ -65,8 +66,10 @@ if __name__ == "__main__":
 			remote.execute("show")
 			sys.exit()
 
+		conf = SlogConf()
+		conf.prefix = SLOG_PREFIX
 		name = dbus.service.BusName("org.LightLang.SLog", bus)
-		app = SLogDBus(bus, "/SLog", SLOG_PREFIX)
+		app = SLogDBus(bus, "/SLog")
 	except SystemExit:
 		sys.exit()
 
