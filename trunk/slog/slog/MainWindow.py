@@ -1,5 +1,6 @@
 # -*- mode: python; coding: utf-8; -*-
 
+__app_name__ = "SLog"
 __version__ = "0.9.2"
 
 __license__ = """
@@ -73,7 +74,6 @@ ui_info = \
 class MainWindow:
 
 	def __init__(self, slog_prefix=sys.prefix):
-		self.name = "SLog"
 	
 		self.conf = SlogConf()
 		self.conf.prefix = slog_prefix
@@ -88,7 +88,7 @@ class MainWindow:
 
 		# Create tray icon 
 		self.status_icon = gtk.status_icon_new_from_file(self.get_icon(LOGO_ICON))
-		self.status_icon.set_tooltip(self.name)
+		self.status_icon.set_tooltip(__app_name__)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
@@ -99,7 +99,7 @@ class MainWindow:
 		self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
 		self.window.set_icon_from_file(self.get_icon(LOGO_ICON))
 		self.window.set_border_width(1)
-		self.window.set_title("%s %s" % (self.name, __version__))
+		self.window.set_title("%s %s" % (__app_name__, __version__))
 		self.window.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
@@ -215,7 +215,7 @@ class MainWindow:
 			self.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
-			n = self.__create_notify(self.name, "Close in system tray")
+			n = self.__create_notify(__app_name__, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
@@ -251,7 +251,7 @@ class MainWindow:
 
 	def on_about_activate(self, action):
 		dialog = gtk.AboutDialog()
-		dialog.set_name(self.name)
+		dialog.set_name(__app_name__)
 		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(self.get_icon(LOGO_ICON)))
 		dialog.set_copyright("\302\251 Copyright 2007 Renat Nasyrov (renatn@gmail.com)")
 		dialog.set_website("http://lightlang.org.ru/")
