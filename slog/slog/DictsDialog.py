@@ -3,7 +3,7 @@
 import os, shutil, stat, subprocess
 import gtk, gobject
 import gtk.gdk as gdk
-import urllib
+import urllib2
 import xml.sax
 
 import slog.gui_helper as ghlp
@@ -24,7 +24,7 @@ from slog.dhandler import DictHandler
 	COLUMN_SIZE
 ) = range(4)
 
-FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang/dicts"
+FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang/dicts/primary.xml"
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
 
@@ -149,24 +149,16 @@ class DictsDialog(gtk.Dialog):
 		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
 
 		try:
-			doc = urllib.urlopen(FTP_LL_URL)
-			dlist = doc.readlines()
+			fp = open(os.path.expanduser("~/.config/slog/primary.xml"), "w")
+			doc = urllib2.urlopen(FTP_LL_URL)
+			fp.write(doc.read())
 		except IOError, e:
 			ghlp.show_error(self, str(e))
 		else:
-			fp = open(os.path.expanduser("~/.config/slog/remote.dicts"), "w")
-			l_iter = self.list_avail.get_iter_first()
-			for dentry in dlist:
-				dname = dentry.split()[8]
-				dsize = dentry.split()[4]
-
-				l_iter = self.list_avail.append()
-				self.list_avail.set(l_iter, COLUMN_FILE, dname, COLUMN_DICT, dname[:-4], COLUMN_SIZE, dsize)
-				#Save cache
-				line = dname[:-4] + " " + dsize + "\n"
-				fp.write(line)
 			fp.close()
 			doc.close()
+			self.load_available_dicts()
+
 		self.window.set_cursor(None)
 
 	# Install dictionary
@@ -244,6 +236,21 @@ class DictsDialog(gtk.Dialog):
 		dlg.run()
 		dlg.destroy()
 
+	def load_available_dicts(self):
+		repo_filename = os.path.expanduser("~/.config/slog/primary.xml")
+		if os.path.isfile(repo_filename):
+			parser = xml.sax.make_parser()
+			chandler = DictHandler()
+			parser.setContentHandler(chandler)
+			parser.parse(repo_filename)
+			d_list = chandler.get_result()
+			for dfile in d_list.keys():
+				l_iter = self.list_avail.append()
+				dname, dtarget, dsize = d_list[dfile]
+				self.list_avail.set(l_iter,COLUMN_FILE, dfile, COLUMN_DICT, dname,
+								COLUMN_TARGET, dtarget, COLUMN_SIZE, dsize)
+
+
 	def load_installed_dicts(self):
 		sl_dicts_dir = self.conf.get_sl_dicts_dir()
 		used_dict_list = self.conf.get_used_dicts().split("|")
@@ -259,18 +266,7 @@ class DictsDialog(gtk.Dialog):
 				self.list_inst.set(iter, COLUMN_USED, used, COLUMN_SPY, spy, COLUMN_NAME, dict)
 
 		#
-		repo_filename = os.path.expanduser("~/.config/slog/lightlang.xml")
-		if os.path.isfile(repo_filename):
-			parser = xml.sax.make_parser()
-			chandler = DictHandler()
-			parser.setContentHandler(chandler)
-			parser.parse(repo_filename)
-			d_list = chandler.get_result()
-			for dfile in d_list.keys():
-				l_iter = self.list_avail.append()
-				dname, dtarget, dsize = d_list[dfile]
-				self.list_avail.set(l_iter,COLUMN_FILE, dfile, COLUMN_DICT, dname,
-								COLUMN_TARGET, dtarget, COLUMN_SIZE, dsize)
+		self.load_available_dicts()
 
 	def sync_used_dicts(self):
 		used_dicts = ""

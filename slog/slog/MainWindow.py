@@ -3,7 +3,7 @@
 import pygtk
 pygtk.require('2.0')
 
-import sys, os
+import os
 import gtk, gobject
 import pynotify
 import gettext
