@@ -16,7 +16,7 @@ class SlogConf:
 			self.top = 0;
 			self.used_dicts_list = ""
 			self.spy_dicts_param = ""
-			self.enabled_plugins = "Google Translate:DICT Client"
+			self.enabled_plugins = "LightLang SL:Google Translate"
 			self.sl_prefix = sys.prefix
 			self.google_target = 6
 			self.engine = 0

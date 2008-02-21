@@ -1,5 +1,6 @@
 # -*- mode: python; coding: utf-8; -*-
 
+import sys
 import gtk
 import string
 import socket
@@ -10,7 +11,7 @@ import slog.gui_helper as ghlp
 plugin_name = "DICT Client"
 plugin_version = "0.1"
 plugin_author = "Nasyrov Renat <renatn@gmail.com>"
-plugin_description = _("Client for DICT")
+plugin_description = _("Client for a dictionary server protocol (DICT)")
 plugin_configurable = False
 
 def enable():
@@ -22,7 +23,7 @@ class DictClient:
 		self.is_connected = False
 
 	def dial(self):
-		host = "dict.org"
+		host = "127.0.0.1"
 		port = 2628
 
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -88,11 +89,13 @@ class DictClient:
 			if not self.validword(value):
 				raise Exception('invalid %s: "%s"' % (key, value))
 
-		r, line = self._cmd('MATCH %s %s %s' % (self.quote(db), self.quote(strat), self.quote(word)))
-		if r == '552':
+		code, line = self._cmd('MATCH %s %s %s' % (self.quote(db), self.quote(strat), self.quote(word)))
+		if code == "552":
 			return []
-		if r[0] in ['4', '5']:
+
+		if code[0] in ['4', '5']:
 			raise Exception('response to match: %s' % line)
+
 		lines = [tuple(self.split(l, ' ', 1)) for l in self._readlist()]
 
 		line = self._read()
@@ -105,17 +108,19 @@ class DictClient:
 		for key, value in [('word', word), ('database', db)]:
 			if not self.validword(value):
 				raise Exception('invalid %s: "%s"' % (key, value))
+
 		r, line = self._cmd('DEFINE %s %s' % (self.quote(db), self.quote(word)))
 		if r == '552':
 			return []
 		if r[0] in ['4', '5']:
 			raise Exception('response to define: %s' % line)
+
 		defs = []
 		while 1:
 			line = self._read()
-			if line[0:4] == '151 ':
-				_, _, db, dbdescr = self.split(line, ' ', 3)
-				defs.append((db, dbdescr, '\n'.join(self._readlist())))
+			if line[0:4] == "151 ":
+				definition = self._readlist()
+				defs.append((definition))
 			else:
 				break
 		return defs
@@ -279,13 +284,16 @@ class DCView(gtk.VBox):
 
 		defs = self.dclient.definition(word, db=dictionary)
 
-		print "Defs:"
-		print defs
+		lines = defs[0]
+		print "Lines:"
+		print lines
 
-		db, dbdescr, defstr = defs[0]
+		buf = ["<html><head><meta content=\"text/html; charset=UTF-8\" http-equiv=Content-Type></head><body><p>"]
+		for line in lines:
+			buf.append(line)
+		buf.append("</body></html>")
 
-		translate = "<html><head><meta content=\"text/html; charset=UTF-8\" http-equiv=Content-Type></head><body><p>" \
-					+ defstr + "</body></html>"
+		translate = "\n".join(buf)
 
 		self.__fire_translate_changed(word, translate)
 
