@@ -1,6 +1,6 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import gtk
+import gtk, gobject
 
 def show_error(parent, message):
 	dlg = gtk.MessageDialog(parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -21,3 +21,39 @@ def create_bold_label(text):
 	label.set_markup("<b>%s</b>" % text)
 	label.show()
 	return label
+
+class ProgressDialog(gtk.Dialog):
+	def __init__(self, parent, title, task):
+		gtk.Dialog.__init__(self, title, parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+					(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
+
+		self.__task = task
+		self.__timeout = None
+
+		self.set_border_width(8)
+
+		self.task = gtk.Label()
+		self.task.set_alignment(0.0, 0.0)
+		self.vbox.pack_start(self.task)
+		self.task.show()
+
+		self.progress = gtk.ProgressBar()
+		self.vbox.pack_start(self.progress, False)
+		self.progress.show()
+		
+		self.set_task(task)
+
+	def __do_set_task(self):
+		self.task.set_text(self.__task)
+		self.progress.pulse()
+		self.__timeout = None
+		return False
+
+	def set_task(self, task):
+		self.__task = task
+		if self.__timeout is None:
+			self.__timeout = gobject.timeout_add(100, self.__do_set_task)
+		
+
+		
+
