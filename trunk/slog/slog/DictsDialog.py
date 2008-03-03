@@ -3,7 +3,7 @@
 import os, shutil, stat, subprocess
 import gtk, gobject
 import gtk.gdk as gdk
-import urllib2
+import urllib, urllib2
 import xml.sax
 
 import slog.gui_helper as ghlp
@@ -24,9 +24,15 @@ from slog.dhandler import DictHandler
 	COLUMN_SIZE
 ) = range(4)
 
-FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang/dicts/primary.xml"
+FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
+FTP_DICTS_URL = FTP_LL_URL + "/dicts"
+FTP_REPO_URL = FTP_DICTS_URL + "/repodata/primary.xml"
+
+REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
+
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
+
 
 class DictsDialog(gtk.Dialog):
 	def __init__(self, parent):
@@ -118,6 +124,7 @@ class DictsDialog(gtk.Dialog):
 
 		self.conf = SlogConf()
 		self.load_installed_dicts()
+		self.load_available_dicts()
 
 	def __create_treeview(self, model):
 		scrollwin = gtk.ScrolledWindow()
@@ -149,12 +156,12 @@ class DictsDialog(gtk.Dialog):
 		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
 
 		try:
-			fp = open(os.path.expanduser("~/.config/slog/primary.xml"), "w")
-			doc = urllib2.urlopen(FTP_LL_URL)
-			fp.write(doc.read())
+			doc = urllib2.urlopen(FTP_REPO_URL)
 		except IOError, e:
 			ghlp.show_error(self, str(e))
 		else:
+			fp = open(REPO_FILE, "w")
+			fp.write(doc.read())
 			fp.close()
 			doc.close()
 			self.load_available_dicts()
@@ -179,7 +186,7 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		installer = DictInstaller(sl_dict[:-4])
+		installer = DictInstaller(sl_dict)
 		try:
 			installer.do_install()
 		except IOError, msg:
@@ -202,10 +209,20 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		path = os.path.join(self.conf.get_sl_dicts_dir(), dname)
-		os.unlink(path)
-		model.remove(l_iter)
-		self.sync_used_dicts()
+		#Question user to delete dictionary
+		dlg = gtk.MessageDialog(self,
+					gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+					gtk.MESSAGE_QUESTION,
+					gtk.BUTTONS_YES_NO,
+					_("Are you sure you want uninstall this dictionary?"))
+		dlg.format_secondary_text(dname)
+		response = dlg.run()
+		if response == gtk.RESPONSE_YES:
+			path = os.path.join(self.conf.get_sl_dicts_dir(), dname)
+			os.unlink(path)
+			model.remove(l_iter)
+			self.sync_used_dicts()
+		dlg.destroy()
 
 	def on_btn_up_clicked(self, widget, selection):
 		(model, iter) = selection.get_selected()
@@ -237,19 +254,17 @@ class DictsDialog(gtk.Dialog):
 		dlg.destroy()
 
 	def load_available_dicts(self):
-		repo_filename = os.path.expanduser("~/.config/slog/primary.xml")
-		if os.path.isfile(repo_filename):
+		if os.path.isfile(REPO_FILE):
 			parser = xml.sax.make_parser()
 			chandler = DictHandler()
 			parser.setContentHandler(chandler)
-			parser.parse(repo_filename)
+			parser.parse(REPO_FILE)
 			d_list = chandler.get_result()
 			for dfile in d_list.keys():
 				l_iter = self.list_avail.append()
 				dname, dtarget, dsize = d_list[dfile]
-				self.list_avail.set(l_iter,COLUMN_FILE, dfile, COLUMN_DICT, dname,
+				self.list_avail.set(l_iter, COLUMN_FILE, dfile, COLUMN_DICT, dname,
 								COLUMN_TARGET, dtarget, COLUMN_SIZE, dsize)
-
 
 	def load_installed_dicts(self):
 		sl_dicts_dir = self.conf.get_sl_dicts_dir()
@@ -264,9 +279,6 @@ class DictsDialog(gtk.Dialog):
 				used = dict in used_dict_list
 				spy = dict in spy_dict_list
 				self.list_inst.set(iter, COLUMN_USED, used, COLUMN_SPY, spy, COLUMN_NAME, dict)
-
-		#
-		self.load_available_dicts()
 
 	def sync_used_dicts(self):
 		used_dicts = ""
@@ -311,7 +323,7 @@ class DictsDialog(gtk.Dialog):
 
 class DictInstaller:
 	def __init__(self, ftp_filename):
-		self.filename = ftp_filename + ".bz2"
+		self.filename = ftp_filename
 
 	def do_install(self):
 		if not os.path.exists(SL_TMP_DIR):
@@ -332,7 +344,7 @@ class DictInstaller:
 			print "File already downloaded..."
 			return
 
-		url_dict = FTP_LL_URL +"/" + self.filename
+		url_dict = FTP_DICTS_URL +"/" + self.filename
 
 		fp = open(file_dict, "wb")
 		urllib.urlretrieve(url_dict, file_dict)

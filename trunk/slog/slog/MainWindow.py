@@ -192,7 +192,7 @@ class MainWindow(gtk.Window):
 			self.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
-			n = self.__create_notify(__app_name__, "Close in system tray")
+			n = self.__create_notify(cmn.APP_NAME, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
