@@ -6,8 +6,8 @@ import gtk.gdk as gdk
 import urllib, urllib2
 import xml.sax
 
-import slog.gui_helper as ghlp
 from bz2 import BZ2File
+import slog.gui_helper as ghlp
 from slog.config import SlogConf
 from slog.dhandler import DictHandler
 
@@ -32,7 +32,6 @@ REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
 
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
-
 
 class DictsDialog(gtk.Dialog):
 	def __init__(self, parent):
@@ -193,7 +192,7 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, str(msg))
 		else:
 			l_iter = self.list_inst.append()
-			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, sl_dict)
+			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, sl_dict[:-4])
 			self.sync_used_dicts()
 
 	# Remove installed dictionary
@@ -215,9 +214,11 @@ class DictsDialog(gtk.Dialog):
 					gtk.MESSAGE_QUESTION,
 					gtk.BUTTONS_YES_NO,
 					_("Are you sure you want uninstall this dictionary?"))
+		dlg.set_title(_("Uninstall dictionary"))
 		dlg.format_secondary_text(dname)
 		response = dlg.run()
 		if response == gtk.RESPONSE_YES:
+			#Remove dictionary
 			path = os.path.join(self.conf.get_sl_dicts_dir(), dname)
 			os.unlink(path)
 			model.remove(l_iter)
@@ -245,13 +246,6 @@ class DictsDialog(gtk.Dialog):
 		used = not used
 		model.set(l_iter, column, used)
 		self.sync_used_dicts()
-
-	def show_error(self, message):
-		dlg = gtk.MessageDialog(self, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-									gtk.MESSAGE_WARNING, gtk.BUTTONS_CLOSE,	message)
-		dlg.set_title("SLog")
-		dlg.run()
-		dlg.destroy()
 
 	def load_available_dicts(self):
 		if os.path.isfile(REPO_FILE):
@@ -281,27 +275,24 @@ class DictsDialog(gtk.Dialog):
 				self.list_inst.set(iter, COLUMN_USED, used, COLUMN_SPY, spy, COLUMN_NAME, dict)
 
 	def sync_used_dicts(self):
-		used_dicts = ""
-		spy_dicts = ""
+		used_dicts = []
+		spy_dicts = []
 		l_iter = self.list_inst.get_iter_first()
 		while l_iter:
 			name = self.list_inst.get_value(l_iter, COLUMN_NAME)
 			used = self.list_inst.get_value(l_iter, COLUMN_USED)
 			spy = self.list_inst.get_value(l_iter, COLUMN_SPY)
 			if used:
-				if used_dicts == "":
-					used_dicts = name
-				else:
-					used_dicts += ("|" + name)
+				used_dicts.append(name)
 			if spy:
-				if spy_dicts == "":
-					spy_dicts = name
-				else:
-					spy_dicts += ("|" + name)
+				spy_dicts.append(name)
 			l_iter = self.list_inst.iter_next(l_iter)
 
-		self.conf.set_used_dicts(used_dicts)
-		self.conf.set_spy_dicts(spy_dicts)
+		ud = "|".join(used_dicts)
+		sd = "|".join(spy_dicts)
+
+		self.conf.set_used_dicts(ud)
+		self.conf.set_spy_dicts(sd)
 
 	def is_path_writable(self, path):
 		if os.path.exists(path):
