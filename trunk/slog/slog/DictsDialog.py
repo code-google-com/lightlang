@@ -172,10 +172,10 @@ class DictsDialog(gtk.Dialog):
 		(model, l_iter) = selection.get_selected()
 		if l_iter is None:
 			return
-		sl_dict = model.get_value(l_iter, COLUMN_FILE)
+		fname = model.get_value(l_iter, COLUMN_FILE)
 
 		#Check duplicate
-		if self.is_dict_installed(sl_dict[:-4]):
+		if self.is_dict_installed(fname[:-4]):
 			ghlp.show_error(self, _("Dictionary already installed!"))
 			return
 
@@ -185,14 +185,14 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		installer = DictInstaller(sl_dict)
+		installer = DictInstaller(self, fname)
 		try:
 			installer.do_install()
 		except IOError, msg:
 			ghlp.show_error(self, str(msg))
 		else:
 			l_iter = self.list_inst.append()
-			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, sl_dict[:-4])
+			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, fname[:-4])
 			self.sync_used_dicts()
 
 	# Remove installed dictionary
@@ -313,8 +313,18 @@ class DictsDialog(gtk.Dialog):
 		return (name in d_list)
 
 class DictInstaller:
-	def __init__(self, ftp_filename):
+	def __init__(self, window, ftp_filename):
+		self.window = window
 		self.filename = ftp_filename
+
+		self.dlg = ghlp.ProgressDialog(self.window, "Install dictionary", _("Install dictionary '%s'...") % (self.filename))
+		self.dlg.show()
+		self.dlg.connect("response", lambda w, r: self.response(r))
+
+	def response(self, response):
+		if response == gtk.RESPONSE_CANCEL:
+			print "Cancel installation"
+		self.dlg.destroy()
 
 	def do_install(self):
 		if not os.path.exists(SL_TMP_DIR):
@@ -329,6 +339,7 @@ class DictInstaller:
 
 	def __download(self):
 		print "Start download...", self.filename
+		self.dlg.set_task("Start download...")
 		file_dict = os.path.join(SL_TMP_DIR, self.filename)
 
 		if os.path.isfile(file_dict):
@@ -343,6 +354,7 @@ class DictInstaller:
 
 	def __decompress(self):
 		print "Start decompressing..."
+		self.dlg.set_task("Start decompressing...")
 		fp = open(os.path.join(SL_TMP_DIR, self.filename[:-4]), "wb")
 		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.filename))
 		try:
@@ -356,6 +368,7 @@ class DictInstaller:
 			fp.close()
 
 	def __indexating(self):
+		self.dlg.set_task("Start indexating...")
 		print "Start indexating..."
 		conf = SlogConf()
 		sl_exec = conf.get_sl_exec()
@@ -383,8 +396,10 @@ class DictInstaller:
 			raise IOError("failed indexating")
 
 		print "Install...", file_inst
+		self.dlg.set_task("Installing...")
 		shutil.copyfile(file_idx2, file_inst)
 		#print "Cleanup..."
 		#shutil.rmtree(SL_TMP_DIR)
 		print "done"
+		self.dlg.set_task("Done...")
 
