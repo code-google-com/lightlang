@@ -26,6 +26,7 @@ import SLFind
 import Spy
 import FindInSLPanel
 import FindInTextPanel
+import GoogleTranslatePanel
 import HistoryPanel
 import TextBrowser
 import TranslateWindow
@@ -76,6 +77,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.setVisible(False)
 		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.history_panel)
 
+		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
+		self.google_translate_panel.setVisible(False)
+		self.addDockWidget(Qt.Qt.BottomDockWidgetArea, self.google_translate_panel)
+
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
 
@@ -102,6 +107,13 @@ class MainWindow(Qt.QMainWindow) :
 			self.findInTextPrevious)
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
+
+		self.connect(self.google_translate_panel, Qt.SIGNAL("clearRequest()"),
+			self.registrateTextBrowser)
+		self.connect(self.google_translate_panel, Qt.SIGNAL("wordChanged(const QString &)"),
+			self.setTextBrowserCaption)
+		self.connect(self.google_translate_panel, Qt.SIGNAL("textChanged(const QString &)"),
+			self.setTextBrowserText)
 
 		self.connect(self.spy, Qt.SIGNAL("processStarted()"), self.showTranslateWindow)
 		self.connect(self.spy, Qt.SIGNAL("clearRequest()"), self.registrateTextBrowser)
@@ -182,6 +194,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
 		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 		self.tools_menu.addMenu(self.translate_sites_menu)
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
+			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
 		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
 		self.tools_menu.addMenu(self.ifa_menu)
@@ -365,6 +379,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager.show()
 		self.dicts_manager.raise_()
 		self.dicts_manager.activateWindow()
+
+	def showGoogleTranslatePanel(self) :
+		self.google_translate_panel.setVisible(True)
+		self.google_translate_panel.setFocus(Qt.Qt.OtherFocusReason)
 
 	def showHelpBrowser(self) :
 		self.help_browser.show()
