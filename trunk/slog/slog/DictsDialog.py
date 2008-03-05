@@ -4,6 +4,7 @@ import os, shutil, stat, subprocess
 import gtk, gobject
 import gtk.gdk as gdk
 import urllib, urllib2
+import threading
 import xml.sax
 
 from bz2 import BZ2File
@@ -154,16 +155,11 @@ class DictsDialog(gtk.Dialog):
 		self.list_avail.clear()
 		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
 
-		try:
-			doc = urllib2.urlopen(FTP_REPO_URL)
-		except IOError, e:
-			ghlp.show_error(self, str(e))
-		else:
-			fp = open(REPO_FILE, "w")
-			fp.write(doc.read())
-			fp.close()
-			doc.close()
-			self.load_available_dicts()
+		loader = ListLoader()
+		loader.start()
+		loader.join()
+
+		self.load_available_dicts()
 
 		self.window.set_cursor(None)
 
@@ -185,15 +181,19 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		installer = DictInstaller(self, fname)
+		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
+		installer = DictInstaller(fname)
 		try:
-			installer.do_install()
+			installer.start()
+			installer.join()
 		except IOError, msg:
 			ghlp.show_error(self, str(msg))
 		else:
 			l_iter = self.list_inst.append()
 			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, fname[:-4])
 			self.sync_used_dicts()
+
+		self.window.set_cursor(None)
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
@@ -312,21 +312,12 @@ class DictsDialog(gtk.Dialog):
 		d_list = [row[COLUMN_NAME] for row in self.list_inst]
 		return (name in d_list)
 
-class DictInstaller:
-	def __init__(self, window, ftp_filename):
-		self.window = window
-		self.filename = ftp_filename
+class DictInstaller(threading.Thread):
+	def __init__(self, filename, name="DictInstaller"):
+		threading.Thread.__init__(self, name=name)
+		self.__filename = filename
 
-		self.dlg = ghlp.ProgressDialog(self.window, "Install dictionary", _("Install dictionary '%s'...") % (self.filename))
-		self.dlg.show()
-		self.dlg.connect("response", lambda w, r: self.response(r))
-
-	def response(self, response):
-		if response == gtk.RESPONSE_CANCEL:
-			print "Cancel installation"
-		self.dlg.destroy()
-
-	def do_install(self):
+	def run(self):
 		if not os.path.exists(SL_TMP_DIR):
 			os.mkdir(SL_TMP_DIR)
 
@@ -334,19 +325,18 @@ class DictInstaller:
 		self.__decompress()
 		self.__indexating()
 
-	#def url_hook_report(*a):
+	#def url_hook_report(blocks, bytes_in_block, file_size):
 	#	print a
 
 	def __download(self):
-		print "Start download...", self.filename
-		self.dlg.set_task("Start download...")
-		file_dict = os.path.join(SL_TMP_DIR, self.filename)
+		print "Start download...", self.__filename
+		file_dict = os.path.join(SL_TMP_DIR, self.__filename)
 
 		if os.path.isfile(file_dict):
 			print "File already downloaded..."
 			return
 
-		url_dict = FTP_DICTS_URL +"/" + self.filename
+		url_dict = FTP_DICTS_URL +"/" + self.__filename
 
 		fp = open(file_dict, "wb")
 		urllib.urlretrieve(url_dict, file_dict)
@@ -354,30 +344,28 @@ class DictInstaller:
 
 	def __decompress(self):
 		print "Start decompressing..."
-		self.dlg.set_task("Start decompressing...")
-		fp = open(os.path.join(SL_TMP_DIR, self.filename[:-4]), "wb")
-		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.filename))
+		fp = open(os.path.join(SL_TMP_DIR, self.__filename[:-4]), "wb")
+		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.__filename))
 		try:
 			fp.write(bz2f.read())
 		except EOFError, msg:
 			raise IOError(msg)
 		else:
-			self.filename = self.filename[:-4]
+			self.__filename = self.__filename[:-4]
 		finally:
 			bz2f.close()
 			fp.close()
 
 	def __indexating(self):
-		self.dlg.set_task("Start indexating...")
 		print "Start indexating..."
 		conf = SlogConf()
 		sl_exec = conf.get_sl_exec()
 		sl_dicts = conf.get_sl_dicts_dir()
 
-		file_orig = os.path.join(SL_TMP_DIR, self.filename)
-		file_idx1 = os.path.join(SL_TMP_DIR, (self.filename + ".idx1"))
-		file_idx2 = os.path.join(SL_TMP_DIR, (self.filename + ".idx2"))
-		file_inst = os.path.join(sl_dicts, self.filename)
+		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
+		file_idx1 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx1"))
+		file_idx2 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx2"))
+		file_inst = os.path.join(sl_dicts, self.__filename)
 
 		print "* create index, step 1..."
 		retcode = subprocess.call("%s --print-index %s 1>%s" % (sl_exec, file_orig, file_idx1), shell=True)
@@ -396,10 +384,24 @@ class DictInstaller:
 			raise IOError("failed indexating")
 
 		print "Install...", file_inst
-		self.dlg.set_task("Installing...")
 		shutil.copyfile(file_idx2, file_inst)
-		#print "Cleanup..."
-		#shutil.rmtree(SL_TMP_DIR)
-		print "done"
-		self.dlg.set_task("Done...")
+
+		print "Cleanup..."
+		shutil.rmtree(SL_TMP_DIR)
+
+
+class ListLoader(threading.Thread):
+	def __init__(self, name="ListLoader"):
+		threading.Thread.__init__(self, name=name)
+
+	def run(self):
+		try:
+			doc = urllib2.urlopen(FTP_REPO_URL)
+		except IOError, e:
+			ghlp.show_error(self, str(e))
+		else:
+			fp = open(REPO_FILE, "w")
+			fp.write(doc.read())
+			fp.close()
+			doc.close()
 

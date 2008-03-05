@@ -43,16 +43,11 @@ class ProgressDialog(gtk.Dialog):
 		
 		self.set_task(task)
 
-	def __do_set_task(self):
-		self.task.set_text(self.__task)
+	def pulse(self):
 		self.progress.pulse()
-		self.__timeout = None
-		return False
 
 	def set_task(self, task):
-		self.__task = task
-		if self.__timeout is None:
-			self.__timeout = gobject.timeout_add(100, self.__do_set_task)
+		self.task.set_text(self.__task)
 		
 
 		
