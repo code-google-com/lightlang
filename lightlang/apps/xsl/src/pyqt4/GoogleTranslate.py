@@ -31,16 +31,23 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.http = Qt.QHttp()
 		self.http_output = Qt.QByteArray()
+		self.http_request_id = -1
+		self.http_abort_flag = True
 
 		#####
 
 		self.connect(self.http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
+		self.connect(self.http, Qt.SIGNAL("requestFinished(int, bool)"), self.requestFinished)
 		self.connect(self.http, Qt.SIGNAL("readyRead(const QHttpResponseHeader &)"), self.setText)
 
 
 	### Public ###
 
 	def translate(self, langpair, text) :
+		self.http_abort_flag = True
+		self.http.abort()
+		self.http_abort_flag = False
+
 		self.http.clearPendingRequests()
 		self.http_output.clear()
 
@@ -56,8 +63,15 @@ class GoogleTranslate(Qt.QObject) :
 		http_request_header.setValue("User-Agent", "Mozilla/5.0")
 
 		self.http.setHost(GoogleTranslateHost)
-		self.http.request(http_request_header)
+		self.http_request_id = self.http.request(http_request_header)
 		self.http.close()
+
+	def abort(self) :
+		self.http_abort_flag = True
+		self.http.abort()
+		self.http_abort_flag = False
+
+		self.statusChangedSignal(Qt.QString())
 
 
 	### Private ###
@@ -92,6 +106,9 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.textChangedSignal(text)
 
+	def requestFinished(self, request_id, error_flag) :
+		if request_id != self.http_request_id :
+			return
 
 	### Signals ###
 
