@@ -32,7 +32,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http = Qt.QHttp()
 		self.http_output = Qt.QByteArray()
 		self.http_request_id = -1
-		self.http_abort_flag = True
+		self.http_abort_flag = False
 
 		#####
 
@@ -109,6 +109,13 @@ class GoogleTranslate(Qt.QObject) :
 	def requestFinished(self, request_id, error_flag) :
 		if request_id != self.http_request_id :
 			return
+
+		if error_flag and not self.http_abort_flag :
+			Qt.QMessageBox(None, Const.MyName,
+				self.tr("Error while reading data from the HTTP.\n"
+					"Press \"Yes\" to ignore"),
+				Qt.QMessageBox.Yes)
+
 
 	### Signals ###
 
