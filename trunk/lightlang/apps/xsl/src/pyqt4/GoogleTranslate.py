@@ -30,9 +30,9 @@ class GoogleTranslate(Qt.QObject) :
 		Qt.QObject.__init__(self, parent)
 
 		self.http = Qt.QHttp()
-		self.http_output = Qt.QByteArray()
 		self.http_request_id = -1
 		self.http_abort_flag = False
+		self.http_output = Qt.QByteArray()
 
 		#####
 
@@ -48,10 +48,11 @@ class GoogleTranslate(Qt.QObject) :
 		self.http.abort()
 		self.http_abort_flag = False
 
+		self.clearRequestSignal()
+
 		self.http.clearPendingRequests()
 		self.http_output.clear()
 
-		self.clearRequestSignal()
 		self.wordChangedSignal(self.tr("Google Translate"))
 		self.textChangedSignal(self.tr("Please wait..."))
 
@@ -65,6 +66,8 @@ class GoogleTranslate(Qt.QObject) :
 		self.http.setHost(GoogleTranslateHost)
 		self.http_request_id = self.http.request(http_request_header)
 		self.http.close()
+
+		self.processStartedSignal()
 
 	def abort(self) :
 		self.http_abort_flag = True
@@ -112,12 +115,20 @@ class GoogleTranslate(Qt.QObject) :
 
 		if error_flag and not self.http_abort_flag :
 			Qt.QMessageBox(None, Const.MyName,
-				self.tr("Error while reading data from the HTTP.\n"
-					"Press \"Yes\" to ignore"),
+				self.tr("HTTP error: %1\n"
+					"Press \"Yes\" to ignore").arg(self.http.errorString()),
 				Qt.QMessageBox.Yes)
+
+		self.processFinishedSignal()
 
 
 	### Signals ###
+
+	def processStartedSignal(self) :
+		self.emit(Qt.SIGNAL("processStarted()"))
+
+	def processFinishedSignal(self) :
+		self.emit(Qt.SIGNAL("processFinished()"))
 
 	def clearRequestSignal(self) :
 		self.emit(Qt.SIGNAL("clearRequest()"))
