@@ -103,9 +103,11 @@ class GoogleTranslate(Qt.QObject) :
 
 		# FIXME: string hack
 		index = text.indexOf("<div id=result_box dir=")
-		text = text[index:]
+		text = text.mid(index)
 		index = text.indexOf("</div>")
 		text = text[29:index]
+		#text = text.mid(29)
+		#...
 
 		self.textChangedSignal(text)
 
@@ -115,8 +117,8 @@ class GoogleTranslate(Qt.QObject) :
 
 		if error_flag and not self.http_abort_flag :
 			Qt.QMessageBox(None, Const.MyName,
-				self.tr("HTTP error: %1\n"
-					"Press \"Yes\" to ignore").arg(self.http.errorString()),
+				self.tr("HTTP error: %1\nPress \"Yes\" to ignore")
+					.arg(self.http.errorString()),
 				Qt.QMessageBox.Yes)
 
 		self.processFinishedSignal()
