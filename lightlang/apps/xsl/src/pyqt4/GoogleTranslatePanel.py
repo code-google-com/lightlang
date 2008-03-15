@@ -24,7 +24,7 @@ import Const
 import GoogleTranslate
 
 #####
-IconsDir = Config.Prefix+"/lib/xsl/icons"
+IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
 class GoogleTranslatePanel(Qt.QDockWidget) :
