@@ -19,8 +19,8 @@
 
 Organization = "LightLang"
 MyName = "XSL"
-Version = "6.5"
-PackageVersion = "0.8.5"
+Version = "6.6"
+PackageVersion = "0.8.6"
 
 DeveloperMail = "mdevaev@gmail.com"
 OffersMail = "developers@lightlang.org.ru"

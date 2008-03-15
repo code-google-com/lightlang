@@ -56,11 +56,11 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.langpair_combobox = Qt.QComboBox()
 		self.langpair_combobox.addItem(self.tr("Arabic to English"), Qt.QVariant("ar|en"))
 		self.langpair_combobox.addItem(self.tr("Chinese to English"), Qt.QVariant("zh|en"))
-		self.langpair_combobox.addItem(self.tr("Chinese (Simplified to Traditional)"), Qt.QVariant("zh-CN|zh-TW"))
-		self.langpair_combobox.addItem(self.tr("Chinese (Traditional to Simplified)"), Qt.QVariant("zh-TW|zh-CN"))
+		self.langpair_combobox.addItem(self.tr("Chinese (S. to T.)"), Qt.QVariant("zh-CN|zh-TW"))
+		self.langpair_combobox.addItem(self.tr("Chinese (T. to S.)"), Qt.QVariant("zh-TW|zh-CN"))
 		self.langpair_combobox.addItem(self.tr("English to Arabic"), Qt.QVariant("en|ar"))
-		self.langpair_combobox.addItem(self.tr("English to Chinese (Simplified)"), Qt.QVariant("en|zh-CN"))
-		self.langpair_combobox.addItem(self.tr("English to Chinese (Traditional)"), Qt.QVariant("en|zh-TW"))
+		self.langpair_combobox.addItem(self.tr("English to Chinese (S.)"), Qt.QVariant("en|zh-CN"))
+		self.langpair_combobox.addItem(self.tr("English to Chinese (T.)"), Qt.QVariant("en|zh-TW"))
 		self.langpair_combobox.addItem(self.tr("English to French"), Qt.QVariant("en|fr"))
 		self.langpair_combobox.addItem(self.tr("English to German"), Qt.QVariant("en|de"))
 		self.langpair_combobox.addItem(self.tr("English to Italian"), Qt.QVariant("en|it"))
@@ -89,7 +89,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.abort_button = Qt.QToolButton()
 		self.abort_button.setIcon(Qt.QIcon(IconsDir+"abort_22.png"))
-		self.abort_button.setIconSize(Qt.QSize(16, 16)) #(Qt.QSize(22, 22))
+		self.abort_button.setIconSize(Qt.QSize(16, 16))
 		self.abort_button.setEnabled(False)
 		self.options_layout.addWidget(self.abort_button)
 
@@ -98,6 +98,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		#####
 
+		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.setEnabledAbortButton)
+		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.setDisabledAbortButton)
 		self.connect(self.google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("wordChanged(const QString &)"), self.wordChangedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
@@ -105,7 +107,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.translate)
 		self.connect(self.abort_button, Qt.SIGNAL("clicked()"), self.abort)
-		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatus)
+		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
 
 
 	### Public ###
@@ -128,7 +130,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 	### Private ###
 
 	def abort(self) :
-		self.abort_button.setEnabled(False)
+		self.google_translate.abort()
 
 	def translate(self) :
 		index = self.langpair_combobox.currentIndex()
@@ -141,7 +143,13 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	###
 
-	def setStatus(self) :
+	def setEnabledAbortButton(self) :
+		self.abort_button.setEnabled(True)
+
+	def setDisabledAbortButton(self) :
+		self.abort_button.setEnabled(False)
+
+	def setStatusFromTextEdit(self) :
 		if self.text_edit.toPlainText().isEmpty() :
 			self.translate_button.setEnabled(False)
 		else :

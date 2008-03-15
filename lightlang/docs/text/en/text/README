@@ -41,7 +41,7 @@ line instead. It is very convenient when using systems without the X-server.
 SL, the search kernel
 6.5
 XSL, the graphical interface
-6.5
+6.6
 LLRepo, the repository manager
 2.0
 ===============================================================================
@@ -115,16 +115,16 @@ working with repositories type:
       ./download.py help
    Usually, LightLang is installed as it is shown below (we'll also download en
 sounds and Mueller-24.en-ru dictionary):
-      [liksys@max ~]$ tar -xjvf lightlang-0.8.5.tar.bz2
-      [liksys@max ~]$ cd lightlang-0.8.5
-      [liksys@max lightlang-0.8.5]$ ./configure
-      [liksys@max lightlang-0.8.5]$ ./download.py install dicts Mueller-24.en-
+      [liksys@max ~]$ tar -xjvf lightlang-0.8.6.tar.bz2
+      [liksys@max ~]$ cd lightlang-0.8.6
+      [liksys@max lightlang-0.8.6]$ ./configure
+      [liksys@max lightlang-0.8.6]$ ./download.py install dicts Mueller-24.en-
 ru
-      [liksys@max lightlang-0.8.5]$ ./download.py install sounds en
-      [liksys@max lightlang-0.8.5]$ make
-      [liksys@max lightlang-0.8.5]$ su
+      [liksys@max lightlang-0.8.6]$ ./download.py install sounds en
+      [liksys@max lightlang-0.8.6]$ make
+      [liksys@max lightlang-0.8.6]$ su
       Password: enter root password
-      [root@max lightlang-0.8.5]$ make install
+      [root@max lightlang-0.8.6]$ make install
 
 
 **** Possible problems: Fedora 7 ****
