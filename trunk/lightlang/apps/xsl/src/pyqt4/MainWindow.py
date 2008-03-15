@@ -79,7 +79,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
 		self.google_translate_panel.setVisible(False)
-		self.addDockWidget(Qt.Qt.BottomDockWidgetArea, self.google_translate_panel)
+		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.google_translate_panel)
 
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
@@ -251,11 +251,13 @@ class MainWindow(Qt.QMainWindow) :
 		self.saveSettings()
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
+		self.google_translate_panel.saveSettings()
 
 	def load(self) :
 		self.loadSettings()
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
+		self.google_translate_panel.loadSettings()
 		self.status_bar.showMessage(self.tr("Ready"), 2000)
 		
 
