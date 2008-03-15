@@ -88,7 +88,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.options_layout.addWidget(self.translate_button)
 
 		self.abort_button = Qt.QToolButton()
-		self.abort_button.setIcon(Qt.QIcon(IconsDir+"abort_22.png"))
+		self.abort_button.setIcon(Qt.QIcon(IconsDir+"abort_16.png"))
 		self.abort_button.setIconSize(Qt.QSize(16, 16))
 		self.abort_button.setEnabled(False)
 		self.options_layout.addWidget(self.abort_button)
