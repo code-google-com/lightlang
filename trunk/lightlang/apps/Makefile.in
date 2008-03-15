@@ -17,28 +17,28 @@ XSL_DIR=xsl
 all :
 	$(CD) $(SL_DIR) && $(MAKE)
 	$(CD) $(LLREPO_DIR) && $(MAKE)
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(CD) $(XSL_DIR) && $(MAKE); \
 	fi
 
 install :
 	$(CD) $(SL_DIR) && $(MAKE) install
 	$(CD) $(LLREPO_DIR) && $(MAKE) install
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(CD) $(XSL_DIR) && $(MAKE) install; \
 	fi
 
 uninstall :
 	$(CD) $(SL_DIR) && $(MAKE) uninstall
 	$(CD) $(LLREPO_DIR) && $(MAKE) uninstall
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(CD) $(XSL_DIR) && $(MAKE) uninstall; \
 	fi
 
 clean :
 	$(CD) $(SL_DIR) && $(MAKE) clean
 	$(CD) $(LLREPO_DIR) && $(MAKE) clean
-	if [[ $(GUI_FLAG) = "yes" ]]; then \
+	if [ $(GUI_FLAG) = "yes" ]; then \
 		$(CD) $(XSL_DIR) && $(MAKE) clean; \
 	fi
 

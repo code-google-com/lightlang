@@ -32,6 +32,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http = Qt.QHttp()
 		self.http_request_id = -1
 		self.http_abort_flag = False
+
 		self.http_output = Qt.QByteArray()
 
 		#####
@@ -54,7 +55,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http_output.clear()
 
 		self.wordChangedSignal(self.tr("Google Translate"))
-		self.textChangedSignal(self.tr("Please wait..."))
+		self.textChangedSignal(self.tr("<em>Please wait...</em>"))
 
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
@@ -65,7 +66,6 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.http.setHost(GoogleTranslateHost)
 		self.http_request_id = self.http.request(http_request_header)
-		self.http.close()
 
 		self.processStartedSignal()
 
@@ -75,6 +75,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http_abort_flag = False
 
 		self.statusChangedSignal(Qt.QString())
+		self.textChangedSignal(self.tr("<em>Aborted</em>"))
 
 
 	### Private ###
@@ -101,13 +102,14 @@ class GoogleTranslate(Qt.QObject) :
 		codec = Qt.QTextCodec.codecForName("UTF-8")
 		text = codec.toUnicode(self.http_output.data())
 
-		# FIXME: string hack
 		index = text.indexOf("<div id=result_box dir=")
-		text = text.mid(index)
+		if index != -1 :
+			text = text.mid(index)
+
 		index = text.indexOf("</div>")
-		text = text[29:index]
-		#text = text.mid(29)
-		#...
+		if index != -1 :
+			# FIXME: string hack
+			text = text[29:index]
 
 		self.textChangedSignal(text)
 

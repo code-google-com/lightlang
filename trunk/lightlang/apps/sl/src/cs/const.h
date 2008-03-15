@@ -31,7 +31,7 @@
 /********************************* Macro ***************************************/
 # define MYNAME			"sl"
 # define VERSION 		"6.5"
-# define PACKAGE_VERSION	"0.8.5"
+# define PACKAGE_VERSION	"0.8.6"
 
 # define DEVELOPER_MAIL		"mdevaev@gmail.com"
 # define OFFERS_MAIL		"developers@lightlang.org.ru"
