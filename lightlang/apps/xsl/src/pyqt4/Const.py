@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # XSL - graphical interface for SL
 # Copyright (C) 2007-2016 Devaev Maxim
 #
