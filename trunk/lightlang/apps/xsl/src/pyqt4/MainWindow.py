@@ -110,6 +110,8 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.connect(self.google_translate_panel, Qt.SIGNAL("clearRequest()"),
 			self.registrateTextBrowser)
+		self.connect(self.google_translate_panel, Qt.SIGNAL("statusChanged(const QString &)"),
+			self.showStatusMessage)
 		self.connect(self.google_translate_panel, Qt.SIGNAL("wordChanged(const QString &)"),
 			self.setTextBrowserCaption)
 		self.connect(self.google_translate_panel, Qt.SIGNAL("textChanged(const QString &)"),
@@ -233,7 +235,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.start_spy_menu_action.setEnabled(False)
 		self.stop_spy_menu_action.setEnabled(True)
 
-		self.status_bar.showMessage(self.tr("Spy is running"), 2000)
+		self.showStatusMessage(self.tr("Spy is running"))
 
 		self.spyStartedSignal()
 
@@ -243,7 +245,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.start_spy_menu_action.setEnabled(True)
 		self.stop_spy_menu_action.setEnabled(False)
 
-		self.status_bar.showMessage(self.tr("Spy is stopped"), 2000)
+		self.showStatusMessage(self.tr("Spy is stopped"))
 
 		self.spyStoppedSignal()
 
@@ -258,7 +260,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.google_translate_panel.loadSettings()
-		self.status_bar.showMessage(self.tr("Ready"), 2000)
+		self.showStatusMessage(self.tr("Ready"))
 		
 
 	def exit(self) :
@@ -283,12 +285,12 @@ class MainWindow(Qt.QMainWindow) :
 	def findInTextNext(self, word) :
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findNext(index, word) :
-			self.status_bar.showMessage(self.tr("Not found"), 2000)
+			self.showStatusMessage(self.tr("Not found"))
 
 	def findInTextPrevious(self, word) :
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findPrevious(index, word) :
-			self.status_bar.showMessage(self.tr("Not found"), 2000)
+			self.showStatusMessage(self.tr("Not found"))
 
 	def saveCurrentPage(self) :
 		index = self.text_browser.currentIndex()
@@ -310,7 +312,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		file.close()
 
-		self.status_bar.showMessage(self.tr("Saved"), 2000)
+		self.showStatusMessage(self.tr("Saved"))
 
 	def printCurrentPage(self) :
 		if self.print_dialog.exec_() != Qt.QDialog.Accepted :
@@ -320,7 +322,7 @@ class MainWindow(Qt.QMainWindow) :
 		text_document = self.text_browser.document(index)
 		text_document.print_(self.printer)
 
-		self.status_bar.showMessage(self.tr("Printing..."), 2000)
+		self.showStatusMessage(self.tr("Printing..."))
 
 	def clearAll(self) :
 		self.find_in_sl_panel.clear()
@@ -359,6 +361,11 @@ class MainWindow(Qt.QMainWindow) :
 
 	def setFocus(self, reason) :
 		self.find_in_sl_panel.setFocus(reason)
+
+	###
+
+	def showStatusMessage(self, text, timeout = 2000) :
+		self.status_bar.showMessage(text, timeout)
 
 	###
 
