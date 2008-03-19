@@ -7,8 +7,8 @@ import os
 import gtk, gobject
 import pynotify
 import gettext
-import slog.common as cmn
 
+from common import *
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
@@ -47,8 +47,6 @@ ui_info = \
 		</popup>
 </ui>'''
 
-def get_icon(filename):
-	return os.path.join(cmn.PIXMAP_DIR, filename)
 
 class MainWindow(gtk.Window):
 
@@ -63,14 +61,14 @@ class MainWindow(gtk.Window):
 
 		# Translation stuff
 		try:
-			gettext.install("slog", cmn.LOCALE_DIR, unicode=1)
+			gettext.install("slog", LOCALE_DIR, unicode=1)
 		except:
 			pass
 		gettext.textdomain("slog")
 
 		# Create tray icon 
-		self.status_icon = gtk.status_icon_new_from_file(get_icon(cmn.LOGO_ICON))
-		self.status_icon.set_tooltip(cmn.APP_NAME)
+		self.status_icon = gtk.status_icon_new_from_file(get_icon("slog.png"))
+		self.status_icon.set_tooltip(APP_NAME)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
@@ -78,9 +76,9 @@ class MainWindow(gtk.Window):
 		self.tooltips = gtk.Tooltips()
 		self.notebook = MyNotebook()
 
-		self.set_icon_from_file(get_icon(cmn.LOGO_ICON))
+		self.set_icon_from_file(get_icon("slog.png"))
 		self.set_border_width(1)
-		self.set_title("%s %s" % (cmn.APP_NAME, cmn.VERSION))
+		self.set_title("%s %s" % (APP_NAME, VERSION))
 		self.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
@@ -144,10 +142,8 @@ class MainWindow(gtk.Window):
 			view.connect("changed", self.on_status_changed)
 			self.sidebar.append_page(plugin, view)
 			view.show_all()
-
-			if plugin == "LightLang SL":
-				engine = view.get_engine()
-				self.spy = Spy(engine)
+		
+		self.spy = Spy()
 
 		self.sidebar.set_active(self.conf.get_engine())
 
@@ -179,7 +175,7 @@ class MainWindow(gtk.Window):
 		n.attach_to_status_icon(self.status_icon)
 		n.set_urgency(pynotify.URGENCY_NORMAL)
 		n.set_timeout(timeout)
-		n.set_icon_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(get_icon(cmn.LOGO_ICON), 48, 48))
+		n.set_icon_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(get_icon("slog.png"), 48, 48))
 		return n
 
 
@@ -192,7 +188,7 @@ class MainWindow(gtk.Window):
 			self.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
-			n = self.__create_notify(cmn.APP_NAME, "Close in system tray")
+			n = self.__create_notify(APP_NAME, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
@@ -210,10 +206,10 @@ class MainWindow(gtk.Window):
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
-			self.status_icon.set_from_file(get_icon(cmn.LOGO_ICON_SPY))
+			self.status_icon.set_from_file(get_icon("slog_spy.png"))
 			self.spy.start()
 		else:
-			self.status_icon.set_from_file(get_icon(cmn.LOGO_ICON))
+			self.status_icon.set_from_file(get_icon("slog.png"))
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
@@ -228,12 +224,12 @@ class MainWindow(gtk.Window):
 
 	def on_about_activate(self, action):
 		dialog = gtk.AboutDialog()
-		dialog.set_name(cmn.APP_NAME)
-		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(get_icon(cmn.LOGO_ICON)))
-		dialog.set_copyright("\302\251 Copyright 2007 Renat Nasyrov (renatn@gmail.com)")
-		dialog.set_website(cmn.WEBSITE)
-		dialog.set_version(cmn.VERSION)
-		dialog.set_license(cmn.LICENSE)
+		dialog.set_name(APP_NAME)
+		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(get_icon("slog.png")))
+		dialog.set_copyright("\302\251 Copyright 2007,2008 Renat Nasyrov (renatn@gmail.com)")
+		dialog.set_website(WEBSITE)
+		dialog.set_version(VERSION)
+		dialog.set_license(LICENSE)
 		dialog.connect ("response", lambda d, r: d.destroy())
 		dialog.show()
 

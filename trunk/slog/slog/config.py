@@ -118,13 +118,13 @@ class SlogConf:
 			self.top = top
 
 		def get_used_dicts(self):
-			return self.used_dicts_list
+			return self.used_dicts_list.split("|")
 
 		def set_used_dicts(self, used_dicts):
 			self.used_dicts_list = used_dicts
 
 		def get_spy_dicts(self):
-			return self.spy_dicts_param
+			return self.spy_dicts_param.split("|")
 
 		def set_spy_dicts(self, spy_dicts):
 			self.spy_dicts_param = spy_dicts
@@ -134,9 +134,6 @@ class SlogConf:
 
 		def get_sl_exec(self):
 			return os.path.join(self.sl_prefix, "bin", "sl")
-
-		def get_sl_dicts_dir(self):
-			return os.path.join(self.sl_prefix, "share", "sl", "dicts")
 
 		def get_engine(self):
 			return self.engine
