@@ -34,3 +34,6 @@ DATA_DIR   = os.path.join(INSTALL_PREFIX, "share", "slog")
 
 LOGO_ICON = "slog.png"
 LOGO_ICON_SPY = "slog_spy.png"
+
+def get_icon(filename):
+	return os.path.join(PIXMAP_DIR, filename)

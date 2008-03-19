@@ -8,22 +8,23 @@ import threading
 import xml.sax
 
 from bz2 import BZ2File
+import slog.libsl as libsl
 import slog.gui_helper as ghlp
 from slog.config import SlogConf
 from slog.dhandler import DictHandler
 
 (
-    COLUMN_USED,
-	COLUMN_SPY,
-    COLUMN_NAME
+    COL_A_NAME,
+	COL_A_TARGET,
+	COL_A_SIZE
 ) = range(3)
 
 (
-	COLUMN_FILE,
-	COLUMN_DICT,
-	COLUMN_TARGET,
-	COLUMN_SIZE
-) = range(4)
+    COL_I_USED,
+	COL_I_SPY,
+    COL_I_NAME,
+	COL_I_TARGET
+) = range (4)
 
 FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
 FTP_DICTS_URL = FTP_LL_URL + "/dicts"
@@ -33,6 +34,31 @@ REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
 
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
+
+def is_path_writable(path):
+	if os.path.exists(path):
+		s = os.stat(path)
+		mode = s[stat.ST_MODE] & 0777
+
+	if mode & 02:
+		return True
+	elif s[stat.ST_GID] == os.getgid() and mode & 020:
+		return True
+	elif s[stat.ST_UID] == os.getuid() and mode & 0200:
+		return True
+
+	return False
+
+# Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
+def filename_to_dict(filename):
+	i = filename.find(".")
+	j = filename.find(".", i+1)
+	dname = filename[:i]
+	if j == -1:
+		dtarget = filename[i+1:]
+	else:
+		dtarget = filename[i+1:j]
+	return dname, dtarget
 
 class DictsDialog(gtk.Dialog):
 	def __init__(self, parent):
@@ -53,40 +79,41 @@ class DictsDialog(gtk.Dialog):
 		hbox_right = gtk.HBox(False, 4)
 		hbox_right.set_border_width(4)
 
-		self.list_avail = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING,
-										gobject.TYPE_STRING, gobject.TYPE_STRING)
+		self.list_avail = AvailDataModel()
 		sw1, tree_avail = self.__create_treeview(self.list_avail)
 		avail_selection = tree_avail.get_selection()
-		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COLUMN_DICT)
+		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COL_A_NAME)
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 		column.set_resizable(True)
 		tree_avail.append_column(column)
-		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COLUMN_TARGET)
+		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_A_TARGET)
 		tree_avail.append_column(column)
-		column = gtk.TreeViewColumn(_("Size"), gtk.CellRendererText(), text=COLUMN_SIZE)
+		column = gtk.TreeViewColumn(_("Size"), gtk.CellRendererText(), text=COL_A_SIZE)
 		tree_avail.append_column(column)
 
-		self.list_inst = gtk.ListStore(gobject.TYPE_BOOLEAN, gobject.TYPE_BOOLEAN, gobject.TYPE_STRING)
+		self.list_inst = InstDataModel()
 		sw2, tree_inst = self.__create_treeview(self.list_inst)
 		inst_selection = tree_inst.get_selection()
 
 		renderer = gtk.CellRendererToggle()
 		renderer.connect('toggled', self.on_item_toggled, self.list_inst)
-		renderer.set_data("column", COLUMN_USED)
-		column = gtk.TreeViewColumn(_("Used"), renderer, active=COLUMN_USED)
+		renderer.set_data("column", COL_I_USED)
+		column = gtk.TreeViewColumn(_("Used"), renderer, active=COL_I_USED)
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
 		column.set_fixed_width(64)
 		tree_inst.append_column(column)
 
 		renderer = gtk.CellRendererToggle()
 		renderer.connect('toggled', self.on_item_toggled, self.list_inst)
-		renderer.set_data("column", COLUMN_SPY)
-		column = gtk.TreeViewColumn(_("Spy"), renderer, active=COLUMN_SPY)
+		renderer.set_data("column", COL_I_SPY)
+		column = gtk.TreeViewColumn(_("Spy"), renderer, active=COL_I_SPY)
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
 		column.set_fixed_width(64)
 		tree_inst.append_column(column)
 
-		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COLUMN_NAME)
+		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COL_I_NAME)
+		tree_inst.append_column(column)
+		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_I_TARGET)
 		tree_inst.append_column(column)
 
 		btn_fresh = self.__create_button(gtk.STOCK_REFRESH, _("Refresh"))
@@ -123,8 +150,6 @@ class DictsDialog(gtk.Dialog):
 		hbox.show_all()
 
 		self.conf = SlogConf()
-		self.load_installed_dicts()
-		self.load_available_dicts()
 
 	def __create_treeview(self, model):
 		scrollwin = gtk.ScrolledWindow()
@@ -150,38 +175,30 @@ class DictsDialog(gtk.Dialog):
 		vbox_out.pack_start(vbox_in, True, False, 0)
 		return vbox_out, vbox_in
 
+
 	# Get list available dictionaries from FTP
 	def on_btn_fresh_clicked(self, widget, data=None):
-		self.list_avail.clear()
-		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
-
-		loader = ListLoader()
-		loader.start()
-		loader.join()
-
-		self.load_available_dicts()
-
-		self.window.set_cursor(None)
+		self.list_avail.refresh()
 
 	# Install dictionary
 	def on_btn_right_clicked(self, widget, selection):
 		(model, l_iter) = selection.get_selected()
 		if l_iter is None:
 			return
-		fname = model.get_value(l_iter, COLUMN_FILE)
+
+		dname, dtarget = model.get(l_iter, COL_A_NAME, COL_A_TARGET)
+		fname = dname + "." + dtarget + ".bz2"
 
 		#Check duplicate
-		if self.is_dict_installed(fname[:-4]):
+		if self.list_inst.is_exists(dname, dtarget):
 			ghlp.show_error(self, _("Dictionary already installed!"))
 			return
 
 		#Check permissions
-		dicts_dir = self.conf.get_sl_dicts_dir()
-		if not self.is_path_writable(dicts_dir):
+		if not is_path_writable(libsl.DICTS_DIR):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		self.window.set_cursor(gdk.Cursor(gdk.WATCH))
 		installer = DictInstaller(fname)
 		try:
 			installer.start()
@@ -189,22 +206,20 @@ class DictsDialog(gtk.Dialog):
 		except IOError, msg:
 			ghlp.show_error(self, str(msg))
 		else:
-			l_iter = self.list_inst.append()
-			self.list_inst.set(l_iter, COLUMN_USED, True, COLUMN_SPY, False, COLUMN_NAME, fname[:-4])
+			self.list_inst.append_row(True, False, dname, dtarget)
 			self.sync_used_dicts()
 
-		self.window.set_cursor(None)
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
 		(model, l_iter) = selection.get_selected()
 		if l_iter is None:
 			return
-		dname = model.get_value(l_iter, COLUMN_NAME)
+		dname, dtarget = model.get(l_iter, COL_I_NAME, COL_I_TARGET)
+		fname = dname + "." + dtarget
 
 		#Check permissions
-		dicts_dir = self.conf.get_sl_dicts_dir()
-		if not self.is_path_writable(dicts_dir):
+		if not is_path_writable(libsl.DICTS_DIR):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
@@ -215,11 +230,11 @@ class DictsDialog(gtk.Dialog):
 					gtk.BUTTONS_YES_NO,
 					_("Are you sure you want uninstall this dictionary?"))
 		dlg.set_title(_("Uninstall dictionary"))
-		dlg.format_secondary_text(dname)
+		dlg.format_secondary_text(fname)
 		response = dlg.run()
 		if response == gtk.RESPONSE_YES:
 			#Remove dictionary
-			path = os.path.join(self.conf.get_sl_dicts_dir(), dname)
+			path = os.path.join(libsl.DICT_DIR, fname)
 			os.unlink(path)
 			model.remove(l_iter)
 			self.sync_used_dicts()
@@ -247,45 +262,18 @@ class DictsDialog(gtk.Dialog):
 		model.set(l_iter, column, used)
 		self.sync_used_dicts()
 
-	def load_available_dicts(self):
-		if os.path.isfile(REPO_FILE):
-			parser = xml.sax.make_parser()
-			chandler = DictHandler()
-			parser.setContentHandler(chandler)
-			parser.parse(REPO_FILE)
-			d_list = chandler.get_result()
-			for dfile in d_list.keys():
-				l_iter = self.list_avail.append()
-				dname, dtarget, dsize = d_list[dfile]
-				self.list_avail.set(l_iter, COLUMN_FILE, dfile, COLUMN_DICT, dname,
-								COLUMN_TARGET, dtarget, COLUMN_SIZE, dsize)
-
-	def load_installed_dicts(self):
-		sl_dicts_dir = self.conf.get_sl_dicts_dir()
-		used_dict_list = self.conf.get_used_dicts().split("|")
-		spy_dict_list = self.conf.get_spy_dicts().split("|")
-
-		#Get installed dictionaries
-		if os.path.exists(sl_dicts_dir):
-			d_list = os.listdir(sl_dicts_dir)
-			for dict in d_list:
-				iter = self.list_inst.append()
-				used = dict in used_dict_list
-				spy = dict in spy_dict_list
-				self.list_inst.set(iter, COLUMN_USED, used, COLUMN_SPY, spy, COLUMN_NAME, dict)
-
 	def sync_used_dicts(self):
 		used_dicts = []
 		spy_dicts = []
 		l_iter = self.list_inst.get_iter_first()
 		while l_iter:
-			name = self.list_inst.get_value(l_iter, COLUMN_NAME)
-			used = self.list_inst.get_value(l_iter, COLUMN_USED)
-			spy = self.list_inst.get_value(l_iter, COLUMN_SPY)
+			used, spy, name, target = self.list_inst.get(l_iter, COL_I_USED, COL_I_SPY,
+															COL_I_NAME, COL_I_TARGET)
+			fname = name + "." + target
 			if used:
-				used_dicts.append(name)
+				used_dicts.append(fname)
 			if spy:
-				spy_dicts.append(name)
+				spy_dicts.append(fname)
 			l_iter = self.list_inst.iter_next(l_iter)
 
 		ud = "|".join(used_dicts)
@@ -294,23 +282,6 @@ class DictsDialog(gtk.Dialog):
 		self.conf.set_used_dicts(ud)
 		self.conf.set_spy_dicts(sd)
 
-	def is_path_writable(self, path):
-		if os.path.exists(path):
-			s = os.stat(path)
-			mode = s[stat.ST_MODE] & 0777
-
-			if mode & 02:
-				return True
-			elif s[stat.ST_GID] == os.getgid() and mode & 020:
-				return True
-			elif s[stat.ST_UID] == os.getuid() and mode & 0200:
-				return True
-
-		return False
-
-	def is_dict_installed(self, name):
-		d_list = [row[COLUMN_NAME] for row in self.list_inst]
-		return (name in d_list)
 
 class DictInstaller(threading.Thread):
 	def __init__(self, filename, name="DictInstaller"):
@@ -340,6 +311,7 @@ class DictInstaller(threading.Thread):
 
 		fp = open(file_dict, "wb")
 		urllib.urlretrieve(url_dict, file_dict)
+		fp.close()
 		#urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
 
 	def __decompress(self):
@@ -349,7 +321,7 @@ class DictInstaller(threading.Thread):
 		try:
 			fp.write(bz2f.read())
 		except EOFError, msg:
-			raise IOError(msg)
+			ghlp.show_error(self, str(msg))
 		else:
 			self.__filename = self.__filename[:-4]
 		finally:
@@ -360,12 +332,11 @@ class DictInstaller(threading.Thread):
 		print "Start indexating..."
 		conf = SlogConf()
 		sl_exec = conf.get_sl_exec()
-		sl_dicts = conf.get_sl_dicts_dir()
 
 		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
 		file_idx1 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx1"))
 		file_idx2 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx2"))
-		file_inst = os.path.join(sl_dicts, self.__filename)
+		file_inst = os.path.join(libsl.DICTS_DIR, self.__filename)
 
 		print "* create index, step 1..."
 		retcode = subprocess.call("%s --print-index %s 1>%s" % (sl_exec, file_orig, file_idx1), shell=True)
@@ -405,3 +376,55 @@ class ListLoader(threading.Thread):
 			fp.close()
 			doc.close()
 
+class AvailDataModel(gtk.ListStore):
+	def __init__(self):
+		gtk.ListStore.__init__(self, str, str, str)
+		self.__load()
+
+	def __load(self):
+		if os.path.isfile(REPO_FILE):
+			parser = xml.sax.make_parser()
+			chandler = DictHandler()
+			parser.setContentHandler(chandler)
+			parser.parse(REPO_FILE)
+			d_list = chandler.get_result()
+			for dfile in d_list.keys():
+				l_iter = self.append()
+				dname, dtarget, dsize = d_list[dfile]
+				self.set(l_iter, COL_A_NAME, dname,
+								COL_A_TARGET, dtarget, COL_A_SIZE, dsize)
+	def refresh():
+		self.clear()
+
+		loader = ListLoader()
+		loader.start()
+		loader.join()
+
+		self.__load()
+
+class InstDataModel(gtk.ListStore):
+	def __init__(self):
+		gtk.ListStore.__init__(self, bool, bool, str, str)
+		self.conf = SlogConf()
+		self.__load()
+
+	def __load(self):
+		used_dict_list = self.conf.get_used_dicts()
+		spy_file_list = self.conf.get_spy_dicts()
+		dict_list = libsl.get_installed_dicts()
+		for fname in dict_list:
+			used = fname in used_dict_list
+			spy = fname in spy_file_list
+			dname, dtarget = filename_to_dict(fname)
+			self.append_row(used, spy, dname, dtarget)
+
+	def append_row(self, used, spy, name, target):
+		l_iter = self.append()
+		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
+						COL_I_NAME, name, COL_I_TARGET, target)
+	
+	def is_exists(self, dname, dtarget):
+		for row in self:
+			if dname == row[COL_I_NAME] and dtarget == row[COL_I_TARGET]:
+				return True
+		return False

@@ -4,16 +4,16 @@ import gtk, gtk.gdk as gdk
 import gobject
 import re
 
+import slog.libsl as libsl
 from slog.config import SlogConf
 from slog.TransPanel import TransView
 
 class Spy:
-	def __init__(self, engine):
+	def __init__(self):
 		self.pattern = re.compile("\W+")
 		self.timer = 0;
 		self.prev_selection = ""
 		self.clipboard = gtk.clipboard_get(gdk.SELECTION_PRIMARY)
-		self.sl = engine
 		self.conf = SlogConf()
 		self.spy_view = SpyView()
 
@@ -37,7 +37,8 @@ class Spy:
 		words = self.pattern.split(selection)
 		for word in words:
 			if word != "":
-				lines = self.sl.get_translate(self.conf.get_spy_dicts(), word)
+				used_dicts = self.conf.get_spy_dicts()
+				lines = libsl.find_word(word, 1, used_dicts[0])
 				translate = "".join(lines)
 				self.spy_view.show_translate(word, translate)
 
