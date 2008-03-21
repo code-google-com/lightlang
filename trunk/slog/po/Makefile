@@ -2,7 +2,7 @@
 #msginit --input=slog.pot --locale=ru_RU.UTF-8
 #msgfmt --output-file=slog.mo ru.po
 
-SOURCES=../slog/*.py
+SOURCES=../src/*.py
 
 default: ru.po
 	msgfmt --output-file=slog.mo ru.po

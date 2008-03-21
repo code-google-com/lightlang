@@ -115,6 +115,6 @@ def find_word(word, mode, dictionary):
 	fp.close()
 	return lines
 
-#Get installed dictionaries
+#Return list with installed dictionaries
 def get_installed_dicts():
 	return os.listdir(DICTS_DIR)
