@@ -8,7 +8,7 @@ import threading
 import xml.sax
 
 from bz2 import BZ2File
-import slog.libsl as libsl
+import libsl
 import slog.gui_helper as ghlp
 from slog.config import SlogConf
 from slog.dhandler import DictHandler

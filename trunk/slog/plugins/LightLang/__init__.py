@@ -3,7 +3,7 @@
 import os, subprocess
 import gtk, gobject
 
-import slog.libsl as libsl
+import libsl
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 

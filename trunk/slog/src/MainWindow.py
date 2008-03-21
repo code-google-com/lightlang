@@ -8,7 +8,7 @@ import gtk, gobject
 import pynotify
 import gettext
 
-from common import *
+from slog.common import *
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
