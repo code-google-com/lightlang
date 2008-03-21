@@ -2,7 +2,7 @@
 
 import os
 
-import slog.common  as cmn
+from src.common import *
 from distutils.core import setup
 
 data = [
@@ -21,8 +21,8 @@ for o in os.walk("plugins"):
 
 setup(
 	name = 'slog',
-	version= cmn.VERSION,
-	url = cmn.WEBSITE,
+	version= VERSION,
+	url = WEBSITE,
 	author = 'Nasyrov Renat',
 	author_email = 'renatn@gmail.com',
 	description = 'SLog is a PyGTK-based GUI for the LightLang SL',
@@ -30,7 +30,6 @@ setup(
 	requires=['gtk (>=2.10.0)', 'pynotify', 'gtkhtml2'],
 	scripts = ['bin/slog'],
 	packages = ['slog'],
-	py_modules = ['libsl'],
-	package_dir = {"": "libsl", "slog" : "slog"},
+	package_dir = {"": "libsl", "slog" : "src"},
 	data_files = data
 	)
