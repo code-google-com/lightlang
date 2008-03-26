@@ -32,8 +32,10 @@ import HistoryPanel
 import TextBrowser
 import TranslateWindow
 import DictsManager
-import IFAMenu
-import TranslateSitesMenu
+try : # FIXME: fucking debian packagers :-(
+	import IFAMenu
+	import TranslateSitesMenu
+except : pass
 import InternetLinksMenu
 import Help
 
@@ -198,14 +200,19 @@ class MainWindow(Qt.QMainWindow) :
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), self.tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addSeparator()
-		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
-		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
-		self.tools_menu.addMenu(self.translate_sites_menu)
+		try : # FIXME: fucking debian packagers :-(
+			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
+			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
+			self.tools_menu.addMenu(self.translate_sites_menu)
+		except : pass
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
 			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
-		self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
-		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
-		self.tools_menu.addMenu(self.ifa_menu)
+		try : # FIXME: fucking debian packagers :-(
+			self.tools_menu.addSeparator()
+			self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
+			self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
+			self.tools_menu.addMenu(self.ifa_menu)
+		except : pass
 
 		### Help Menu
 

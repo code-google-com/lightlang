@@ -49,15 +49,15 @@ class KeyboardModifierMenu(Qt.QMenu) :
 
 		###
 
-		self.addModifier("Left Ctrl", LeftCtrlModifier)
-		self.addModifier("Left Alt", LeftAltModifier)
-		self.addModifier("Left Shift", LeftShiftModifier)
-		self.addModifier("Left Win", LeftWinModifier)
+		self.addModifier(self.tr("Left Ctrl"), LeftCtrlModifier)
+		self.addModifier(self.tr("Left Alt"), LeftAltModifier)
+		self.addModifier(self.tr("Left Shift"), LeftShiftModifier)
+		self.addModifier(self.tr("Left Win"), LeftWinModifier)
 		self.addSeparator()
-		self.addModifier("Right Ctrl", RightCtrlModifier)
-		self.addModifier("Right Alt", RightAltModifier)
-		self.addModifier("Right Shift", RightShiftModifier)
-		self.addModifier("Right Win", RightWinModifier)
+		self.addModifier(self.tr("Right Ctrl"), RightCtrlModifier)
+		self.addModifier(self.tr("Right Alt"), RightAltModifier)
+		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
+		self.addModifier(self.tr("Right Win"), RightWinModifier)
 
 		#####
 
@@ -110,7 +110,7 @@ class MouseSelector(Qt.QObject) :
 		self.old_selection = Qt.QString()
 
 		self.timer = Qt.QTimer()
-		self.timer.setInterval(100)
+		self.timer.setInterval(300)
 
 		self.display = Xlib.display.Display()
 
@@ -124,7 +124,6 @@ class MouseSelector(Qt.QObject) :
 	### Public ###
 
 	def start(self) :
-		#self.clipboard.setText("", Qt.QClipboard.Selection)
 		self.clipboard.clear(Qt.QClipboard.Selection)
 		self.old_selection.clear()
 		self.timer.start()
@@ -149,10 +148,8 @@ class MouseSelector(Qt.QObject) :
 			return
 		self.old_selection = word
 
-		Qt.QCoreApplication.processEvents()
 		if not self.checkModifier() :
 			return
-		Qt.QCoreApplication.processEvents()
 
 		self.selectionChangedSignal(word)
 
@@ -161,6 +158,7 @@ class MouseSelector(Qt.QObject) :
 		keys = []
 
 		for count1 in range(0, len(keymap)) :
+			Qt.QCoreApplication.processEvents()
 			for count2 in range(0, 32) :
 				keys.append(int(keymap[count1] & (1 << count2)))
 

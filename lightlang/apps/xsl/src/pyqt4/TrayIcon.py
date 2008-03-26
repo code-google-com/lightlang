@@ -20,7 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4 import Qt
-import TranslateSitesMenu
+try : # FIXME: fucking debian packagers :-(
+	import TranslateSitesMenu
+except : pass
 import Config
 import Const
 
@@ -86,10 +88,12 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.stop_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
 			self.tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
-		self.tray_menu.addSeparator()
-		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
-		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
-		self.tray_menu.addMenu(self.translate_sites_menu)
+		try : # FIXME: fucking debian packagers :-(
+			self.tray_menu.addSeparator()
+			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
+			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
+			self.tray_menu.addMenu(self.translate_sites_menu)
+		except : pass
 		self.tray_menu.addSeparator()
 		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), self.tr("Quit"), self.exit)
 		self.setContextMenu(self.tray_menu)
