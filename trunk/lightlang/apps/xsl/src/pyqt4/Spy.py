@@ -30,13 +30,84 @@ import DictsManager
 #####
 SL = Config.Prefix+"/bin/sl"
 
+LeftCtrlModifier = 133
+LeftAltModifier = 256
+LeftShiftModifier = 194
+LeftWinModifier = 451
+RightCtrlModifier = 421
+RightAltModifier = 449
+RightShiftModifier = 230
+RightWinModifier = 452
+
+#####
+class KeyboardModifierMenu(Qt.QMenu) :
+	def __init__(self, title, parent = None) :
+		Qt.QMenu.__init__(self, title, parent)
+
+		self.actions_list = []
+		self.actions_group = Qt.QActionGroup(self)
+
+		###
+
+		self.addModifier("Left Ctrl", LeftCtrlModifier)
+		self.addModifier("Left Alt", LeftAltModifier)
+		self.addModifier("Left Shift", LeftShiftModifier)
+		self.addModifier("Left Win", LeftWinModifier)
+		self.addSeparator()
+		self.addModifier("Right Ctrl", RightCtrlModifier)
+		self.addModifier("Right Alt", RightAltModifier)
+		self.addModifier("Right Shift", RightShiftModifier)
+		self.addModifier("Right Win", RightWinModifier)
+
+		###
+
+		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
+
+		###
+
+		self.setIndex(0)
+
+
+	### Public ###
+
+	def index(self) :
+		count = 0
+		while count < len(self.actions_list) :
+			if self.actions_list[count].isChecked() :
+				return count
+			count += 1
+
+	def setIndex(self, index) :
+		self.actions_list[index].setChecked(True)
+		self.modifierChangedSignal(self.actions_list[index])
+
+
+	### Private ###
+
+	def addModifier(self, title, modifier) :
+		action = Qt.QAction(title, self)
+		action.setCheckable(True)
+		action.setData(Qt.QVariant(modifier))
+
+		self.addAction(action)
+		self.actions_list.append(action)
+		self.actions_group.addAction(action)
+
+
+	### Signals ###
+
+	def modifierChangedSignal(self, action) :
+		modifier = action.data().toInt()[0]
+		self.emit(Qt.SIGNAL("modifierChanged(int)"), modifier)
+
+
 #####
 class MouseSelector(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 
 		self.clipboard = Qt.QApplication.clipboard()
-		self.old_selection = Qt.QString()
+		#self.old_selection = Qt.QString()
 
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(100)
@@ -44,7 +115,7 @@ class MouseSelector(Qt.QObject) :
 		self.display = Xlib.display.Display()
 		self.root = self.display.screen().root
 
-		self.void_mask = self.root.query_pointer().mask
+		self.modifier = LeftCtrlModifier
 
 		#####
 
@@ -54,19 +125,23 @@ class MouseSelector(Qt.QObject) :
 	### Public ###
 
 	def start(self) :
-		self.clipboard.setText("", Qt.QClipboard.Selection)
-		self.old_selection.clear()
+		#self.clipboard.setText("", Qt.QClipboard.Selection)
+		#self.old_selection.clear()
+		self.clipboard.clear()
 		self.timer.start()
 
 	def stop(self) :
 		self.timer.stop()
+
+	def setModifier(self, modifier) :
+		self.modifier = modifier
 
 
 	### Private ###
 
 	def checkSelection(self) :
 		Qt.QCoreApplication.processEvents()
-		if self.root.query_pointer().mask != self.void_mask : # Xlib, buttons test
+		if not self.checkModifier() :
 			return
 		Qt.QCoreApplication.processEvents()
 
@@ -75,11 +150,25 @@ class MouseSelector(Qt.QObject) :
 		if word.isEmpty() :
 			return
 		word = word.toLower()
-		if word == self.old_selection :
-			return
-		self.old_selection = word
+		#if word == self.old_selection :
+		#	return
+		#self.old_selection = word
+		self.clipboard.clear()
 
 		self.selectionChangedSignal(word)
+
+	def checkModifier(self) :
+		keymap = self.display.query_keymap()
+		keys = []
+
+		for count1 in range(0, len(keymap)) :
+			for count2 in range(0, 32) :
+				keys.append(int(keymap[count1] & (1 << count2)))
+
+		if keys[self.modifier] != 0 :
+			return True
+		else :
+			return False
 
 
 	### Signals ###
@@ -121,6 +210,9 @@ class Spy(Qt.QObject) :
 
 	def stop(self) :
 		self.mouse_selector.stop()
+
+	def setModifier(self, modifier) :
+		self.mouse_selector.setModifier(modifier)
 
 
 	### Private ###

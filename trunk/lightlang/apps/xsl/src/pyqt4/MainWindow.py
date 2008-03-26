@@ -185,6 +185,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.show_translate_window_menu_action.setCheckable(True)
 		self.auto_detect_window_menu_action = self.spy_menu.addAction(self.tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
+		self.spy_menu.addSeparator()
+		self.keyboard_modifier_menu = Spy.KeyboardModifierMenu(self.tr("Keyboard modifier"))
+		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+		self.spy_menu.addMenu(self.keyboard_modifier_menu)
 
 		### Tools Menu
 
@@ -216,6 +220,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), self.tr("About %1").arg(Const.MyName),
 			self.showAbout)
 		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), self.tr("About Qt4"), self.showAboutQt)
+
+		### Connections
+
+		self.connect(self.keyboard_modifier_menu, Qt.SIGNAL("modifierChanged(int)"), self.spy.setModifier)
 
 		################
 		##### Misc #####
@@ -342,6 +350,8 @@ class MainWindow(Qt.QMainWindow) :
 			Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
 		settings.setValue("main_window/auto_detect_window_flag",
 			Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
+		settings.setValue("main_window/keyboard_modifier_index",
+			Qt.QVariant(self.keyboard_modifier_menu.index()))
 
 	def loadSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
@@ -353,6 +363,8 @@ class MainWindow(Qt.QMainWindow) :
 			Qt.QVariant(True)).toBool())
 		self.auto_detect_window_menu_action.setChecked(settings.value("main_window/auto_detect_window_flag",
 			Qt.QVariant(True)).toBool())
+		self.keyboard_modifier_menu.setIndex(settings.value("main_window/keyboard_modifier_index",
+			Qt.QVariant(0)).toInt()[0])
 
 	def fullScreen(self) :
 		if self.isFullScreen() :
