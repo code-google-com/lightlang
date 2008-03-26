@@ -111,6 +111,7 @@ class TextBrowser(Qt.QWidget) :
 
 	def setText(self, index, text) :
 		self.text_browsers[index].setHtml(text)
+		# TODO: add sound-link checks
 
 	def setCaption(self, index, word) :
 		self.tab_widget.setTabText(index, word)
