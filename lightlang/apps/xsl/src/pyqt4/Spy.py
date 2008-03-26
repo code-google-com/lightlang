@@ -59,11 +59,11 @@ class KeyboardModifierMenu(Qt.QMenu) :
 		self.addModifier("Right Shift", RightShiftModifier)
 		self.addModifier("Right Win", RightWinModifier)
 
-		###
+		#####
 
 		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
 
-		###
+		#####
 
 		self.setIndex(0)
 
@@ -107,13 +107,12 @@ class MouseSelector(Qt.QObject) :
 		Qt.QObject.__init__(self, parent)
 
 		self.clipboard = Qt.QApplication.clipboard()
-		#self.old_selection = Qt.QString()
+		self.old_selection = Qt.QString()
 
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(100)
 
 		self.display = Xlib.display.Display()
-		self.root = self.display.screen().root
 
 		self.modifier = LeftCtrlModifier
 
@@ -126,8 +125,8 @@ class MouseSelector(Qt.QObject) :
 
 	def start(self) :
 		#self.clipboard.setText("", Qt.QClipboard.Selection)
-		#self.old_selection.clear()
-		self.clipboard.clear()
+		self.clipboard.clear(Qt.QClipboard.Selection)
+		self.old_selection.clear()
 		self.timer.start()
 
 	def stop(self) :
@@ -140,20 +139,20 @@ class MouseSelector(Qt.QObject) :
 	### Private ###
 
 	def checkSelection(self) :
-		Qt.QCoreApplication.processEvents()
-		if not self.checkModifier() :
-			return
-		Qt.QCoreApplication.processEvents()
-
 		word = self.clipboard.text(Qt.QClipboard.Selection)
 		word = word.simplified()
 		if word.isEmpty() :
 			return
 		word = word.toLower()
-		#if word == self.old_selection :
-		#	return
-		#self.old_selection = word
-		self.clipboard.clear()
+
+		if word == self.old_selection :
+			return
+		self.old_selection = word
+
+		Qt.QCoreApplication.processEvents()
+		if not self.checkModifier() :
+			return
+		Qt.QCoreApplication.processEvents()
 
 		self.selectionChangedSignal(word)
 
@@ -175,6 +174,7 @@ class MouseSelector(Qt.QObject) :
 
 	def selectionChangedSignal(self, word) :
 		self.emit(Qt.SIGNAL("selectionChanged(QString &)"), word)
+
 
 #####
 class Spy(Qt.QObject) :
