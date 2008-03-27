@@ -132,9 +132,6 @@ class SlogConf:
 		def get_sl_prefix(self):
 			return self.sl_prefix
 
-		def get_sl_exec(self):
-			return os.path.join(self.sl_prefix, "bin", "sl")
-
 		def get_engine(self):
 			return self.engine
 

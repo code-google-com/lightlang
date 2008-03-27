@@ -1,6 +1,6 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import os, subprocess
+import os
 import gtk, gobject
 
 import libsl
