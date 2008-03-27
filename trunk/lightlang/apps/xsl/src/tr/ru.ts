@@ -471,44 +471,49 @@ Package version: %2</source>
 <context>
     <name>KeyboardModifierMenu</name>
     <message>
-        <location filename="Spy.py" line="52"/>
+        <location filename="Spy.py" line="53"/>
         <source>Left Ctrl</source>
         <translation>Ctrl слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="53"/>
+        <location filename="Spy.py" line="54"/>
         <source>Left Alt</source>
         <translation>Alt слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="54"/>
+        <location filename="Spy.py" line="55"/>
         <source>Left Shift</source>
         <translation>Shift слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="55"/>
+        <location filename="Spy.py" line="56"/>
         <source>Left Win</source>
         <translation>Win слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="57"/>
+        <location filename="Spy.py" line="58"/>
         <source>Right Ctrl</source>
         <translation>Ctrl справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="58"/>
+        <location filename="Spy.py" line="59"/>
         <source>Right Alt</source>
         <translation>Alt справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="59"/>
+        <location filename="Spy.py" line="60"/>
         <source>Right Shift</source>
         <translation>Shift справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="60"/>
+        <location filename="Spy.py" line="61"/>
         <source>Right Win</source>
         <translation>Win справа</translation>
+    </message>
+    <message>
+        <location filename="Spy.py" line="63"/>
+        <source>No modifier</source>
+        <translation>Без модификатора</translation>
     </message>
 </context>
 <context>
@@ -760,42 +765,42 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>Spy</name>
     <message>
-        <location filename="Spy.py" line="248"/>
+        <location filename="Spy.py" line="254"/>
         <source>An error occured when creating the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка при создании поискового процесса.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="286"/>
+        <location filename="Spy.py" line="292"/>
         <source>Error of the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка поискового процесса.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="260"/>
+        <location filename="Spy.py" line="266"/>
         <source>Connection lost with search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Связь с поисковым процессом потеряна.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="266"/>
+        <location filename="Spy.py" line="272"/>
         <source>Error while writing data into the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка при записи данных в поисковый процесс.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="272"/>
+        <location filename="Spy.py" line="278"/>
         <source>Error while reading data from the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка при чтении данных из поискового процесса.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="278"/>
+        <location filename="Spy.py" line="284"/>
         <source>Unknown error occured while executing the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>При выполнении поискового процесса произошла неизвестная ошибка.

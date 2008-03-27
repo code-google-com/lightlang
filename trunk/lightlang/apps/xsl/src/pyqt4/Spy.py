@@ -38,6 +38,7 @@ RightCtrlModifier = 421
 RightAltModifier = 449
 RightShiftModifier = 230
 RightWinModifier = 452
+NoModifier = -1
 
 #####
 class KeyboardModifierMenu(Qt.QMenu) :
@@ -58,6 +59,8 @@ class KeyboardModifierMenu(Qt.QMenu) :
 		self.addModifier(self.tr("Right Alt"), RightAltModifier)
 		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
 		self.addModifier(self.tr("Right Win"), RightWinModifier)
+		self.addSeparator()
+		self.addModifier(self.tr("No modifier"), NoModifier)
 
 		#####
 
@@ -124,7 +127,7 @@ class MouseSelector(Qt.QObject) :
 	### Public ###
 
 	def start(self) :
-		self.clipboard.clear(Qt.QClipboard.Selection)
+		self.clipboard.setText(Qt.QString(""), Qt.QClipboard.Selection)
 		self.old_selection.clear()
 		self.timer.start()
 
@@ -161,6 +164,9 @@ class MouseSelector(Qt.QObject) :
 			Qt.QCoreApplication.processEvents()
 			for count2 in range(0, 32) :
 				keys.append(int(keymap[count1] & (1 << count2)))
+
+		if self.modifier == NoModifier :
+			return True
 
 		if keys[self.modifier] != 0 :
 			return True
