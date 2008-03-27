@@ -4,7 +4,7 @@ import gtk, gtk.gdk as gdk
 import gobject
 import re
 
-import slog.libsl as libsl
+import libsl
 from slog.config import SlogConf
 from slog.TransPanel import TransView
 

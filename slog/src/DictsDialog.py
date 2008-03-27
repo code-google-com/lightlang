@@ -1,6 +1,6 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import os, shutil, stat, subprocess
+import os, shutil, stat
 import gtk, gobject
 import gtk.gdk as gdk
 import urllib, urllib2
@@ -50,7 +50,7 @@ def is_path_writable(path):
 	return False
 
 # Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
-def filename_to_dict(filename):
+def filename_parse(filename):
 	i = filename.find(".")
 	j = filename.find(".", i+1)
 	dname = filename[:i]
@@ -294,7 +294,19 @@ class DictInstaller(threading.Thread):
 
 		self.__download()
 		self.__decompress()
-		self.__indexating()
+
+		print "Start indexating..."
+		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
+		file_idx = file_orig + ".res"
+		file_inst = os.path.join(libsl.DICTS_DIR, self.__filename)
+
+		libsl.indexating(file_orig)
+
+		print "Install...", file_inst
+		shutil.copyfile(file_idx, file_inst)
+
+		print "Cleanup..."
+		shutil.rmtree(SL_TMP_DIR)
 
 	#def url_hook_report(blocks, bytes_in_block, file_size):
 	#	print a
@@ -311,8 +323,8 @@ class DictInstaller(threading.Thread):
 
 		fp = open(file_dict, "wb")
 		urllib.urlretrieve(url_dict, file_dict)
-		fp.close()
 		#urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
+		fp.close()
 
 	def __decompress(self):
 		print "Start decompressing..."
@@ -327,39 +339,6 @@ class DictInstaller(threading.Thread):
 		finally:
 			bz2f.close()
 			fp.close()
-
-	def __indexating(self):
-		print "Start indexating..."
-		conf = SlogConf()
-		sl_exec = conf.get_sl_exec()
-
-		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
-		file_idx1 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx1"))
-		file_idx2 = os.path.join(SL_TMP_DIR, (self.__filename + ".idx2"))
-		file_inst = os.path.join(libsl.DICTS_DIR, self.__filename)
-
-		print "* create index, step 1..."
-		retcode = subprocess.call("%s --print-index %s 1>%s" % (sl_exec, file_orig, file_idx1), shell=True)
-		if retcode != 0:
-			raise IOError("failed indexating")
-		retcode = subprocess.call("cat %s 1>>%s" % (file_orig, file_idx1), shell=True)
-		if retcode != 0:
-			raise IOError("failed indexating")
-
-		print "* create index, step 2..."
-		retcode = subprocess.call("%s --print-index %s 1>%s" % (sl_exec, file_idx1, file_idx2), shell=True)
-		if retcode != 0:
-			raise IOError("failed indexating")
-		retcode = subprocess.call("cat %s 1>>%s" % (file_orig, file_idx2), shell=True)
-		if retcode != 0:
-			raise IOError("failed indexating")
-
-		print "Install...", file_inst
-		shutil.copyfile(file_idx2, file_inst)
-
-		print "Cleanup..."
-		shutil.rmtree(SL_TMP_DIR)
-
 
 class ListLoader(threading.Thread):
 	def __init__(self, name="ListLoader"):
@@ -405,17 +384,17 @@ class AvailDataModel(gtk.ListStore):
 class InstDataModel(gtk.ListStore):
 	def __init__(self):
 		gtk.ListStore.__init__(self, bool, bool, str, str)
-		self.conf = SlogConf()
 		self.__load()
 
 	def __load(self):
-		used_dict_list = self.conf.get_used_dicts()
-		spy_file_list = self.conf.get_spy_dicts()
+		conf = SlogConf()
+		used_dict_list = conf.get_used_dicts()
+		spy_file_list = conf.get_spy_dicts()
 		dict_list = libsl.get_installed_dicts()
 		for fname in dict_list:
 			used = fname in used_dict_list
 			spy = fname in spy_file_list
-			dname, dtarget = filename_to_dict(fname)
+			dname, dtarget = filename_parse(fname)
 			self.append_row(used, spy, dname, dtarget)
 
 	def append_row(self, used, spy, name, target):

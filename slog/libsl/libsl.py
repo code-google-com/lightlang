@@ -2,6 +2,7 @@
 
 import os
 import re
+import tempfile
 
 DICTS_DIR = "/home/renat/opt/lightlang/share/sl/dicts"
 
@@ -118,3 +119,55 @@ def find_word(word, mode, dictionary):
 #Return list with installed dictionaries
 def get_installed_dicts():
 	return os.listdir(DICTS_DIR)
+
+def create_index(fp):
+	ch_wc = '\0'
+	index = ["[index]\n"]
+	fp.seek(0)
+	while True:
+		pos = fp.tell()
+
+		line = fp.readline()
+		if line == "":
+			break
+
+		if (line[0] == "#") or (line[0] == "\n"):
+			continue
+
+		i = line.find("  ")
+		if i == -1:
+			continue
+
+		fch = line[0].lower()
+		if ch_wc != fch:
+			ch_wc = fch
+			index.append("%lc %ld\n" % (ch_wc, pos))
+		
+	index.append("[/index]\n")
+	return index
+
+def indexating(filename):
+	fp = open(filename, "r")
+	index = create_index(fp)
+	fp.seek(0)
+
+	tmp = tempfile.TemporaryFile()
+	tmp.writelines(index)
+	for line in fp:
+		tmp.write(line)
+	index = create_index(tmp)
+	tmp.close()
+
+	fp.seek(0)
+	filename_res = filename + ".res"
+	fr = open(filename_res, "w")
+	fr.writelines(index)
+	for line in fp:
+		fr.write(line)
+	fr.close()
+	fp.close()
+
+#Unit test
+if __name__ == "__main__":
+	indexating("/tmp/EngFree.en-ru")
+
