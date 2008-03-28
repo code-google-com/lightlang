@@ -29,9 +29,7 @@ from slog.dhandler import DictHandler
 FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
 FTP_DICTS_URL = FTP_LL_URL + "/dicts"
 FTP_REPO_URL = FTP_DICTS_URL + "/repodata/primary.xml"
-
 REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
-
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
 
@@ -209,7 +207,6 @@ class DictsDialog(gtk.Dialog):
 			self.list_inst.append_row(True, False, dname, dtarget)
 			self.sync_used_dicts()
 
-
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
 		(model, l_iter) = selection.get_selected()
@@ -234,7 +231,7 @@ class DictsDialog(gtk.Dialog):
 		response = dlg.run()
 		if response == gtk.RESPONSE_YES:
 			#Remove dictionary
-			path = os.path.join(libsl.DICT_DIR, fname)
+			path = os.path.join(libsl.DICTS_DIR, fname)
 			os.unlink(path)
 			model.remove(l_iter)
 			self.sync_used_dicts()
