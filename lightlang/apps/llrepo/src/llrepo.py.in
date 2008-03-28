@@ -263,7 +263,7 @@ def install_resources(resources_type = "", resources_list = []) :
 			print >> sys.stderr, MyName+": you not have a permissions"
 			return -1
 	elif resources_type == SoundsResources :
-		if not os.access(DictsDir, os.W_OK) :
+		if not os.access(SoundsDir, os.W_OK) :
 			print >> sys.stderr, MyName+": you not have a permissions"
 			return -1
 
@@ -359,7 +359,7 @@ def uninstall_resources(resources_type = "", resources_list = []) :
 			print >> sys.stderr, MyName+": you not have a permissions"
 			return -1
 	elif resources_type == SoundsResources :
-		if not os.access(DictsDir, os.W_OK) :
+		if not os.access(SoundsDir, os.W_OK) :
 			print >> sys.stderr, MyName+": you not have a permissions"
 			return -1
 
