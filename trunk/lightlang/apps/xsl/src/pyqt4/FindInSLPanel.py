@@ -200,8 +200,11 @@ class FindInSLPanel(Qt.QDockWidget) :
 	def clear(self) :
 		self.clearLineEdit()
 
+	def setDictsList(self, dicts_list) :
+		self.internal_find.setDictsList(dicts_list)
+		self.external_find.setDictsList(dicts_list)
 
-	### Public/Private ###
+	###
 
 	def uFind(self, word = None) :
 		if word == None :
@@ -212,15 +215,9 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.external_find.uFind(word)
 		self.wordChangedSignal(word)
 
-	def uFindInNewTab(self, word) :
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		self.newTabRequestSignal()
-		self.external_find.uFind(word)
-		self.wordChangedSignal(word)
-
-	def cFind(self) :
+	def cFind(self, word = None) :
+		if word == None :
+			word = self.line_edit.text()
 		word = self.line_edit.text()
 		word = word.simplified()
 		if word.isEmpty() :
@@ -228,15 +225,9 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.external_find.cFind(word)
 		self.wordChangedSignal(word)
 
-	def cFindInNewTab(self, word) :
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		self.newTabRequestSignal()
-		self.external_find.cFind(word)
-		self.wordChangedSignal(word)
-
-	def lFind(self) :
+	def lFind(self, word = None) :
+		if word == None :
+			word = self.line_edit.text()
 		word = self.line_edit.text()
 		word = word.simplified()
 		if word.isEmpty() :
@@ -244,11 +235,9 @@ class FindInSLPanel(Qt.QDockWidget) :
 			return
 		self.internal_find.lFind(word)
 
-	def lFindAfterDelay(self) :
-		self.delay_timer.stop()
-		self.lFind()
-
-	def iFind(self) :
+	def iFind(self, word = None) :
+		if word == None :
+			word = self.line_edit.text()
 		word = self.line_edit.text()
 		word = word.simplified()
 		if word.isEmpty() :
@@ -256,8 +245,34 @@ class FindInSLPanel(Qt.QDockWidget) :
 			return
 		self.internal_find.iFind(word)
 
+	def uFindInNewTab(self, word = None) :
+		if word == None :
+			word = self.line_edit.text()
+		word = word.simplified()
+		if word.isEmpty() :
+			return
+		self.newTabRequestSignal()
+		self.external_find.uFind(word)
+		self.wordChangedSignal(word)
+
+	def cFindInNewTab(self, word = None) :
+		if word == None :
+			word = self.line_edit.text()
+		word = word.simplified()
+		if word.isEmpty() :
+			return
+		self.newTabRequestSignal()
+		self.external_find.cFind(word)
+		self.wordChangedSignal(word)
+
 
 	### Private ###
+
+	def lFindAfterDelay(self) :
+		self.delay_timer.stop()
+		self.lFind()
+
+	###
 
 	def setStatus(self, word) :
 		if word.simplified().isEmpty() :

@@ -23,7 +23,6 @@ from PyQt4 import Qt
 import sys
 import Config
 import Const
-import SLFind
 import Spy
 import FindInSLPanel
 import FindInTextPanel
@@ -87,8 +86,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
 
-		self.spy = Spy.Spy()
-
 		self.translate_window = TranslateWindow.TranslateWindow()
 
 		self.dicts_manager = DictsManager.DictsManager()
@@ -101,9 +98,14 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("newTabRequest()"), self.text_browser.addTab)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("clearRequest()"), self.registrateTextBrowser)
+		self.connect(self.find_in_sl_panel, Qt.SIGNAL("clearRequest()"), self.translate_window.clear)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.setTextBrowserCaption)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.history_panel.addWord)
+		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"),
+			self.translate_window.setCaption)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"), self.setTextBrowserText)
+		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"),
+			self.translate_window.setText)
 
 		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"), self.findInTextNext)
 		self.connect(self.find_in_text_panel, Qt.SIGNAL("findPreviousRequest(const QString &)"),
@@ -120,17 +122,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.google_translate_panel, Qt.SIGNAL("textChanged(const QString &)"),
 			self.setTextBrowserText)
 
-		self.connect(self.spy, Qt.SIGNAL("processStarted()"), self.showTranslateWindow)
-		self.connect(self.spy, Qt.SIGNAL("clearRequest()"), self.registrateTextBrowser)
-		self.connect(self.spy, Qt.SIGNAL("clearRequest()"), self.translate_window.clear)
-		self.connect(self.spy, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.spy, Qt.SIGNAL("wordChanged(const QString &)"), self.setTextBrowserCaption)
-		self.connect(self.spy, Qt.SIGNAL("wordChanged(const QString &)"), self.translate_window.setCaption)
-		self.connect(self.spy, Qt.SIGNAL("wordChanged(const QString &)"), self.history_panel.addWord)
-		self.connect(self.spy, Qt.SIGNAL("textChanged(const QString &)"), self.setTextBrowserText)
-		self.connect(self.spy, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
-
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsChanged()"), self.find_in_sl_panel.lFind)
+		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
+			self.find_in_sl_panel.setDictsList)
+		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
+			self.find_in_sl_panel.lFind)
 
 		#########################
 		##### Creating Menu #####
@@ -176,21 +171,8 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Spy Menu
 
-		self.spy_menu = self.main_menu_bar.addMenu(self.tr("Spy"))
-		self.start_spy_menu_action = self.spy_menu.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
-			self.tr("Start Spy"), self.startSpy)
-		self.stop_spy_menu_action = self.spy_menu.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
-			self.tr("Stop Spy"), self.stopSpy)
-		self.stop_spy_menu_action.setEnabled(False)
-		self.spy_menu.addSeparator()
-		self.show_translate_window_menu_action = self.spy_menu.addAction(self.tr("Show popup window"))
-		self.show_translate_window_menu_action.setCheckable(True)
-		self.auto_detect_window_menu_action = self.spy_menu.addAction(self.tr("Auto-detect window"))
-		self.auto_detect_window_menu_action.setCheckable(True)
-		self.spy_menu.addSeparator()
-		self.keyboard_modifier_menu = Spy.KeyboardModifierMenu(self.tr("Keyboard modifier"))
-		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
-		self.spy_menu.addMenu(self.keyboard_modifier_menu)
+		self.spy_menu = Spy.SpyMenu(self.tr("Spy"))
+		self.main_menu_bar.addMenu(self.spy_menu)
 
 		### Tools Menu
 
@@ -230,7 +212,15 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Connections
 
-		self.connect(self.keyboard_modifier_menu, Qt.SIGNAL("modifierChanged(int)"), self.spy.setModifier)
+		self.connect(self.spy_menu, Qt.SIGNAL("spyStarted()"), self.spyStartedSignal)
+		self.connect(self.spy_menu, Qt.SIGNAL("spyStopped()"), self.spyStoppedSignal)
+		self.connect(self.spy_menu, Qt.SIGNAL("statusChanged(const QString &)"), self.showStatusMessage)
+		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"),
+			self.find_in_sl_panel.setWord)
+		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"),
+			self.find_in_sl_panel.uFind)
+		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"),
+			self.translate_window.showUnderCursor)
 
 		################
 		##### Misc #####
@@ -246,36 +236,24 @@ class MainWindow(Qt.QMainWindow) :
 	### Public ###
 
 	def startSpy(self) :
-		self.spy.start()
-
-		self.start_spy_menu_action.setEnabled(False)
-		self.stop_spy_menu_action.setEnabled(True)
-
-		self.showStatusMessage(self.tr("Spy is running"))
-
-		self.spyStartedSignal()
+		self.spy_menu.startSpy()
 
         def stopSpy(self) :
-		self.spy.stop()
-
-		self.start_spy_menu_action.setEnabled(True)
-		self.stop_spy_menu_action.setEnabled(False)
-
-		self.showStatusMessage(self.tr("Spy is stopped"))
-
-		self.spyStoppedSignal()
+		self.spy_menu.stopSpy()
 
 	def save(self) :
 		self.saveSettings()
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
 		self.google_translate_panel.saveSettings()
+		self.spy_menu.saveSettings()
 
 	def load(self) :
 		self.loadSettings()
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.google_translate_panel.loadSettings()
+		self.spy_menu.loadSettings()
 		self.showStatusMessage(self.tr("Ready"))
 		
 
@@ -353,12 +331,6 @@ class MainWindow(Qt.QMainWindow) :
 		settings.setValue("main_window/position", Qt.QVariant(self.pos()))
 		settings.setValue("main_window/is_visible_flag", Qt.QVariant(self.isVisible()))
 		settings.setValue("main_window/state", Qt.QVariant(self.saveState()))
-		settings.setValue("main_window/show_translate_window_flag",
-			Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
-		settings.setValue("main_window/auto_detect_window_flag",
-			Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
-		settings.setValue("main_window/keyboard_modifier_index",
-			Qt.QVariant(self.keyboard_modifier_menu.index()))
 
 	def loadSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
@@ -366,12 +338,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
-		self.show_translate_window_menu_action.setChecked(settings.value("main_window/show_translate_window_flag",
-			Qt.QVariant(True)).toBool())
-		self.auto_detect_window_menu_action.setChecked(settings.value("main_window/auto_detect_window_flag",
-			Qt.QVariant(True)).toBool())
-		self.keyboard_modifier_menu.setIndex(settings.value("main_window/keyboard_modifier_index",
-			Qt.QVariant(0)).toInt()[0])
 
 	def fullScreen(self) :
 		if self.isFullScreen() :
@@ -392,14 +358,6 @@ class MainWindow(Qt.QMainWindow) :
 	def showFindInTextPanel(self) :
 		self.find_in_text_panel.setVisible(True)
 		self.find_in_text_panel.setFocus(Qt.Qt.OtherFocusReason)
-
-	def showTranslateWindow(self) :
-		if self.show_translate_window_menu_action.isChecked() :
-			if self.auto_detect_window_menu_action.isChecked() :
-				if Qt.QApplication.activeWindow() == None :
-					self.translate_window.showUnderCursor()
-			else :
-				self.translate_window.showUnderCursor()
 
 	def showHistoryPanel(self) :
 		self.history_panel.setVisible(True)

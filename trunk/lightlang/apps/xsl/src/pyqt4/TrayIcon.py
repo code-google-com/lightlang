@@ -46,12 +46,12 @@ class TrayMenu(Qt.QMenu) :
 		fictive_action.setEnabled(False)
 
 		fictive_action_frame = Qt.QFrame()
-		fictive_action_frame.setFrameShape(Qt.QFrame.StyledPanel) # Qt.QFrame.Box
+		fictive_action_frame.setFrameShape(Qt.QFrame.Box) # Qt.QFrame.StyledPanel
 		fictive_action.setDefaultWidget(fictive_action_frame)
 
 		fictive_action_frame_layout = Qt.QHBoxLayout()
-		fictive_action_frame_layout.setMargin(3)
-		fictive_action_frame_layout.setSpacing(5)
+		fictive_action_frame_layout.setMargin(1)
+		#fictive_action_frame_layout.setSpacing(5)
 		fictive_action_frame.setLayout(fictive_action_frame_layout)
 
 		fictive_action_icon_label = Qt.QLabel()

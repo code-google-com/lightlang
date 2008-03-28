@@ -25,10 +25,10 @@ import Xlib
 import Xlib.display
 import Config
 import Const
-import DictsManager
 
 #####
 SL = Config.Prefix+"/bin/sl"
+IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 LeftCtrlModifier = 133
 LeftAltModifier = 256
@@ -39,70 +39,6 @@ RightAltModifier = 449
 RightShiftModifier = 230
 RightWinModifier = 452
 NoModifier = -1
-
-#####
-class KeyboardModifierMenu(Qt.QMenu) :
-	def __init__(self, title, parent = None) :
-		Qt.QMenu.__init__(self, title, parent)
-
-		self.actions_list = []
-		self.actions_group = Qt.QActionGroup(self)
-
-		###
-
-		self.addModifier(self.tr("Left Ctrl"), LeftCtrlModifier)
-		self.addModifier(self.tr("Left Alt"), LeftAltModifier)
-		self.addModifier(self.tr("Left Shift"), LeftShiftModifier)
-		self.addModifier(self.tr("Left Win"), LeftWinModifier)
-		self.addSeparator()
-		self.addModifier(self.tr("Right Ctrl"), RightCtrlModifier)
-		self.addModifier(self.tr("Right Alt"), RightAltModifier)
-		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
-		self.addModifier(self.tr("Right Win"), RightWinModifier)
-		self.addSeparator()
-		self.addModifier(self.tr("No modifier"), NoModifier)
-
-		#####
-
-		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
-
-		#####
-
-		self.setIndex(0)
-
-
-	### Public ###
-
-	def index(self) :
-		count = 0
-		while count < len(self.actions_list) :
-			if self.actions_list[count].isChecked() :
-				return count
-			count += 1
-
-	def setIndex(self, index) :
-		self.actions_list[index].setChecked(True)
-		self.modifierChangedSignal(self.actions_list[index])
-
-
-	### Private ###
-
-	def addModifier(self, title, modifier) :
-		action = Qt.QAction(title, self)
-		action.setCheckable(True)
-		action.setData(Qt.QVariant(modifier))
-
-		self.addAction(action)
-		self.actions_list.append(action)
-		self.actions_group.addAction(action)
-
-
-	### Signals ###
-
-	def modifierChangedSignal(self, action) :
-		modifier = action.data().toInt()[0]
-		self.emit(Qt.SIGNAL("modifierChanged(int)"), modifier)
-
 
 #####
 class MouseSelector(Qt.QObject) :
@@ -151,6 +87,7 @@ class MouseSelector(Qt.QObject) :
 			return
 		self.old_selection = word
 
+		# TODO: add mouse-buttons checks
 		if not self.checkModifier() :
 			return
 
@@ -177,147 +114,186 @@ class MouseSelector(Qt.QObject) :
 	### Signals ###
 
 	def selectionChangedSignal(self, word) :
-		self.emit(Qt.SIGNAL("selectionChanged(QString &)"), word)
+		self.emit(Qt.SIGNAL("selectionChanged(const QString &)"), word)
 
 
 #####
-class Spy(Qt.QObject) :
-	def __init__(self, parent = None) :
-		Qt.QObject.__init__(self, parent)
+class KeyboardModifierMenu(Qt.QMenu) :
+	def __init__(self, title, parent = None) :
+		Qt.QMenu.__init__(self, title, parent)
 
-		self.proc = Qt.QProcess()
-		self.proc.setReadChannelMode(Qt.QProcess.MergedChannels)
-		self.proc.setReadChannel(Qt.QProcess.StandardOutput)
+		self.actions_list = []
+		self.actions_group = Qt.QActionGroup(self)
 
-		self.proc_block_flag = False
-		self.proc_kill_flag = False
+		###
 
-		self.proc_args = Qt.QStringList()
+		self.addModifier(self.tr("Left Ctrl"), LeftCtrlModifier)
+		self.addModifier(self.tr("Left Alt"), LeftAltModifier)
+		self.addModifier(self.tr("Left Shift"), LeftShiftModifier)
+		self.addModifier(self.tr("Left Win"), LeftWinModifier)
+		self.addSeparator()
+		self.addModifier(self.tr("Right Ctrl"), RightCtrlModifier)
+		self.addModifier(self.tr("Right Alt"), RightAltModifier)
+		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
+		self.addModifier(self.tr("Right Win"), RightWinModifier)
+		self.addSeparator()
+		self.addModifier(self.tr("No modifier"), NoModifier)
 
-		self.proc_output = Qt.QByteArray()
+		#####
+
+		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
+
+		#####
+
+		self.setIndex(0)
+
+
+	### Public ###
+
+	def saveSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings.setValue("modifier_menu/modifier_index", Qt.QVariant(self.index()))
+
+	def loadSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		self.setIndex(settings.value("modifier_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
+
+
+	### Private ###
+
+	def index(self) :
+		count = 0
+		while count < len(self.actions_list) :
+			if self.actions_list[count].isChecked() :
+				return count
+			count += 1
+
+	def setIndex(self, index) :
+		self.actions_list[index].setChecked(True)
+		self.modifierChangedSignal(self.actions_list[index])
+
+	def addModifier(self, title, modifier) :
+		action = Qt.QAction(title, self)
+		action.setCheckable(True)
+		action.setData(Qt.QVariant(modifier))
+
+		self.addAction(action)
+		self.actions_list.append(action)
+		self.actions_group.addAction(action)
+
+
+	### Signals ###
+
+	def modifierChangedSignal(self, action) :
+		modifier = action.data().toInt()[0]
+		self.emit(Qt.SIGNAL("modifierChanged(int)"), modifier)
+
+
+#####
+class SpyMenu(Qt.QMenu) :
+	def __init__(self, title, parent = None) :
+		Qt.QObject.__init__(self, title, parent)
 
 		self.mouse_selector = MouseSelector()
 
 		#####
 
-		self.connect(self.proc, Qt.SIGNAL("error(QProcess::ProcessError)"), self.processError)
-		self.connect(self.proc, Qt.SIGNAL("finished(int, QProcess::ExitStatus)"), self.processFinished)
-		self.connect(self.proc, Qt.SIGNAL("stateChanged(QProcess::ProcessState)"), self.processStateChenged)
-		self.connect(self.proc, Qt.SIGNAL("readyReadStandardOutput()"), self.setText)
-		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(QString &)"), self.find)
+		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
+			self.tr("Start Spy"), self.startSpy)
+		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
+			self.tr("Stop Spy"), self.stopSpy)
+		self.stop_spy_menu_action.setEnabled(False)
+		self.addSeparator()
+		self.show_translate_window_menu_action = self.addAction(self.tr("Show popup window"))
+		self.show_translate_window_menu_action.setCheckable(True)
+		self.auto_detect_window_menu_action = self.addAction(self.tr("Auto-detect window"))
+		self.auto_detect_window_menu_action.setCheckable(True)
+		self.addSeparator()
+		self.keyboard_modifier_menu = KeyboardModifierMenu(self.tr("Keyboard modifier"))
+		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+		self.addMenu(self.keyboard_modifier_menu)
+
+		#####
+
+		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
+
+		self.connect(self.keyboard_modifier_menu, Qt.SIGNAL("modifierChanged(int)"),
+			self.mouse_selector.setModifier)
 
 
 	### Public ###
 
-	def start(self) :
+	def startSpy(self) :
 		self.mouse_selector.start()
 
-	def stop(self) :
+		self.start_spy_menu_action.setEnabled(False)
+		self.stop_spy_menu_action.setEnabled(True)
+
+		self.statusChangedSignal(self.tr("Spy is running"))
+
+		self.spyStartedSignal()
+
+	def stopSpy(self) :
 		self.mouse_selector.stop()
 
-	def setModifier(self, modifier) :
-		self.mouse_selector.setModifier(modifier)
+		self.start_spy_menu_action.setEnabled(True)
+		self.stop_spy_menu_action.setEnabled(False)
+
+		self.statusChangedSignal(self.tr("Spy is stopped"))
+
+		self.spyStoppedSignal()
+
+	### 
+
+	def saveSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings.setValue("spy_menu/show_translate_window_flag",
+			Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/auto_detect_window_flag",
+			Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/spy_is_running_flag",
+			Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
+
+		self.keyboard_modifier_menu.saveSettings()
+
+
+	def loadSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag",
+			Qt.QVariant(True)).toBool())
+		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag",
+			Qt.QVariant(True)).toBool())
+		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
+			self.startSpy()
+
+		self.keyboard_modifier_menu.loadSettings()
 
 
 	### Private ###
 
-	def find(self, word) :
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		word = word.toLower()
-
-		self.clearRequestSignal()
-		self.wordChangedSignal(word)
-
-		if self.proc.state() == Qt.QProcess.Starting or self.proc.state() == Qt.QProcess.Running :
-			self.setText()
-			self.proc_kill_flag = True
-			self.proc.kill()
-
-		self.proc_output.clear()
-
-		self.proc_args.clear()
-		self.proc_args << "--output-format=html" << "--use-list="+DictsManager.DictsList << "-u" << word
-
-		while self.proc_block_flag :
-			self.proc.waitForFinished()
-		self.proc_kill_flag = False
-		self.proc.start(SL, self.proc_args)
-
-		self.processStartedSignal()
-
-	def processError(self, error_code) :
-		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("An error occured when creating the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		elif error_code == Qt.QProcess.Crashed and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Error of the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		elif error_code == Qt.QProcess.Timedout and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Connection lost with search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		elif error_code == Qt.QProcess.WriteError and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Error while writing data into the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		elif error_code == Qt.QProcess.ReadError and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Error while reading data from the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		elif not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Unknown error occured while executing the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-
-	def processFinished(self, exit_code) :
-		if exit_code and not self.proc_kill_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("Error of the search process.\n"
-					"Press \"Yes\" to exit"),
-				Qt.QMessageBox.Yes)
-			sys.exit(1)
-		self.processFinishedSignal()
-
-	def processStateChenged(self, state) :
-		if state == Qt.QProcess.Starting or state == Qt.QProcess.Running :
-			self.proc_block_flag = True
-		else :
-			self.proc_block_flag = False
-
-	def setText(self) :
-		self.proc_output.append(self.proc.readAllStandardOutput())
-		self.textChangedSignal(Qt.QString.fromLocal8Bit(str(self.proc_output)))
+	def showTranslateWindow(self) :
+		if self.show_translate_window_menu_action.isChecked() :
+			if self.auto_detect_window_menu_action.isChecked() :
+				if Qt.QApplication.activeWindow() == None :
+					self.showTranslateWindowRequestSignal()
+			else :
+				self.showTranslateWindowRequestSignal()
 
 
 	### Signals ###
 
-	def processStartedSignal(self) :
-		self.emit(Qt.SIGNAL("processStarted()"))
+	def spyStartedSignal(self) :
+		self.emit(Qt.SIGNAL("spyStarted()"))
 
-	def processFinishedSignal(self) :
-		self.emit(Qt.SIGNAL("processFinished()"))
+	def spyStoppedSignal(self) :
+		self.emit(Qt.SIGNAL("spyStopped()"))
 
-	def clearRequestSignal(self) :
-		self.emit(Qt.SIGNAL("clearRequest()"))
+	def statusChangedSignal(self, text) :
+		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), text)
 
-	def wordChangedSignal(self, word) :
-		self.emit(Qt.SIGNAL("wordChanged(const QString &)"), word)
+	def uFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
 
-	def textChangedSignal(self, text) :
-		self.emit(Qt.SIGNAL("textChanged(const QString &)"), text)
+	def showTranslateWindowRequestSignal(self) :
+		self.emit(Qt.SIGNAL("showTranslateWindowRequest()"))
