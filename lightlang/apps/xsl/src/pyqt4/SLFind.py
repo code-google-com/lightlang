@@ -23,7 +23,6 @@ from PyQt4 import Qt
 import sys
 import Config
 import Const
-import DictsManager
 
 #####
 SL = Config.Prefix+"/bin/sl"
@@ -47,6 +46,8 @@ class FindWord(Qt.QObject) :
 
 		self.proc_output = Qt.QByteArray()
 
+		self.dicts_list = Qt.QStringList()
+
 		#####
 
 		self.connect(self.proc, Qt.SIGNAL("error(QProcess::ProcessError)"), self.processError)
@@ -69,6 +70,9 @@ class FindWord(Qt.QObject) :
 	def iFind(self, word) :
 		self.find(word, "i")
 
+	def setDictsList(self, dicts_list) :
+		self.dicts_list = dicts_list
+
 
 	### Private ###
 
@@ -88,7 +92,7 @@ class FindWord(Qt.QObject) :
 		self.proc_output.clear()
 
 		self.proc_args.clear()
-		self.proc_args << "--output-format=html" << "--use-list="+DictsManager.DictsList << "-"+mode << word
+		self.proc_args << "--output-format=html" << "--use-list="+self.dicts_list.join("|") << "-"+mode << word
 
 		while self.proc_block_flag :
 			self.proc.waitForFinished()

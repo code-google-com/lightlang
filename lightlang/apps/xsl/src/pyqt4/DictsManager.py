@@ -31,9 +31,6 @@ AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
-DictsList = Qt.QString()
-
-#####
 class DictsManager(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
@@ -207,7 +204,7 @@ class DictsManager(Qt.QDialog) :
 
 		self.update_button.blockSignals(False) # Unblock signals
 
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
@@ -226,7 +223,7 @@ class DictsManager(Qt.QDialog) :
 		self.used_dicts_browser.addItems(used_dicts_list)
 		self.dict_name_combobox.addItems(Qt.QStringList() << "" << all_dicts_list)
 
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 
 	### Private ###
@@ -238,7 +235,7 @@ class DictsManager(Qt.QDialog) :
 		item = self.used_dicts_browser.takeItem(index)
 		self.used_dicts_browser.insertItem(index -1, item)
 		self.used_dicts_browser.setCurrentRow(index -1)
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 	def moveDown(self) :
 		index = self.used_dicts_browser.currentRow()
@@ -247,19 +244,19 @@ class DictsManager(Qt.QDialog) :
 		item = self.used_dicts_browser.takeItem(index)
 		self.used_dicts_browser.insertItem(index +1, item)
 		self.used_dicts_browser.setCurrentRow(index +1)
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 	def moveLeft(self) :
 		index = self.used_dicts_browser.currentRow()
 		item = self.used_dicts_browser.takeItem(index)
 		self.unused_dicts_browser.addItem(item)
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 	def moveRight(self) :
 		index = self.unused_dicts_browser.currentRow()
 		item = self.unused_dicts_browser.takeItem(index)
 		self.used_dicts_browser.addItem(item)
-		self.updateDictsList()
+		self.dictsListChangedSignal()
 
 	def setInformation(self, dict_name) :
 		if dict_name.simplified().isEmpty() :
@@ -386,15 +383,8 @@ class DictsManager(Qt.QDialog) :
 		
 		return all_dicts_list_sync, used_dicts_list_sync
 
-	###
-
-	def updateDictsList(self) :
-		global DictsList
-		DictsList = self.listOfUsedDicts().join("|")
-		self.dictsChangedSignal()
-
 
 	### Signals ###
 
-	def dictsChangedSignal(self) :
-		self.emit(Qt.SIGNAL("dictsChanged()"))
+	def dictsListChangedSignal(self) :
+		self.emit(Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.listOfUsedDicts())
