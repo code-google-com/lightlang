@@ -12,6 +12,7 @@ INS=@INSTALL@
 LN=@LN_PROG@
 RM=@RM_PROG@
 PWD=@PWD_PROG@
+CHMOD=@CHMOD_PROG@
 
 SL_SRC=src/cs/main.c src/cs/manager.c src/cs/mstring.c src/cs/settings.c src/cs/find.c src/cs/info.c
 SL_OBJ=src/cs/main.o src/cs/manager.o src/cs/mstring.o src/cs/settings.o src/cs/find.o src/cs/info.o
@@ -36,6 +37,8 @@ install :
 	$(MKDIR) -p $(INS_SL_ICONS_DIR)
 	$(MKDIR) -p $(INS_SL_DICTS_DIR)
 	$(MKDIR) -p $(INS_SL_SOUNDS_DIR)
+	-$(CHMOD) 777 $(INS_SL_DICTS_DIR)
+	-$(CHMOD) 777 $(INS_SL_SOUNDS_DIR)
 	$(INS) $(SL_PROG) $(INS_SL_PROG_DIR)
 	$(CP) -r $(SL_ICONS_DIR)/*.png $(INS_SL_ICONS_DIR)
 

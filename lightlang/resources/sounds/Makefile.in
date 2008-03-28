@@ -7,6 +7,7 @@
 MKDIR=@MKDIR_PROG@
 CP=@CP_PROG@
 RM=@RM_PROG@
+CHMOD=@CHMOD_PROG@
 
 SOUNDS_DIR=sounds
 
@@ -15,6 +16,7 @@ INS_SOUNDS_DIR=@prefix@/share/sl/sounds
 #####
 install :
 	$(MKDIR) -p $(INS_SOUNDS_DIR)
+	-$(CHMOD) 777 $(INS_SOUNDS_DIR)
 	-$(CP) -r $(SOUNDS_DIR)/* $(INS_SOUNDS_DIR)
 
 uninstall :
