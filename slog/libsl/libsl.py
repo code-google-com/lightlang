@@ -33,7 +33,7 @@ def sl_to_html(text):
 	
 	return header+body+footer
 
-def get_index(filename, char):
+def get_index(filename, w_char):
 		
 	pos = -1
 	in_tag = False
@@ -55,20 +55,20 @@ def get_index(filename, char):
 		if line.startswith("[/index]"):
 			break
 
-		wchar = line.split()[0]
+		f_char = line.split()[0].decode("utf-8")
 		pos = int(line.split()[1])
 		
-		if wchar == char:
+		if w_char == f_char:
 			break
 
 	fp.close()
 	return pos
 
-def get_word(line):
+def parse_word(w_str):
 	ret = ""
-	i = line.find("  ")
+	i = w_str.find(u"  ")
 	if i != -1:
-		ret = line[:i]
+		ret = w_str[:i]
 	return ret
 	
 def find_word(word, mode, dictionary):
@@ -76,10 +76,10 @@ def find_word(word, mode, dictionary):
 		return []
 
 	lines = []
-	word_wc = word.lower().rstrip().encode("utf-8")
+	f_word = word.lower().rstrip().decode("utf-8")
 	filename = os.path.join(DICTS_DIR, dictionary)
 
-	pos = get_index(filename, word_wc[0])
+	pos = get_index(filename, f_word[0])
 	if pos < 0:
 		return lines;
 
@@ -91,12 +91,13 @@ def find_word(word, mode, dictionary):
 		if (line[0] == "#") or (line[0] == "\n"):
 			continue
 
-		str_wc = line.lower().encode("utf-8")
-		gw = get_word(str_wc)
-		if gw == "":
+		w_str = line.decode("utf-8").lower()
+
+		r_word = parse_word(w_str)
+		if r_word == "":
 			continue
 
-		if word_wc[0] != gw[0]:
+		if f_word[0] != r_word[0]:
 			if break_flag:
 				break
 			else:
@@ -105,12 +106,11 @@ def find_word(word, mode, dictionary):
 			break_flag = True
 
 		if mode == 0: # list
-			if gw.startswith(word_wc):
-				lines.append(gw)
+			if r_word.startswith(f_word):
+				lines.append(r_word)
 		elif mode == 1: #match
-			if gw == word_wc:
-				html = sl_to_html(str_wc)
-				#print html
+			if r_word == f_word:
+				html = sl_to_html(w_str)
 				lines.append(html)
 		
 	fp.close()
@@ -121,7 +121,7 @@ def get_installed_dicts():
 	return os.listdir(DICTS_DIR)
 
 def create_index(fp):
-	ch_wc = '\0'
+	ch_wc = u"\0"
 	index = ["[index]\n"]
 	fp.seek(0)
 	while True:
@@ -138,10 +138,13 @@ def create_index(fp):
 		if i == -1:
 			continue
 
-		fch = line[0].lower()
+		w_str = line.decode("utf-8").lower()
+
+		fch = w_str[0]
 		if ch_wc != fch:
 			ch_wc = fch
-			index.append("%lc %ld\n" % (ch_wc, pos))
+			w_str = u"%lc %ld\n" % (ch_wc, pos)
+			index.append(w_str.encode("utf-8"))
 		
 	index.append("[/index]\n")
 	return index
@@ -169,5 +172,5 @@ def indexating(filename):
 
 #Unit test
 if __name__ == "__main__":
-	indexating("/tmp/EngFree.en-ru")
+	indexating("/tmp/Sokrat-Mova.ru-en")
 
