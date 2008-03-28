@@ -258,6 +258,15 @@ def install_resources(resources_type = "", resources_list = []) :
 	if (not resources_type in ResourcesTypes) or (len(resources_list) == 0) :
 		return -1
 
+	if resources_type == DictsResources :
+		if not os.access(DictsDir, os.W_OK) :
+			print >> sys.stderr, MyName+": you not have a permissions"
+			return -1
+	elif resources_type == SoundsResources :
+		if not os.access(DictsDir, os.W_OK) :
+			print >> sys.stderr, MyName+": you not have a permissions"
+			return -1
+
 	remote_resources_list = get_remote_resources_list(resources_type)
 	if len(remote_resources_list) == 0 :
 		print >> sys.stderr, MyName+": no resources"
@@ -344,6 +353,15 @@ def install_resources(resources_type = "", resources_list = []) :
 def uninstall_resources(resources_type = "", resources_list = []) :
 	if (not resources_type in ResourcesTypes) or (len(resources_list) == 0) :
 		return -1
+
+	if resources_type == DictsResources :
+		if not os.access(DictsDir, os.W_OK) :
+			print >> sys.stderr, MyName+": you not have a permissions"
+			return -1
+	elif resources_type == SoundsResources :
+		if not os.access(DictsDir, os.W_OK) :
+			print >> sys.stderr, MyName+": you not have a permissions"
+			return -1
 
 	if resources_type == DictsResources :
 		for resources_list_item in resources_list :

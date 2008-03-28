@@ -9,6 +9,7 @@ CP=@CP_PROG@
 RM=@RM_PROG@
 CAT=@CAT_PROG@
 LS=@LS_PROG@
+CHMOD=@CHMOD_PROG@
 SL=../../sl
 
 TMP_FILE=tmpdict
@@ -30,6 +31,7 @@ all :
 
 install :
 	$(MKDIR) -p $(INS_DICTS_DIR)
+	-$(CHMOD) 777 $(INS_DICTS_DIR)
 	-$(CP) -r $(DICTS_DIR)/* $(INS_DICTS_DIR)
 
 uninstall :
