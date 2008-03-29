@@ -241,6 +241,8 @@ class MainWindow(Qt.QMainWindow) :
         def stopSpy(self) :
 		self.spy_menu.stopSpy()
 
+	###
+
 	def save(self) :
 		self.saveSettings()
 		self.history_panel.saveSettings()
@@ -255,7 +257,17 @@ class MainWindow(Qt.QMainWindow) :
 		self.google_translate_panel.loadSettings()
 		self.spy_menu.loadSettings()
 		self.showStatusMessage(self.tr("Ready"))
-		
+
+	###
+
+	def visibleChange(self) :
+		if self.isVisible() :
+			self.hide()
+		else :
+			self.showNormal()
+			self.setFocus(Qt.Qt.OtherFocusReason)
+
+	###
 
 	def exit(self) :
 		self.save()

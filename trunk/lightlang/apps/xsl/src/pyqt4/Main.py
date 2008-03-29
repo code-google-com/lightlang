@@ -64,13 +64,13 @@ class Main :
 
 		self.app.processEvents()
 
-		self.splash.showMessage(self.tr("Creating an icon in the tray..."),
-			Qt.Qt.AlignTop, Qt.Qt.white)
-		self.tray_icon = TrayIcon.TrayIcon()
-
 		self.splash.showMessage(self.tr("Creating the main window..."),
 			Qt.Qt.AlignTop, Qt.Qt.white)
 		self.main_window = MainWindow.MainWindow()
+
+		self.splash.showMessage(self.tr("Creating an icon in the tray..."),
+			Qt.Qt.AlignTop, Qt.Qt.white)
+		self.tray_icon = TrayIcon.TrayIcon()
 
 		#####
 
@@ -79,20 +79,20 @@ class Main :
 
 		Qt.QObject.connect(self.app, Qt.SIGNAL("commitDataRequest(QSessionManager &)"), self.commitData)
 
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("startSpyRequest()"), self.main_window.startSpy)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("stopSpyRequest()"), self.main_window.stopSpy)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("visibleChangeRequest()"), self.visibleChange)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("exitRequest()"), self.main_window.exit)
-
 		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStarted()"), self.tray_icon.spyStarted)
 		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStopped()"), self.tray_icon.spyStopped)
+
+		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("startSpyRequest()"), self.main_window.startSpy)
+		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("stopSpyRequest()"), self.main_window.stopSpy)
+		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("visibleChangeRequest()"), self.main_window.visibleChange)
+		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("exitRequest()"), self.main_window.exit)
 
 		#####
 
 		self.splash.showMessage(self.tr("Loading settings..."),
 			Qt.Qt.AlignTop, Qt.Qt.white)
-		self.tray_icon.show()
 		self.main_window.load()
+		self.tray_icon.show()
 
 		self.splash.finish(self.main_window)
 
@@ -144,15 +144,6 @@ class Main :
 			session_manager.setRestartHint(Qt.QSessionManager.RestartIfRunning)
 		else :
 			print >> sys.stderr, Const.MyName+": cannot save session: ignored"
-
-	###
-
-	def visibleChange(self) :
-		if self.main_window.isVisible() :
-			self.main_window.hide()
-		else :
-			self.main_window.showNormal()
-			self.main_window.setFocus(Qt.Qt.OtherFocusReason)
 
 	###
 
