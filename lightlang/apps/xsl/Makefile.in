@@ -85,8 +85,6 @@ uninstall :
 clean :
 	$(RM) -f $(XSL_PROG) $(XSL_MAIN) $(XSL_CONFIG)
 	$(RM) -f $(XSL_PYQT4_DIR)/*.pyc
-	$(RM) -f $(XSL_IFA_DIR)/*.xml
-	$(RM) -f $(XSL_IFA_DIR)/*.ifa
 	$(RM) -f ../../$(XSL_PROG)
 
 _update_ru_ts :

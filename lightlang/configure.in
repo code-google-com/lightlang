@@ -9,47 +9,30 @@ echo "+---------------------------------------------------------------------+"
 echo "|     Welcome to LightLang - Languages software package for Linux     |"
 echo "+---------------------------------------------------------------------+"
 
-dnl ################# Default Settings #################
+dnl ################# Default settings #################
 
 AC_PREFIX_DEFAULT(/usr)
 
 dnl ################# Options #################
 
 AC_ARG_WITH(default_config,
-	[AC_HELP_STRING([--with-default-config], [set default configuretion, default: normal,
-available: normal, liksys, kde, console])],
+	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal,
+available: normal, recommended, console])],
 	DEFAULT_CONFIG=$withval, DEFAULT_CONFIG="normal")
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="xterm"
 	DEFAULT_GUI_FLAG="yes"
-elif [[ "$DEFAULT_CONFIG" = "liksys" ]]; then
+elif [[ "$DEFAULT_CONFIG" = "recommended" ]]; then
 	DEFAULT_AUDIO_PLAYER="mplayer"
-	DEFAULT_GUI_TERMINAL="konsole"
-	DEFAULT_GUI_FLAG="yes"
-elif [[ "$DEFAULT_CONFIG" = "kde" ]]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="konsole"
 	DEFAULT_GUI_FLAG="yes"
 elif [[ "$DEFAULT_CONFIG" = "console" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="true"
 	DEFAULT_GUI_FLAG="no"
-else
-	DEFAULT_CONFIG="normal"
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="xterm"
-	DEFAULT_GUI_FLAG="yes"
 fi
-
 
 AC_ARG_WITH(audio_player,
 	[AC_HELP_STRING([--with-audio-player], [set audio player, default: play])],
 	AUDIO_PLAYER=$withval, AUDIO_PLAYER=$DEFAULT_AUDIO_PLAYER)
-
-AC_ARG_WITH(gui_terminal,
-	[AC_HELP_STRING([--with-gui-terminal], [set GUI-terminal, default: xterm])],
-	GUI_TERMINAL=$withval, GUI_TERMINAL=$DEFAULT_GUI_TERMINAL)
 
 AC_SUBST(GUI_FLAG)
 AC_ARG_WITH(gui_flag,
@@ -133,73 +116,58 @@ if [[ "$BZIP2_PROG" = "no" ]]; then
 	AC_MSG_ERROR([bzip2 is not found])
 fi
 
-if [[ "$GUI_FLAG" = "yes" ]]; then
-	AC_PATH_PROG(PYTHON_PROG, python, no, $PATH)
-	if [[ "$PYTHON_PROG" = "no" ]]; then
-		AC_MSG_ERROR([python is not found])
-	fi
-else
-	AC_PATH_PROG(PYTHON_PROG, true, true, $PATH)
+AC_PATH_PROG(PYTHON_PROG, python, no, $PATH)
+if [[ "$PYTHON_PROG" = "no" ]]; then
+	AC_MSG_ERROR([python is not found])
 fi
 
 AC_PATH_PROG(AUDIO_PLAYER_PROG, $AUDIO_PLAYER, no, $PATH)
 if [[ "$AUDIO_PLAYER_PROG" = "no" ]]; then
+	echo "+---------------------------------------------------------------------+"
+	echo "| This audio player is not installed. You can use another player by   |"
+	echo "| typing option --with-audio-player, for example:                     |"
+	echo "| ./cofigure --with-audio-player=mplayer                              |"
+	echo "+---------------------------------------------------------------------+"
 	AC_MSG_ERROR([$AUDIO_PLAYER is not found])
-fi
-
-if [[ "$GUI_FLAG" = "yes" ]]; then
-	AC_PATH_PROG(GUI_TERMINAL_PROG, $GUI_TERMINAL, no, $PATH)
-	if [[ "$GUI_TERMINAL_PROG" = "no" ]]; then
-		AC_MSG_ERROR([$GUI_TERMINAL is not found])
-	fi
-
-	AC_SUBST(LLREPO_GUI_TERMINAL_OPTIONS)
-	if [[ "$GUI_TERMINAL" = "xterm" ]]; then
-		LLREPO_GUI_TERMINAL_OPTIONS="-T \"LLRepo Console - root mode\""
-	elif [[ "$GUI_TERMINAL" = "konsole" ]]; then
-		LLREPO_GUI_TERMINAL_OPTIONS="-T \"LLRepo Console - root mode\" --type su"
-	fi
-else
-	AC_PATH_PROG(GUI_TERMINAL_PROG, true, true, $PATH)
 fi
 
 dnl ####################################
 dnl ##### Python modules checkings #####
 dnl ####################################
 
+printf "python-test: importing \"sys\" module... "
+$PYTHON_PROG -c "import sys"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"os\" module... "
+$PYTHON_PROG -c "import os"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"getopt\" module... "
+$PYTHON_PROG -c "import getopt"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"ftplib\" module... "
+$PYTHON_PROG -c "import ftplib"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
 if [[ "$GUI_FLAG" = "yes" ]]; then
-
-	printf "python-test: importing \"sys\" module... "
-	$PYTHON_PROG -c "import sys"
-	if [[ "$?" != "0" ]]; then
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"os\" module... "
-	$PYTHON_PROG -c "import os"
-	if [[ "$?" != "0" ]]; then
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"getopt\" module... "
-	$PYTHON_PROG -c "import getopt"
-	if [[ "$?" != "0" ]]; then
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"ftplib\" module... "
-	$PYTHON_PROG -c "import ftplib"
-	if [[ "$?" != "0" ]]; then
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
 
 	printf "python-test: importing \"Xlib\" module... "
 	$PYTHON_PROG -c "import Xlib, Xlib.display"
@@ -300,7 +268,6 @@ download.py \
 apps/sl/src/cs/config.h \
 apps/xsl/src/pyqt4/Config.py \
 apps/xsl/src/pyqt4/xsl.py \
-apps/xsl/src/ifa/llrepo.xml \
 apps/llrepo/src/llrepo.py)
 
 echo "set bit +x: download.py"
@@ -309,19 +276,14 @@ $CHMOD_PROG +x download.py
 dnl ################# Information #################
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default Config : " $DEFAULT_CONFIG
+echo "  Default config : " $DEFAULT_CONFIG
 echo "  Prefix         : " $prefix
 echo "  Audio Player   : " $AUDIO_PLAYER
-if [[ "$GUI_FLAG" = "yes" ]]; then
-	echo "  GUI Terminal   : " $GUI_TERMINAL
-fi
 echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
 if [[ "$GUI_FLAG" = "yes" ]]; then
 echo "+---------------------------------------------------------------------+"
-	printf "  Python version :  "
-	$PYTHON_PROG --version
 	printf "  Xlib version   :  "
 	$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
 	printf "  Qt4 version    :  "
