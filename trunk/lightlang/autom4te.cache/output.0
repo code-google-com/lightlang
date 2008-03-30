@@ -1726,6 +1726,11 @@ elif [ "$DEFAULT_CONFIG" = "recommended" ]; then
 elif [ "$DEFAULT_CONFIG" = "console" ]; then
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="no"
+else
+	echo "bad argument: " $DEFAULT_CONFIG ": ignored"
+	DEFAULT_CONFIG="normal"
+	DEFAULT_AUDIO_PLAYER="play"
+	DEFAULT_GUI_FLAG="yes"
 fi
 
 
@@ -6528,7 +6533,7 @@ if [ "$AUDIO_PLAYER_PROG" = "no" ]; then
 	echo "+---------------------------------------------------------------------+"
 	echo "| This audio player is not installed. You can use another player by   |"
 	echo "| typing option --with-audio-player, for example:                     |"
-	echo "| ./cofigure --with-audio-player=mplayer                              |"
+	echo "| ./configure --with-audio-player=mplayer                             |"
 	echo "+---------------------------------------------------------------------+"
 	{ { echo "$as_me:$LINENO: error: $AUDIO_PLAYER is not found" >&5
 echo "$as_me: error: $AUDIO_PLAYER is not found" >&2;}
