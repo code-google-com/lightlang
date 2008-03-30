@@ -683,8 +683,6 @@ TAR_PROG
 BZIP2_PROG
 PYTHON_PROG
 AUDIO_PLAYER_PROG
-GUI_TERMINAL_PROG
-LLREPO_GUI_TERMINAL_OPTIONS
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -1265,10 +1263,9 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-default-config   set default configuretion, default: normal,
-                          available: normal, liksys, kde, console
+  --with-default-config   set default configuration, default: normal,
+                          available: normal, recommended, console
   --with-audio-player     set audio player, default: play
-  --with-gui-terminal     set GUI-terminal, default: xterm
   --with-gui-flag         enable or disable GUI, default: yes
 
 Some influential environment variables:
@@ -1722,27 +1719,14 @@ fi
 
 if [ "$DEFAULT_CONFIG" = "normal" ]; then
 	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="xterm"
 	DEFAULT_GUI_FLAG="yes"
-elif [ "$DEFAULT_CONFIG" = "liksys" ]; then
+elif [ "$DEFAULT_CONFIG" = "recommended" ]; then
 	DEFAULT_AUDIO_PLAYER="mplayer"
-	DEFAULT_GUI_TERMINAL="konsole"
-	DEFAULT_GUI_FLAG="yes"
-elif [ "$DEFAULT_CONFIG" = "kde" ]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="konsole"
 	DEFAULT_GUI_FLAG="yes"
 elif [ "$DEFAULT_CONFIG" = "console" ]; then
 	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="true"
 	DEFAULT_GUI_FLAG="no"
-else
-	DEFAULT_CONFIG="normal"
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_TERMINAL="xterm"
-	DEFAULT_GUI_FLAG="yes"
 fi
-
 
 
 # Check whether --with-audio_player was given.
@@ -1750,15 +1734,6 @@ if test "${with_audio_player+set}" = set; then
   withval=$with_audio_player; AUDIO_PLAYER=$withval
 else
   AUDIO_PLAYER=$DEFAULT_AUDIO_PLAYER
-fi
-
-
-
-# Check whether --with-gui_terminal was given.
-if test "${with_gui_terminal+set}" = set; then
-  withval=$with_gui_terminal; GUI_TERMINAL=$withval
-else
-  GUI_TERMINAL=$DEFAULT_GUI_TERMINAL
 fi
 
 
@@ -6461,8 +6436,7 @@ echo "$as_me: error: bzip2 is not found" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-if [ "$GUI_FLAG" = "yes" ]; then
-	# Extract the first word of "python", so it can be a program name with args.
+# Extract the first word of "python", so it can be a program name with args.
 set dummy python; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
@@ -6503,53 +6477,10 @@ echo "${ECHO_T}no" >&6; }
 fi
 
 
-	if [ "$PYTHON_PROG" = "no" ]; then
-		{ { echo "$as_me:$LINENO: error: python is not found" >&5
+if [ "$PYTHON_PROG" = "no" ]; then
+	{ { echo "$as_me:$LINENO: error: python is not found" >&5
 echo "$as_me: error: python is not found" >&2;}
    { (exit 1); exit 1; }; }
-	fi
-else
-	# Extract the first word of "true", so it can be a program name with args.
-set dummy true; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_PYTHON_PROG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PYTHON_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PYTHON_PROG="$PYTHON_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PYTHON_PROG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_PYTHON_PROG" && ac_cv_path_PYTHON_PROG="true"
-  ;;
-esac
-fi
-PYTHON_PROG=$ac_cv_path_PYTHON_PROG
-if test -n "$PYTHON_PROG"; then
-  { echo "$as_me:$LINENO: result: $PYTHON_PROG" >&5
-echo "${ECHO_T}$PYTHON_PROG" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
 fi
 
 # Extract the first word of "$AUDIO_PLAYER", so it can be a program name with args.
@@ -6594,151 +6525,58 @@ fi
 
 
 if [ "$AUDIO_PLAYER_PROG" = "no" ]; then
+	echo "+---------------------------------------------------------------------+"
+	echo "| This audio player is not installed. You can use another player by   |"
+	echo "| typing option --with-audio-player, for example:                     |"
+	echo "| ./cofigure --with-audio-player=mplayer                              |"
+	echo "+---------------------------------------------------------------------+"
 	{ { echo "$as_me:$LINENO: error: $AUDIO_PLAYER is not found" >&5
 echo "$as_me: error: $AUDIO_PLAYER is not found" >&2;}
    { (exit 1); exit 1; }; }
 fi
 
-if [ "$GUI_FLAG" = "yes" ]; then
-	# Extract the first word of "$GUI_TERMINAL", so it can be a program name with args.
-set dummy $GUI_TERMINAL; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_GUI_TERMINAL_PROG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $GUI_TERMINAL_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GUI_TERMINAL_PROG="$GUI_TERMINAL_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GUI_TERMINAL_PROG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_GUI_TERMINAL_PROG" && ac_cv_path_GUI_TERMINAL_PROG="no"
-  ;;
-esac
-fi
-GUI_TERMINAL_PROG=$ac_cv_path_GUI_TERMINAL_PROG
-if test -n "$GUI_TERMINAL_PROG"; then
-  { echo "$as_me:$LINENO: result: $GUI_TERMINAL_PROG" >&5
-echo "${ECHO_T}$GUI_TERMINAL_PROG" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-fi
-
-
-	if [ "$GUI_TERMINAL_PROG" = "no" ]; then
-		{ { echo "$as_me:$LINENO: error: $GUI_TERMINAL is not found" >&5
-echo "$as_me: error: $GUI_TERMINAL is not found" >&2;}
+printf "python-test: importing \"sys\" module... "
+$PYTHON_PROG -c "import sys"
+if [ "$?" != "0" ]; then
+	{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
    { (exit 1); exit 1; }; }
-	fi
-
-
-	if [ "$GUI_TERMINAL" = "xterm" ]; then
-		LLREPO_GUI_TERMINAL_OPTIONS="-T \"LLRepo Console - root mode\""
-	elif [ "$GUI_TERMINAL" = "konsole" ]; then
-		LLREPO_GUI_TERMINAL_OPTIONS="-T \"LLRepo Console - root mode\" --type su"
-	fi
 else
-	# Extract the first word of "true", so it can be a program name with args.
-set dummy true; ac_word=$2
-{ echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
-if test "${ac_cv_path_GUI_TERMINAL_PROG+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $GUI_TERMINAL_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GUI_TERMINAL_PROG="$GUI_TERMINAL_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GUI_TERMINAL_PROG="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GUI_TERMINAL_PROG" && ac_cv_path_GUI_TERMINAL_PROG="true"
-  ;;
-esac
-fi
-GUI_TERMINAL_PROG=$ac_cv_path_GUI_TERMINAL_PROG
-if test -n "$GUI_TERMINAL_PROG"; then
-  { echo "$as_me:$LINENO: result: $GUI_TERMINAL_PROG" >&5
-echo "${ECHO_T}$GUI_TERMINAL_PROG" >&6; }
-else
-  { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
+	echo "ok"
 fi
 
-
+printf "python-test: importing \"os\" module... "
+$PYTHON_PROG -c "import os"
+if [ "$?" != "0" ]; then
+	{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
 fi
 
+printf "python-test: importing \"getopt\" module... "
+$PYTHON_PROG -c "import getopt"
+if [ "$?" != "0" ]; then
+	{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"ftplib\" module... "
+$PYTHON_PROG -c "import ftplib"
+if [ "$?" != "0" ]; then
+	{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
+fi
 
 if [ "$GUI_FLAG" = "yes" ]; then
-
-	printf "python-test: importing \"sys\" module... "
-	$PYTHON_PROG -c "import sys"
-	if [ "$?" != "0" ]; then
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
-echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"os\" module... "
-	$PYTHON_PROG -c "import os"
-	if [ "$?" != "0" ]; then
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
-echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"getopt\" module... "
-	$PYTHON_PROG -c "import getopt"
-	if [ "$?" != "0" ]; then
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
-echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"ftplib\" module... "
-	$PYTHON_PROG -c "import ftplib"
-	if [ "$?" != "0" ]; then
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
-echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
 
 	printf "python-test: importing \"Xlib\" module... "
 	$PYTHON_PROG -c "import Xlib, Xlib.display"
@@ -6822,7 +6660,7 @@ echo "$as_me: error: Python modules error" >&2;}
 fi # GUI_FLAG
 
 
-ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/cs/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/xsl/src/ifa/llrepo.xml apps/llrepo/src/llrepo.py"
+ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/cs/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7414,7 +7252,6 @@ do
     "apps/sl/src/cs/config.h") CONFIG_FILES="$CONFIG_FILES apps/sl/src/cs/config.h" ;;
     "apps/xsl/src/pyqt4/Config.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/Config.py" ;;
     "apps/xsl/src/pyqt4/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/xsl.py" ;;
-    "apps/xsl/src/ifa/llrepo.xml") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/ifa/llrepo.xml" ;;
     "apps/llrepo/src/llrepo.py") CONFIG_FILES="$CONFIG_FILES apps/llrepo/src/llrepo.py" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -7546,13 +7383,11 @@ TAR_PROG!$TAR_PROG$ac_delim
 BZIP2_PROG!$BZIP2_PROG$ac_delim
 PYTHON_PROG!$PYTHON_PROG$ac_delim
 AUDIO_PLAYER_PROG!$AUDIO_PLAYER_PROG$ac_delim
-GUI_TERMINAL_PROG!$GUI_TERMINAL_PROG$ac_delim
-LLREPO_GUI_TERMINAL_OPTIONS!$LLREPO_GUI_TERMINAL_OPTIONS$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 72; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -7890,19 +7725,14 @@ $CHMOD_PROG +x download.py
 
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default Config : " $DEFAULT_CONFIG
+echo "  Default config : " $DEFAULT_CONFIG
 echo "  Prefix         : " $prefix
 echo "  Audio Player   : " $AUDIO_PLAYER
-if [ "$GUI_FLAG" = "yes" ]; then
-	echo "  GUI Terminal   : " $GUI_TERMINAL
-fi
 echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
 if [ "$GUI_FLAG" = "yes" ]; then
 echo "+---------------------------------------------------------------------+"
-	printf "  Python version :  "
-	$PYTHON_PROG --version
 	printf "  Xlib version   :  "
 	$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
 	printf "  Qt4 version    :  "
