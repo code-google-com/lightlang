@@ -7,6 +7,7 @@
 MKDIR=@MKDIR_PROG@
 CP=@CP_PROG@
 RM=@RM_PROG@
+TEST=@TEST_PROG@
 
 GUI_FLAG=@GUI_FLAG@
 
@@ -20,14 +21,10 @@ install :
 	$(MKDIR) -p $(INS_EN_MAN_DOC_DIR)
 	$(CP) $(EN_MAN_DOC_DIR)/sl.1.gz $(INS_EN_MAN_DOC_DIR)/man1
 	$(CP) $(EN_MAN_DOC_DIR)/llrepo.1.gz $(INS_EN_MAN_DOC_DIR)/man1
-	if [ $(GUI_FLAG) = "yes" ]; then \
-		$(CP) $(EN_MAN_DOC_DIR)/xsl.1.gz $(INS_EN_MAN_DOC_DIR)/man1; \
-	fi
+	-$(TEST) $(GUI_FLAG) = "yes" && $(CP) $(EN_MAN_DOC_DIR)/xsl.1.gz $(INS_EN_MAN_DOC_DIR)/man1
 
 uninstall :
 	$(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/sl.1.gz
 	$(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/llrepo.1.gz
-	if [ $(GUI_FLAG) = "yes" ]; then \
-		$(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/xsl.1.gz; \
-	fi
+	-$(TEST) $(GUI_FLAG) = "yes" && $(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/xsl.1.gz
 
