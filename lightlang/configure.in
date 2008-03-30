@@ -116,6 +116,8 @@ if [[ "$TAR_PROG" = "no" ]]; then
 	AC_MSG_ERROR([tar is not found])
 fi
 
+AC_PATH_PROG(TEST_PROG, test, test, $PATH)
+
 AC_PATH_PROG(BZIP2_PROG, bzip2, no, $PATH)
 if [[ "$BZIP2_PROG" = "no" ]]; then
 	AC_MSG_ERROR([bzip2 is not found])
@@ -258,15 +260,15 @@ resources/dicts/Makefile \
 resources/sounds/Makefile \
 \
 docs/Makefile \
-docs/html/Makefile
-docs/html/en/Makefile
-docs/html/ru/Makefile
-docs/text/Makefile
-docs/text/en/Makefile
-docs/text/ru/Makefile
-docs/man/Makefile
-docs/man/en/Makefile
-docs/man/ru/Makefile
+docs/html/Makefile \
+docs/html/en/Makefile \
+docs/html/ru/Makefile \
+docs/text/Makefile \
+docs/text/en/Makefile \
+docs/text/ru/Makefile \
+docs/man/Makefile \
+docs/man/en/Makefile \
+docs/man/ru/Makefile \
 \
 download.py \
 \
