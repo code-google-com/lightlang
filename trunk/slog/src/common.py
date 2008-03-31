@@ -26,7 +26,7 @@ along with SLog; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 """
 
-INSTALL_PREFIX = "/tmp/slog"
+INSTALL_PREFIX = "@prefix@"
 
 PIXMAP_DIR = os.path.join(INSTALL_PREFIX, "share", "pixmaps")
 LOCALE_DIR = os.path.join(INSTALL_PREFIX, "share", "locale")
