@@ -138,6 +138,13 @@ if [[ "$AUDIO_PLAYER_PROG" = "no" ]]; then
 	AC_MSG_ERROR([$AUDIO_PLAYER is not found])
 fi
 
+dnl ##########################
+dnl ##### Libs checkings #####
+dnl ##########################
+
+AC_SUBST(INS_PKG_LIBS_DIR) # TODO: add normal pkg-config libs checkings
+INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
+
 dnl ####################################
 dnl ##### Python modules checkings #####
 dnl ####################################
@@ -259,6 +266,8 @@ resources/Makefile \
 resources/dicts/Makefile \
 resources/sounds/Makefile \
 \
+pkg/Makefile \
+\
 docs/Makefile \
 docs/html/Makefile \
 docs/html/en/Makefile \
@@ -275,7 +284,9 @@ download.py \
 apps/sl/src/cs/config.h \
 apps/xsl/src/pyqt4/Config.py \
 apps/xsl/src/pyqt4/xsl.py \
-apps/llrepo/src/llrepo.py)
+apps/llrepo/src/llrepo.py \
+\
+pkg/pkg/lightlang.pc)
 
 echo "set bit +x: download.py"
 $CHMOD_PROG +x download.py

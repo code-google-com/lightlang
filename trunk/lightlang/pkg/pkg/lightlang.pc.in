@@ -1,0 +1,8 @@
+# LightLang pkg-config metadata file
+
+prefix=@prefix@
+
+Name: LightLang
+Description: LightLang - system of electronic dictionaries for Linux
+Version: 0.8.6
+

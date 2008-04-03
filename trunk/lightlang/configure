@@ -684,6 +684,7 @@ TEST_PROG
 BZIP2_PROG
 PYTHON_PROG
 AUDIO_PLAYER_PROG
+INS_PKG_LIBS_DIR
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -6584,6 +6585,10 @@ echo "$as_me: error: $AUDIO_PLAYER is not found" >&2;}
 fi
 
 
+ # TODO: add normal pkg-config libs checkings
+INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
+
+
 printf "python-test: importing \"sys\" module... "
 $PYTHON_PROG -c "import sys"
 if [ "$?" != "0" ]; then
@@ -6708,7 +6713,7 @@ echo "$as_me: error: Python modules error" >&2;}
 fi # GUI_FLAG
 
 
-ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/cs/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py"
+ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/cs/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7286,6 +7291,7 @@ do
     "resources/Makefile") CONFIG_FILES="$CONFIG_FILES resources/Makefile" ;;
     "resources/dicts/Makefile") CONFIG_FILES="$CONFIG_FILES resources/dicts/Makefile" ;;
     "resources/sounds/Makefile") CONFIG_FILES="$CONFIG_FILES resources/sounds/Makefile" ;;
+    "pkg/Makefile") CONFIG_FILES="$CONFIG_FILES pkg/Makefile" ;;
     "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
     "docs/html/Makefile") CONFIG_FILES="$CONFIG_FILES docs/html/Makefile" ;;
     "docs/html/en/Makefile") CONFIG_FILES="$CONFIG_FILES docs/html/en/Makefile" ;;
@@ -7301,6 +7307,7 @@ do
     "apps/xsl/src/pyqt4/Config.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/Config.py" ;;
     "apps/xsl/src/pyqt4/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/xsl.py" ;;
     "apps/llrepo/src/llrepo.py") CONFIG_FILES="$CONFIG_FILES apps/llrepo/src/llrepo.py" ;;
+    "pkg/pkg/lightlang.pc") CONFIG_FILES="$CONFIG_FILES pkg/pkg/lightlang.pc" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -7432,11 +7439,12 @@ TEST_PROG!$TEST_PROG$ac_delim
 BZIP2_PROG!$BZIP2_PROG$ac_delim
 PYTHON_PROG!$PYTHON_PROG$ac_delim
 AUDIO_PLAYER_PROG!$AUDIO_PLAYER_PROG$ac_delim
+INS_PKG_LIBS_DIR!$INS_PKG_LIBS_DIR$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 73; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
