@@ -13,6 +13,7 @@ DOWNLOAD_PY=download.py
 
 APPS_DIR=apps
 RESOURCES_DIR=resources
+PKG_DIR=pkg
 DOCS_DIR=docs
 
 #####
@@ -32,6 +33,7 @@ install :
 	@echo "+---------------------------------------------------------------------+"
 	$(CD) $(APPS_DIR) && $(MAKE) install
 	$(CD) $(RESOURCES_DIR) && $(MAKE) install
+	$(CD) $(PKG_DIR) && $(MAKE) install
 	$(CD) $(DOCS_DIR) && $(MAKE) install
 	@echo "+---------------------------------------------------------------------+"
 	@echo " OK. Installation complete"
@@ -47,6 +49,7 @@ uninstall :
 	@echo "+---------------------------------------------------------------------+"
 	$(CD) $(APPS_DIR) && $(MAKE) uninstall
 	$(CD) $(RESOURCES_DIR) && $(MAKE) uninstall
+	$(CD) $(PKG_DIR) && $(MAKE) uninstall
 	$(CD) $(DOCS_DIR) && $(MAKE) uninstall
 	@echo "+---------------------------------------------------------------------+"
 	@echo " OK. Uninstallation complete"
@@ -55,6 +58,7 @@ uninstall :
 clean :
 	$(CD) $(APPS_DIR) && $(MAKE) clean
 	$(CD) $(RESOURCES_DIR) && $(MAKE) clean
+	$(CD) $(PKG_DIR) && $(MAKE) clean
 
 	$(FIND) . -name *\~ | $(XARGS) $(RM) -f
 	$(FIND) . -name Makefile | $(XARGS) $(RM) -f

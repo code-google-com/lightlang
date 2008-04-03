@@ -14,8 +14,18 @@ RM=@RM_PROG@
 PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
 
-SL_SRC=src/cs/main.c src/cs/manager.c src/cs/mstring.c src/cs/settings.c src/cs/find.c src/cs/info.c
-SL_OBJ=src/cs/main.o src/cs/manager.o src/cs/mstring.o src/cs/settings.o src/cs/find.o src/cs/info.o
+SL_SRC=src/cs/main.c \
+	src/cs/manager.c \
+	src/cs/mstring.c \
+	src/cs/settings.c \
+	src/cs/find.c \
+	src/cs/info.c
+SL_OBJ=src/cs/main.o \
+	src/cs/manager.o \
+	src/cs/mstring.o \
+	src/cs/settings.o \
+	src/cs/find.o \
+	src/cs/info.o
 SL_CONFIG=src/cs/config.h
 SL_PROG=sl
 SL_ICONS_DIR=src/icons
@@ -28,8 +38,14 @@ INS_SL_DICTS_DIR=@prefix@/share/sl/dicts
 INS_SL_SOUNDS_DIR=@prefix@/share/sl/sounds
 
 #####
+.SUFFIXES : .o .c
+
+.c.o :
+	$(CC) -c $(CFLAGS) -o "$@" "$<"
+
+#####
 all : $(SL_OBJ)
-	$(CC) $(CFLAGS) -o $(SL_PROG) $(SL_SRC)
+	$(CC) -o $(SL_PROG) $(SL_OBJ)
 	-$(LN) -s `$(PWD)`/$(SL_PROG) ../../$(SL_PROG)
 
 install :
