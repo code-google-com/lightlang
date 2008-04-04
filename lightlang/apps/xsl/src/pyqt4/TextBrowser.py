@@ -28,6 +28,89 @@ import SLFind
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+class TranslateBrowser(Qt.QTextBrowser) :
+	def __init__(self, parent = None) :
+		Qt.QTextBrowser.__init__(self, parent)
+
+		try : # FIXME: with PyQt-4.3
+			self.setOpenLinks(False)
+		except : pass
+
+		#####
+
+		self.find_sound = SLFind.FindSound()
+
+		#####
+
+		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
+
+
+	### Private ###
+
+	def findFromAnchor(self, url) :
+		word = url.toString()
+		if word.startsWith("#s") :
+			word.remove(0, word.indexOf("_")+1)
+			word = word.simplified()
+			if word.isEmpty() :
+				return
+			self.find_sound.find(word)
+		elif word.startsWith("http://", Qt.Qt.CaseInsensitive) :
+			Qt.QDesktopServices.openUrl(url)
+
+	###
+
+	def uFind(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.uFindRequestSignal(word)
+
+	def uFindInNewTab(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.newTabRequestSignal()
+			self.uFindRequestSignal(word)
+
+	def cFind(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.cFindRequestSignal(word)
+
+	def cFindInNewTab(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.newTabRequestSignal()
+			self.cFindRequestSignal(word)
+
+
+	### Signals ###
+
+	def newTabRequestSignal(self) :
+		self.emit(Qt.SIGNAL("newTabRequest()"))
+
+	def uFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+
+	def cFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
+
+
+	### Handlers ###
+
+	def contextMenuEvent(self, event) :
+		context_menu = self.createStandardContextMenu()
+		text_cursor = self.textCursor()
+		if not text_cursor.selectedText().simplified().isEmpty() :
+			context_menu.addSeparator()
+			context_menu.addAction(self.tr("Search"), self.uFind)
+			context_menu.addAction(self.tr("Expanded search"), self.cFind)
+			context_menu.addSeparator()
+			context_menu.addAction(self.tr("Search (in new tab)"), self.uFindInNewTab)
+			context_menu.addAction(self.tr("Expanded search (in new tab)"), self.cFindInNewTab)
+		context_menu.exec_(event.globalPos())
+		
+
+#####
 class TextBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
@@ -36,10 +119,6 @@ class TextBrowser(Qt.QWidget) :
 		self.main_layout.setMargin(0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
-
-		#####
-
-		self.find_sound = SLFind.FindSound()
 
 		#####
 
@@ -77,13 +156,16 @@ class TextBrowser(Qt.QWidget) :
 	### Public ###
 
 	def addTab(self) :
-		self.text_browsers.append(Qt.QTextBrowser())
+		self.text_browsers.append(TranslateBrowser())
 		index = len(self.text_browsers) -1
-		try : # FIXME with PyQt-4.3
-			self.text_browsers[index].setOpenLinks(False)
-		except : pass
+		#
+		self.connect(self.text_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
+		self.connect(self.text_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"),
+			self.uFindRequestSignal)
+		self.connect(self.text_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"),
+			self.cFindRequestSignal)
+		#
 		self.text_browsers[index].setHtml(self.tr("<em>Empty</em>"))
-		self.connect(self.text_browsers[index],	Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
 		self.tab_widget.addTab(self.text_browsers[index], self.tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 		self.tabChangedSignal()
@@ -179,27 +261,19 @@ class TextBrowser(Qt.QWidget) :
 		self.text_browsers[index].zoomOut(range)
 
 
-	### Private ###
-
-	def findFromAnchor(self, url) :
-		word = url.toString()
-		if word.startsWith("#s") :
-			word.remove(0, word.indexOf("_")+1)
-			word = word.simplified()
-			if word.isEmpty() :
-				return
-			self.find_sound.find(word)
-		elif word.startsWith("http://", Qt.Qt.CaseInsensitive) :
-			Qt.QDesktopServices.openUrl(url)
-
-
 	### Signals ###
 
 	def tabChangedSignal(self) :
 		self.emit(Qt.SIGNAL("tabChanged(int)"), self.tab_widget.currentIndex())
 
+	def uFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
 
-	### Events ###
+	def cFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+
+
+	### Handlers ###
 
 	def mouseDoubleClickEvent(self, event) :
 		self.addTab()

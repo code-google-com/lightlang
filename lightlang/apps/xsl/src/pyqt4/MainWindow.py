@@ -122,6 +122,15 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.google_translate_panel, Qt.SIGNAL("textChanged(const QString &)"),
 			self.setTextBrowserText)
 
+		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
+			self.find_in_sl_panel.setWord)
+		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
+			self.find_in_sl_panel.uFind)
+		self.connect(self.text_browser, Qt.SIGNAL("cFindRequest(const QString &)"),
+			self.find_in_sl_panel.setWord)
+		self.connect(self.text_browser, Qt.SIGNAL("cFindRequest(const QString &)"),
+			self.find_in_sl_panel.cFind)
+
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
 			self.find_in_sl_panel.setDictsList)
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
