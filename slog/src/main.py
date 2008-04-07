@@ -1,4 +1,7 @@
 # -*- mode: python; coding: utf-8; -*-
+import pygtk
+pygtk.require('2.0')
+
 import sys
 import os
 import getopt
@@ -61,7 +64,7 @@ def main():
 			remote = Remote()
 			remote.execute("show")
 			sys.exit()
-
+		
 		app = MainWindow()
 	except SystemExit:
 		sys.exit()
