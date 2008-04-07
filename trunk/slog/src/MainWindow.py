@@ -1,7 +1,5 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import pygtk
-pygtk.require('2.0')
 
 import os
 import gtk, gobject
@@ -241,7 +239,10 @@ class MainWindow(gtk.Window):
 		menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
 	# Activated by Translate Engine
-	def on_translate(self, word, translate):
+	def on_translate(self, word, translate, newtab=False):
+		if newtab:
+			self.new_translate_page()
+
 		tv = self.notebook.get_page()
 		tv.set_translate(word, translate)
 
@@ -267,7 +268,7 @@ class MainWindow(gtk.Window):
 		self.present()
 		self.grab_focus()
 
-	def new_translate_page(self, args=None):
+	def new_translate_page(self):
 		label = gtk.Label()
 		tv = TransView(label)
 		self.notebook.add_page(label, tv)
@@ -276,5 +277,8 @@ class MainWindow(gtk.Window):
 		self.ipc = SLogDBus(self)
 		if not pynotify.init("SLog Notification"):
 			print "Failed init python-notify module"
-		gtk.main()
 
+		gobject.threads_init()
+		gtk.gdk.threads_enter()
+		gtk.main()
+		gtk.gdk.threads_leave()

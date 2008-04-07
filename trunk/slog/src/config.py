@@ -17,7 +17,7 @@ class SlogConf:
 			self.used_dicts_list = ""
 			self.spy_dicts_param = ""
 			self.enabled_plugins = "LightLang SL:Google Translate"
-			self.sl_prefix = sys.prefix
+			self.sl_dicts_dir = "/usr/share/sl/dicts"
 			self.google_target = 6
 			self.engine = 0
 			self.tray_exit = 0
@@ -58,8 +58,8 @@ class SlogConf:
 				self.spy_auto = conf.getint("spy", "auto")
 			if conf.has_option("spy", "mod_key"):
 				self.mod_key = conf.getint("spy", "mod_key")
-			if conf.has_option("sl", "sl_prefix"):
-				self.sl_prefix = conf.get("sl", "sl_prefix")
+			if conf.has_option("sl", "dicts_dir"):
+				self.sl_dicts_dir = conf.get("sl", "dicts_dir")
 			if conf.has_option("sl", "used_dicts"):
 				self.used_dicts_list = conf.get("sl", "used_dicts")
 			if conf.has_option("sl", "spy_dicts"):
@@ -93,7 +93,7 @@ class SlogConf:
 			conf.set("spy", "mod_key", self.mod_key)
 			conf.set("spy", "auto", self.spy_auto)
 			conf.add_section("sl")
-			conf.set("sl", "sl_prefix", self.sl_prefix)
+			conf.set("sl", "dicts_dir", self.sl_dicts_dir)
 			conf.set("sl", "used_dicts", self.used_dicts_list)
 			conf.set("sl", "spy_dicts", self.spy_dicts_param)
 			conf.add_section("google")
@@ -129,9 +129,6 @@ class SlogConf:
 		def set_spy_dicts(self, spy_dicts):
 			self.spy_dicts_param = spy_dicts
 
-		def get_sl_prefix(self):
-			return self.sl_prefix
-
 		def get_engine(self):
 			return self.engine
 
@@ -146,6 +143,9 @@ class SlogConf:
 
 		def get_enabled_plugins(self):
 			return self.enabled_plugins.split(":")
+
+		def get_dic_path(self, dic):
+			return os.path.join(self.sl_dicts_dir, dic)
 
 	__instance = __impl( )
 

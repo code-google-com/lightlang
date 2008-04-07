@@ -173,10 +173,14 @@ class DictsDialog(gtk.Dialog):
 		vbox_out.pack_start(vbox_in, True, False, 0)
 		return vbox_out, vbox_in
 
+	def __change_cursor(self, cursor):
+		for w in gdk.window_get_toplevels():
+			w.set_cursor(cursor)
 
 	# Get list available dictionaries from FTP
 	def on_btn_fresh_clicked(self, widget, data=None):
 		self.list_avail.refresh()
+
 
 	# Install dictionary
 	def on_btn_right_clicked(self, widget, selection):
@@ -193,19 +197,33 @@ class DictsDialog(gtk.Dialog):
 			return
 
 		#Check permissions
-		if not is_path_writable(libsl.DICTS_DIR):
+		if not is_path_writable(self.conf.sl_dicts_dir):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		installer = DictInstaller(fname)
+		pg = ghlp.ProgressDialog(self, "Installation...", "Download..")
+		installer = DictInstaller(fname, pg)
 		try:
 			installer.start()
+
+			gdk.threads_enter()
+			self.__change_cursor(gdk.Cursor(gdk.WATCH))
+			pg.show_all()
+			gdk.threads_leave()
+
 			installer.join()
+
+			gdk.threads_enter()
+			pg.destroy()
+			gdk.threads_leave()
+
 		except IOError, msg:
 			ghlp.show_error(self, str(msg))
 		else:
 			self.list_inst.append_row(True, False, dname, dtarget)
 			self.sync_used_dicts()
+
+		self.__change_cursor(None)
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
@@ -216,7 +234,7 @@ class DictsDialog(gtk.Dialog):
 		fname = dname + "." + dtarget
 
 		#Check permissions
-		if not is_path_writable(libsl.DICTS_DIR):
+		if not is_path_writable(self.conf.sl_dicts_dir):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
@@ -231,7 +249,7 @@ class DictsDialog(gtk.Dialog):
 		response = dlg.run()
 		if response == gtk.RESPONSE_YES:
 			#Remove dictionary
-			path = os.path.join(libsl.DICTS_DIR, fname)
+			path = os.path.join(self.conf.sl_dicts_dir, fname)
 			os.unlink(path)
 			model.remove(l_iter)
 			self.sync_used_dicts()
@@ -281,21 +299,51 @@ class DictsDialog(gtk.Dialog):
 
 
 class DictInstaller(threading.Thread):
-	def __init__(self, filename, name="DictInstaller"):
+	def __init__(self, filename, progress, name="DictInstaller"):
 		threading.Thread.__init__(self, name=name)
 		self.__filename = filename
+		self.__progress = progress
+		self.conf = SlogConf()
+
+	def update_gui(self):
+		gdk.threads_enter()
+		self.__progress.pulse()
+		gdk.threads_leave()
+
+	def url_hook_report(self, blocks, bytes_in_block, file_size):
+		self.update_gui()
 
 	def run(self):
 		if not os.path.exists(SL_TMP_DIR):
 			os.mkdir(SL_TMP_DIR)
 
-		self.__download()
+		self.update_gui()
+
+		gdk.threads_enter()
+		try:
+			import socket
+			socket.setdefaulttimeout(5)
+
+			print "Start download...", self.__filename
+			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
+
+			url_dict = FTP_DICTS_URL +"/" + self.__filename
+			#urllib.urlretrieve(url_dict, file_dict)
+			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
+		except IOError:
+			print "Network error while trying to get url: %s" % url_dict
+			return
+		finally:
+			gdk.threads_leave()
+
+		self.update_gui()
+
 		self.__decompress()
 
 		print "Start indexating..."
 		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
 		file_idx = file_orig + ".res"
-		file_inst = os.path.join(libsl.DICTS_DIR, self.__filename)
+		file_inst = os.path.join(self.conf.sl_dicts_dir, self.__filename)
 
 		libsl.indexating(file_orig)
 
@@ -304,24 +352,6 @@ class DictInstaller(threading.Thread):
 
 		print "Cleanup..."
 		shutil.rmtree(SL_TMP_DIR)
-
-	#def url_hook_report(blocks, bytes_in_block, file_size):
-	#	print a
-
-	def __download(self):
-		print "Start download...", self.__filename
-		file_dict = os.path.join(SL_TMP_DIR, self.__filename)
-
-		if os.path.isfile(file_dict):
-			print "File already downloaded..."
-			return
-
-		url_dict = FTP_DICTS_URL +"/" + self.__filename
-
-		fp = open(file_dict, "wb")
-		urllib.urlretrieve(url_dict, file_dict)
-		#urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
-		fp.close()
 
 	def __decompress(self):
 		print "Start decompressing..."
@@ -387,7 +417,13 @@ class InstDataModel(gtk.ListStore):
 		conf = SlogConf()
 		used_dict_list = conf.get_used_dicts()
 		spy_file_list = conf.get_spy_dicts()
-		dict_list = libsl.get_installed_dicts()
+
+		try:
+			dict_list = os.listdir(conf.sl_dicts_dir)
+		except OSError, msg:
+			print str(msg)
+			dicts_list = []
+
 		for fname in dict_list:
 			used = fname in used_dict_list
 			spy = fname in spy_file_list

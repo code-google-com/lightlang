@@ -31,17 +31,18 @@ class write_data_install_path(cmd.Command):
 			('build_lib', 'lib_build_dir')
 		)
 
-	def run(self):
-		conf_filename = os.path.join(self.lib_build_dir,
-				'slog', 'common.py')
+	def __replace_value(self, filename, token, value):
+		fp = open(filename, "r")
+		text = fp.read()
+		fp.close()
+		text = text.replace(token, value)
+		fp = open(filename, "w")
+		fp.write(text)
+		fp.close()
 
-		conf_file = open(conf_filename, 'r')
-		data = conf_file.read()
-		conf_file.close()
-		data = data.replace('@prefix@', self.prefix)
-		conf_file = open(conf_filename, 'w')
-		conf_file.write(data)
-		conf_file.close()
+	def run(self):
+		filename = os.path.join(self.lib_build_dir,	"slog", "common.py")
+		self.__replace_value(filename, "@prefix@", self.prefix)
 
 	def get_outputs(self): return []
 

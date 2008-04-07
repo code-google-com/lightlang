@@ -49,6 +49,3 @@ class ProgressDialog(gtk.Dialog):
 	def set_task(self, task):
 		self.task.set_text(self.__task)
 		
-
-		
-
