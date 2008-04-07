@@ -19,6 +19,7 @@ class SLView(gtk.VBox):
 	def __init__(self):
 		gtk.VBox.__init__(self, False, 0)
 
+		self.conf = SlogConf()
 		self.timer = 0
 		self.callbacks = {}
 
@@ -28,6 +29,8 @@ class SLView(gtk.VBox):
 		self.pack_start(hbox, False, False, 0)
 
 		self.word_entry = gtk.Entry()
+		self.word_entry.set_size_request(60, -1)
+		self.word_entry.grab_focus()
 		self.word_entry.connect("activate", self.on_word_entry_activate)
 		self.word_entry.connect("changed", self.on_word_entry_changed)
 		hbox.pack_start(self.word_entry, True, True, 4)
@@ -48,6 +51,7 @@ class SLView(gtk.VBox):
 		self.treeview = gtk.TreeView(self.treestore)
 		self.treeview.set_headers_visible(False)
 		self.treeview.set_rules_hint(True)
+		self.treeview.connect("row-activated", self.on_row_activated)
 		sw.add(self.treeview)
 
 		cell = gtk.CellRendererText()
@@ -63,10 +67,14 @@ class SLView(gtk.VBox):
 		if callback is not None:
 			callback(message)
 
-	def __fire_translate_changed(self, word, translate):
+	def __fire_translate_changed(self, word, translate, newtab):
 		callback = self.callbacks["translate_it"]
 		if callback is not None:
-			callback(word, translate)
+			callback(word, translate, newtab)
+
+	def on_row_activated(self, widget, path, column, data=None):
+		treeiter = self.treestore.get_iter(path)
+		self.find_word(treeiter, True)
 
 	def on_btn_clear_clicked(self, widget, data=None):
 		self.word_entry.set_text("")
@@ -89,14 +97,8 @@ class SLView(gtk.VBox):
 		self.find_list(word)
 
 	def on_wordlist_changed(self, selection):
-		model, iter = selection.get_selected()
-		if iter is not None:
-			item = model.get_value(iter, 0)
-			word = item
-			parent = self.treestore.iter_parent(iter)
-			if parent is not None:
-				dictionary = model.get_value(parent, 0)
-				self.find_word(dictionary, word)
+		model, treeiter = selection.get_selected()
+		self.find_word(treeiter, False)
 
 	def find_list(self, word):
 		if word == "":
@@ -106,9 +108,10 @@ class SLView(gtk.VBox):
 		model = self.treestore
 		model.clear()
 
-		dictionaries = SlogConf().get_used_dicts()
+		dictionaries = self.conf.get_used_dicts()
 		for dic in dictionaries:
-			items = libsl.find_word(word, 0, dic)
+			filename = self.conf.get_dic_path(dic)
+			items = libsl.find_word(word, 0, filename)
 			count += len(items)
 			if items == []:
 				continue
@@ -125,9 +128,20 @@ class SLView(gtk.VBox):
 
 		self.__fire_status_changed(_("Total: %i") % (count))
 
-	def find_word(self, dictionary, word):
-		lines = libsl.find_word(word, 1, dictionary)
-		self.__fire_translate_changed(word, "".join(lines))
+	def find_word(self, treeiter, newtab=False):
+		if treeiter is None:
+			return
+		
+		parentiter = self.treestore.iter_parent(treeiter)
+		if parentiter is None:
+			return
+
+		word = self.treestore.get_value(treeiter, 0)
+		dic = self.treestore.get_value(parentiter, 0)
+
+		filename = self.conf.get_dic_path(dic)
+		lines = libsl.find_word(word, 1, filename)
+		self.__fire_translate_changed(word, "".join(lines), newtab)
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
@@ -146,47 +160,42 @@ class SLView(gtk.VBox):
 				gtk.ICON_SIZE_DIALOG)
 		hbox.pack_start(stock, False, False, 0)
 
-		label = gtk.Label("SL_PREFIX:")
+		label = gtk.Label(_("Dictionaries dir:"))
 		hbox.pack_start(label, False, False, 0)
 
-		prefix_entry = gtk.Entry()
-		prefix_entry.set_text(conf.sl_prefix)
-		hbox.pack_start(prefix_entry, True, True, 0)
+		dir_entry = gtk.Entry()
+		dir_entry.set_text(conf.sl_dicts_dir)
+		hbox.pack_start(dir_entry, True, True, 0)
 		
 		btn_browse = gtk.Button("...")
-		btn_browse.connect("clicked", self.on_browse_clicked, prefix_entry)
+		btn_browse.connect("clicked", self.on_browse_clicked, window, dir_entry)
 		hbox.pack_start(btn_browse, False, False, 0)
 
-		label.set_mnemonic_widget(prefix_entry)
+		label.set_mnemonic_widget(dir_entry)
 		dlg.show_all()
 
 		response = dlg.run()
 		if response == gtk.RESPONSE_OK:
-			prefix = prefix_entry.get_text()
-			if not os.path.exists(prefix):
+			ddir = dir_entry.get_text()
+			if not os.path.exists(ddir):
 				ghlp.show_error(window, _("Path not exists!"))
-			conf.sl_prefix = prefix
+			conf.sl_dicts_dir = ddir
 
 		dlg.destroy()
 
-	def on_browse_clicked(self, widget, data):
-		chooser = gtk.FileChooserDialog("Open..", None, gtk.FILE_CHOOSER_ACTION_OPEN,
-							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+	def on_browse_clicked(self, widget, window, entry):
+		chooser = gtk.FileChooserDialog("Open..", window, gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
+							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
 
-		sl_filter = gtk.FileFilter()
-		sl_filter.set_name("SL execute")
-		sl_filter.add_pattern("sl")
-		chooser.add_filter(sl_filter)
 
-		sl_prefix = data.get_text()
-		if os.path.exists(sl_prefix):
-			chooser.set_current_folder(sl_prefix)
+		dicts_dir = entry.get_text()
+		if os.path.exists(dicts_dir):
+			chooser.set_current_folder(dicts_dir)
 
 		response = chooser.run()
 		if response == gtk.RESPONSE_OK:
-			sl_path = chooser.get_filenames()[0]
-			sl_prefix = sl_path.split("/bin/sl")[0]
-			data.set_text(sl_prefix)
+			path = chooser.get_filename()
+			entry.set_text(path)
 
 		chooser.destroy()
 
