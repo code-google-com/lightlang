@@ -4,8 +4,6 @@ import os
 import re
 import tempfile
 
-DICTS_DIR = "/home/renat/opt/lightlang/share/sl/dicts"
-
 def multiple_replace(adict, text):
 	#Create a regular expression from all of the dictionary keys
 	regex = re.compile("|".join(map(re.escape, adict.keys())))
@@ -71,13 +69,12 @@ def parse_word(w_str):
 		ret = w_str[:i]
 	return ret
 	
-def find_word(word, mode, dictionary):
+def find_word(word, mode, filename):
 	if word == "":
 		return []
 
 	lines = []
 	f_word = word.lower().rstrip().decode("utf-8")
-	filename = os.path.join(DICTS_DIR, dictionary)
 
 	pos = get_index(filename, f_word[0])
 	if pos < 0:
@@ -115,10 +112,6 @@ def find_word(word, mode, dictionary):
 		
 	fp.close()
 	return lines
-
-#Return list with installed dictionaries
-def get_installed_dicts():
-	return os.listdir(DICTS_DIR)
 
 def create_index(fp):
 	ch_wc = u"\0"
