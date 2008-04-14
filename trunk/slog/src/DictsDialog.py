@@ -201,27 +201,25 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		pg = ghlp.ProgressDialog(self, "Installation...", "Download..")
-		installer = DictInstaller(fname, pg)
-		try:
-			installer.start()
+		self.__change_cursor(gdk.Cursor(gdk.WATCH))
+		pg = ghlp.ProgressDialog(self, "Installation...", "Downloading..")
+		pg.show_all()
 
-			gdk.threads_enter()
-			self.__change_cursor(gdk.Cursor(gdk.WATCH))
-			pg.show_all()
-			gdk.threads_leave()
+		event = threading.Event()
+		installer = DictInstaller(fname, event)
+		installer.start()
 
-			installer.join()
+		while not event.isSet():
+			pg.pulse()
+			event.wait(0.1)
 
-			gdk.threads_enter()
-			pg.destroy()
-			gdk.threads_leave()
+			while gtk.events_pending():
+				gtk.main_iteration(False)
+			
+		pg.destroy()
 
-		except IOError, msg:
-			ghlp.show_error(self, str(msg))
-		else:
-			self.list_inst.append_row(True, False, dname, dtarget)
-			self.sync_used_dicts()
+		self.list_inst.append_row(True, False, dname, dtarget)
+		self.sync_used_dicts()
 
 		self.__change_cursor(None)
 
@@ -299,27 +297,30 @@ class DictsDialog(gtk.Dialog):
 
 
 class DictInstaller(threading.Thread):
-	def __init__(self, filename, progress, name="DictInstaller"):
+	def __init__(self, filename, event, name="DictInstaller"):
 		threading.Thread.__init__(self, name=name)
+		self.setDaemon(True)
+
 		self.__filename = filename
-		self.__progress = progress
+		self.__event = event
 		self.conf = SlogConf()
 
-	def update_gui(self):
-		gdk.threads_enter()
-		self.__progress.pulse()
-		gdk.threads_leave()
+	#def update_gui(self, progress=0):
+		#self.__progress.pulse()
 
 	def url_hook_report(self, blocks, bytes_in_block, file_size):
-		self.update_gui()
+		if file_size:
+			progress = 100.0 * float(blocks*bytes_in_block)/float(file_size)
+		else:
+			progress = 100.0
+
+		print "Progress: %d%" % progress
+		#self.update_gui(progress)
 
 	def run(self):
 		if not os.path.exists(SL_TMP_DIR):
 			os.mkdir(SL_TMP_DIR)
 
-		self.update_gui()
-
-		gdk.threads_enter()
 		try:
 			import socket
 			socket.setdefaulttimeout(5)
@@ -328,15 +329,11 @@ class DictInstaller(threading.Thread):
 			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
 
 			url_dict = FTP_DICTS_URL +"/" + self.__filename
-			#urllib.urlretrieve(url_dict, file_dict)
 			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
 		except IOError:
 			print "Network error while trying to get url: %s" % url_dict
+			self.__event.set()
 			return
-		finally:
-			gdk.threads_leave()
-
-		self.update_gui()
 
 		self.__decompress()
 
