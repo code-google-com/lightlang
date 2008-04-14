@@ -74,9 +74,9 @@ def find_word(word, mode, filename):
 		return []
 
 	lines = []
-	f_word = word.lower().rstrip().decode("utf-8")
+	utf8_word = word.lower().rstrip().decode("utf-8")
 
-	pos = get_index(filename, f_word[0])
+	pos = get_index(filename, utf8_word[0])
 	if pos < 0:
 		return lines;
 
@@ -88,13 +88,13 @@ def find_word(word, mode, filename):
 		if (line[0] == "#") or (line[0] == "\n"):
 			continue
 
-		w_str = line.decode("utf-8").lower()
+		utf8_str = line.decode("utf-8").lower()
 
-		r_word = parse_word(w_str)
+		r_word = parse_word(utf8_str)
 		if r_word == "":
 			continue
 
-		if f_word[0] != r_word[0]:
+		if utf8_word[0] != r_word[0]:
 			if break_flag:
 				break
 			else:
@@ -103,11 +103,11 @@ def find_word(word, mode, filename):
 			break_flag = True
 
 		if mode == 0: # list
-			if r_word.startswith(f_word):
+			if r_word.startswith(utf8_word):
 				lines.append(r_word)
 		elif mode == 1: #match
-			if r_word == f_word:
-				html = sl_to_html(w_str)
+			if r_word == utf8_word:
+				html = sl_to_html(utf8_str)
 				lines.append(html)
 		
 	fp.close()
