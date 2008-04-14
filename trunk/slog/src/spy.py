@@ -38,9 +38,15 @@ class Spy:
 		for word in words:
 			if word != "":
 				used_dicts = self.conf.get_spy_dicts()
-				lines = libsl.find_word(word, 1, used_dicts[0])
-				translate = "".join(lines)
-				self.spy_view.show_translate(word, translate)
+				for dic in used_dicts:
+					filename = self.conf.get_dic_path(dic)
+					lines = libsl.find_word(word, 1, filename)
+					if lines == []:
+						#TODO: List of some words
+						continue
+					translate = "".join(lines)
+					self.spy_view.show_translate(word, translate)
+					break
 
 	def __on_timer_timeout(self):
 		if self.timer == 0:
