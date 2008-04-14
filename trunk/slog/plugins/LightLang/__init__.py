@@ -42,7 +42,6 @@ class SLView(gtk.VBox):
 
 		sw = gtk.ScrolledWindow()
 		sw.set_border_width(4)
-
 		sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_IN)
 		self.pack_start(sw, True, True, 0)
@@ -110,6 +109,10 @@ class SLView(gtk.VBox):
 
 		dictionaries = self.conf.get_used_dicts()
 		for dic in dictionaries:
+
+			#while gtk.events_pending():
+			#	gtk.main_iteration(False)
+
 			filename = self.conf.get_dic_path(dic)
 			items = libsl.find_word(word, 0, filename)
 			count += len(items)
@@ -145,6 +148,8 @@ class SLView(gtk.VBox):
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+
+	# ================================ Plugin support ============================
 
 	def configure(self, window):
 		conf = SlogConf()
