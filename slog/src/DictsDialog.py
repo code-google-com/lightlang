@@ -245,13 +245,18 @@ class DictsDialog(gtk.Dialog):
 		dlg.set_title(_("Uninstall dictionary"))
 		dlg.format_secondary_text(fname)
 		response = dlg.run()
+		dlg.destroy()
 		if response == gtk.RESPONSE_YES:
 			#Remove dictionary
 			path = os.path.join(self.conf.sl_dicts_dir, fname)
-			os.unlink(path)
-			model.remove(l_iter)
-			self.sync_used_dicts()
-		dlg.destroy()
+			try:
+				os.unlink(path)
+			except OSError, oserr:
+				msg = oserr.strerror
+				ghlp.show_error(self, _("An error happened while erasing dictionary!\n%s\n%s") % (msg, path))
+			else:
+				model.remove(l_iter)
+				self.sync_used_dicts()
 
 	def on_btn_up_clicked(self, widget, selection):
 		(model, iter) = selection.get_selected()
