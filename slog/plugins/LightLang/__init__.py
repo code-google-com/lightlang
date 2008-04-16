@@ -30,7 +30,6 @@ class SLView(gtk.VBox):
 
 		self.word_entry = gtk.Entry()
 		self.word_entry.set_size_request(60, -1)
-		self.word_entry.grab_focus()
 		self.word_entry.connect("activate", self.on_word_entry_activate)
 		self.word_entry.connect("changed", self.on_word_entry_changed)
 		hbox.pack_start(self.word_entry, True, True, 4)
@@ -148,6 +147,9 @@ class SLView(gtk.VBox):
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+
+	def grab_focus(self):
+		self.word_entry.grab_focus()
 
 	# ================================ Plugin support ============================
 
