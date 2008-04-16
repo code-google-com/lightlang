@@ -242,13 +242,17 @@ class MainWindow(gtk.Window):
 		menu = self.uimanager.get_widget("/TrayMenu")
 		menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
-	# Activated by Translate Engine
-	def on_translate(self, word, translate, newtab=False):
+	def __set_translate(self, word, translate, newtab=False):
 		if newtab:
 			self.new_translate_page()
 
 		tv = self.notebook.get_page()
 		tv.set_translate(word, translate)
+
+
+	# Activated by Translate Engine
+	def on_translate(self, word, translate, newtab=False):
+		gobject.idle_add(self.__set_translate, word, translate, newtab)
 
 	def on_status_changed(self, msg):
 		self.statusbar.pop(self.context_id);
@@ -272,7 +276,7 @@ class MainWindow(gtk.Window):
 		self.present()
 		self.grab_focus()
 
-	def new_translate_page(self):
+	def new_translate_page(self, event=None):
 		label = gtk.Label()
 		tv = TransView(label)
 		self.notebook.add_page(label, tv)

@@ -4,32 +4,47 @@ import os
 import re
 import tempfile
 
+# Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
+def filename_parse(fullfilename):
+	fname = os.path.basename(fullfilename)
+	i = fname.find(".")
+	j = fname.find(".", i+1)
+	dname = fname[:i]
+	if j == -1:
+		dtarget = fname[i+1:]
+	else:
+		dtarget = fname[i+1:j]
+	return dname, dtarget
+
 def multiple_replace(adict, text):
 	#Create a regular expression from all of the dictionary keys
 	regex = re.compile("|".join(map(re.escape, adict.keys())))
 	# For each match, look up the corresponding value in the dictionary
 	return regex.sub(lambda match: adict[match.group(0)], text)
 
-def sl_to_html(text):
+def sl_to_html(text, filename):
 
 	adict = {
-		"\\[" : "<strong>",
-		"\\]" : "</strong>",
-		"\\(" : "<em>",
-		"\\)" : "</em>",
-		"\\{" : "<dl><dd>",
-		"\\}" : "</dd></dl>",
-		"\\<" : "<font color=\"#0A7700\">",
-		"\\>" : "</font>",
+		"\\[" : "<span style='font-weight: bold'>",
+		"\\]" : "</span>",
+		"\\(" : "<span style='font-style: italic'>",
+		"\\)" : "</span>",
+		"\\{" : "<dl><li>",
+		"\\}" : "</li></dl>",
+		"\\<" : "<span style='color:#0A7700'>",
+		"\\>" : "</span>",
 	}
 	tmp = multiple_replace(adict, text)
-	tmp = re.sub(r"\\s(.*?)\\s", "&nbsp;<a href=\"#sl"+r"\1"+"\">"+u"\u266B"+"</a>&nbsp;", tmp)
+	tmp = re.sub(r"\\s(.*?)\\s", "<a href=\"#sl"+r"\1"+"\">"+u"\u266B"+"</a>", tmp)
 	body = re.sub(r"\\_(.*?)\\_", r"<u>\1</u>", tmp)
 
-	header = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"></head><body>"
-	footer = "</body></html>"
-	
-	return header+body+footer
+	dictionary = os.path.basename(filename)
+
+	header = "<body><br/>" \
+		"<p style='background-color: yellow; font-weight: bold; text-align: center'>" \
+		"%s</p><br/>" % dictionary
+
+	return header + body + "</body>"
 
 def get_index(filename, w_char):
 		
@@ -107,7 +122,7 @@ def find_word(word, mode, filename):
 				lines.append(r_word)
 		elif mode == 1: #match
 			if r_word == utf8_word:
-				html = sl_to_html(utf8_str)
+				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
 		
 	fp.close()

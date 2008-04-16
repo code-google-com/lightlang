@@ -70,8 +70,7 @@ class GoogleEngine:
 		target = response[result_box:]
 		end = target.find("</div>")
 
-		translate = "<html><head><meta content=\"text/html; charset=UTF-8\" http-equiv=Content-Type></head><body><p>" \
-					+ target[29:end] + "</body></html>"
+		translate = "<body><p>" + target[29:end] + "</p></body>"
 
 		return translate
 

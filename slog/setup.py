@@ -97,7 +97,7 @@ setup(
 	author_email = 'renatn@gmail.com',
 	description = 'SLog is a PyGTK-based GUI for the LightLang SL',
 	license = 'GPL',
-	requires=['gtk (>=2.10.0)', 'pynotify', 'gtkhtml2'],
+	requires=['gtk (>=2.10.0)', 'pynotify'],
 	scripts = ['bin/slog'],
 	packages = ['slog'],
 	py_modules = ['libsl', 'htmltextview'],
