@@ -84,6 +84,7 @@ class MainWindow(gtk.Window):
 			self.move(left, top)
 		self.set_default_size(width, height)
 
+		self.connect("key-press-event", self.on_press_hotkey)
 		self.connect("delete_event", self.delete_event)
 		self.connect("destroy", self.destroy)
 
@@ -123,6 +124,7 @@ class MainWindow(gtk.Window):
 		if self.conf.spy_auto == 1:
 			self.spy_action.activate()
 
+		#self.add_events(gtk.gdk.KEY_PRESS_MASK)
 		#gobject.idle_add(self.__load_plugins)
 		self.__load_plugins()
 
@@ -205,6 +207,12 @@ class MainWindow(gtk.Window):
 		self.conf.set_engine(self.sidebar.get_active())
 		self.conf.save()
 		gtk.main_quit()
+
+	def on_press_hotkey(self, widget, event):
+		if event.keyval in (49, 50, 51):
+			if event.state & gtk.gdk.MOD1_MASK:
+				engine = (event.keyval - 49)
+				self.sidebar.set_active(engine)
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
