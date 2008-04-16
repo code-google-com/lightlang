@@ -374,12 +374,19 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
             if not self.iter.starts_line():
                 self._insert_text("\n")
             self.list_counters.insert(0, 0)
+        elif name == 'dl':
+            if not self.iter.starts_line():
+                self._insert_text("\n")
+            self.list_counters.insert(0, 1)
+
         elif name == 'li':
             if self.list_counters[0] is None:
                 li_head = unichr(0x2022)
-            else:
+            elif self.list_counters[0] == 0:
                 self.list_counters[0] += 1
                 li_head = "%i." % self.list_counters[0]
+            else:
+				li_head = u" "
             self.text = ' '*len(self.list_counters)*4 + li_head + ' '
         elif name == 'img':
             try:
@@ -433,6 +440,8 @@ class HtmlHandler(xml.sax.handler.ContentHandler):
         elif name == 'ul':
             self.list_counters.pop()
         elif name == 'ol':
+            self.list_counters.pop()
+        elif name == 'dl':
             self.list_counters.pop()
         elif name == 'li':
             self._insert_text("\n")
