@@ -119,6 +119,10 @@ def find_word(word, mode, filename):
 			if r_word == utf8_word:
 				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
+
+		# Save memory
+		if len(lines) > 50:
+			break
 		
 	fp.close()
 	return lines
