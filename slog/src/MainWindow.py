@@ -1,6 +1,5 @@
 # -*- mode: python; coding: utf-8; -*-
 
-
 import os
 import gtk, gobject
 import pynotify
@@ -124,7 +123,8 @@ class MainWindow(gtk.Window):
 		if self.conf.spy_auto == 1:
 			self.spy_action.activate()
 
-		gobject.idle_add(self.__load_plugins)
+		#gobject.idle_add(self.__load_plugins)
+		self.__load_plugins()
 
 	def __load_plugins(self):
 		self.plugin_manager = PluginManager()
@@ -132,6 +132,10 @@ class MainWindow(gtk.Window):
 
 		list_enabled = self.conf.get_enabled_plugins()
 		for plugin in self.plugin_manager.get_available():
+
+			while gtk.events_pending():
+				gtk.main_iteration(False)
+
 			if plugin not in list_enabled:
 				continue
 				

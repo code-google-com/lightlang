@@ -12,7 +12,6 @@ APP_NAME = "SLog"
 VERSION = "0.9.2"
 WEBSITE = "http://lightlang.org.ru"
 
-
 # Thanks to Iain Nicol for code to save the location for installed prefix
 # At runtime, we need to know where we installed the data to.
 
@@ -101,8 +100,8 @@ setup(
 	requires=['gtk (>=2.10.0)', 'pynotify', 'gtkhtml2'],
 	scripts = ['bin/slog'],
 	packages = ['slog'],
-	py_modules = ['libsl'],
-	package_dir = {"": "libsl", "slog" : "src"},
+	py_modules = ['libsl', 'htmltextview'],
+	package_dir = {"": "lib", "slog" : "src"},
 	data_files = data,
     cmdclass=cmdclass
 	)
