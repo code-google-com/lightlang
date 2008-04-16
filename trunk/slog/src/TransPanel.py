@@ -1,7 +1,7 @@
 # -*- mode: python; coding: utf-8; -*-
 
 import gtk
-import gtkhtml2
+import htmltextview
 
 class TransView(gtk.ScrolledWindow):
 
@@ -17,13 +17,26 @@ class TransView(gtk.ScrolledWindow):
 		self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 		self.set_shadow_type(gtk.SHADOW_IN)
 
-		self.document = gtkhtml2.Document()
+		self.htmlview = htmltextview.HtmlTextView()
+		self.htmlview.set_wrap_mode(gtk.WRAP_WORD)
+
+		self.htmlview.set_border_width(1)
+		self.htmlview.set_accepts_tab(True)
+		self.htmlview.set_editable(False)
+		self.htmlview.set_cursor_visible(False)
+		self.htmlview.set_wrap_mode(gtk.WRAP_WORD_CHAR)
+		self.htmlview.set_left_margin(2)
+		self.htmlview.set_right_margin(2)
+
 		self.clear()
 
-		textview = gtkhtml2.View()
-		textview.set_document(self.document)
-		self.add(textview)
-		textview.show()
+		self.add(self.htmlview)
+		self.htmlview.show()
+
+	def __clear_htmlview(self):
+		textbuffer = self.htmlview.get_buffer()
+		start, end = textbuffer.get_bounds()
+		textbuffer.delete(start, end)
 
 	def get_label():
 		return self.label
@@ -34,20 +47,18 @@ class TransView(gtk.ScrolledWindow):
 			return
 
 		self.label.set_text(word)
-
-		self.document.clear()
-		self.document.open_stream("text/html")
-		self.document.write_stream(translate)
-		self.document.close_stream()
+		self.__clear_htmlview()
+		self.htmlview.display_html(translate)
 
 	def clear(self):
 		self.label.set_text(_("Welcome"))
-		self.document.clear()
-		self.document.open_stream("text/html")
-		self.document.write_stream("<html><body><br><br><hr>" \
-			"<table border=\"0\" width=\"100%\"><tr><td bgcolor=\"#DFEDFF\"><h2 align=\"center\"><em>" \
-			"Welcome to the LightLang - the system of electronic dictionaries</em></h2></td></tr></table>" \
-			"<hr>")
+		self.__clear_htmlview()
 
-		self.document.close_stream()
+		self.htmlview.display_html(
+			"""<body>
+			<br/><p style='background-color: cyan; font-weight: bold; text-align: center'>
+			Welcome to the LightLang - the system of electronic dictionaries</p>
+			</body>
+			"""
+		)
 

@@ -47,17 +47,6 @@ def is_path_writable(path):
 
 	return False
 
-# Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
-def filename_parse(filename):
-	i = filename.find(".")
-	j = filename.find(".", i+1)
-	dname = filename[:i]
-	if j == -1:
-		dtarget = filename[i+1:]
-	else:
-		dtarget = filename[i+1:j]
-	return dname, dtarget
-
 class DictsDialog(gtk.Dialog):
 	def __init__(self, parent):
 		gtk.Dialog.__init__(self, _("Manage dictionaries"), parent,
@@ -449,7 +438,7 @@ class InstDataModel(gtk.ListStore):
 		for fname in dict_list:
 			used = fname in used_dict_list
 			spy = fname in spy_file_list
-			dname, dtarget = filename_parse(fname)
+			dname, dtarget = libsl.filename_parse(fname)
 			self.append_row(used, spy, dname, dtarget)
 
 	def append_row(self, used, spy, name, target):
