@@ -22,6 +22,10 @@ def create_bold_label(text):
 	label.show()
 	return label
 
+def change_cursor(cursor):
+	for w in gtk.gdk.window_get_toplevels():
+		w.set_cursor(cursor)
+
 class ProgressDialog(gtk.Dialog):
 	def __init__(self, parent, title, task):
 		gtk.Dialog.__init__(self, title, parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,

@@ -173,14 +173,12 @@ class DictsDialog(gtk.Dialog):
 		vbox_out.pack_start(vbox_in, True, False, 0)
 		return vbox_out, vbox_in
 
-	def __change_cursor(self, cursor):
-		for w in gdk.window_get_toplevels():
-			w.set_cursor(cursor)
+	def notification(self, message):
+		ghlp.show_error(self, message)
 
 	# Get list available dictionaries from FTP
 	def on_btn_fresh_clicked(self, widget, data=None):
 		self.list_avail.refresh()
-
 
 	# Install dictionary
 	def on_btn_right_clicked(self, widget, selection):
@@ -201,12 +199,12 @@ class DictsDialog(gtk.Dialog):
 			ghlp.show_error(self, _("You do not have permissions!"))
 			return
 
-		self.__change_cursor(gdk.Cursor(gdk.WATCH))
+		ghlp.change_cursor(gdk.Cursor(gdk.WATCH))
 		pg = ghlp.ProgressDialog(self, "Installation...", "Downloading..")
 		pg.show_all()
 
 		event = threading.Event()
-		installer = DictInstaller(fname, event)
+		installer = DictInstaller(fname, event, self.notification)
 		installer.start()
 
 		while not event.isSet():
@@ -221,7 +219,7 @@ class DictsDialog(gtk.Dialog):
 		self.list_inst.append_row(True, False, dname, dtarget)
 		self.sync_used_dicts()
 
-		self.__change_cursor(None)
+		ghlp.change_cursor(None)
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
@@ -302,12 +300,13 @@ class DictsDialog(gtk.Dialog):
 
 
 class DictInstaller(threading.Thread):
-	def __init__(self, filename, event, name="DictInstaller"):
+	def __init__(self, filename, event, notification, name="DictInstaller"):
 		threading.Thread.__init__(self, name=name)
-		self.setDaemon(True)
 
 		self.__filename = filename
 		self.__event = event
+		self.__cancelled = False
+		self.__notification = notification
 		self.conf = SlogConf()
 
 	#def update_gui(self, progress=0):
@@ -321,6 +320,11 @@ class DictInstaller(threading.Thread):
 
 		print "Progress: %d%" % progress
 		#self.update_gui(progress)
+		if self.__cancelled:
+			raise IOError("Download cancelled!")
+
+	def cancel(self):
+		self.__cancelled = True
 
 	def run(self):
 		if not os.path.exists(SL_TMP_DIR):
@@ -330,13 +334,20 @@ class DictInstaller(threading.Thread):
 			import socket
 			socket.setdefaulttimeout(5)
 
+			if self.__cancelled:
+				self.__event.set()
+				return
+
 			print "Start download...", self.__filename
 			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
 
 			url_dict = FTP_DICTS_URL +"/" + self.__filename
 			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
-		except IOError:
-			print "Network error while trying to get url: %s" % url_dict
+		except IOError, ioerr:
+			t = ioerr.strerror
+			msg = "Network error while trying to get url: %s\n%s" % (url_dict, t)
+			print msg
+			self.__notification(msg)
 			self.__event.set()
 			return
 
@@ -369,27 +380,13 @@ class DictInstaller(threading.Thread):
 			bz2f.close()
 			fp.close()
 
-class ListLoader(threading.Thread):
-	def __init__(self, name="ListLoader"):
-		threading.Thread.__init__(self, name=name)
-
-	def run(self):
-		try:
-			doc = urllib2.urlopen(FTP_REPO_URL)
-		except IOError, e:
-			ghlp.show_error(self, str(e))
-		else:
-			fp = open(REPO_FILE, "w")
-			fp.write(doc.read())
-			fp.close()
-			doc.close()
-
 class AvailDataModel(gtk.ListStore):
 	def __init__(self):
 		gtk.ListStore.__init__(self, str, str, str)
-		self.__load()
+		gobject.idle_add(self.__load)
 
 	def __load(self):
+		self.clear()
 		if os.path.isfile(REPO_FILE):
 			parser = xml.sax.make_parser()
 			chandler = DictHandler()
@@ -401,19 +398,42 @@ class AvailDataModel(gtk.ListStore):
 				dname, dtarget, dsize = d_list[dfile]
 				self.set(l_iter, COL_A_NAME, dname,
 								COL_A_TARGET, dtarget, COL_A_SIZE, dsize)
-	def refresh():
-		self.clear()
 
-		loader = ListLoader()
-		loader.start()
-		loader.join()
+	def download_repo_file(self, event):
+		try:
+			import socket
+			socket.setdefaulttimeout(5)
+
+			doc = urllib2.urlopen(FTP_REPO_URL)
+		except IOError, e:
+			print str(e)
+		else:
+			fp = open(REPO_FILE, "w")
+			fp.write(doc.read())
+			fp.close()
+			doc.close()
+		event.set()
+
+	def refresh(self):
+		ghlp.change_cursor(gdk.Cursor(gdk.WATCH))
+
+		event = threading.Event()
+		thread = threading.Thread(target = self.download_repo_file, args = (event,))
+		thread.start()
+
+		while not event.isSet():
+			event.wait(0.1)
+
+			while gtk.events_pending():
+				gtk.main_iteration(False)
 
 		self.__load()
+		ghlp.change_cursor(None)
 
 class InstDataModel(gtk.ListStore):
 	def __init__(self):
 		gtk.ListStore.__init__(self, bool, bool, str, str)
-		self.__load()
+		gobject.idle_add(self.__load)
 
 	def __load(self):
 		conf = SlogConf()
