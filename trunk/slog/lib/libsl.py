@@ -35,13 +35,13 @@ def sl_to_html(text, filename):
 		"\\>" : "</span>",
 	}
 	tmp = multiple_replace(adict, text)
-	tmp = re.sub(r"\\s(.*?)\\s", "<a href=\"#sl"+r"\1"+"\">"+u"\u266B"+"</a>", tmp)
+	tmp = re.sub(r"\\s(.*?)\\s", " <a href=\"#sl"+r"\1"+"\"><span style='font-size: 150%'>"+u"\u266B"+"</span></a> ", tmp)
 	body = re.sub(r"\\_(.*?)\\_", r"<u>\1</u>", tmp)
 
 	dictionary = os.path.basename(filename)
 
 	header = "<body><br/>" \
-		"<p style='background-color: yellow; font-weight: bold; text-align: center'>" \
+		"<p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>" \
 		"%s</p><br/>" % dictionary
 
 	return header + body + "</body>"
@@ -77,13 +77,6 @@ def get_index(filename, w_char):
 	fp.close()
 	return pos
 
-def parse_word(w_str):
-	ret = ""
-	i = w_str.find(u"  ")
-	if i != -1:
-		ret = w_str[:i]
-	return ret
-	
 def find_word(word, mode, filename):
 	if word == "":
 		return []
@@ -105,8 +98,10 @@ def find_word(word, mode, filename):
 
 		utf8_str = line.decode("utf-8").lower()
 
-		r_word = parse_word(utf8_str)
-		if r_word == "":
+		i = utf8_str.find(u"  ")
+		if i != -1:
+			r_word = utf8_str[:i]
+		else:
 			continue
 
 		if utf8_word[0] != r_word[0]:
