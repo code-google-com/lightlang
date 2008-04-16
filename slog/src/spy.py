@@ -15,7 +15,7 @@ class Spy:
 		self.prev_selection = ""
 		self.clipboard = gtk.clipboard_get(gdk.SELECTION_PRIMARY)
 		self.conf = SlogConf()
-		self.spy_view = SpyView()
+		self.spy_view = None
 
 		mod_key = self.conf.get_mod_key()
 		self.void_mask = self.__get_modifier_mask() | mod_key
@@ -35,6 +35,7 @@ class Spy:
 		self.prev_selection = selection
 
 		words = self.pattern.split(selection)
+		all_translate = ""
 		for word in words:
 			if word != "":
 				used_dicts = self.conf.get_spy_dicts()
@@ -60,12 +61,14 @@ class Spy:
 		return True
 
 	def start(self):
+		self.spy_view = SpyView()
 		self.clipboard.set_text("")
 		self.prev_selection = ""
 		self.timer = gobject.timeout_add(300, self.__on_timer_timeout)
 
 	def stop(self):
 		self.timer = 0
+		self.spy_view.destroy()
 
 
 class SpyView(gtk.Window):
