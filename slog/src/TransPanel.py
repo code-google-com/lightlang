@@ -56,7 +56,7 @@ class TransView(gtk.ScrolledWindow):
 
 		self.htmlview.display_html(
 			"""<body>
-			<br/><p style='background-color: cyan; font-weight: bold; text-align: center'>
+			<br/><p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>
 			Welcome to the LightLang - the system of electronic dictionaries</p>
 			</body>
 			"""
