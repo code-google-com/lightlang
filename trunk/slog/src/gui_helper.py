@@ -35,7 +35,8 @@ class ProgressDialog(gtk.Dialog):
 		self.__timeout = None
 
 		self.set_border_width(8)
-
+		self.set_size_request(300,100)
+		
 		self.task = gtk.Label()
 		self.task.set_alignment(0.0, 0.0)
 		self.vbox.pack_start(self.task)
@@ -52,4 +53,10 @@ class ProgressDialog(gtk.Dialog):
 
 	def set_task(self, task):
 		self.task.set_text(self.__task)
-		
+	
+	def set_message(self, message):
+		self.progress.set_text(message)
+
+	def set_progress(self, progress):
+		self.progress.set_fraction(progress/100.0)
+

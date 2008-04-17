@@ -50,7 +50,7 @@ def is_path_writable(path):
 class DictsDialog(gtk.Dialog):
 	def __init__(self, parent):
 		gtk.Dialog.__init__(self, _("Manage dictionaries"), parent,
-								gtk.DIALOG_MODAL, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
+								gtk.DIALOG_DESTROY_WITH_PARENT, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
 
 		self.tooltips = gtk.Tooltips()
 		hbox = gtk.HBox(False, 0)
@@ -162,8 +162,29 @@ class DictsDialog(gtk.Dialog):
 		vbox_out.pack_start(vbox_in, True, False, 0)
 		return vbox_out, vbox_in
 
-	def notification(self, message):
-		ghlp.show_error(self, message)
+	def on_installer_change(self, event):
+		if event.state == 0: # Notify
+			if event.msg is not None:
+				print "Change task to:", event.msg
+				self.pg.set_task(event.msg)
+			if event.data != -1:
+				self.pg.set_progress(event.data)
+			else:
+				self.pg.pulse()
+		elif event.state == 1: # Error
+			gobject.idle_add(ghlp.show_error, self, event.msg)
+		elif event.state == 2: # Done
+			dname, dtarget = libsl.filename_parse(event.data)
+			self.list_inst.append_row(True, False, dname, dtarget)
+			self.sync_used_dicts()
+		#3 - Cancel
+
+		if event.state in (1, 2, 3):
+			self.pg.destroy()
+			ghlp.change_cursor(None)
+
+		while gtk.events_pending():
+			gtk.main_iteration(False)
 
 	# Get list available dictionaries from FTP
 	def on_btn_fresh_clicked(self, widget, data=None):
@@ -189,26 +210,24 @@ class DictsDialog(gtk.Dialog):
 			return
 
 		ghlp.change_cursor(gdk.Cursor(gdk.WATCH))
-		pg = ghlp.ProgressDialog(self, "Installation...", "Downloading..")
-		pg.show_all()
 
 		event = threading.Event()
-		installer = DictInstaller(fname, event, self.notification)
-		installer.start()
+		installer = DictInstaller(fname, event)
+		installer.connect(self.on_installer_change)
 
+		self.pg = ghlp.ProgressDialog(self, "Installation...", "Connecting...")
+		self.pg.connect("response", lambda x, y: (y == -6 and installer.cancel()))
+		self.pg.show_all()
+
+		installer.start()
 		while not event.isSet():
-			pg.pulse()
+			self.pg.pulse()
 			event.wait(0.1)
 
 			while gtk.events_pending():
 				gtk.main_iteration(False)
-			
-		pg.destroy()
 
-		self.list_inst.append_row(True, False, dname, dtarget)
-		self.sync_used_dicts()
-
-		ghlp.change_cursor(None)
+		print "on_btn_right() finished..."
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
@@ -286,88 +305,6 @@ class DictsDialog(gtk.Dialog):
 
 		self.conf.set_used_dicts(ud)
 		self.conf.set_spy_dicts(sd)
-
-
-class DictInstaller(threading.Thread):
-	def __init__(self, filename, event, notification, name="DictInstaller"):
-		threading.Thread.__init__(self, name=name)
-
-		self.__filename = filename
-		self.__event = event
-		self.__cancelled = False
-		self.__notification = notification
-		self.conf = SlogConf()
-
-	#def update_gui(self, progress=0):
-		#self.__progress.pulse()
-
-	def url_hook_report(self, blocks, bytes_in_block, file_size):
-		if file_size:
-			progress = 100.0 * float(blocks*bytes_in_block)/float(file_size)
-		else:
-			progress = 100.0
-
-		print "Progress: %d%" % progress
-		#self.update_gui(progress)
-		if self.__cancelled:
-			raise IOError("Download cancelled!")
-
-	def cancel(self):
-		self.__cancelled = True
-
-	def run(self):
-		if not os.path.exists(SL_TMP_DIR):
-			os.mkdir(SL_TMP_DIR)
-
-		try:
-			import socket
-			socket.setdefaulttimeout(5)
-
-			if self.__cancelled:
-				self.__event.set()
-				return
-
-			print "Start download...", self.__filename
-			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
-
-			url_dict = FTP_DICTS_URL +"/" + self.__filename
-			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
-		except IOError, ioerr:
-			t = ioerr.strerror
-			msg = "Network error while trying to get url: %s\n%s" % (url_dict, t)
-			print msg
-			self.__notification(msg)
-			self.__event.set()
-			return
-
-		self.__decompress()
-
-		print "Start indexating..."
-		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
-		file_idx = file_orig + ".res"
-		file_inst = os.path.join(self.conf.sl_dicts_dir, self.__filename)
-
-		libsl.indexating(file_orig)
-
-		print "Install...", file_inst
-		shutil.copyfile(file_idx, file_inst)
-
-		print "Cleanup..."
-		shutil.rmtree(SL_TMP_DIR)
-
-	def __decompress(self):
-		print "Start decompressing..."
-		fp = open(os.path.join(SL_TMP_DIR, self.__filename[:-4]), "wb")
-		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.__filename))
-		try:
-			fp.write(bz2f.read())
-		except EOFError, msg:
-			ghlp.show_error(self, str(msg))
-		else:
-			self.__filename = self.__filename[:-4]
-		finally:
-			bz2f.close()
-			fp.close()
 
 class AvailDataModel(gtk.ListStore):
 	def __init__(self):
@@ -451,3 +388,112 @@ class InstDataModel(gtk.ListStore):
 			if dname == row[COL_I_NAME] and dtarget == row[COL_I_TARGET]:
 				return True
 		return False
+
+class DictInstallerEvent:
+	def __init__(self, state = 0, msg = None, data = None):
+		self.state = state # 0 - Notify, 1 - Error, 2 - Done
+		self.msg = msg
+		self.data = data
+
+class DictInstaller(threading.Thread):
+	def __init__(self, filename, event, name="DictInstaller"):
+		threading.Thread.__init__(self, name=name)
+
+		self.__filename = filename
+		self.__event = event
+		self.__cancelled = False
+		self.__callbacks = []
+		self.conf = SlogConf()
+
+	def __fire_state_change(self, event):
+		for cb in self.__callbacks:
+			gobject.idle_add(cb, event)
+
+	def __notification(self, msg, data):
+		if msg is not None:
+			print msg
+		event = DictInstallerEvent(state = 0, msg = msg, data = data)
+		self.__fire_state_change(event)
+			
+	def __finish(self, state, msg):
+		print msg
+		self.__event.set()
+		event = DictInstallerEvent(state = state, msg = msg, data = self.__filename)
+		self.__fire_state_change(event)
+
+		print "Cleanup..."
+		shutil.rmtree(SL_TMP_DIR)
+
+	def url_hook_report(self, blocks, bytes_in_block, file_size):
+		if self.__cancelled:
+			raise IOError()
+
+		if not self.__event.isSet():
+			self.__event.set()
+			self.__notification("Downloading...", 0)
+
+		if file_size:
+			progress = 100.0 * float(blocks*bytes_in_block)/float(file_size)
+		else:
+			progress = 100.0
+
+		if progress > 100.0:
+			progress = 100.0
+
+		self.__notification(None, progress)
+
+	def cancel(self):
+		self.__cancelled = True
+
+	def connect(self, callback):
+		self.__callbacks.append(callback)
+
+
+	def run(self):
+		if not os.path.exists(SL_TMP_DIR):
+			os.mkdir(SL_TMP_DIR)
+
+		try:
+			import socket
+			socket.setdefaulttimeout(5)
+
+			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
+			url_dict = FTP_DICTS_URL +"/" + self.__filename
+			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
+
+		except IOError, ioerr:
+			state = 1
+			if self.__cancelled:
+				msg = "Download cancelled!"
+				state = 3 
+			else:
+				t = ioerr.strerror
+				msg = "Network error while trying to get url: %s\n%s" % (url_dict, t)
+					
+			self.__finish(state, msg)
+			return
+
+		self.__notification("Decompressing...", -1)
+		fp = open(os.path.join(SL_TMP_DIR, self.__filename[:-4]), "wb")
+		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.__filename))
+		try:
+			fp.write(bz2f.read())
+		except EOFError, msg:
+			ghlp.show_error(self, str(msg))
+		else:
+			self.__filename = self.__filename[:-4]
+		finally:
+			bz2f.close()
+			fp.close()
+
+		self.__notification("Indexating...", -1)
+		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
+		file_idx = file_orig + ".res"
+		file_inst = os.path.join(self.conf.sl_dicts_dir, self.__filename)
+		libsl.indexating(file_orig)
+
+		self.__notification("Finishing...", -1)
+		shutil.copyfile(file_idx, file_inst)
+
+		self.__finish(2, "Installation finished!")
+

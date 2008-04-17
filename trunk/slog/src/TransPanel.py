@@ -55,7 +55,8 @@ class TransView(gtk.ScrolledWindow):
 		self.__clear_htmlview()
 
 		self.htmlview.display_html(
-			"""<body>
+			"""
+			<body>
 			<br/><p style='background-color: #DFEDFF; font-size: 200%; text-align: center'>
 			Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>
 			</body>
