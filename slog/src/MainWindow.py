@@ -209,6 +209,7 @@ class MainWindow(gtk.Window):
 		gtk.main_quit()
 
 	def on_press_hotkey(self, widget, event):
+		# Process hotkey like <Alt>-1,2,3,...
 		if event.keyval in (49, 50, 51):
 			if event.state & gtk.gdk.MOD1_MASK:
 				engine = (event.keyval - 49)
@@ -250,6 +251,7 @@ class MainWindow(gtk.Window):
 		menu = self.uimanager.get_widget("/TrayMenu")
 		menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
+	#Thread safe update
 	def __set_translate(self, word, translate, newtab=False):
 		if newtab:
 			self.new_translate_page()
