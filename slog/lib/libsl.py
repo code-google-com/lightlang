@@ -51,7 +51,11 @@ def get_index(filename, w_char):
 	pos = -1
 	in_tag = False
 
-	fp = open(filename, "r")
+	try:
+		fp = open(filename, "r")
+	except IOError, ioerr:
+		print str(ioerr)
+		return pos
 
 	for line in fp:
 		if (line[0] == "#") or (line[0] == "\n"):
