@@ -465,11 +465,11 @@ class DictInstaller(threading.Thread):
 			state = 1
 			if self.__cancelled:
 				msg = "Download cancelled!"
-				state = 3 
+				state = 3
 			else:
 				t = ioerr.strerror
 				msg = "Network error while trying to get url: %s\n%s" % (url_dict, t)
-					
+
 			self.__finish(state, msg)
 			return
 

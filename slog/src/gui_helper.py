@@ -31,12 +31,11 @@ class ProgressDialog(gtk.Dialog):
 		gtk.Dialog.__init__(self, title, parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
 					(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
 
-		self.__task = task
 		self.__timeout = None
 
 		self.set_border_width(8)
 		self.set_size_request(300,100)
-		
+
 		self.task = gtk.Label()
 		self.task.set_alignment(0.0, 0.0)
 		self.vbox.pack_start(self.task)
@@ -45,15 +44,15 @@ class ProgressDialog(gtk.Dialog):
 		self.progress = gtk.ProgressBar()
 		self.vbox.pack_start(self.progress, False)
 		self.progress.show()
-		
+
 		self.set_task(task)
 
 	def pulse(self):
 		self.progress.pulse()
 
 	def set_task(self, task):
-		self.task.set_text(self.__task)
-	
+		self.task.set_text(task)
+
 	def set_message(self, message):
 		self.progress.set_text(message)
 

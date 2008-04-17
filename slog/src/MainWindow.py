@@ -53,7 +53,7 @@ class MainWindow(gtk.Window):
 			self.set_screen(parent.get_screen())
 		except AttributeError:
 			self.connect('destroy', lambda *w: gtk.main_quit())
-	
+
 		self.conf = SlogConf()
 
 		# Translation stuff
@@ -125,8 +125,8 @@ class MainWindow(gtk.Window):
 			self.spy_action.activate()
 
 		#self.add_events(gtk.gdk.KEY_PRESS_MASK)
-		#gobject.idle_add(self.__load_plugins)
-		self.__load_plugins()
+		#self.__load_plugins()
+		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
 		self.plugin_manager = PluginManager()
@@ -140,13 +140,13 @@ class MainWindow(gtk.Window):
 
 			if plugin not in list_enabled:
 				continue
-				
+
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
 			self.sidebar.append_page(plugin, view)
 			view.show_all()
-		
+
 		self.spy = Spy()
 
 		self.sidebar.set_active(self.conf.get_engine())
