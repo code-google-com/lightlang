@@ -26,11 +26,11 @@ from slog.dhandler import DictHandler
 	COL_I_TARGET
 ) = range (4)
 
+#FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
 FTP_DICTS_URL = FTP_LL_URL + "/dicts"
 FTP_REPO_URL = FTP_DICTS_URL + "/repodata/primary.xml"
 REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
-#FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 SL_TMP_DIR = "/tmp/sl"
 
 def is_path_writable(path):
@@ -162,10 +162,17 @@ class DictsDialog(gtk.Dialog):
 		vbox_out.pack_start(vbox_in, True, False, 0)
 		return vbox_out, vbox_in
 
+	# Thread function, showing progressbar while connecting
+	def __wait_connection(self, event, progressbar):
+		while not event.isSet():
+			progressbar.pulse()
+			event.wait(0.1)
+			while gtk.events_pending():
+				gtk.main_iteration(False)
+
 	def on_installer_change(self, event):
 		if event.state == 0: # Notify
 			if event.msg is not None:
-				print "Change task to:", event.msg
 				self.pg.set_task(event.msg)
 			if event.data != -1:
 				self.pg.set_progress(event.data)
@@ -196,11 +203,11 @@ class DictsDialog(gtk.Dialog):
 		if l_iter is None:
 			return
 
-		dname, dtarget = model.get(l_iter, COL_A_NAME, COL_A_TARGET)
-		fname = dname + "." + dtarget + ".bz2"
+		fname = model.get_filename(l_iter)
 
 		#Check duplicate
-		if self.list_inst.is_exists(dname, dtarget):
+		ff = os.path.join(self.conf.sl_dicts_dir, fname[:-4])
+		if os.path.isfile(ff):
 			ghlp.show_error(self, _("Dictionary already installed!"))
 			return
 
@@ -219,15 +226,9 @@ class DictsDialog(gtk.Dialog):
 		self.pg.connect("response", lambda x, y: (y == -6 and installer.cancel()))
 		self.pg.show_all()
 
+		thread = threading.Thread(target = self.__wait_connection, args = (event, self.pg))
+		thread.start()
 		installer.start()
-		while not event.isSet():
-			self.pg.pulse()
-			event.wait(0.1)
-
-			while gtk.events_pending():
-				gtk.main_iteration(False)
-
-		print "on_btn_right() finished..."
 
 	# Remove installed dictionary
 	def on_btn_left_clicked(self, widget, selection):
@@ -349,12 +350,15 @@ class AvailDataModel(gtk.ListStore):
 
 		while not event.isSet():
 			event.wait(0.1)
-
 			while gtk.events_pending():
 				gtk.main_iteration(False)
 
 		self.__load()
 		ghlp.change_cursor(None)
+
+	def get_filename(self, model_iter):
+		dname, dtarget = self.get(model_iter, COL_A_NAME, COL_A_TARGET)
+		return (dname + "." + dtarget + ".bz2")
 
 class InstDataModel(gtk.ListStore):
 	def __init__(self):
@@ -383,12 +387,6 @@ class InstDataModel(gtk.ListStore):
 		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
 						COL_I_NAME, name, COL_I_TARGET, target)
 	
-	def is_exists(self, dname, dtarget):
-		for row in self:
-			if dname == row[COL_I_NAME] and dtarget == row[COL_I_TARGET]:
-				return True
-		return False
-
 class DictInstallerEvent:
 	def __init__(self, state = 0, msg = None, data = None):
 		self.state = state # 0 - Notify, 1 - Error, 2 - Done
@@ -415,6 +413,7 @@ class DictInstaller(threading.Thread):
 		event = DictInstallerEvent(state = 0, msg = msg, data = data)
 		self.__fire_state_change(event)
 			
+	# Finished with Done or Error
 	def __finish(self, state, msg):
 		print msg
 		self.__event.set()
@@ -443,11 +442,11 @@ class DictInstaller(threading.Thread):
 		self.__notification(None, progress)
 
 	def cancel(self):
+		self.__notification("Cancelled, wait...", -1)
 		self.__cancelled = True
 
 	def connect(self, callback):
 		self.__callbacks.append(callback)
-
 
 	def run(self):
 		if not os.path.exists(SL_TMP_DIR):
@@ -457,9 +456,9 @@ class DictInstaller(threading.Thread):
 			import socket
 			socket.setdefaulttimeout(5)
 
-			file_dict = os.path.join(SL_TMP_DIR, self.__filename)
+			file_dist = os.path.join(SL_TMP_DIR, self.__filename)
 			url_dict = FTP_DICTS_URL +"/" + self.__filename
-			urllib.urlretrieve(url_dict, file_dict, self.url_hook_report)
+			urllib.urlretrieve(url_dict, file_dist, self.url_hook_report)
 
 		except IOError, ioerr:
 			state = 1
@@ -474,8 +473,9 @@ class DictInstaller(threading.Thread):
 			return
 
 		self.__notification("Decompressing...", -1)
-		fp = open(os.path.join(SL_TMP_DIR, self.__filename[:-4]), "wb")
-		bz2f = BZ2File(os.path.join(SL_TMP_DIR, self.__filename))
+		fname_raw_dict = os.path.join(SL_TMP_DIR, self.__filename[:-4])
+		fp = open(fname_raw_dict, "wb")
+		bz2f = BZ2File(file_dist)
 		try:
 			fp.write(bz2f.read())
 		except EOFError, msg:
@@ -487,10 +487,9 @@ class DictInstaller(threading.Thread):
 			fp.close()
 
 		self.__notification("Indexating...", -1)
-		file_orig = os.path.join(SL_TMP_DIR, self.__filename)
-		file_idx = file_orig + ".res"
+		file_idx = fname_raw_dict + ".res"
 		file_inst = os.path.join(self.conf.sl_dicts_dir, self.__filename)
-		libsl.indexating(file_orig)
+		libsl.indexating(fname_raw_dict)
 
 		self.__notification("Finishing...", -1)
 		shutil.copyfile(file_idx, file_inst)
