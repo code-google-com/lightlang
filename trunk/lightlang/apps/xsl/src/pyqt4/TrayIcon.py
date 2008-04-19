@@ -55,8 +55,8 @@ class TrayMenu(Qt.QMenu) :
 		fictive_action_frame.setLayout(fictive_action_frame_layout)
 
 		fictive_action_icon_label = Qt.QLabel()
-		icon_size = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-		fictive_action_icon_label.setPixmap(icon.pixmap(Qt.QSize(icon_size, icon_size)))
+		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
+		fictive_action_icon_label.setPixmap(icon.pixmap(Qt.QSize(icon_width, icon_height)))
 		fictive_action_frame_layout.insertWidget(-1, fictive_action_icon_label, 0)
 
 		fictive_action_caption_label = Qt.QLabel(text)

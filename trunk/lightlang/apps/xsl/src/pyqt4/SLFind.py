@@ -87,6 +87,8 @@ class FindWord(Qt.QObject) :
 			self.proc_kill_flag = True
 			self.proc.kill()
 
+		self.processStartedSignal()
+
 		self.clearRequestSignal()
 
 		self.proc_output.clear()
@@ -98,8 +100,6 @@ class FindWord(Qt.QObject) :
 			self.proc.waitForFinished()
 		self.proc_kill_flag = False
 		self.proc.start(SL, self.proc_args)
-
-		self.processStartedSignal()
 
 
 	### Private ###

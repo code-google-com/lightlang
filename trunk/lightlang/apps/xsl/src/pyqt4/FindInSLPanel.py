@@ -134,7 +134,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		#####
 
 		self.line_edit = Qt.QLineEdit()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.line_edit.setFocus()
 		self.line_edit_layout.addWidget(self.line_edit)
 
 		self.clear_line_edit_button = Qt.QToolButton()
@@ -170,6 +170,8 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.connect(self.internal_find, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
 		self.connect(self.internal_find, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setHtml)
 
+		self.connect(self.external_find, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
+		self.connect(self.external_find, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
 		self.connect(self.external_find, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
 		self.connect(self.external_find, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 
@@ -179,23 +181,29 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
 		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.uFind)
+		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.cFind)
+		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
 		self.connect(self.list_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFind)
 		self.connect(self.list_browser, Qt.SIGNAL("uFindInNewTabRequest(const QString &)"), self.uFindInNewTab)
 		self.connect(self.list_browser, Qt.SIGNAL("cFindInNewTabRequest(const QString &)"), self.cFindInNewTab)
 
 		self.connect(self.l_find_button, Qt.SIGNAL("clicked()"), self.lFind)
+		self.connect(self.l_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.iFind)
+		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
 
 	### Public ###
 
 	def setWord(self, word) :
 		self.line_edit.setText(word)
+		self.setFocus()
 
-	def setFocus(self, reason) :
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.line_edit.setFocus(reason)
+		self.line_edit.selectAll()
 
 	def clear(self) :
 		self.clearLineEdit()
@@ -292,10 +300,16 @@ class FindInSLPanel(Qt.QDockWidget) :
 
 	def clearLineEdit(self) :
 		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.line_edit.setFocus()
 
 
 	### Signals ###
+
+	def processStartedSignal(self) :
+		self.emit(Qt.SIGNAL("processStarted()"))
+
+	def processFinishedSignal(self) :
+		self.emit(Qt.SIGNAL("processFinished()"))
 
 	def wordChangedSignal(self, word) :
 		self.emit(Qt.SIGNAL("wordChanged(const QString &)"), word)

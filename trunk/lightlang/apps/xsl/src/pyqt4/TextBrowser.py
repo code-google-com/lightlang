@@ -38,6 +38,8 @@ class TranslateBrowser(Qt.QTextBrowser) :
 
 		#####
 
+		self.clipboard = Qt.QApplication.clipboard()
+
 		self.find_sound = SLFind.FindSound()
 
 		#####
@@ -97,6 +99,17 @@ class TranslateBrowser(Qt.QTextBrowser) :
 
 	### Handlers ###
 
+	def mousePressEvent(self, event) :
+		if event.button() == Qt.Qt.MidButton :
+			word = self.textCursor().selectedText().simplified()
+			if word.isEmpty() :
+				word = self.clipboard.text(Qt.QClipboard.Selection).simplified()
+			if not word.isEmpty() :
+				self.newTabRequestSignal()
+				self.uFindRequestSignal(word)
+		else :
+			Qt.QTextBrowser.mousePressEvent(self, event)
+
 	def contextMenuEvent(self, event) :
 		context_menu = self.createStandardContextMenu()
 		text_cursor = self.textCursor()
@@ -122,7 +135,7 @@ class TextBrowser(Qt.QWidget) :
 
 		#####
 
-		self.text_browsers = []
+		self.translate_browsers = []
 
 		self.tab_widget = Qt.QTabWidget()
 		self.main_layout.addWidget(self.tab_widget)
@@ -156,29 +169,29 @@ class TextBrowser(Qt.QWidget) :
 	### Public ###
 
 	def addTab(self) :
-		self.text_browsers.append(TranslateBrowser())
-		index = len(self.text_browsers) -1
+		self.translate_browsers.append(TranslateBrowser())
+		index = len(self.translate_browsers) -1
 		#
-		self.connect(self.text_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
-		self.connect(self.text_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"),
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.uFindRequestSignal)
-		self.connect(self.text_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"),
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"),
 			self.cFindRequestSignal)
 		#
-		self.text_browsers[index].setHtml(self.tr("<em>Empty</em>"))
-		self.tab_widget.addTab(self.text_browsers[index], self.tr("(Untitled)"))
+		self.translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
+		self.tab_widget.addTab(self.translate_browsers[index], self.tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 		self.tabChangedSignal()
 
 	def removeTab(self, index = -1) :
 		if self.tab_widget.count() == 1 :
-			self.text_browsers[0].setHtml(self.tr("<em>Empty</em>"))
+			self.translate_browsers[0].setHtml(self.tr("<em>Empty</em>"))
 			self.tab_widget.setTabText(0, self.tr("(Untitled)"))
 		else :
 			if index == -1 :
 				index = self.tab_widget.currentIndex()
 			self.tab_widget.removeTab(index)
-			self.text_browsers.pop(index)
+			self.translate_browsers.pop(index)
 		self.tabChangedSignal()
 
 	###
@@ -192,7 +205,7 @@ class TextBrowser(Qt.QWidget) :
 	###
 
 	def setText(self, index, text) :
-		self.text_browsers[index].setHtml(text)
+		self.translate_browsers[index].setHtml(text)
 		# TODO: add sound-link checks
 
 	def setCaption(self, index, word) :
@@ -203,7 +216,7 @@ class TextBrowser(Qt.QWidget) :
 	def text(self, index = -1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		return self.text_browsers[index].toHtml()
+		return self.translate_browsers[index].toHtml()
 
 	def caption(self, index = -1) :
 		if index == -1 :
@@ -213,19 +226,19 @@ class TextBrowser(Qt.QWidget) :
 	def browser(self, index = -1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		return self.text_browsers[index]
+		return self.translate_browsers[index]
 
 	def document(self, index = -1 ) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		return self.text_browsers[index].document()
+		return self.translate_browsers[index].document()
 
 	###
 
 	def clearPage(self, index = -1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		self.text_browsers[index].setHtml(self.tr("<em>Empty</em>"))
+		self.translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
 		self.tab_widget.setTabText(index, self.tr("(Untitled)"))
 
 	def clearAll(self) :
@@ -237,28 +250,28 @@ class TextBrowser(Qt.QWidget) :
 	def clear(self, index = -1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		self.text_browsers[index].clear()
+		self.translate_browsers[index].clear()
 		self.tab_widget.setTabText(index, Qt.QString())
 
 	###
 
 	def findNext(self, index, word) :
-		return self.text_browsers[index].find(word)
+		return self.translate_browsers[index].find(word)
 
 	def findPrevious(self, index, word) :
-		return self.text_browsers[index].find(word, Qt.QTextDocument.FindBackward)
+		return self.translate_browsers[index].find(word, Qt.QTextDocument.FindBackward)
 
 	###
 
 	def zoomIn(self, index = -1, range = 1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		self.text_browsers[index].zoomIn(range)
+		self.translate_browsers[index].zoomIn(range)
 
 	def zoomOut(self, index = -1, range = 1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		self.text_browsers[index].zoomOut(range)
+		self.translate_browsers[index].zoomOut(range)
 
 
 	### Signals ###
