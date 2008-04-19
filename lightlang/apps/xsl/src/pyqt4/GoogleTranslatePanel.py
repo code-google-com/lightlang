@@ -100,7 +100,9 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		#####
 
 		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.setEnabledAbortButton)
+		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.setDisabledAbortButton)
+		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("wordChanged(const QString &)"), self.wordChangedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
@@ -123,7 +125,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.langpair_combobox.setCurrentIndex(settings.value("google_translate_panel/langpair_combobox_index",
 			Qt.QVariant(0)).toInt()[0])
 
-	def setFocus(self, reason) :
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.text_edit.setFocus(reason)
 		self.text_edit.selectAll()
 
@@ -158,6 +160,12 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 
 	### Signals ###
+
+	def processStartedSignal(self) :
+		self.emit(Qt.SIGNAL("processStarted()"))
+
+	def processFinishedSignal(self) :
+		self.emit(Qt.SIGNAL("processFinished()"))
 
 	def wordChangedSignal(self, word) :
 		self.emit(Qt.SIGNAL("wordChanged(const QString &)"), word)

@@ -41,6 +41,70 @@ import Help
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
+
+#####
+class StatusBar(Qt.QStatusBar) :
+	def __init__(self, parent = None) :
+		Qt.QStatusBar.__init__(self, parent)
+
+		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
+
+		###
+
+		self.activation_semaphore = 0
+
+		self.timer = Qt.QTimer()
+
+		###
+
+		self.message_label = Qt.QLabel()
+		self.message_label.setMaximumHeight(label_height)
+		self.addWidget(self.message_label, 1)
+
+		self.wait_picture_movie = Qt.QMovie(WaitPicture)
+		self.wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
+		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_picture_movie_label = Qt.QLabel()
+		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
+		self.wait_picture_movie_label.setVisible(False)
+		self.addWidget(self.wait_picture_movie_label)
+
+		###
+
+		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.clearStatusMessage)
+
+
+	### Public ###
+
+	def startWaitMovie(self) :
+		if self.activation_semaphore != 0 :
+			self.activation_semaphore += 1
+			return
+
+		self.wait_picture_movie_label.setVisible(True)
+		self.wait_picture_movie.start()
+
+	def stopWaitMovie(self) :
+		if self.activation_semaphore > 1 :
+			return
+		if self.activation_semaphore > 0 :
+			self.activation_semaphore -= 1
+
+		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie.stop()
+		self.wait_picture_movie.jumpToFrame(0)
+
+	###
+
+	def showStatusMessage(self, text, timeout = 2000) :
+		self.message_label.setText(text)
+		if timeout != 0 :
+			self.timer.start(timeout)
+
+	def clearStatusMessage(self) :
+		self.message_label.clear()
+
 
 #####
 class MainWindow(Qt.QMainWindow) :
@@ -56,20 +120,21 @@ class MainWindow(Qt.QMainWindow) :
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_widget.setLayout(self.main_layout)
 
-		self.status_bar = Qt.QStatusBar()
+		self.status_bar = StatusBar()
 		self.setStatusBar(self.status_bar)
 
 		##############################
 		##### Creating Resources #####
 		##############################
 
-		self.index = 0
+		self.source_objects_list = []
 
 		self.printer = Qt.QPrinter()
 		self.print_dialog = Qt.QPrintDialog(self.printer)
 
 		self.find_in_sl_panel = FindInSLPanel.FindInSLPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
+		self.source_objects_list.append([self.find_in_sl_panel, -1])
 
 		self.find_in_text_panel = FindInTextPanel.FindInTextPanel()
 		self.find_in_text_panel.setVisible(False)
@@ -82,6 +147,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
 		self.google_translate_panel.setVisible(False)
 		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.google_translate_panel)
+		self.source_objects_list.append([self.google_translate_panel, -1])
 
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
@@ -96,31 +162,54 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Connections
 
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("newTabRequest()"), self.text_browser.addTab)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("clearRequest()"), self.registrateTextBrowser)
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("processStarted()"),
+			lambda : self.registrateStream(0))
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("processFinished()"),
+			lambda : self.releaseStream(0))
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("clearRequest()"),
+			lambda : self.clearTextBrowser(0))
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("wordChanged(const QString &)"),
+			lambda word : self.setTextBrowserCaption(0, word))
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("textChanged(const QString &)"),
+			lambda text : self.setTextBrowserText(0, text))
+		self.connect(self.source_objects_list[0][0], Qt.SIGNAL("newTabRequest()"),
+			self.addTextBrowserTab)
+
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("processStarted()"),
+			lambda : self.registrateStream(1))
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("processFinished()"),
+			lambda : self.releaseStream(1))
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("clearRequest()"),
+			lambda : self.clearTextBrowser(1))
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("wordChanged(const QString &)"),
+			lambda word : self.setTextBrowserCaption(1, word))
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("textChanged(const QString &)"),
+			lambda text : self.setTextBrowserText(1, text))
+		self.connect(self.source_objects_list[1][0], Qt.SIGNAL("newTabRequest()"),
+			self.addTextBrowserTab)
+
+		self.connect(self.find_in_sl_panel, Qt.SIGNAL("processStarted()"), self.status_bar.startWaitMovie)
+		self.connect(self.find_in_sl_panel, Qt.SIGNAL("processFinished()"), self.status_bar.stopWaitMovie)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("clearRequest()"), self.translate_window.clear)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.setTextBrowserCaption)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.history_panel.addWord)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"),
 			self.translate_window.setCaption)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"), self.setTextBrowserText)
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"),
 			self.translate_window.setText)
 
-		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"), self.findInTextNext)
+		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"),
+			self.findInTextBrowserNext)
 		self.connect(self.find_in_text_panel, Qt.SIGNAL("findPreviousRequest(const QString &)"),
-			self.findInTextPrevious)
+			self.findInTextBrowserPrevious)
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
 
-		self.connect(self.google_translate_panel, Qt.SIGNAL("clearRequest()"),
-			self.registrateTextBrowser)
+		self.connect(self.google_translate_panel, Qt.SIGNAL("processStarted()"),
+			self.status_bar.startWaitMovie)
+		self.connect(self.google_translate_panel, Qt.SIGNAL("processFinished()"),
+			self.status_bar.stopWaitMovie)
 		self.connect(self.google_translate_panel, Qt.SIGNAL("statusChanged(const QString &)"),
-			self.showStatusMessage)
-		self.connect(self.google_translate_panel, Qt.SIGNAL("wordChanged(const QString &)"),
-			self.setTextBrowserCaption)
-		self.connect(self.google_translate_panel, Qt.SIGNAL("textChanged(const QString &)"),
-			self.setTextBrowserText)
+			self.status_bar.showStatusMessage)
 
 		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.setWord)
@@ -147,22 +236,22 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.pages_menu = self.main_menu_bar.addMenu(self.tr("Pages"))
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), self.tr("Save current page"),
-			self.saveCurrentPage)
+			self.saveCurrentTextBrowserPage)
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), self.tr("Print current page"),
-			self.printCurrentPage, Qt.QKeySequence("Ctrl+P"))
+			self.printCurrentTextBrowserPage, Qt.QKeySequence("Ctrl+P"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), self.tr("Clear current page"),
-			self.text_browser.clearPage, Qt.QKeySequence("Ctrl+E"))
+			self.clearTextBrowserPage, Qt.QKeySequence("Ctrl+E"))
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), self.tr("Clear all"),
-			self.clearAll, Qt.QKeySequence("Ctrl+K"))
+			self.clearAllTextBrowser, Qt.QKeySequence("Ctrl+K"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"find_16.png"), self.tr("Search in translations"),
 			self.showFindInTextPanel, Qt.QKeySequence("Ctrl+F"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), self.tr("New tab"),
-			self.text_browser.addTab, Qt.QKeySequence("Ctrl+T"))
+			self.addTextBrowserTab, Qt.QKeySequence("Ctrl+T"))
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"remove_16.png"), self.tr("Close tab"),
-			self.text_browser.removeTab, Qt.QKeySequence("Ctrl+W"))
+			self.removeTextBrowserTab, Qt.QKeySequence("Ctrl+W"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), self.tr("Quit"),
 			self.exit, Qt.QKeySequence("Ctrl+Q"))
@@ -171,12 +260,12 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.view_menu = self.main_menu_bar.addMenu(self.tr("View"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), self.tr("Zoom in"),
-			self.text_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
+			self.zoomInTextBrowser, Qt.QKeySequence("Ctrl++"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), self.tr("Zoom out"),
-			self.text_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
+			self.zoomOutTextBrowser, Qt.QKeySequence("Ctrl+-"))
 		self.view_menu.addSeparator()
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), self.tr("Switch to fullscreen"),
-			self.fullScreen, Qt.QKeySequence("F11"))
+		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), self.tr("Toggle to fullscreen"),
+			self.toggleFullScreen, Qt.QKeySequence("F11"))
 
 		### Spy Menu
 
@@ -223,7 +312,8 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStarted()"), self.spyStartedSignal)
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStopped()"), self.spyStoppedSignal)
-		self.connect(self.spy_menu, Qt.SIGNAL("statusChanged(const QString &)"), self.showStatusMessage)
+		self.connect(self.spy_menu, Qt.SIGNAL("statusChanged(const QString &)"),
+			self.status_bar.showStatusMessage)
 		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.setWord)
 		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"),
@@ -265,7 +355,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager.loadSettings()
 		self.google_translate_panel.loadSettings()
 		self.spy_menu.loadSettings()
-		self.showStatusMessage(self.tr("Ready"))
+		self.status_bar.showStatusMessage(self.tr("Ready"))
 
 	###
 
@@ -274,7 +364,7 @@ class MainWindow(Qt.QMainWindow) :
 			self.hide()
 		else :
 			self.showNormal()
-			self.setFocus(Qt.Qt.OtherFocusReason)
+			self.setFocus()
 
 	###
 
@@ -285,29 +375,66 @@ class MainWindow(Qt.QMainWindow) :
 
 	### Private ###
 
-	def registrateTextBrowser(self) :
-		self.index = self.text_browser.currentIndex()
-		self.text_browser.clear(self.index)
+	def registrateStream(self, source_object_index) :
+		text_browser_index = self.text_browser.currentIndex()
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] == text_browser_index :
+				self.text_browser.addTab()
+				text_browser_index = self.text_browser.currentIndex()
+				break
+		self.source_objects_list[source_object_index][1] = text_browser_index
 
-	def setTextBrowserCaption(self, word) :
-		self.text_browser.setCaption(self.index, word)
+	def releaseStream(self, source_object_index) :
+		self.source_objects_list[source_object_index][1] = -1
 
-	def setTextBrowserText(self, text) :
-		self.text_browser.setText(self.index, text)
+	def clearTextBrowser(self, source_object_index) :
+		self.text_browser.clear(self.source_objects_list[source_object_index][1])
+
+	def setTextBrowserCaption(self, source_object_index, word) :
+		self.text_browser.setCaption(self.source_objects_list[source_object_index][1], word)
+
+	def setTextBrowserText(self, source_object_index, text) :
+		self.text_browser.setText(self.source_objects_list[source_object_index][1], text)
+
+	def addTextBrowserTab(self) :
+		self.text_browser.addTab()
+
+	def removeTextBrowserTab(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+		self.text_browser.removeTab()
 
 	###
 
-	def findInTextNext(self, word) :
+	def findInTextBrowserNext(self, word) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findNext(index, word) :
-			self.showStatusMessage(self.tr("Not found"))
+			self.status_bar.showStatusMessage(self.tr("Not found"))
 
-	def findInTextPrevious(self, word) :
+	def findInTextBrowserPrevious(self, word) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findPrevious(index, word) :
-			self.showStatusMessage(self.tr("Not found"))
+			self.status_bar.showStatusMessage(self.tr("Not found"))
 
-	def saveCurrentPage(self) :
+	def saveCurrentTextBrowserPage(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+
 		index = self.text_browser.currentIndex()
 		file_name = Qt.QFileDialog.getSaveFileName(None,
 			self.tr("Save page \"%1\"").arg(self.text_browser.caption(index)),
@@ -327,9 +454,14 @@ class MainWindow(Qt.QMainWindow) :
 
 		file.close()
 
-		self.showStatusMessage(self.tr("Saved"))
+		self.status_bar.showStatusMessage(self.tr("Saved"))
 
-	def printCurrentPage(self) :
+	def printCurrentTextBrowserPage(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+
 		if self.print_dialog.exec_() != Qt.QDialog.Accepted :
 			return
 
@@ -337,12 +469,38 @@ class MainWindow(Qt.QMainWindow) :
 		text_document = self.text_browser.document(index)
 		text_document.print_(self.printer)
 
-		self.showStatusMessage(self.tr("Printing..."))
+		self.status_bar.showStatusMessage(self.tr("Printing..."))
 
-	def clearAll(self) :
+	def zoomInTextBrowser(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+		self.text_browser.zoomIn()
+
+	def zoomOutTextBrowser(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+		self.text_browser.zoomOut()
+
+	def clearAllTextBrowser(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+
 		self.find_in_sl_panel.clear()
 		self.text_browser.clearAll()
-		self.find_in_sl_panel.setFocus(Qt.Qt.OtherFocusReason)
+		self.find_in_sl_panel.setFocus()
+
+	def clearTextBrowserPage(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return
+		self.text_browser.clearPage()
 
 	###
 
@@ -360,25 +518,20 @@ class MainWindow(Qt.QMainWindow) :
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
 
-	def fullScreen(self) :
+	def toggleFullScreen(self) :
 		if self.isFullScreen() :
 			self.showNormal()
 		else :
 			self.showFullScreen()
 
-	def setFocus(self, reason) :
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.find_in_sl_panel.setFocus(reason)
-
-	###
-
-	def showStatusMessage(self, text, timeout = 2000) :
-		self.status_bar.showMessage(text, timeout)
 
 	###
 
 	def showFindInTextPanel(self) :
 		self.find_in_text_panel.setVisible(True)
-		self.find_in_text_panel.setFocus(Qt.Qt.OtherFocusReason)
+		self.find_in_text_panel.setFocus()
 
 	def showHistoryPanel(self) :
 		self.history_panel.setVisible(True)
@@ -390,7 +543,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	def showGoogleTranslatePanel(self) :
 		self.google_translate_panel.setVisible(True)
-		self.google_translate_panel.setFocus(Qt.Qt.OtherFocusReason)
+		self.google_translate_panel.setFocus()
 
 	def showHelpBrowser(self) :
 		self.help_browser.show()

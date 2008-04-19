@@ -45,7 +45,7 @@ class FindInTextPanel(Qt.QDockWidget) :
 		#####
 
 		self.line_edit = Qt.QLineEdit()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.line_edit.setFocus()
 		self.main_layout.addWidget(self.line_edit)
 
 		self.clear_line_edit_button = Qt.QToolButton()
@@ -79,7 +79,7 @@ class FindInTextPanel(Qt.QDockWidget) :
 
 	### Public ###
 
-	def setFocus(self, reason) :
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
 
@@ -112,7 +112,7 @@ class FindInTextPanel(Qt.QDockWidget) :
 
 	def clearLineEdit(self) :
 		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.line_edit.setFocus()
 
 
 	### Signals ###

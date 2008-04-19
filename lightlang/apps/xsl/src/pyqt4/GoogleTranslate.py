@@ -37,11 +37,16 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.http_output = Qt.QByteArray()
 
+		self.timer = Qt.QTimer()
+		self.timer.setInterval(30000)
+
 		#####
 
 		self.connect(self.http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
 		self.connect(self.http, Qt.SIGNAL("requestFinished(int, bool)"), self.requestFinished)
 		self.connect(self.http, Qt.SIGNAL("readyRead(const QHttpResponseHeader &)"), self.setText)
+
+		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.abort)
 
 
 	### Public ###
@@ -50,6 +55,8 @@ class GoogleTranslate(Qt.QObject) :
 		self.http_abort_flag = True
 		self.http.abort()
 		self.http_abort_flag = False
+
+		self.processStartedSignal()
 
 		self.clearRequestSignal()
 
@@ -69,15 +76,15 @@ class GoogleTranslate(Qt.QObject) :
 		self.http.setHost(GoogleTranslateHost)
 		self.http_request_id = self.http.request(http_request_header)
 
-		self.processStartedSignal()
+		self.timer.start()
 
 	def abort(self) :
+		self.statusChangedSignal(Qt.QString())
+		self.textChangedSignal(self.tr("<em>Aborted</em>"))
+
 		self.http_abort_flag = True
 		self.http.abort()
 		self.http_abort_flag = False
-
-		self.statusChangedSignal(Qt.QString())
-		self.textChangedSignal(self.tr("<em>Aborted</em>"))
 
 
 	### Private ###
@@ -120,10 +127,12 @@ class GoogleTranslate(Qt.QObject) :
 			return
 
 		if error_flag and not self.http_abort_flag :
-			Qt.QMessageBox(None, Const.MyName,
+			Qt.QMessageBox.warning(None, Const.MyName,
 				self.tr("HTTP error: %1\nPress \"Yes\" to ignore")
 					.arg(self.http.errorString()),
 				Qt.QMessageBox.Yes)
+
+		self.timer.stop()
 
 		self.processFinishedSignal()
 
