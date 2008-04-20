@@ -14,6 +14,7 @@ class SlogConf:
 			self.height = 412;
 			self.left = 0;
 			self.top = 0;
+			self.paned = 240;
 			self.used_dicts_list = ""
 			self.spy_dicts_param = ""
 			self.enabled_plugins = "LightLang SL:Google Translate"
@@ -48,6 +49,8 @@ class SlogConf:
 				self.left = conf.getint("window", "left")
 			if conf.has_option("window", "top"):
 				self.top = conf.getint("window", "top")
+			if conf.has_option("window", "paned"):
+				self.paned = conf.getint("window", "paned")
 			if conf.has_option("window", "tray_exit"):
 				self.tray_exit = conf.getint("window", "tray_exit")
 			if conf.has_option("window", "tray_info"):
@@ -86,6 +89,7 @@ class SlogConf:
 			conf.set("window", "height", self.height)
 			conf.set("window", "left",  self.left)
 			conf.set("window", "top", self.top)
+			conf.set("window", "paned", self.paned)
 			conf.set("window", "tray_exit", self.tray_exit)
 			conf.set("window", "tray_info", self.tray_info)
 			conf.set("window", "tray_start", self.tray_start)
