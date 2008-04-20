@@ -106,6 +106,7 @@ class MainWindow(gtk.Window):
 		vbox.pack_start(menubar, False, False, 0)
 
 		self.hpaned = gtk.HPaned()
+		self.hpaned.set_position(self.conf.paned)
 		vbox.pack_start(self.hpaned, True, True, 0)
 
 		self.sidebar = SideBar()
@@ -202,6 +203,7 @@ class MainWindow(gtk.Window):
 	def destroy(self, widget, data=None):
 		(width, height) = self.get_size()
 		(left, top) = self.get_position()
+		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
 		self.conf.set_engine(self.sidebar.get_active())
