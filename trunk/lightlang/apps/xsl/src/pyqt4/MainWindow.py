@@ -376,6 +376,7 @@ class MainWindow(Qt.QMainWindow) :
 	### Private ###
 
 	def registrateStream(self, source_object_index) :
+		self.text_browser.setShredLock(True)
 		text_browser_index = self.text_browser.currentIndex()
 		for source_object in self.source_objects_list :
 			Qt.QApplication.processEvents()
@@ -386,7 +387,15 @@ class MainWindow(Qt.QMainWindow) :
 		self.source_objects_list[source_object_index][1] = text_browser_index
 
 	def releaseStream(self, source_object_index) :
+		self.text_browser.setShredLock(False)
 		self.source_objects_list[source_object_index][1] = -1
+
+	def checkBusyStreams(self) :
+		for source_object in self.source_objects_list :
+			Qt.QApplication.processEvents()
+			if source_object[1] != -1 :
+				return True
+		return False
 
 	def clearTextBrowser(self, source_object_index) :
 		self.text_browser.clear(self.source_objects_list[source_object_index][1])
@@ -401,39 +410,31 @@ class MainWindow(Qt.QMainWindow) :
 		self.text_browser.addTab()
 
 	def removeTextBrowserTab(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 		self.text_browser.removeTab()
 
 	###
 
 	def findInTextBrowserNext(self, word) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findNext(index, word) :
 			self.status_bar.showStatusMessage(self.tr("Not found"))
 
 	def findInTextBrowserPrevious(self, word) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 
 		index = self.text_browser.currentIndex()
 		if not self.text_browser.findPrevious(index, word) :
 			self.status_bar.showStatusMessage(self.tr("Not found"))
 
 	def saveCurrentTextBrowserPage(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 
 		index = self.text_browser.currentIndex()
 		file_name = Qt.QFileDialog.getSaveFileName(None,
@@ -457,10 +458,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.status_bar.showStatusMessage(self.tr("Saved"))
 
 	def printCurrentTextBrowserPage(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 
 		if self.print_dialog.exec_() != Qt.QDialog.Accepted :
 			return
@@ -472,34 +471,26 @@ class MainWindow(Qt.QMainWindow) :
 		self.status_bar.showStatusMessage(self.tr("Printing..."))
 
 	def zoomInTextBrowser(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 		self.text_browser.zoomIn()
 
 	def zoomOutTextBrowser(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 		self.text_browser.zoomOut()
 
 	def clearAllTextBrowser(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 
 		self.find_in_sl_panel.clear()
 		self.text_browser.clearAll()
 		self.find_in_sl_panel.setFocus()
 
 	def clearTextBrowserPage(self) :
-		for source_object in self.source_objects_list :
-			Qt.QApplication.processEvents()
-			if source_object[1] != -1 :
-				return
+		if self.checkBusyStreams() :
+			return
 		self.text_browser.clearPage()
 
 	###

@@ -135,6 +135,8 @@ class TextBrowser(Qt.QWidget) :
 
 		#####
 
+		self.shred_lock_flag = False
+
 		self.translate_browsers = []
 
 		self.tab_widget = Qt.QTabWidget()
@@ -168,6 +170,11 @@ class TextBrowser(Qt.QWidget) :
 
 	### Public ###
 
+	def setShredLock(self, shred_lock_flag) :
+		self.shred_lock_flag = shred_lock_flag
+
+	###
+
 	def addTab(self) :
 		self.translate_browsers.append(TranslateBrowser())
 		index = len(self.translate_browsers) -1
@@ -184,6 +191,9 @@ class TextBrowser(Qt.QWidget) :
 		self.tabChangedSignal()
 
 	def removeTab(self, index = -1) :
+		if self.shred_lock_flag :
+			return
+
 		if self.tab_widget.count() == 1 :
 			self.translate_browsers[0].setHtml(self.tr("<em>Empty</em>"))
 			self.tab_widget.setTabText(0, self.tr("(Untitled)"))
@@ -236,18 +246,27 @@ class TextBrowser(Qt.QWidget) :
 	###
 
 	def clearPage(self, index = -1) :
+		if self.shred_lock_flag :
+			return
+
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
 		self.translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
 		self.tab_widget.setTabText(index, self.tr("(Untitled)"))
 
 	def clearAll(self) :
+		if self.shred_lock_flag :
+			return
+
 		while self.count() != 1 :
 			Qt.QCoreApplication.processEvents()
 			self.removeTab(0)
 		self.clearPage(0)
 
 	def clear(self, index = -1) :
+		if self.shred_lock_flag :
+			return
+
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
 		self.translate_browsers[index].clear()
