@@ -2,6 +2,7 @@
 
 import os
 import gtk, gobject
+import pango
 
 import libsl
 from slog.config import SlogConf
@@ -53,6 +54,7 @@ class SLView(gtk.VBox):
 		sw.add(self.treeview)
 
 		cell = gtk.CellRendererText()
+		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
 		tvcolumn = gtk.TreeViewColumn("Result", cell, text=0)
 		self.treeview.append_column(tvcolumn)
 
