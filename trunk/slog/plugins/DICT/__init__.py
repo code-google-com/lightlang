@@ -5,6 +5,7 @@ import gtk
 import string
 import socket
 
+from slog.common import *
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
@@ -33,10 +34,10 @@ class DictClient:
 
 		welcome = self.f.readline()
 		if welcome[0:4] != '220 ':
-			raise Exception("server doesn't want you (%s)" % welcome[0:4])
-		r, _ = self._cmd('CLIENT slog, 0.9.2')
-		if r != '250':
-			raise Exception('sending client string failed')
+			raise Exception("Server doesn't want you (%s)" % welcome[0:4])
+		r, _ = self._cmd("CLIENT %s, %s" % (APP_NAME, VERSION))
+		if r != "250":
+			raise Exception("Sending client string failed")
 
 		self.is_connected = True
 
@@ -299,3 +300,4 @@ class DCView(gtk.VBox):
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+

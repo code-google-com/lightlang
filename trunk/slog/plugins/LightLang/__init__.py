@@ -194,7 +194,6 @@ class SLView(gtk.VBox):
 		chooser = gtk.FileChooserDialog("Open..", window, gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
 							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
 
-
 		dicts_dir = entry.get_text()
 		if os.path.exists(dicts_dir):
 			chooser.set_current_folder(dicts_dir)
