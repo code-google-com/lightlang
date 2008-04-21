@@ -478,6 +478,18 @@ class DictInstaller(threading.Thread):
 		bz2f = BZ2File(file_dist)
 		try:
 			fp.write(bz2f.read())
+		except IOError, ioerr:
+			state = 1
+			if self.__cancelled:
+				msg = "Cancelled!"
+				state = 3
+			else:
+				t = ioerr.strerror
+				msg = "IO error while decompressing\n%s" % t
+
+			self.__finish(state, msg)
+			return
+
 		except EOFError, msg:
 			ghlp.show_error(self, str(msg))
 		else:
