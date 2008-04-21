@@ -35,19 +35,18 @@ class Spy:
 		self.prev_selection = selection
 
 		words = self.pattern.split(selection)
-		all_translate = ""
+		all_lines = []
 		for word in words:
 			if word != "":
 				used_dicts = self.conf.get_spy_dicts()
 				for dic in used_dicts:
 					filename = self.conf.get_dic_path(dic)
 					lines = libsl.find_word(word, 1, filename)
-					if lines == []:
-						#TODO: List of some words
-						continue
-					translate = "".join(lines)
-					self.spy_view.show_translate(word, translate)
-					break
+					if lines != []:
+						all_lines.append("".join(lines))
+
+		translate = "<body>%s</body>" % ("".join(all_lines))
+		self.spy_view.show_translate(word, translate)
 
 	def __on_timer_timeout(self):
 		if self.timer == 0:

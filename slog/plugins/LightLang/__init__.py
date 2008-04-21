@@ -111,9 +111,6 @@ class SLView(gtk.VBox):
 		dictionaries = self.conf.get_used_dicts()
 		for dic in dictionaries:
 
-			#while gtk.events_pending():
-			#	gtk.main_iteration(False)
-
 			filename = self.conf.get_dic_path(dic)
 			items = libsl.find_word(word, 0, filename)
 			count += len(items)
@@ -145,7 +142,8 @@ class SLView(gtk.VBox):
 
 		filename = self.conf.get_dic_path(dic)
 		lines = libsl.find_word(word, 1, filename)
-		self.__fire_translate_changed(word, "".join(lines), newtab)
+		translate = "<body>%s</body>" % ("".join(lines))
+		self.__fire_translate_changed(word, translate, newtab)
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
