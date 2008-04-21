@@ -3,6 +3,7 @@
 import os, shutil, stat
 import gtk, gobject
 import gtk.gdk as gdk
+import pango
 import urllib, urllib2
 import threading
 import xml.sax
@@ -69,10 +70,16 @@ class DictsDialog(gtk.Dialog):
 		self.list_avail = AvailDataModel()
 		sw1, tree_avail = self.__create_treeview(self.list_avail)
 		avail_selection = tree_avail.get_selection()
-		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COL_A_NAME)
+
+		cell = gtk.CellRendererText()
+		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
+		column = gtk.TreeViewColumn(_("Name"), cell, text=COL_A_NAME)
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+		column.set_expand(True)
 		column.set_resizable(True)
+		column.set_reorderable(True)
 		tree_avail.append_column(column)
+
 		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_A_TARGET)
 		tree_avail.append_column(column)
 		column = gtk.TreeViewColumn(_("Size"), gtk.CellRendererText(), text=COL_A_SIZE)
@@ -98,7 +105,12 @@ class DictsDialog(gtk.Dialog):
 		column.set_fixed_width(64)
 		tree_inst.append_column(column)
 
-		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=COL_I_NAME)
+		cell = gtk.CellRendererText()
+		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
+		column = gtk.TreeViewColumn(_("Name"), cell, text=COL_I_NAME)
+		column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
+		column.set_expand(True)
+		column.set_resizable(True)
 		tree_inst.append_column(column)
 		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_I_TARGET)
 		tree_inst.append_column(column)
