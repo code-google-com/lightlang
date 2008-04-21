@@ -126,20 +126,21 @@ class GoogleView(gtk.VBox):
 		if callback is not None:
 			gobject.idle_add(callback, message)
 			if needClear:
-				gobject.timeout_add(3000, self.__fire_status_changed, "")
+				gobject.timeout_add(5000, self.__fire_status_changed, "")
 
 	# Thread function
-	def request_google(self, event, target, text):
+	def request_google(self, target, text):
 		try:
 			translate = self.google.translate(target, text)
 		except urllib2.URLError, err:
-			ghlp.show_error(None, "Error: %s" % err)
-			self.__fire_status_changed("Error", True)
+			msg = "Google error: %s" % err
+			print msg
+			self.__fire_status_changed(msg, True)
 		else:
 			self.__fire_translate_changed(translate)
 			self.__fire_status_changed("Done", True)
 		finally:
-			event.set()
+			ghlp.change_cursor(None)
 
 	def on_translate_clicked(self, widget, data=None):
 
@@ -159,16 +160,8 @@ class GoogleView(gtk.VBox):
 		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
 		self.__fire_status_changed("Send request...")
 
-		event = threading.Event()
-		thread = threading.Thread(target = self.request_google, args = (event, target, text))
+		thread = threading.Thread(target = self.request_google, args = (target, text))
 		thread.start()
-
-		while not event.isSet():
-			event.wait(0.1)
-			while gtk.events_pending():
-				gtk.main_iteration(False)
-
-		ghlp.change_cursor(None)
 
 	def on_btn_clear_clicked(self, widget, data=None):
 		textbuffer = self.textview.get_buffer()
