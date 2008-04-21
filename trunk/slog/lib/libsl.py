@@ -22,6 +22,7 @@ def multiple_replace(adict, text):
 	# For each match, look up the corresponding value in the dictionary
 	return regex.sub(lambda match: adict[match.group(0)], text)
 
+
 def sl_to_html(text, filename):
 
 	adict = {
@@ -40,11 +41,11 @@ def sl_to_html(text, filename):
 
 	dictionary = os.path.basename(filename)
 
-	header = "<body><br/>" \
+	header = "<br/>" \
 		"<p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>" \
 		"%s</p><br/>" % dictionary
 
-	return header + body + "</body>"
+	return (header + body + "<br/>")
 
 def get_index(filename, w_char):
 		
