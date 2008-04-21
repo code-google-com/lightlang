@@ -4,6 +4,7 @@ import os
 import re
 import tempfile
 
+
 # Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
 def filename_parse(fullfilename):
 	fname = os.path.basename(fullfilename)
@@ -62,7 +63,7 @@ def get_index(filename, w_char):
 		if (line[0] == "#") or (line[0] == "\n"):
 			continue
 		if line.startswith("[noindex]"):
-			print >> stderr, "Bad index in %s" % filename
+			print "Bad index in %s" % filename
 			pos = -1
 			break
 		if line.startswith("[index]"):

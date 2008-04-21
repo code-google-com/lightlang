@@ -1,7 +1,8 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import gtk
+import gtk, gobject
 import urllib, urllib2
+import threading
 
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
@@ -52,9 +53,10 @@ class GoogleEngine:
 		return res
 
 	def translate(self, target, text):
+		import socket
+		socket.setdefaulttimeout(5)
 
-		src = self.targets[target][0]
-		dst = self.targets[target][1]
+		src, dst = self.targets[target]
 		pair = src + "|" + dst
 
 		params = urllib.urlencode({'langpair': pair, 'text': text.encode("utf8")})
@@ -119,10 +121,25 @@ class GoogleView(gtk.VBox):
 		if callback is not None:
 			callback("Google", translate)
 
-	def __fire_status_changed(self, message):
+	def __fire_status_changed(self, message, needClear=False):
 		callback = self.callbacks["changed"]
 		if callback is not None:
-			callback(message)
+			gobject.idle_add(callback, message)
+			if needClear:
+				gobject.timeout_add(3000, self.__fire_status_changed, "")
+
+	# Thread function
+	def request_google(self, event, target, text):
+		try:
+			translate = self.google.translate(target, text)
+		except urllib2.URLError, err:
+			ghlp.show_error(None, "Error: %s" % err)
+			self.__fire_status_changed("Error", True)
+		else:
+			self.__fire_translate_changed(translate)
+			self.__fire_status_changed("Done", True)
+		finally:
+			event.set()
 
 	def on_translate_clicked(self, widget, data=None):
 
@@ -136,14 +153,22 @@ class GoogleView(gtk.VBox):
 			ghlp.show_error(None, _("Empty text"))
 			return
 
-		try:
-			translate = self.google.translate(target, text)
-		except urllib2.URLError, err:
-			ghlp.show_error(None, "Error: %s" % err)
-		else:
-			self.__fire_translate_changed(translate)
-
+		#TODO: Move to on_combobox_changed()
 		self.conf.google_target = self.cmb_target.get_active()
+
+		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+		self.__fire_status_changed("Send request...")
+
+		event = threading.Event()
+		thread = threading.Thread(target = self.request_google, args = (event, target, text))
+		thread.start()
+
+		while not event.isSet():
+			event.wait(0.1)
+			while gtk.events_pending():
+				gtk.main_iteration(False)
+
+		ghlp.change_cursor(None)
 
 	def on_btn_clear_clicked(self, widget, data=None):
 		textbuffer = self.textview.get_buffer()
