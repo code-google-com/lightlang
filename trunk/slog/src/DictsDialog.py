@@ -27,6 +27,13 @@ from slog.dhandler import DictHandler
 	COL_I_TARGET
 ) = range (4)
 
+(
+	DL_STATE_INFO,
+	DL_STATE_ERROR,
+	DL_STATE_DONE,
+	DL_STATE_CANCEL
+) = range (4)
+
 #FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
 FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
 FTP_DICTS_URL = FTP_LL_URL + "/dicts"
@@ -194,22 +201,25 @@ class DictsDialog(gtk.Dialog):
 				gtk.main_iteration(False)
 
 	def on_installer_change(self, event):
-		if event.state == 0: # Notify
+		if event.state == DL_STATE_INFO:
 			if event.msg is not None:
 				self.pg.set_task(event.msg)
+				self.pg.set_message("")
 			if event.data != -1:
+				self.pg.set_message("%d%%" % event.data)
 				self.pg.set_progress(event.data)
 			else:
 				self.pg.pulse()
-		elif event.state == 1: # Error
+
+		elif event.state == DL_STATE_ERROR:
 			gobject.idle_add(ghlp.show_error, self, event.msg)
-		elif event.state == 2: # Done
+
+		elif event.state == DL_STATE_DONE:
 			dname, dtarget = libsl.filename_parse(event.data)
 			self.list_inst.append_row(True, False, dname, dtarget)
 			self.sync_used_dicts()
-		#3 - Cancel
 
-		if event.state in (1, 2, 3):
+		if event.state in (DL_STATE_ERROR, DL_STATE_DONE, DL_STATE_CANCEL):
 			self.pg.destroy()
 			ghlp.change_cursor(None)
 
@@ -433,7 +443,7 @@ class DictInstaller(threading.Thread):
 	def __notification(self, msg, data):
 		if msg is not None:
 			print msg
-		event = DictInstallerEvent(state = 0, msg = msg, data = data)
+		event = DictInstallerEvent(state = DL_STATE_INFO, msg = msg, data = data)
 		self.__fire_state_change(event)
 			
 	# Finished with Done or Error
@@ -459,9 +469,7 @@ class DictInstaller(threading.Thread):
 		else:
 			progress = 100.0
 
-		if progress > 100.0:
-			progress = 100.0
-
+		progress = min(100.0, progress)
 		self.__notification(None, progress)
 
 	def cancel(self):
@@ -484,10 +492,10 @@ class DictInstaller(threading.Thread):
 			urllib.urlretrieve(url_dict, file_dist, self.url_hook_report)
 
 		except IOError, ioerr:
-			state = 1
+			state = DL_STATE_ERROR
 			if self.__cancelled:
 				msg = "Download cancelled!"
-				state = 3
+				state = DL_STATE_CANCEL
 			else:
 				t = ioerr.strerror
 				msg = "Network error while trying to get url: %s\n%s" % (url_dict, t)
@@ -502,10 +510,10 @@ class DictInstaller(threading.Thread):
 		try:
 			fp.write(bz2f.read())
 		except IOError, ioerr:
-			state = 1
+			state = DL_STATE_ERROR
 			if self.__cancelled:
 				msg = "Cancelled!"
-				state = 3
+				state = DL_STATE_CANCEL
 			else:
 				t = ioerr.strerror
 				msg = "IO error while decompressing\n%s" % t
@@ -529,5 +537,5 @@ class DictInstaller(threading.Thread):
 		self.__notification("Finishing...", -1)
 		shutil.copyfile(file_idx, file_inst)
 
-		self.__finish(2, "Installation finished!")
+		self.__finish(DL_STATE_DONE, "Installation finished!")
 
