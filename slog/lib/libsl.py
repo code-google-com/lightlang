@@ -3,6 +3,7 @@
 import os
 import re
 import tempfile
+import gobject
 
 
 # Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
@@ -27,17 +28,18 @@ def multiple_replace(adict, text):
 def sl_to_html(text, filename):
 
 	adict = {
-		"\\[" : "<span style='font-weight: bold'>",
-		"\\]" : "</span>",
-		"\\(" : "<span style='font-style: italic'>",
-		"\\)" : "</span>",
+		"\\[" : "<span style='font-weight: bold'> ",
+		"\\]" : " </span>",
+		"\\(" : "<span style='font-style: italic'> ",
+		"\\)" : " </span>",
 		"\\{" : "<dl><li>",
 		"\\}" : "</li></dl>",
-		"\\<" : "<span style='color:#0A7700'>",
-		"\\>" : "</span>",
+		"\\<" : "<span style='color:#0A7700'> ",
+		"\\>" : " </span>",
 	}
 	tmp = multiple_replace(adict, text)
-	tmp = re.sub(r"\\s(.*?)\\s", " <a href=\"#sl"+r"\1"+"\"><span style='font-size: 150%'>"+u"\u266B"+"</span></a> ", tmp)
+	href_sound = "[<a href=\"#sl"+r"\1"+"\"><span style='font-size: 150%'>"+u"\u266B"+"</span></a>]"
+	tmp = re.sub(r"\\s(.*?)\\s", href_sound, tmp)
 	body = re.sub(r"\\_(.*?)\\_", r"<u>\1</u>", tmp)
 
 	dictionary = os.path.basename(filename)
