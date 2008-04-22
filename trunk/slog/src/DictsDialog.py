@@ -77,13 +77,20 @@ class DictsDialog(gtk.Dialog):
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 		column.set_expand(True)
 		column.set_resizable(True)
+		column.set_sort_column_id(COL_A_NAME)
 		column.set_reorderable(True)
 		tree_avail.append_column(column)
 
 		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_A_TARGET)
+		column.set_sort_column_id(COL_A_TARGET)
+		column.set_reorderable(True)
 		tree_avail.append_column(column)
+
 		column = gtk.TreeViewColumn(_("Size"), gtk.CellRendererText(), text=COL_A_SIZE)
+		column.set_sort_column_id(COL_A_SIZE)
+		column.set_reorderable(True)
 		tree_avail.append_column(column)
+		#self.list_avail.set_sort_column_id(COL_A_TARGET, gtk.SORT_ASCENDING)
 
 		self.list_inst = InstDataModel()
 		sw2, tree_inst = self.__create_treeview(self.list_inst)
@@ -111,8 +118,12 @@ class DictsDialog(gtk.Dialog):
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_AUTOSIZE)
 		column.set_expand(True)
 		column.set_resizable(True)
+		column.set_sort_column_id(COL_I_NAME)
+		column.set_reorderable(True)
 		tree_inst.append_column(column)
 		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_I_TARGET)
+		column.set_sort_column_id(COL_I_TARGET)
+		column.set_reorderable(True)
 		tree_inst.append_column(column)
 
 		btn_fresh = self.__create_button(gtk.STOCK_REFRESH, _("Refresh"))
@@ -321,7 +332,7 @@ class DictsDialog(gtk.Dialog):
 
 class AvailDataModel(gtk.ListStore):
 	def __init__(self):
-		gtk.ListStore.__init__(self, str, str, str)
+		gtk.ListStore.__init__(self, str, str, int)
 		gobject.idle_add(self.__load)
 
 	def __load(self):
@@ -336,7 +347,7 @@ class AvailDataModel(gtk.ListStore):
 				l_iter = self.append()
 				dname, dtarget, dsize = d_list[dfile]
 				self.set(l_iter, COL_A_NAME, dname,
-								COL_A_TARGET, dtarget, COL_A_SIZE, dsize)
+								COL_A_TARGET, dtarget, COL_A_SIZE, int(dsize))
 
 	def download_repo_file(self, event):
 		try:
