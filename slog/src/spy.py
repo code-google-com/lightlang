@@ -93,7 +93,16 @@ class SpyView(gtk.Window):
 	def __get_pos(self):
 		display = gdk.display_get_default()
 		screen, x, y, mask = display.get_pointer()
-		return (x+5), (y+5)
+		w = screen.get_width()
+		h = screen.get_height()
+
+		if (x + 320 + 5) > w:
+			x = (w - 320 - 8)
+
+		if (y + 240 + 5) > h:
+			y = (y - 240 - 2)
+
+		return (x+8), (y+2)
 
 	def show_translate(self, word, translate):
 		self.tv.set_translate(word, translate)
