@@ -3,6 +3,7 @@
 import gtk, gtk.gdk as gdk
 import gobject
 import re
+import threading
 
 import libsl
 from slog.config import SlogConf
@@ -12,6 +13,7 @@ class Spy:
 	def __init__(self):
 		self.pattern = re.compile("\W+")
 		self.timer = 0;
+		self.cancelled = False
 		self.prev_selection = ""
 		self.clipboard = gtk.clipboard_get(gdk.SELECTION_PRIMARY)
 		self.conf = SlogConf()
@@ -26,6 +28,27 @@ class Spy:
 		mask = mask & ((1<<13)-1)
 		return mask
 
+	def __fuzzy_search(self, word, dicts):
+		all_lines = []
+		for dic in dicts:
+			filename = self.conf.get_dic_path(dic)
+			lines = libsl.find_word(word, libsl.SL_FIND_FUZZY, filename)
+			if lines != []:
+				html = []
+				html.append(libsl.get_dict_html_block(filename))
+				html.append("<dl>")
+				for word in lines:
+					html.append("<li><a href='bugoga'>%s</a></li>" % word)
+				html.append("</dl>")
+				all_lines.append("".join(html))
+
+			if self.cancelled:
+				return
+
+		#print all_lines
+		translate = "<body>%s</body>" % ("".join(all_lines))
+		self.spy_view.show_translate(word, translate)
+
 	def __on_clipboard_text_received(self, clipboard, text, data):
 		if text is None:
 			return
@@ -34,25 +57,23 @@ class Spy:
 			return
 		self.prev_selection = selection
 
-		words = self.pattern.split(selection)
+		word = self.pattern.split(selection)[0]
 		all_lines = []
-		for word in words:
-			if word != "":
-				used_dicts = self.conf.get_spy_dicts()
-				for dic in used_dicts:
-					filename = self.conf.get_dic_path(dic)
-					lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
-					if lines != []:
-						all_lines.append("".join(lines))
+		used_dicts = self.conf.get_spy_dicts()
+		for dic in used_dicts:
+			filename = self.conf.get_dic_path(dic)
+			lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
+			if lines != []:
+				all_lines.append("".join(lines))
 
 		if len(all_lines) == 0:
-			w = words[0]
-			d = self.conf.get_spy_dicts()[0]
-			f = self.conf.get_dic_path(d)
-			lines = libsl.find_word(word, libsl.SL_FIND_FUZZY, f)
-			print lines
+			self.cancelled = False
+			translate = "<body>This word not found.<br/><span style='color:#4c4c4c; font-size:80%'>Searching similar words...</span></body>"
+			thread = threading.Thread(target = self.__fuzzy_search, args = (word, used_dicts))
+			thread.start()
+		else:
+			translate = "<body>%s</body>" % ("".join(all_lines))
 
-		translate = "<body>%s</body>" % ("".join(all_lines))
 		self.spy_view.show_translate(word, translate)
 
 	def __on_timer_timeout(self):
@@ -63,6 +84,7 @@ class Spy:
 		else:
 			if self.spy_view.get_property("visible"):
 				self.spy_view.hide()
+				self.cancelled = True
 
 		return True
 
@@ -111,10 +133,13 @@ class SpyView(gtk.Window):
 
 		return (x+8), (y+2)
 
-	def show_translate(self, word, translate):
+	def __real_show(self, word, translate):
 		self.tv.set_translate(word, translate)
 
 		x, y = self.__get_pos()
 		self.move(x, y)
 		self.show()
+
+	def show_translate(self, word, translate):
+		gobject.idle_add(self.__real_show, word, translate)
 
