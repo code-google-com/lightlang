@@ -319,7 +319,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.uFind)
 		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"),
-			self.translate_window.showUnderCursor)
+			self.translate_window.show)
 
 		################
 		##### Misc #####
