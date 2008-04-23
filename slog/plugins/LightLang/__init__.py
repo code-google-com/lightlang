@@ -62,6 +62,14 @@ class SLView(gtk.VBox):
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
 
+		img = gtk.Image()
+		img.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
+		btn_fuzzy = gtk.Button(_("Fuzzy Search"))
+		btn_fuzzy.set_image(img)
+		btn_fuzzy.set_border_width(4)
+		btn_fuzzy.connect("clicked", self.on_btn_fuzzy_clicked)
+		self.pack_start(btn_fuzzy, False, True, 0)
+
 	def __fire_status_changed(self, message):
 		callback = self.callbacks["changed"]
 		if callback is not None:
@@ -74,7 +82,11 @@ class SLView(gtk.VBox):
 
 	def on_row_activated(self, widget, path, column, data=None):
 		treeiter = self.treestore.get_iter(path)
-		self.find_word(treeiter, True)
+		self.find_word(treeiter, newTab = True)
+
+	def on_btn_fuzzy_clicked(self, widget, data=None):
+		word = self.word_entry.get_text().lower()
+		self.find_list(word, mode = libsl.SL_FIND_FUZZY)
 
 	def on_btn_clear_clicked(self, widget, data=None):
 		self.word_entry.set_text("")
@@ -98,9 +110,9 @@ class SLView(gtk.VBox):
 
 	def on_wordlist_changed(self, selection):
 		model, treeiter = selection.get_selected()
-		self.find_word(treeiter, False)
+		self.find_word(treeiter, newTab = False)
 
-	def find_list(self, word):
+	def find_list(self, word, mode = libsl.SL_FIND_LIST):
 		if word == "":
 			return
 
@@ -112,7 +124,7 @@ class SLView(gtk.VBox):
 		for dic in dictionaries:
 
 			filename = self.conf.get_dic_path(dic)
-			items = libsl.find_word(word, 0, filename)
+			items = libsl.find_word(word, mode, filename)
 			count += len(items)
 			if items == []:
 				continue
@@ -129,7 +141,7 @@ class SLView(gtk.VBox):
 
 		self.__fire_status_changed(_("Total: %i") % (count))
 
-	def find_word(self, treeiter, newtab=False):
+	def find_word(self, treeiter, mode = libsl.SL_FIND_MATCH, newTab=False):
 		if treeiter is None:
 			return
 		
@@ -141,9 +153,9 @@ class SLView(gtk.VBox):
 		dic = self.treestore.get_value(parentiter, 0)
 
 		filename = self.conf.get_dic_path(dic)
-		lines = libsl.find_word(word, 1, filename)
+		lines = libsl.find_word(word, mode, filename)
 		translate = "<body>%s</body>" % ("".join(lines))
-		self.__fire_translate_changed(word, translate, newtab)
+		self.__fire_translate_changed(word, translate, newTab)
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback

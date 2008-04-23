@@ -41,9 +41,16 @@ class Spy:
 				used_dicts = self.conf.get_spy_dicts()
 				for dic in used_dicts:
 					filename = self.conf.get_dic_path(dic)
-					lines = libsl.find_word(word, 1, filename)
+					lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
 					if lines != []:
 						all_lines.append("".join(lines))
+
+		if len(all_lines) == 0:
+			w = words[0]
+			d = self.conf.get_spy_dicts()[0]
+			f = self.conf.get_dic_path(d)
+			lines = libsl.find_word(word, libsl.SL_FIND_FUZZY, f)
+			print lines
 
 		translate = "<body>%s</body>" % ("".join(all_lines))
 		self.spy_view.show_translate(word, translate)
