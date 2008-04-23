@@ -46,6 +46,9 @@ class TransView(gtk.ScrolledWindow):
 			self.clear()
 			return
 
+		print "Translate:"
+		print translate
+
 		self.label.set_text(word)
 		self.__clear_htmlview()
 		self.htmlview.display_html(translate)
