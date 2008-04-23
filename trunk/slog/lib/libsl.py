@@ -13,6 +13,14 @@ import gobject
 
 FUZZY_MAX_DISTANCE = 4
 
+def get_dict_html_block(filename):
+	dictionary = os.path.basename(filename)
+
+	return "<br/>" \
+		"<p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>" \
+		"%s</p><br/>" % dictionary
+
+
 # Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
 def filename_parse(fullfilename):
 	fname = os.path.basename(fullfilename)
@@ -48,11 +56,7 @@ def sl_to_html(text, filename):
 	tmp = re.sub(r"\\s(.*?)\\s", href_sound, tmp)
 	body = re.sub(r"\\_(.*?)\\_", r"<u>\1</u>", tmp)
 
-	dictionary = os.path.basename(filename)
-
-	header = "<br/>" \
-		"<p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>" \
-		"%s</p><br/>" % dictionary
+	header = get_dict_html_block(filename)
 
 	return (header + body + "<br/>")
 
