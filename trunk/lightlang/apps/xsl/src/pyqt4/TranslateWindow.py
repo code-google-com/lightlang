@@ -27,14 +27,13 @@ import SLFind
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
-CornerSize = 10
-
 ResizeDirectionNone = 0
 ResizeDirectionTop = 1
 ResizeDirectionBottom = 2
 ResizeDirectionLeft = 3
 ResizeDirectionRight = 4
-ResizeDirectionTopLeft = 5
+# TopLeft - move
+ResizeDirectionTopRight = 5
 ResizeDirectionBottomLeft = 6
 ResizeDirectionBottomRight = 7
 
@@ -51,15 +50,17 @@ class PopupWindow(Qt.QFrame) :
 		self.setLineWidth(1)
 		self.setMidLineWidth(2)
 
+		####
+
 		self.default_size = Qt.QSize(550, 400)
 
 		self.resize_timer = Qt.QTimer()
-		self.resize_timer.setInterval(10) # 10 ms
+		self.resize_timer.setInterval(10)
 
 		self.resize_direction = ResizeDirectionNone
 
 		self.move_timer = Qt.QTimer()
-		self.move_timer.setInterval(10) # 10 ms
+		self.move_timer.setInterval(10)
 
 		#####
 
@@ -80,11 +81,11 @@ class PopupWindow(Qt.QFrame) :
 			cursor_position.setY(0)
 
 		if cursor_position.x() + self.width() > Qt.QApplication.desktop().width() :
-			x_window_position = Qt.QApplication.desktop().width() - self.width()
+			x_window_position = Qt.QApplication.desktop().width() - self.width() - 20
 		else :
 			x_window_position = cursor_position.x()
 		if cursor_position.y() + self.height() > Qt.QApplication.desktop().height() :
-			y_window_position = Qt.QApplication.desktop().height() - self.height()
+			y_window_position = Qt.QApplication.desktop().height() - self.height() - 20
 		else :
 			y_window_position = cursor_position.y()
 
@@ -95,11 +96,12 @@ class PopupWindow(Qt.QFrame) :
 	### Private ###
 
 	def doResize(self) :
+		if self.resize_direction == ResizeDirectionNone :
+			return
+
 		new_geometry = self.frameGeometry()
 
-		if not self.resize_direction :
-			return
-		elif self.resize_direction == ResizeDirectionTop :
+		if self.resize_direction == ResizeDirectionTop :
 			new_geometry.setTop(Qt.QCursor.pos().y())
 		elif self.resize_direction == ResizeDirectionBottom :
 			new_geometry.setBottom(Qt.QCursor.pos().y())
@@ -135,31 +137,39 @@ class PopupWindow(Qt.QFrame) :
 			self.hide()
 			return
 
-		if event.buttons() != Qt.Qt.NoButton :
-			if event.x() < CornerSize and event.y() < CornerSize :
-				self.resize_direction = ResizeDirectionNone
-				self.move_timer.start()
-				return
+		x = event.x()
+		y = event.y()
+		w = self.width()
+		h = self.height()
+		f = self.frameWidth()
+		c = 10
 
-			if event.x() >= self.width() - CornerSize and event.y() < CornerSize :
-				self.resize_direction = ResizeDirectionTopRight
-			elif event.x() < CornerSize and event.y() >= self.height() - CornerSize :
-				self.resize_direction = ResizeDirectionBottomLeft
-			elif event.x() >= self.width() - CornerSize and event.y() >= self.height() - CornerSize :
-				self.resize_direction = ResizeDirectionBottomRight
-			elif event.x() < self.frameWidth() :
-				self.resize_direction = ResizeDirectionLeft
-			elif event.x() >= self.width() - self.frameWidth() :
-				self.resize_direction = ResizeDirectionRight
-			elif event.y() < self.frameWidth() :
-				self.resize_direction = ResizeDirectionTop
-			elif event.y() >= self.height() - self.frameWidth() :
-				self.resize_direction = ResizeDirectionBottom
-			else :
-				self.resize_direction = ResizeDirectionNone
+		if x < c and y < c : # TopLeft
+			self.resize_timer.stop()
+			self.resize_direction = ResizeDirectionNone
+			self.move_timer.start()
+			return
 
-			if self.resize_direction :
-				self.resize_timer.start()
+		if x >= w - c and y < c :
+			self.resize_direction = ResizeDirectionTopRight
+		elif x < c and y >= h - c :
+			self.resize_direction = ResizeDirectionBottomLeft
+		elif x >= w - c and y >= h - c :
+			self.resize_direction = ResizeDirectionBottomRight
+		elif x < f :
+			self.resize_direction = ResizeDirectionLeft
+		elif x >= w - f :
+			self.resize_direction = ResizeDirectionRight
+		elif y < f :
+			self.resize_direction = ResizeDirectionTop
+		elif y >= h - f :
+			self.resize_direction = ResizeDirectionBottom
+		else :
+			self.resize_direction = ResizeDirectionNone
+
+		if self.resize_direction :
+			self.resize_timer.start()
+			self.move_timer.stop()
 
 	def mouseReleaseEvent(self, event) :
 		self.resize_timer.stop()
@@ -167,22 +177,22 @@ class PopupWindow(Qt.QFrame) :
 		self.resize_direction = ResizeDirectionNone
 
 	def mouseMoveEvent(self, event) :
-		if ( ((0 <= event.x() <= CornerSize) and (0 <= event.y() <= CornerSize)) or
-			((self.width() - CornerSize <= event.x() <= self.width()) and
-			(self.height() - CornerSize <= event.y() <= self.height())) ) :
+		x = event.x()
+		y = event.y()
+		w = self.width()
+		h = self.height()
+		f = self.frameWidth()
+		c = 10
+
+		if 0 <= x < c and 0 <= y < c :
 			cursor_shape = Qt.Qt.SizeAllCursor
-		elif ( ((self.width() - CornerSize <= event.x() <= self.width()) and
-			(0 <= event.y() <= CornerSize)) or ((0 <= event.x() <= CornerSize) and
-			(self.height() - CornerSize <= event.y() <= self.height())) ) :
+		elif w - c <= x < w and h - c <= y < h :
+			cursor_shape = Qt.Qt.SizeFDiagCursor
+		elif (w - c <= x < w and 0 <= y < c) or (0 <= x < c and h - c <= y < h) :
 			cursor_shape = Qt.Qt.SizeBDiagCursor
-		elif ( ((0 <= event.x() <= self.width()) and (0 <= event.y() <= self.frameWidth())) or
-			((0 <= event.x() <= self.width()) and
-			(self.height() - self.frameWidth() <= event.y() <= self.height())) ) :
+		elif 0 <= x <= w and (0 <= y < f or h - f <= y < h) :
 			cursor_shape = Qt.Qt.SizeVerCursor
-			cursor_shape = Qt.Qt.SizeVerCursor
-		elif ( ((0 <= event.x() <= self.frameWidth()) and (0 <= event.y() <= self.height())) or
-			((self.width() - self.frameWidth() <= event.x() <= self.width()) and
-			(0 <= event.y() <= self.height())) ) :
+		elif 0 <= y <= h and (0 <= x < f or w - f <= x < w) :
 			cursor_shape = Qt.Qt.SizeHorCursor
 		else :
 			cursor_shape = Qt.Qt.ArrowCursor
