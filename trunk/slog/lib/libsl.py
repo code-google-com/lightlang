@@ -61,7 +61,6 @@ def sl_to_html(text, filename):
 	return (header + body + "<br/>")
 
 def get_index(filename, w_char):
-		
 	pos = -1
 	in_tag = False
 
@@ -88,7 +87,7 @@ def get_index(filename, w_char):
 
 		f_char = line.split()[0].decode("utf-8")
 		pos = int(line.split()[1])
-		
+
 		if w_char == f_char:
 			break
 
@@ -99,11 +98,12 @@ def get_index(filename, w_char):
 def strcmp_jump(a, b, percent = 40):
 	errors = 0
 	n, m = len(a), len(b)
-	hard_find = (n*percent)/100
 
 	if n > m:
 		a, b = b, a
 		n, m = m, n
+
+	hard_find = (n*percent)/100
 
 	if n == m:
 		for i in xrange(n):
@@ -113,15 +113,9 @@ def strcmp_jump(a, b, percent = 40):
 					return 1
 		return 0
 	else:
-		debug = False
-		#		 "lightlang"
-		if a == u"lighting":
-			print "Hard_find:", hard_find
-			debug = True
-
 		j = 0
 		for i in xrange(n):
-			
+
 			if a[i] == b[j]:
 				continue
 			elif a[i] == b[j+1]:
@@ -131,8 +125,6 @@ def strcmp_jump(a, b, percent = 40):
 				errors += 1
 
 			if (errors + (m - n)) > hard_find:
-				if debug:
-					print "Errors:", errors, ", (m - n):", (m-n)
 				return 1
 
 			j += 1
@@ -214,14 +206,14 @@ def find_word(word, mode, filename):
 				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
 		elif mode == SL_FIND_FUZZY:
-				if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
-				#if strcmp_jump(r_word, utf8_word) == 0:
+				#if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
+				if strcmp_jump(r_word, utf8_word) == 0:
 					lines.append(r_word)
 
 		# Save memory
 		if len(lines) > 50:
 			break
-		
+
 	fp.close()
 	return lines
 
@@ -250,7 +242,7 @@ def create_index(fp):
 			ch_wc = fch
 			w_str = u"%lc %ld\n" % (ch_wc, pos)
 			index.append(w_str.encode("utf-8"))
-		
+
 	index.append("[/index]\n")
 	return index
 
@@ -278,11 +270,9 @@ def indexating(filename):
 #Unit test
 if __name__ == "__main__":
 	#indexating("/tmp/Sokrat-Mova.ru-en")
-	dicts = ("/home/renat/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/renat/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
+	dicts = ("/home/rnt/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/rnt/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
 	for fname in dicts:
 		items = find_word("LightLang", SL_FIND_FUZZY, fname)
 		print fname
 		print items
-
-	
-
+http://dpaste.com/hold/46529/
