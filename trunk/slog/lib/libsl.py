@@ -5,6 +5,13 @@ import re
 import tempfile
 import gobject
 
+(
+	SL_FIND_LIST,
+	SL_FIND_MATCH,
+	SL_FIND_FUZZY
+) = range(3)
+
+FUZZY_MAX_DISTANCE = 4
 
 # Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
 def filename_parse(fullfilename):
@@ -23,7 +30,6 @@ def multiple_replace(adict, text):
 	regex = re.compile("|".join(map(re.escape, adict.keys())))
 	# For each match, look up the corresponding value in the dictionary
 	return regex.sub(lambda match: adict[match.group(0)], text)
-
 
 def sl_to_html(text, filename):
 
@@ -85,6 +91,81 @@ def get_index(filename, w_char):
 	fp.close()
 	return pos
 
+# From mstring.c (c) Maxim Devaev
+def strcmp_jump(a, b, percent = 40):
+	errors = 0
+	n, m = len(a), len(b)
+	hard_find = (n*percent)/100
+
+	if n > m:
+		a, b = b, a
+		n, m = m, n
+
+	if n == m:
+		for i in xrange(n):
+			if a[i] != b[i]:
+				errors += 1
+				if errors > hard_find:
+					return 1
+		return 0
+	else:
+		debug = False
+		#		 "lightlang"
+		if a == u"lighting":
+			print "Hard_find:", hard_find
+			debug = True
+
+		j = 0
+		for i in xrange(n):
+			
+			if a[i] == b[j]:
+				continue
+			elif a[i] == b[j+1]:
+				errors += 1
+				j += 1
+			else:
+				errors += 1
+
+			if (errors + (m - n)) > hard_find:
+				if debug:
+					print "Errors:", errors, ", (m - n):", (m-n)
+				return 1
+
+			j += 1
+
+		if (errors + (m - n)) <= hard_find:
+			return 0
+
+	return 1
+
+# (c) From Wikipedia 
+def levenshtein(a, b):
+	"""Calculates the Levenshtein distance
+		between a and b. """
+
+	n, m = len(a), len(b)
+
+	# My optimization
+	if abs(n - m) > 2:
+		return FUZZY_MAX_DISTANCE + 1
+
+	if n > m:
+		# Make sure n <= m, to use O(min(n,m)) space
+		a, b = b, a
+		n, m = m, n
+
+	current = range(n+1)
+	for i in xrange(1, m+1):
+		previous, current = current, [i]+[0]*n
+		for j in xrange(1, n+1):
+			add, delete = previous[j]+1, current[j-1]+1
+			change = previous[j-1]
+			if a[j-1] != b[i-1]:
+				change = change + 1
+			current[j] = min(add, delete, change)
+
+	return current[n]
+
 def find_word(word, mode, filename):
 	if word == "":
 		return []
@@ -112,21 +193,26 @@ def find_word(word, mode, filename):
 		else:
 			continue
 
-		if utf8_word[0] != r_word[0]:
-			if break_flag:
-				break
+		if mode != SL_FIND_FUZZY:
+			if utf8_word[0] != r_word[0]:
+				if break_flag:
+					break
+				else:
+					continue
 			else:
-				continue
-		else:
-			break_flag = True
+				break_flag = True
 
-		if mode == 0: # list
+		if mode == SL_FIND_LIST: # list
 			if r_word.startswith(utf8_word):
 				lines.append(r_word)
-		elif mode == 1: #match
+		elif mode == SL_FIND_MATCH: #match
 			if r_word == utf8_word:
 				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
+		elif mode == SL_FIND_FUZZY:
+				if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
+				#if strcmp_jump(r_word, utf8_word) == 0:
+					lines.append(r_word)
 
 		# Save memory
 		if len(lines) > 50:
@@ -187,5 +273,12 @@ def indexating(filename):
 
 #Unit test
 if __name__ == "__main__":
-	indexating("/tmp/Sokrat-Mova.ru-en")
+	#indexating("/tmp/Sokrat-Mova.ru-en")
+	dicts = ("/home/renat/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/renat/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
+	for fname in dicts:
+		items = find_word("LightLang", SL_FIND_FUZZY, fname)
+		print fname
+		print items
+
+	
 
