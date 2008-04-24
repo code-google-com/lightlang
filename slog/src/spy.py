@@ -28,26 +28,38 @@ class Spy:
 		mask = mask & ((1<<13)-1)
 		return mask
 
-	def __fuzzy_search(self, word, dicts):
+	#Thread function
+	def __fuzzy_search(self, word):
 		all_lines = []
-		for dic in dicts:
+		used_dicts = self.conf.get_spy_dicts()
+		for dic in used_dicts:
 			filename = self.conf.get_dic_path(dic)
 			lines = libsl.find_word(word, libsl.SL_FIND_FUZZY, filename)
 			if lines != []:
 				html = []
 				html.append(libsl.get_dict_html_block(filename))
 				html.append("<dl>")
-				for word in lines:
-					html.append("<li><a href='bugoga'>%s</a></li>" % word)
+				for item in lines:
+					html.append("<li><a href='%s|%s'>%s</a></li>" % (dic, item, item))
 				html.append("</dl>")
 				all_lines.append("".join(html))
 
 			if self.cancelled:
 				return
 
-		#print all_lines
 		translate = "<body>%s</body>" % ("".join(all_lines))
-		self.spy_view.show_translate(word, translate)
+		gobject.idle_add(self.spy_view.tv.set_translate, word, translate)
+
+	def __get_translate(self, word):
+		all_lines = []
+		used_dicts = self.conf.get_spy_dicts()
+		for dic in used_dicts:
+			filename = self.conf.get_dic_path(dic)
+			lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
+			if lines != []:
+				all_lines.append("".join(lines))
+		return all_lines
+
 
 	def __on_clipboard_text_received(self, clipboard, text, data):
 		if text is None:
@@ -58,18 +70,12 @@ class Spy:
 		self.prev_selection = selection
 
 		word = self.pattern.split(selection)[0]
-		all_lines = []
-		used_dicts = self.conf.get_spy_dicts()
-		for dic in used_dicts:
-			filename = self.conf.get_dic_path(dic)
-			lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
-			if lines != []:
-				all_lines.append("".join(lines))
+		all_lines = self.__get_translate(word)
 
 		if len(all_lines) == 0:
 			self.cancelled = False
 			translate = "<body>This word not found.<br/><span style='color:#4c4c4c; font-size:80%'>Searching similar words...</span></body>"
-			thread = threading.Thread(target = self.__fuzzy_search, args = (word, used_dicts))
+			thread = threading.Thread(target = self.__fuzzy_search, args = (word, ))
 			thread.start()
 		else:
 			translate = "<body>%s</body>" % ("".join(all_lines))
@@ -79,17 +85,30 @@ class Spy:
 	def __on_timer_timeout(self):
 		if self.timer == 0:
 			return False
-		if self.__get_modifier_mask() == self.void_mask:
+		mask = self.__get_modifier_mask()
+		if  mask == self.void_mask:
+			print mask
 			self.clipboard.request_text(self.__on_clipboard_text_received)
 		else:
 			if self.spy_view.get_property("visible"):
+				print mask
 				self.spy_view.hide()
 				self.cancelled = True
 
 		return True
+	
+	def __on_url_click(self, view, url, type_):
+		dic, word = url.split("|")
+
+		filename = self.conf.get_dic_path(dic)
+		lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
+
+		translate = "<body>%s</body>" % ("".join(lines))
+		self.spy_view.tv.set_translate(word, translate)
 
 	def start(self):
 		self.spy_view = SpyView()
+		self.spy_view.tv.htmlview.connect("url-clicked", self.__on_url_click)
 		self.clipboard.set_text("")
 		self.prev_selection = ""
 		self.timer = gobject.timeout_add(300, self.__on_timer_timeout)
@@ -97,7 +116,6 @@ class Spy:
 	def stop(self):
 		self.timer = 0
 		self.spy_view.destroy()
-
 
 class SpyView(gtk.Window):
 	def __init__(self):
@@ -112,6 +130,7 @@ class SpyView(gtk.Window):
 		self.tv = TransView()
 		self.add(self.tv)
 		self.tv.show()
+	
 
 	def __on_expose_event(self, window, event):
 		w, h = window.size_request()
