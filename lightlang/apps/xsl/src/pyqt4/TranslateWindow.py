@@ -95,7 +95,18 @@ class PopupWindow(Qt.QFrame) :
 
 	### Private ###
 
+	def startResize(self) :
+		self.resize_timer.start()
+
+	def stopResize(self) :
+		self.resize_timer.stop()
+		self.resize_direction = ResizeDirectionNone
+
 	def doResize(self) :
+		if Qt.QApplication.mouseButtons() == Qt.Qt.NoButton :
+			self.stopResize()
+			return
+
 		if self.resize_direction == ResizeDirectionNone :
 			return
 
@@ -126,7 +137,18 @@ class PopupWindow(Qt.QFrame) :
 		if new_geometry != self.frameGeometry() :
 			self.setGeometry(new_geometry)
 
+	###
+
+	def startMove(self) :
+		self.move_timer.start()
+
+	def stopMove(self) :
+		self.move_timer.stop()
+
 	def doMove(self) :
+		if Qt.QApplication.mouseButtons() == Qt.Qt.NoButton :
+			self.stopMove()
+			return
 		self.move(Qt.QCursor.pos())
 
 
@@ -134,6 +156,8 @@ class PopupWindow(Qt.QFrame) :
 
 	def mousePressEvent(self, event) :
 		if not self.frameGeometry().contains(event.globalPos()) :
+			self.stopResize()
+			self.stopMove()
 			self.hide()
 			return
 
@@ -145,9 +169,8 @@ class PopupWindow(Qt.QFrame) :
 		c = 10
 
 		if x < c and y < c : # TopLeft
-			self.resize_timer.stop()
-			self.resize_direction = ResizeDirectionNone
-			self.move_timer.start()
+			self.stopResize()
+			self.startMove()
 			return
 
 		if x >= w - c and y < c :
@@ -167,14 +190,13 @@ class PopupWindow(Qt.QFrame) :
 		else :
 			self.resize_direction = ResizeDirectionNone
 
-		if self.resize_direction :
-			self.resize_timer.start()
-			self.move_timer.stop()
+		if self.resize_direction != ResizeDirectionNone :
+			self.stopMove()
+			self.startResize()
 
 	def mouseReleaseEvent(self, event) :
-		self.resize_timer.stop()
-		self.move_timer.stop()
-		self.resize_direction = ResizeDirectionNone
+		self.stopResize()
+		self.stopMove()
 
 	def mouseMoveEvent(self, event) :
 		x = event.x()
@@ -217,7 +239,9 @@ class TranslateWindow(PopupWindow) :
 		self.caption_frame.setFrameShadow(Qt.QFrame.Raised)
 		try :
 			self.caption_frame.setStyleSheet("QFrame {"
-				"border: 2px solid gray; border-radius: 8px;}")
+					"border: 2px solid gray;"
+					"border-radius: 8px;"
+				"}")
 		except : pass
 		self.main_layout.addWidget(self.caption_frame)
 
@@ -233,6 +257,7 @@ class TranslateWindow(PopupWindow) :
 		#####
 
 		self.caption_label = Qt.QLabel()
+		self.caption_label.setWordWrap(True)
 		self.caption_frame_layout.addWidget(self.caption_label)
 
 		self.caption_frame_layout.addStretch()
@@ -240,10 +265,14 @@ class TranslateWindow(PopupWindow) :
 		self.close_button = Qt.QToolButton()
 		self.close_button.setIcon(Qt.QIcon(IconsDir+"hide_22.png"))
 		self.close_button.setIconSize(Qt.QSize(16, 16))
-		self.close_button.setFixedSize(Qt.QSize(22, 22))
+		self.close_button.setFixedSize(Qt.QSize(16, 16))
 		self.close_button.setCursor(Qt.Qt.ArrowCursor)
 		self.close_button.setAutoRaise(True)
 		self.caption_frame_layout.addWidget(self.close_button)
+
+		self.fictive_widget = Qt.QWidget()
+		self.fictive_widget.setFixedSize(22, 22)
+		self.caption_frame_layout.addWidget(self.fictive_widget)
 
 		self.text_browser = Qt.QTextBrowser()
 		try : # FIXME: with PyQt-4.3
