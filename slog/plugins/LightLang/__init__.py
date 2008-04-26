@@ -62,8 +62,7 @@ class SLView(gtk.VBox):
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
 
-		img = gtk.Image()
-		img.set_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
+		img = gtk.image_new_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
 		btn_fuzzy = gtk.Button(_("Fuzzy Search"))
 		btn_fuzzy.set_image(img)
 		btn_fuzzy.set_border_width(4)
