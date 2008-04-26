@@ -142,7 +142,7 @@ class SlogConf:
 		def get_mod_key(self):
 			modkeys = {0:gdk.CONTROL_MASK, 1:gdk.MOD1_MASK,
 						2:gdk.SHIFT_MASK, 3:gdk.MOD4_MASK,
-						4:0}
+						4:8191}
 			return modkeys[self.mod_key]
 
 		def get_enabled_plugins(self):
