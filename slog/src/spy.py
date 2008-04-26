@@ -64,18 +64,22 @@ class Spy:
 		all_lines = self.__get_translate(word)
 
 		if len(all_lines) == 0:
-			translate = "<body>This word not found.<br/><span style='color:#4c4c4c; font-size:80%'>Searching similar words...</span></body>"
+			translate = """
+				<body>This word not found.<br/>
+				<span style='color:#4c4c4c; font-size:80%'>Searching similar words...</span>
+				</body>"""
 			thread = threading.Thread(target = self.__fuzzy_search, args = (word, ))
 			thread.start()
 		else:
 			translate = "<body>%s</body>" % ("".join(all_lines))
 
 		self.spy_view.set_translate(word, translate)
+		self.spy_view.popup()
 
 	def __on_timer_timeout(self):
 		if self.timer == 0:
 			return False
-	
+
 		display = gdk.display_get_default()
 		screen, x, y, mask = display.get_pointer()
 		mask = mask & ((1<<13)-1)
@@ -83,13 +87,12 @@ class Spy:
 		if mask & self.conf.get_mod_key():
 			if self.spy_view.get_property("visible") is False:
 				self.clipboard.request_text(self.__on_clipboard_text_received)
-				self.spy_view.popup()
 		else:
 			if self.spy_view.get_property("visible"):
 				self.spy_view.hide()
 
 		return True
-	
+
 	def __on_url_click(self, view, url, type_):
 		dic, word = url.split("|")
 
