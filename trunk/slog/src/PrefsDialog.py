@@ -37,14 +37,14 @@ class PluginsView(gtk.HBox):
 
 		sw.add(treeview)
 		treeview.show()
-		
+
 		self.pack_start(sw, True, True, 0)
 		sw.show()
 
 		vbox = gtk.VBox(False, 8)
 		vbox.set_border_width(8)
 		vbox.set_size_request(240, 200)
-		
+
 		label = ghlp.create_bold_label(_("Description:"))
 		vbox.pack_start(label, False, False, 0)
 
@@ -159,7 +159,7 @@ class PrefsDialog(gtk.Dialog):
 		cmb_keys.append_text("None")
 		cmb_keys.set_active(self.conf.mod_key)
 		cmb_keys.connect("changed", self.on_modkey_changed)
-		
+
 		hbox.pack_start(label, False, True, 4)
 		hbox.pack_start(cmb_keys, True, False, 0)
 		hbox.show_all()
@@ -176,7 +176,7 @@ class PrefsDialog(gtk.Dialog):
 
 		vbox_tray = gtk.VBox(False, 8)
 		vbox_tray.set_border_width(8)
-		
+
 		check_box = self.__create_check_box(_("Terminate instead of minimizing to tray icon"), self.conf.tray_exit, "tray_exit")
 		vbox_tray.pack_start(check_box, False, True, 0)
 
@@ -209,11 +209,10 @@ class PrefsDialog(gtk.Dialog):
 	def on_modkey_changed(self, widget, data=None):
 		idx = widget.get_active()
 		self.conf.mod_key = idx
-		ghlp.show_error(self, _("Need SLog restart"))
 
 	def on_checkbox_toggled(self, widget, data):
 		if widget.get_active():
-			val = 1		
+			val = 1
 		else:
 			val = 0
 
