@@ -80,6 +80,7 @@ class DictsManager(Qt.QDialog) :
 
 		self.unused_dicts_browser = Qt.QListWidget()
 		self.unused_dicts_browser.setSortingEnabled(True)
+		self.unused_dicts_browser.setAlternatingRowColors(True)
 		self.unused_dicts_group_browser_layout.addWidget(self.unused_dicts_browser)
 
 		self.right_button = Qt.QToolButton()
@@ -90,6 +91,7 @@ class DictsManager(Qt.QDialog) :
 		###
 
 		self.used_dicts_browser = Qt.QListWidget()
+		self.used_dicts_browser.setAlternatingRowColors(True)
 		self.used_dicts_group_browser_layout.addWidget(self.used_dicts_browser)
 
 		self.up_button = Qt.QToolButton()
