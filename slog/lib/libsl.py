@@ -3,7 +3,6 @@
 import os
 import re
 import tempfile
-import gobject
 
 (
 	SL_FIND_LIST,
@@ -119,7 +118,6 @@ def strcmp_jump(a, b, precent = 40) :
 				continue
 			elif a[i] == b[j+1]:
 				errors += 1
-				j += 1
 			else:
 				errors += 1
 
@@ -159,6 +157,56 @@ def levenshtein(a, b):
 			current[j] = min(add, delete, change)
 
 	return current[n]
+
+
+# Implementation "Bitap algorithm"
+def bitap_fuzzy_bitwise_search(text, pattern, k):
+	
+	unot = lambda x: 0xFFFFFFFF + ~(x) + 1
+
+	retval = False
+
+	n = len(text)
+	m = len(pattern)
+
+	if m == 0:
+		return False
+
+	# The pattern is too long!
+	if m > 31:
+		return False
+
+	# Initialize the bit array R
+	R = map(lambda x: unot(1), range(k+1))
+
+	# Initialize the pattern bitmasks
+	pattern_mask = map(lambda x: unot(0), range(256))
+
+	for i in xrange(m):
+		idx = ord(pattern[i])
+		pattern_mask[idx] &= unot(1L << i)
+
+	for i in xrange(n):
+		# Update the bit arrays
+		old_Rd1 = R[0]
+
+		idx = ord(text[i])
+		R[0] |= pattern_mask[idx]
+		R[0] <<= 1
+
+		for d in xrange(1, k+1):
+			tmp = R[d]
+
+			# Substitution is all we care about 
+			idx = ord(text[i])
+			R[d] = (old_Rd1 & (R[d] | pattern_mask[idx])) << 1
+			old_Rd1 = tmp
+
+		if 0 == (R[k] & (1L << m)):
+			retval = True
+			break;
+
+	return retval
 
 def find_word(word, mode, filename):
 	if word == "":
@@ -204,8 +252,9 @@ def find_word(word, mode, filename):
 				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
 		elif mode == SL_FIND_FUZZY:
-				#if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
-				if strcmp_jump(r_word, utf8_word) == 0:
+				if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
+				#if strcmp_jump(r_word, utf8_word) == 0:
+				#if bitap_fuzzy_bitwise_search(r_word, utf8_word, 3):
 					lines.append(r_word)
 
 		# Save memory
@@ -265,11 +314,22 @@ def indexating(filename):
 	fr.close()
 	fp.close()
 
+def find_and_print(word, fname):
+	items = find_word("LightLang", SL_FIND_FUZZY, fname)
+	print fname
+	print items
+
 #Unit test
-#if __name__ == "__main__":
+if __name__ == "__main__":
+	from threading import Thread
 	#indexating("/tmp/Sokrat-Mova.ru-en")
-	#dicts = ("/home/renat/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/renat/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
+	dicts = ("/home/renat/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/renat/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
 	#for fname in dicts:
-	#items = find_word("LightLang", SL_FIND_FUZZY, fname)
-	#print fname
-	#print items
+	thread = Thread(target = find_and_print, args = ("LightLang", dicts[0]))
+	thread.start()
+	thread = Thread(target = find_and_print, args = ("LightLang", dicts[1]))
+	thread.start()
+		#items = find_word("LightLang", SL_FIND_FUZZY, fname)
+		#print fname
+		#print items
+	#print bitap_fuzzy_bitwise_search("lightlang", "light", 3)
