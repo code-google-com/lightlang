@@ -568,7 +568,8 @@ static void print_header(const char *dict_name)
 			putchar(' ');
 			if ( settings.use_terminal_escapes_flag ) printf("\033[1m");
 			for (++count; (*dict_name); dict_name++, count++)
-				putchar(*dict_name);
+				if ( (*dict_name) == '_' ) putchar(' ');
+				else putchar(*dict_name);
 			if ( settings.use_terminal_escapes_flag ) printf("\033[0m");
 			putchar(' ');
 			for (++count; count < settings.max_terminal_line_len; count++)
