@@ -32,9 +32,7 @@ class ListBrowser(Qt.QTextBrowser) :
 	def __init__(self, parent = None) :
 		Qt.QTextBrowser.__init__(self, parent)
 
-		try : # FIXME with PyQt-4.3
-			self.setOpenLinks(False)
-		except : pass
+		self.setOpenLinks(False)
 
 		self.last_anchor = Qt.QString()
 

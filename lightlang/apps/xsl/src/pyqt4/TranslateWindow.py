@@ -275,9 +275,7 @@ class TranslateWindow(PopupWindow) :
 		self.caption_frame_layout.addWidget(self.fictive_widget)
 
 		self.text_browser = Qt.QTextBrowser()
-		try : # FIXME: with PyQt-4.3
-			self.text_browser.setOpenLinks(False)
-		except : pass
+		self.text_browser.setOpenLinks(False)
 		self.main_layout.addWidget(self.text_browser)
 
 		#####
