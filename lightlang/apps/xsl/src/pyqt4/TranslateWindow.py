@@ -158,7 +158,7 @@ class PopupWindow(Qt.QFrame) :
 		if not self.frameGeometry().contains(event.globalPos()) :
 			self.stopResize()
 			self.stopMove()
-			self.hide()
+			self.close()
 			return
 
 		x = event.x()
@@ -263,7 +263,7 @@ class TranslateWindow(PopupWindow) :
 		self.caption_frame_layout.addStretch()
 
 		self.close_button = Qt.QToolButton()
-		self.close_button.setIcon(Qt.QIcon(IconsDir+"hide_22.png"))
+		self.close_button.setIcon(Qt.QIcon(IconsDir+"close_22.png"))
 		self.close_button.setIconSize(Qt.QSize(16, 16))
 		self.close_button.setFixedSize(Qt.QSize(16, 16))
 		self.close_button.setCursor(Qt.Qt.ArrowCursor)
@@ -280,7 +280,7 @@ class TranslateWindow(PopupWindow) :
 
 		#####
 
-		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
+		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
 		self.connect(self.text_browser, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
 
 

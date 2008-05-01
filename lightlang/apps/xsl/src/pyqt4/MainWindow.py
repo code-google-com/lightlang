@@ -361,7 +361,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	def visibleChange(self) :
 		if self.isVisible() :
-			self.hide()
+			self.close()
 		else :
 			self.showNormal()
 			self.setFocus()
