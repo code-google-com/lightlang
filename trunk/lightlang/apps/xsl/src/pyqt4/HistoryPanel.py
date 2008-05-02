@@ -81,7 +81,6 @@ class HistoryPanel(Qt.QDockWidget) :
 		if not self.list().contains(word) :
 			count = self.history_browser.count()
 			while count >= 100 : # 100 - default value
-				Qt.QCoreApplication.processEvents()
 				self.history_browser.takeItem(count -1)
 				count = self.history_browser.count()
 			self.history_browser.addItem(word)
@@ -103,7 +102,6 @@ class HistoryPanel(Qt.QDockWidget) :
 		list = Qt.QStringList()
 		count = 0
 		while count < self.history_browser.count() :
-			Qt.QCoreApplication.processEvents()
 			list << self.history_browser.item(count).text()
 			count += 1
 		return list

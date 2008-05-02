@@ -257,7 +257,6 @@ class TextBrowser(Qt.QWidget) :
 			return
 
 		while self.count() != 1 :
-			Qt.QCoreApplication.processEvents()
 			self.removeTab(0)
 		self.clearPage(0)
 

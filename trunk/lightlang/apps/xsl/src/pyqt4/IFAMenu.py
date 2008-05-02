@@ -184,7 +184,6 @@ class IFAMenu(Qt.QMenu) :
 
 		count = 0
 		while count < ifa_dir.count() :
-			Qt.QCoreApplication.processEvents()
 			ifa_file = Qt.QFile(IFADir+ifa_dir[count])
 			xml_input_source = Qt.QXmlInputSource(ifa_file)
 			xml_reader = Qt.QXmlSimpleReader()
@@ -247,7 +246,6 @@ class IFAMenu(Qt.QMenu) :
 		instructions = self.actions_data_list[index][3].split("\n")
 		count = 0
 		while count < instructions.count() :
-			Qt.QCoreApplication.processEvents()
 			instruction = instructions[count].trimmed()
 			if not instruction.simplified().isEmpty() :
 				try :
@@ -261,7 +259,6 @@ class IFAMenu(Qt.QMenu) :
 		instructions = self.actions_data_list[index][4].split("\n")
 		count = 0
 		while count < instructions.count() :
-			Qt.QCoreApplication.processEvents()
 			instruction = instructions[count].trimmed()
 			if not instruction.simplified().isEmpty() :
 				try :

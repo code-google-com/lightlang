@@ -379,7 +379,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.text_browser.setShredLock(True)
 		text_browser_index = self.text_browser.currentIndex()
 		for source_object in self.source_objects_list :
-			Qt.QCoreApplication.processEvents()
 			if source_object[1] == text_browser_index :
 				self.text_browser.addTab()
 				text_browser_index = self.text_browser.currentIndex()
@@ -392,7 +391,6 @@ class MainWindow(Qt.QMainWindow) :
 
 	def checkBusyStreams(self) :
 		for source_object in self.source_objects_list :
-			Qt.QCoreApplication.processEvents()
 			if source_object[1] != -1 :
 				return True
 		return False
