@@ -152,7 +152,6 @@ class TranslateSitesMenu(Qt.QMenu) :
 
 		count = 0
 		while count < trsites_dir.count() :
-			Qt.QCoreApplication.processEvents()
 			trsite_file = Qt.QFile(TrSitesDir+trsites_dir[count])
 			xml_input_source = Qt.QXmlInputSource(trsite_file)
 			xml_reader = Qt.QXmlSimpleReader()
