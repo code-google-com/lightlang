@@ -629,7 +629,11 @@ class DictsManager(Qt.QDialog) :
 		local_dicts_list = settings.value("dicts_manager/dicts_list",
 			Qt.QVariant(Qt.QStringList())).toStringList()
 
+		self.update_dicts_button.blockSignals(True)
+
 		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
+
+		self.update_dicts_button.blockSignals(False)
 
 
 	### Private ###
