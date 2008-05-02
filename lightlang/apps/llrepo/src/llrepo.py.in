@@ -293,7 +293,7 @@ def install_resources(resources_type = "", resources_list = []) :
 					out_file.close()
 				except : pass
 
-				print MyName+": uncompressinf file \""+out_file_path+"\"..."
+				print MyName+": uncompressing file \""+out_file_path+"\"..."
 				if os.system(BZip2Prog+" -df \""+out_file_path+"\"") != 0 :
 					continue
 
