@@ -111,7 +111,7 @@ class DictInformationWindow(Qt.QWidget) :
 		dict_information.append(self.record(self.tr("File path:"), self.dictFilePath()))
 		self.dict_information_browser.setHtml(dict_information)
 
-		dict_information.append(self.record(self.tr("File size:"), self.dictFileSize()))
+		dict_information.append(self.record(self.tr("File size (KB):"), self.dictFileSize()))
 		self.dict_information_browser.setHtml(dict_information)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
@@ -326,6 +326,8 @@ class DictsListWidget(Qt.QTableWidget) :
 		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"),
 			self.currentRowChanged)
 
+		self.connect(self.verticalHeader(), Qt.SIGNAL("sectionClicked(int)"), self.setCurrentRow)
+
 
 	### Public ###
 
@@ -466,6 +468,11 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	###
 
+	def setCurrentRow(self, index) :
+		self.setCurrentCell(index, 0)
+
+	###
+
 	def isUpAvailable(self, index) :
 		if 0 < index < self.rowCount() :
 			return True
@@ -603,7 +610,13 @@ class DictsManager(Qt.QDialog) :
 	### Public ###
 
 	def updateDicts(self) :
-		print "updateDicts()"
+		local_dicts_list = self.syncLists(self.listOfAllDicts(), self.dicts_list.list())
+
+		self.update_dicts_button.blockSignals(True)
+
+		self.dicts_list.setList(local_dicts_list)
+
+		self.update_dicts_button.blockSignals(False)
 
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
