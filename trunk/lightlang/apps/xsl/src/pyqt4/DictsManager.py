@@ -31,6 +31,486 @@ AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+class DictInformationWindow(Qt.QWidget) :
+	def __init__(self, dict_name, parent = None) :
+		Qt.QWidget.__init__(self, parent)
+
+		self.setWindowTitle(self.tr("Dict Information"))
+		self.setWindowIcon(Qt.QIcon(MyIcon))
+
+		self.setMinimumSize(450, 300)
+		self.resize(450, 300)
+
+		#####
+
+		self.main_layout = Qt.QVBoxLayout()
+		self.setLayout(self.main_layout)
+
+		self.dict_information_browser_layout = Qt.QVBoxLayout()
+		self.main_layout.addLayout(self.dict_information_browser_layout)
+
+		self.control_buttons_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.control_buttons_layout)
+
+		#####
+
+		self.dict_name = Qt.QString(dict_name)
+
+		self.is_loaded_flag = False
+
+		#####
+
+		self.dict_information_browser = Qt.QTextBrowser()
+		self.dict_information_browser_layout.addWidget(self.dict_information_browser)
+
+		self.wait_picture_movie = Qt.QMovie(WaitPicture)
+		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
+		self.wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
+		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_picture_movie_label = Qt.QLabel()
+		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
+		self.wait_picture_movie_label.setVisible(False)
+		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
+
+		self.control_buttons_layout.addStretch()
+
+		self.update_information_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("Update"))
+		self.control_buttons_layout.addWidget(self.update_information_button)
+
+		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("OK"))
+		self.ok_button.setDefault(True)
+		self.control_buttons_layout.addWidget(self.ok_button)
+
+		#####
+
+		self.connect(self.update_information_button, Qt.SIGNAL("clicked()"), self.updateInformation)
+		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
+
+
+	### Public ###
+
+	def updateInformation(self) :
+		if self.dict_name.isEmpty() :
+			return
+
+		self.update_information_button.blockSignals(True)
+
+		self.wait_picture_movie_label.setVisible(True)
+		self.wait_picture_movie.start()
+
+		###
+
+		dict_information = Qt.QString()
+
+		dict_information.append(self.record(self.tr("Caption:"), self.dictCaption()))
+		self.dict_information_browser.setHtml(dict_information)
+
+		dict_information.append(self.record(self.tr("Direction:"), self.dictDirection()))
+		self.dict_information_browser.setHtml(dict_information)
+
+		dict_information.append(self.record(self.tr("File path:"), self.dictFilePath()))
+		self.dict_information_browser.setHtml(dict_information)
+
+		dict_information.append(self.record(self.tr("File size:"), self.dictFileSize()))
+		self.dict_information_browser.setHtml(dict_information)
+
+		dict_description, word_count = self.dictDescriptionAndWordCount()
+		dict_information.append(self.record(self.tr("Count of words:"), word_count))
+		dict_information.append(self.record(self.tr("Description:"), dict_description))
+		self.dict_information_browser.setHtml(dict_information)
+
+		###
+
+		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie.stop()
+
+		self.update_information_button.blockSignals(False)
+
+	def show(self) :
+		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
+		if x_window_position < 0 :
+			x_window_position = 0
+		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
+		if y_window_position < 0 :
+			y_window_position = 0
+
+		self.move(Qt.QPoint(x_window_position, y_window_position))
+		Qt.QWidget.show(self)
+
+		if not self.is_loaded_flag :
+			self.is_loaded_flag = True
+			self.updateInformation()
+
+
+	### Private ###
+
+	def dictCaption(self) :
+		index = self.dict_name.lastIndexOf(".")
+		if index >= 0 :
+			dict_caption = self.dict_name.left(index)
+		else :
+			dict_caption = Qt.QString(self.dict_name)
+		dict_caption.replace("_", " ")
+		return dict_caption
+
+	def dictDirection(self) :
+		index = self.dict_name.lastIndexOf(".")
+		if index >= 0 :
+			return self.dict_name.mid(index +1)
+		else :
+			return self.tr("Unavailable")
+
+	def dictFilePath(self) :
+		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
+		if Qt.QFile.exists(dict_file_path) :
+			return dict_file_path
+		else :
+			return self.tr("Unavailable")
+
+	def dictFileSize(self) :
+		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
+		return Qt.QString().setNum(dict_file.size() / 1024) # KB
+
+	def dictDescriptionAndWordCount(self) :
+		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
+		dict_file_stream = Qt.QTextStream(dict_file)
+
+		dict_description = Qt.QString()
+		word_count = 0
+
+		if dict_file.open(Qt.QIODevice.ReadOnly) :
+			first_comment_flag = False
+			while not dict_file.atEnd() :
+				Qt.QCoreApplication.processEvents()
+				str = dict_file_stream.readLine()
+				if str.isEmpty() :
+					continue
+				if str[0] == "#" :
+					str.remove(0, 1)
+					str.remove("\n")
+					str.append("<br>")
+					dict_description.append(str)
+					continue
+				if str.contains("  ") :
+					word_count += 1
+			dict_file.close()
+			dict_description.trimmed()
+			dict_description.prepend("<br>")
+
+		if dict_description.isEmpty() :
+			dict_description = self.tr("Unavailable")
+
+		return dict_description, Qt.QString().setNum(word_count)
+
+	###
+
+	def record(self, label, text) :
+		return Qt.QString("<em><strong><font color=\"#494949\">%1"
+			"</font></strong> %2</em><br>").arg(label).arg(text)
+
+
+#####
+class DictsListWidgetItem(Qt.QWidget) :
+	def __init__(self, dict_name, enable_dict_state = Qt.Qt.Unchecked, parent = None) :
+		Qt.QWidget.__init__(self, parent)
+
+		self.main_layout = Qt.QHBoxLayout()
+		self.main_layout.setMargin(5)
+		self.main_layout.setSpacing(3)
+		self.setLayout(self.main_layout)
+
+		if self.font().pixelSize() > 0 :
+			self.setFixedHeight((self.font().pixelSize() + 5) * 2)
+		elif self.font().pointSize() > 0 :
+			self.setFixedHeight((self.font().pointSize() + 5) * 2)
+		else :
+			self.setFixedHeight(30)
+
+		#####
+
+		self.dict_name = Qt.QString(dict_name)
+
+		#####
+
+		self.dict_information_window = DictInformationWindow(dict_name)
+
+		#####
+
+		self.enable_dict_checkbox = Qt.QCheckBox()
+		self.enable_dict_checkbox.setCheckState(enable_dict_state)
+		self.main_layout.addWidget(self.enable_dict_checkbox)
+
+		self.vertical_frame1 = Qt.QFrame()
+		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self.main_layout.addWidget(self.vertical_frame1)
+
+		self.dict_caption_label = Qt.QLabel()
+		index = dict_name.lastIndexOf(".")
+		if index >= 0 :
+			dict_caption = dict_name.left(index)
+		else :
+			dict_caption = Qt.QString(dict_name)
+		dict_caption.replace("_", " ")
+		self.dict_caption_label.setText(dict_caption)
+		self.main_layout.addWidget(self.dict_caption_label)
+
+		self.main_layout.addStretch()
+
+		self.dict_direction_label = Qt.QLabel()
+		index = dict_name.lastIndexOf(".")
+		if index >= 0 :
+			self.dict_direction_label.setText(dict_name.mid(index +1))
+		self.main_layout.addWidget(self.dict_direction_label)
+
+		self.vertical_frame2 = Qt.QFrame()
+		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self.main_layout.addWidget(self.vertical_frame2)
+
+		self.show_information_button = Qt.QToolButton()
+		self.show_information_button.setIcon(Qt.QIcon(IconsDir+"info_16.png"))
+		self.show_information_button.setIconSize(Qt.QSize(16, 16))
+		self.show_information_button.setCursor(Qt.Qt.ArrowCursor)
+		self.show_information_button.setAutoRaise(True)
+		self.main_layout.addWidget(self.show_information_button)
+
+		#####
+
+		self.connect(self.enable_dict_checkbox, Qt.SIGNAL("stateChanged(int)"), self.stateChangedSignal)
+
+		self.connect(self.show_information_button, Qt.SIGNAL("clicked()"),
+			self.dict_information_window.show)
+
+
+	### Public ###
+
+	def dictName(self) :
+		return Qt.QString(self.dict_name)
+
+	def dictCaption(self) :
+		return self.dict_caption_label.text()
+
+	def dictDirection(self) :
+		return self.dict_direction_label.text()
+
+	def dictState(self) :
+		return self.enable_dict_checkbox.checkState()
+
+
+	### Signals ###
+
+	def stateChangedSignal(self, state) :
+		self.emit(Qt.SIGNAL("stateChanged(int)"), state)
+
+
+#####
+class DictsListWidget(Qt.QTableWidget) :
+	def __init__(self, parent = None) :
+		Qt.QTableWidget.__init__(self, parent)
+
+		self.setColumnCount(1)
+		self.setRowCount(0)
+
+		self.horizontalHeader().hide()
+		self.horizontalHeader().setStretchLastSection(True)
+
+		self.verticalHeader().setResizeMode(Qt.QHeaderView.Fixed)
+
+		self.setHorizontalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOff)
+
+		self.setSelectionMode(Qt.QAbstractItemView.SingleSelection)
+
+		self.setAlternatingRowColors(True)
+
+		#####
+
+		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"),
+			self.currentRowChanged)
+
+
+	### Public ###
+
+	def setList(self, list) :
+		item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
+
+		self.setRowCount(0)
+		count = 0
+		while count < list.count() :
+			Qt.QCoreApplication.processEvents()
+
+			if not item_code_regexp.exactMatch(list[count]) :
+				count += 1
+				continue
+
+			dict_name = item_code_regexp.cap(1)
+
+			if item_code_regexp.cap(2).toInt()[0] > 0 :
+				enable_dict_state = Qt.Qt.Checked
+			else :
+				enable_dict_state = Qt.Qt.Unchecked
+
+			self.insertDictItem(DictsListWidgetItem(dict_name, enable_dict_state))
+
+			count += 1
+
+		if count > 0 :
+			self.setCurrentCell(0, 0)
+			self.currentRowChangedSignal(0)
+
+		self.dictsListChangedSignal()
+
+	def list(self) :
+		list = Qt.QStringList()
+		count = 0
+		while count < self.rowCount() :
+			Qt.QCoreApplication.processEvents()
+
+			item = self.cellWidget(count, 0)
+			if item == None :
+				count += 1
+				continue
+
+			dict_name = item.dictName()
+
+			if item.dictState() == Qt.Qt.Checked :
+				enable_dict_flag = 1
+			else :
+				enable_dict_flag = 0
+
+			list << Qt.QString("{%1}{%2}").arg(dict_name).arg(enable_dict_flag)
+
+			count += 1
+		return list
+
+	###
+
+	def dictsList(self) :
+		list = Qt.QStringList()
+		count = 0
+		while count < self.rowCount() :
+			Qt.QCoreApplication.processEvents()
+
+			item = self.cellWidget(count, 0)
+			if item == None :
+				count += 1
+				continue
+
+			if item.dictState() == Qt.Qt.Checked :
+				list << item.dictName()
+
+			count += 1
+		return list
+
+	###
+
+	def up(self) :
+		index = self.currentRow()
+		if self.isUpAvailable(index) :
+			item = self.takeDictItem(index)
+			self.insertDictItem(item, index -1)
+			self.setCurrentCell(index -1, 0)
+			self.dictsListChangedSignal()
+
+	def down(self) :
+		index = self.currentRow()
+		if self.isDownAvailable(index) :
+			item = self.takeDictItem(index)
+			self.insertDictItem(item, index +1)
+			self.setCurrentCell(index +1, 0)
+			self.dictsListChangedSignal()
+
+	###
+
+	def setFilter(self, str) :
+		count = 0
+		while count < self.rowCount() :
+			# Qt.QCoreApplication.processEvents()
+
+			item = self.cellWidget(count, 0)
+			if item == None :
+				count += 1
+				continue
+
+			dict = Qt.QString("%1.%2").arg(item.dictCaption()).arg(item.dictDirection())
+			if not dict.contains(str, Qt.Qt.CaseInsensitive) :
+				self.hideRow(count)
+			else :
+				self.showRow(count)
+
+			count += 1
+
+
+	### Private ###
+
+	def insertDictItem(self, item, index = -1) :
+		if index < 0 or index > self.rowCount() :
+			self.insertRow(self.rowCount())
+			index = self.rowCount() -1
+		else :
+			self.insertRow(index)
+
+		self.setRowHeight(index, item.height())
+		self.setCellWidget(index, 0, item)
+
+		self.connect(item, Qt.SIGNAL("stateChanged(int)"), self.dictsListChangedSignal)
+
+	def takeDictItem(self, index) :
+		if index < 0 or index >= self.rowCount() :
+			return None
+
+		internal_widget = self.cellWidget(index, 0)
+		external_widget = DictsListWidgetItem(internal_widget.dictName(), internal_widget.dictState())
+
+		self.removeRow(index)
+
+		return external_widget
+
+	###
+
+	def isUpAvailable(self, index) :
+		if 0 < index < self.rowCount() :
+			return True
+		else :
+			return False
+
+	def isDownAvailable(self, index) :
+		if 0 <= index < self.rowCount() -1 :
+			return True
+		else :
+			return False
+
+	###
+
+	def currentRowChanged(self, index) :
+		self.setCurrentCell(index, 0)
+		self.currentRowChangedSignal(index)
+
+		if self.isUpAvailable(index) :
+			self.upAvailableSignal(True)
+		else :
+			self.upAvailableSignal(False)
+
+		if self.isDownAvailable(index) :
+			self.downAvailableSignal(True)
+		else :
+			self.downAvailableSignal(False)
+
+
+	### Signals ###
+
+	def currentRowChangedSignal(self, index) :
+		self.emit(Qt.SIGNAL("currentRowChanged(int)"), index)
+
+	def dictsListChangedSignal(self) :
+		self.emit(Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsList())
+
+	def upAvailableSignal(self, up_available_flag) :
+		self.emit(Qt.SIGNAL("upAvailable(bool)"), up_available_flag)
+
+	def downAvailableSignal(self, down_available_flag) :
+		self.emit(Qt.SIGNAL("downAvailable(bool)"), down_available_flag)
+
+
+#####
 class DictsManager(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
@@ -38,355 +518,175 @@ class DictsManager(Qt.QDialog) :
 		self.setWindowTitle(self.tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
+		self.resize(400, 550)
+
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setSizeConstraint(Qt.QLayout.SetFixedSize)
 		self.setLayout(self.main_layout)
 
-		self.browsers_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.browsers_layout)
+		self.line_edit_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.line_edit_layout)
 
-		self.unused_dicts_group = Qt.QGroupBox(self.tr("Unused dicts"))
-		self.browsers_layout.addWidget(self.unused_dicts_group)
-		self.unused_dicts_group_layout = Qt.QHBoxLayout()
-		self.unused_dicts_group.setLayout(self.unused_dicts_group_layout)
-		self.unused_dicts_group_browser_layout = Qt.QVBoxLayout()
-		self.unused_dicts_group_layout.addLayout(self.unused_dicts_group_browser_layout)
-		self.unused_dicts_group_control_buttons_layout = Qt.QVBoxLayout()
-		self.unused_dicts_group_layout.addLayout(self.unused_dicts_group_control_buttons_layout)
+		self.dicts_list_layout = Qt.QVBoxLayout()
+		self.main_layout.addLayout(self.dicts_list_layout)
 
-		self.used_dicts_group = Qt.QGroupBox(self.tr("Used dicts"))
-		self.browsers_layout.addWidget(self.used_dicts_group)
-		self.used_dicts_group_layout = Qt.QHBoxLayout()
-		self.used_dicts_group.setLayout(self.used_dicts_group_layout)
-		self.used_dicts_group_control_buttons_layout = Qt.QVBoxLayout()
-		self.used_dicts_group_layout.addLayout(self.used_dicts_group_control_buttons_layout)
-		self.used_dicts_group_browser_layout = Qt.QVBoxLayout()
-		self.used_dicts_group_layout.addLayout(self.used_dicts_group_browser_layout)
+		self.dicts_list_buttons_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.dicts_list_buttons_layout)
 
-		self.dict_information_group = Qt.QGroupBox(self.tr("Dict Information Center"))
-		self.dict_information_group.setVisible(False)
-		self.main_layout.addWidget(self.dict_information_group)
-		self.dict_information_group_layout = Qt.QVBoxLayout()
-		self.dict_information_group.setLayout(self.dict_information_group_layout)
-		self.dict_information_group_lines_layout = Qt.QGridLayout()
-		self.dict_information_group_layout.addLayout(self.dict_information_group_lines_layout)
-		self.dict_information_group_browser_layout = Qt.QVBoxLayout()
-		self.dict_information_group_layout.addLayout(self.dict_information_group_browser_layout)
+		self.horizontal_frame = Qt.QFrame()
+		self.horizontal_frame.setFrameStyle(Qt.QFrame.HLine|Qt.QFrame.Sunken)
+		self.main_layout.addWidget(self.horizontal_frame)
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.control_buttons_layout)
 
 		#####
 
-		self.unused_dicts_browser = Qt.QListWidget()
-		self.unused_dicts_browser.setSortingEnabled(True)
-		self.unused_dicts_browser.setAlternatingRowColors(True)
-		self.unused_dicts_group_browser_layout.addWidget(self.unused_dicts_browser)
+		self.filter_label = Qt.QLabel(self.tr("Filter:"))
+		self.line_edit_layout.addWidget(self.filter_label)
 
-		self.right_button = Qt.QToolButton()
-		self.right_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
-		self.right_button.setIconSize(Qt.QSize(22, 22))
-		self.unused_dicts_group_control_buttons_layout.addWidget(self.right_button)
+		self.line_edit = Qt.QLineEdit()
+		self.line_edit_layout.addWidget(self.line_edit)
 
-		###
+		self.clear_line_edit_button = Qt.QToolButton()
+		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
+		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
+		self.clear_line_edit_button.setEnabled(False)
+		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
-		self.used_dicts_browser = Qt.QListWidget()
-		self.used_dicts_browser.setAlternatingRowColors(True)
-		self.used_dicts_group_browser_layout.addWidget(self.used_dicts_browser)
+		self.dicts_list = DictsListWidget()
+		self.dicts_list_layout.addWidget(self.dicts_list)
 
 		self.up_button = Qt.QToolButton()
 		self.up_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
 		self.up_button.setIconSize(Qt.QSize(22, 22))
-		self.used_dicts_group_control_buttons_layout.addWidget(self.up_button)
-
-		self.left_button = Qt.QToolButton()
-		self.left_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
-		self.left_button.setIconSize(Qt.QSize(22, 22))
-		self.used_dicts_group_control_buttons_layout.addWidget(self.left_button)
+		self.up_button.setEnabled(False)
+		self.dicts_list_buttons_layout.addWidget(self.up_button)
 
 		self.down_button = Qt.QToolButton()
 		self.down_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
 		self.down_button.setIconSize(Qt.QSize(22, 22))
-		self.used_dicts_group_control_buttons_layout.addWidget(self.down_button)
+		self.down_button.setEnabled(False)
+		self.dicts_list_buttons_layout.addWidget(self.down_button)
 
-		###
+		self.dicts_list_buttons_layout.addStretch()
 
-		self.wait_picture_movie = Qt.QMovie(WaitPicture)
-		self.wait_picture_movie.setScaledSize(Qt.QSize(16, 16))
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_picture_movie_label = Qt.QLabel()
-		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.wait_picture_movie_label.setVisible(False)
-		self.dict_information_group_lines_layout.addWidget(self.wait_picture_movie_label, 0, 0)
-
-		self.dict_name_combobox = Qt.QComboBox()
-		self.dict_information_group_lines_layout.addWidget(self.dict_name_combobox, 0, 1)
-
-		self.dict_direction_label = Qt.QLabel(self.tr("Direction:"))
-		self.dict_information_group_lines_layout.addWidget(self.dict_direction_label, 1, 0)
-
-		self.dict_direction_line_browser = Qt.QLineEdit()
-		self.dict_direction_line_browser.setReadOnly(True)
-		self.dict_information_group_lines_layout.addWidget(self.dict_direction_line_browser, 1, 1)
-
-		self.dict_file_size_label = Qt.QLabel(self.tr("File size (KB):"))
-		self.dict_information_group_lines_layout.addWidget(self.dict_file_size_label, 2, 0)
-
-		self.dict_file_size_line_browser = Qt.QLineEdit()
-		self.dict_file_size_line_browser.setReadOnly(True)
-		self.dict_information_group_lines_layout.addWidget(self.dict_file_size_line_browser, 2, 1)
-
-		self.dict_words_count_label = Qt.QLabel(self.tr("Count of words:"))
-		self.dict_information_group_lines_layout.addWidget(self.dict_words_count_label, 3, 0)
-
-		self.dict_words_count_line_browser = Qt.QLineEdit()
-		self.dict_words_count_line_browser.setReadOnly(True)
-		self.dict_information_group_lines_layout.addWidget(self.dict_words_count_line_browser, 3, 1)
-
-		self.dict_file_path_label = Qt.QLabel(self.tr("File path:"))
-		self.dict_information_group_lines_layout.addWidget(self.dict_file_path_label, 4, 0)
-
-		self.dict_file_path_line_browser = Qt.QLineEdit()
-		self.dict_file_path_line_browser.setReadOnly(True)
-		self.dict_information_group_lines_layout.addWidget(self.dict_file_path_line_browser, 4, 1)
-
-		self.dict_information_browser = Qt.QTextBrowser()
-		self.dict_information_group_browser_layout.addWidget(self.dict_information_browser)
-
-		###
-
-		self.more_button = Qt.QPushButton(self.tr("More"))
-		self.more_button.setCheckable(True)
-		self.more_button.setDefault(False)
-		self.control_buttons_layout.addWidget(self.more_button)
+		self.update_dicts_button = Qt.QToolButton()
+		self.update_dicts_button.setIcon(Qt.QIcon(IconsDir+"update_22.png"))
+		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
+		self.dicts_list_buttons_layout.addWidget(self.update_dicts_button)
 
 		self.control_buttons_layout.addStretch()
-
-		self.update_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("Update"))
-		self.control_buttons_layout.addWidget(self.update_button)
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("OK"))
 		self.control_buttons_layout.addWidget(self.ok_button)
 
 		#####
 
-		self.connect(self.unused_dicts_browser, Qt.SIGNAL("itemDoubleClicked(QListWidgetItem *)"), self.moveRight)
-		self.connect(self.used_dicts_browser, Qt.SIGNAL("itemDoubleClicked(QListWidgetItem *)"), self.moveLeft)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
+		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
-		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.moveUp)
-		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.moveDown)
-		self.connect(self.left_button, Qt.SIGNAL("clicked()"), self.moveLeft)
-		self.connect(self.right_button, Qt.SIGNAL("clicked()"), self.moveRight)
+		self.connect(self.dicts_list, Qt.SIGNAL("upAvailable(bool)"), self.up_button.setEnabled)
+		self.connect(self.dicts_list, Qt.SIGNAL("downAvailable(bool)"), self.down_button.setEnabled)
+		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
+			self.dictsListChangedSignal)
 
-		self.connect(self.dict_name_combobox, Qt.SIGNAL("currentIndexChanged(const QString &)"),
-			self.setInformation)
+		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.dicts_list.up)
 
-		self.connect(self.more_button, Qt.SIGNAL("toggled(bool)"), self.dict_information_group.setVisible)
-		self.connect(self.update_button, Qt.SIGNAL("clicked()"), self.update)
+		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.dicts_list.down)
+
+		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
+
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
 
 	### Public ###
 
-	def update(self) :
-		all_dicts_list = self.listOfAllDicts()
-		used_dicts_list = self.listOfUsedDicts()
-
-		unused_dicts_list, used_dicts_list = self.syncLists(all_dicts_list, used_dicts_list)
-
-		self.update_button.blockSignals(True) # Block signals
-
-		self.unused_dicts_browser.clear()
-		self.used_dicts_browser.clear()
-		self.dict_name_combobox.clear()
-
-		self.unused_dicts_browser.addItems(unused_dicts_list)
-		self.used_dicts_browser.addItems(used_dicts_list)
-		self.dict_name_combobox.addItems(Qt.QStringList() << "" << all_dicts_list)
-
-		self.update_button.blockSignals(False) # Unblock signals
-
-		self.dictsListChangedSignal()
+	def updateDicts(self) :
+		print "updateDicts()"
 
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		settings.setValue("dicts_manager/used_dicts_list", Qt.QVariant(self.listOfUsedDicts()))
+		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
 	def loadSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 
 		all_dicts_list = self.listOfAllDicts()
-		used_dicts_list = settings.value("dicts_manager/used_dicts_list",
+		local_dicts_list = settings.value("dicts_manager/dicts_list",
 			Qt.QVariant(Qt.QStringList())).toStringList()
 
-		unused_dicts_list, used_dicts_list = self.syncLists(all_dicts_list, used_dicts_list)
-
-		self.unused_dicts_browser.addItems(unused_dicts_list)
-		self.used_dicts_browser.addItems(used_dicts_list)
-		self.dict_name_combobox.addItems(Qt.QStringList() << "" << all_dicts_list)
-
-		self.dictsListChangedSignal()
+		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
 
 
 	### Private ###
 
-	def moveUp(self) :
-		index = self.used_dicts_browser.currentRow()
-		if index == 0 :
-			return
-		item = self.used_dicts_browser.takeItem(index)
-		self.used_dicts_browser.insertItem(index -1, item)
-		self.used_dicts_browser.setCurrentRow(index -1)
-		self.dictsListChangedSignal()
-
-	def moveDown(self) :
-		index = self.used_dicts_browser.currentRow()
-		if index == self.used_dicts_browser.count() -1 :
-			return
-		item = self.used_dicts_browser.takeItem(index)
-		self.used_dicts_browser.insertItem(index +1, item)
-		self.used_dicts_browser.setCurrentRow(index +1)
-		self.dictsListChangedSignal()
-
-	def moveLeft(self) :
-		index = self.used_dicts_browser.currentRow()
-		item = self.used_dicts_browser.takeItem(index)
-		self.unused_dicts_browser.addItem(item)
-		self.dictsListChangedSignal()
-
-	def moveRight(self) :
-		index = self.unused_dicts_browser.currentRow()
-		item = self.unused_dicts_browser.takeItem(index)
-		self.used_dicts_browser.addItem(item)
-		self.dictsListChangedSignal()
-
-	def setInformation(self, dict_name) :
-		if dict_name.simplified().isEmpty() :
-			self.dict_direction_line_browser.clear()
-			self.dict_file_size_line_browser.clear()
-			self.dict_words_count_line_browser.clear()
-			self.dict_file_path_line_browser.clear()
-			self.dict_information_browser.clear()
-		else :
-			self.dict_name_combobox.setEnabled(False)
-			self.update_button.blockSignals(True)
-
-			self.wait_picture_movie_label.setVisible(True)
-			self.wait_picture_movie.start()
-
-			#####
-
-			dict_direction = Qt.QString(self.tr("Unavailable"))
-			dict_file_size = Qt.QString(self.tr("Unavailable"))
-			dict_words_count = Qt.QString(self.tr("Unavailable"))
-			dict_file_path = Qt.QString(self.tr("Unavailable"))
-			dict_information = Qt.QString(self.tr("Unavailable"))
-			dict_information_need_clear_flag = True
-
-			self.dict_direction_line_browser.setText("Loading...")
-			self.dict_file_size_line_browser.setText("Loading...")
-			self.dict_words_count_line_browser.setText("Loading...")
-			self.dict_file_path_line_browser.setText("Loading...")
-			self.dict_information_browser.setHtml("<em>Loading...</em>")
-
-			###
-
-			dict_direction = dict_name.section(".", -1)
-
-			dict_file = Qt.QFile(AllDictsDir+dict_name)
-
-			dict_file_size.setNum(dict_file.size() / 1024) # KB
-
-			dict_file_stream = Qt.QTextStream(dict_file)
-			if dict_file.open(Qt.QIODevice.ReadOnly) :
-				count = 0
-				first_comment_flag = False
-				while not dict_file.atEnd() :
-					Qt.QCoreApplication.processEvents()
-					str = dict_file_stream.readLine()
-					if str.isEmpty() :
-						continue
-					if str[0] == "#" :
-						if dict_information_need_clear_flag :
-							dict_information.clear()
-							dict_information_need_clear_flag = False
-						str.remove("\n")
-						str.append("\n")
-						dict_information.append(str)
-						continue
-					if str.contains("  ") :
-						count += 1
-				dict_file.close()
-				dict_words_count.setNum(count)
-				dict_information.trimmed()
-
-			dict_file_path = AllDictsDir+dict_name
-
-			###
-
-			self.dict_direction_line_browser.setText(dict_direction)
-			self.dict_file_size_line_browser.setText(dict_file_size)
-			self.dict_words_count_line_browser.setText(dict_words_count)
-			self.dict_file_path_line_browser.setText(dict_file_path)
-			self.dict_information_browser.setText(dict_information)
-
-			#####
-
-			self.wait_picture_movie.stop()
-			self.wait_picture_movie_label.setVisible(False)
-			self.wait_picture_movie.jumpToFrame(0)
-
-			self.dict_name_combobox.setEnabled(True)
-			self.update_button.blockSignals(False)
-
-	###
-
 	def listOfAllDicts(self) :
-		all_dicts_list = Qt.QStringList()
-
 		all_dicts_dir = Qt.QDir(AllDictsDir)
 		all_dicts_dir.setFilter(Qt.QDir.Files)
 		all_dicts_dir.setSorting(Qt.QDir.Name)
+		return all_dicts_dir.entryList()
+
+	def syncLists(self, all_dicts_list, local_dicts_list) :
+		local_dicts_list = Qt.QStringList(local_dicts_list)
+
+		item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
 
 		count = 0
-		while count < all_dicts_dir.count() :
+		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents()
-			all_dicts_list << all_dicts_dir[count]
+
+			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
+				local_dicts_list.removeAt(count)
+				count += 1
+				continue
+
+			if not all_dicts_list.contains(item_code_regexp.cap(1)) :
+				local_dicts_list.removeAt(count)
+				count += 1
+				continue
+
 			count += 1
 
-		return all_dicts_list
-
-	def listOfUsedDicts(self) :
-		used_dicts_list = Qt.QStringList()
+		tmp_list = Qt.QStringList()
 		count = 0
-		while count < self.used_dicts_browser.count() :
+		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents()
-			used_dicts_list << self.used_dicts_browser.item(count).text()
-			count += 1
-		return used_dicts_list
 
-	def syncLists(self, all_dicts_list, used_dicts_list) :
-		all_dicts_list_sync = Qt.QStringList(all_dicts_list)
-		used_dicts_list_sync = Qt.QStringList(used_dicts_list)
+			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
+				count += 1
+				continue
+
+			tmp_list << item_code_regexp.cap(1)
+
+			count += 1
 
 		count = 0
-		while count < used_dicts_list_sync.count() :
+		while count < all_dicts_list.count() :
 			Qt.QCoreApplication.processEvents()
-			if not all_dicts_list_sync.contains(used_dicts_list_sync[count]) :
-				used_dicts_list_sync.removeAll(used_dicts_list_sync[count])
+
+			if not tmp_list.contains(all_dicts_list[count]) :
+				local_dicts_list << Qt.QString("{%1}{0}").arg(all_dicts_list[count])
+
 			count += 1
-		
-		count = 0
-		while count < used_dicts_list_sync.count() :
-			Qt.QCoreApplication.processEvents()
-			if all_dicts_list_sync.contains(used_dicts_list_sync[count]) :
-				all_dicts_list_sync.removeAll(used_dicts_list_sync[count])
-			count += 1
-		
-		return all_dicts_list_sync, used_dicts_list_sync
+
+		return local_dicts_list
+
+	###
+
+	def setStatusFromLineEdit(self, word) :
+		if word.simplified().isEmpty() :
+			self.clear_line_edit_button.setEnabled(False)
+		else :
+			self.clear_line_edit_button.setEnabled(True)
+
+	def clearLineEdit(self) :
+		self.line_edit.clear()
+		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
 
-	def dictsListChangedSignal(self) :
-		self.emit(Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.listOfUsedDicts())
+	def dictsListChangedSignal(self, list) :
+		self.emit(Qt.SIGNAL("dictsListChanged(const QStringList &)"), list)
+
