@@ -337,7 +337,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		self.setRowCount(0)
 		count = 0
 		while count < list.count() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			if not item_code_regexp.exactMatch(list[count]) :
 				count += 1
@@ -364,7 +364,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		list = Qt.QStringList()
 		count = 0
 		while count < self.rowCount() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			item = self.cellWidget(count, 0)
 			if item == None :
@@ -389,7 +389,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		list = Qt.QStringList()
 		count = 0
 		while count < self.rowCount() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			item = self.cellWidget(count, 0)
 			if item == None :
@@ -425,8 +425,6 @@ class DictsListWidget(Qt.QTableWidget) :
 	def setFilter(self, str) :
 		count = 0
 		while count < self.rowCount() :
-			# Qt.QCoreApplication.processEvents()
-
 			item = self.cellWidget(count, 0)
 			if item == None :
 				count += 1
@@ -651,7 +649,7 @@ class DictsManager(Qt.QDialog) :
 
 		count = 0
 		while count < local_dicts_list.count() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
@@ -668,7 +666,7 @@ class DictsManager(Qt.QDialog) :
 		tmp_list = Qt.QStringList()
 		count = 0
 		while count < local_dicts_list.count() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
 				count += 1
@@ -680,7 +678,7 @@ class DictsManager(Qt.QDialog) :
 
 		count = 0
 		while count < all_dicts_list.count() :
-			Qt.QCoreApplication.processEvents()
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			if not tmp_list.contains(all_dicts_list[count]) :
 				local_dicts_list << Qt.QString("{%1}{0}").arg(all_dicts_list[count])
