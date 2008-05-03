@@ -20,97 +20,105 @@
     </message>
 </context>
 <context>
-    <name>DictsManager</name>
+    <name>DictInformationWindow</name>
     <message>
         <location filename="DictsManager.py" line="38"/>
-        <source>Dicts Manager</source>
-        <translation>Менеджер словарей</translation>
+        <source>Dict Information</source>
+        <translation>Информация о словаре</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="48"/>
-        <source>Unused dicts</source>
-        <translation>Неиспользуемые словари</translation>
-    </message>
-    <message>
-        <location filename="DictsManager.py" line="57"/>
-        <source>Used dicts</source>
-        <translation>Используемые словари</translation>
-    </message>
-    <message>
-        <location filename="DictsManager.py" line="163"/>
+        <location filename="DictsManager.py" line="77"/>
         <source>Update</source>
         <translation>Обновить</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="166"/>
+        <location filename="DictsManager.py" line="80"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="66"/>
-        <source>Dict Information Center</source>
-        <translation>Центр Информации о Словарях</translation>
+        <location filename="DictsManager.py" line="105"/>
+        <source>Caption:</source>
+        <translation>Заголовок:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="123"/>
+        <location filename="DictsManager.py" line="108"/>
         <source>Direction:</source>
         <translation>Направление:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="130"/>
-        <source>File size (KB):</source>
-        <translation>Размер файла (КБ):</translation>
-    </message>
-    <message>
-        <location filename="DictsManager.py" line="137"/>
-        <source>Count of words:</source>
-        <translation>Количество слов:</translation>
-    </message>
-    <message>
-        <location filename="DictsManager.py" line="144"/>
+        <location filename="DictsManager.py" line="111"/>
         <source>File path:</source>
         <translation>Путь к файлу:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="156"/>
-        <source>More</source>
-        <translation>Дополнительно</translation>
+        <location filename="DictsManager.py" line="114"/>
+        <source>File size (KB):</source>
+        <translation>Размер файла (КБ):</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="281"/>
+        <location filename="DictsManager.py" line="118"/>
+        <source>Count of words:</source>
+        <translation>Количество слов:</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="119"/>
+        <source>Description:</source>
+        <translation>Описание:</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="204"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
 </context>
 <context>
+    <name>DictsManager</name>
+    <message>
+        <location filename="DictsManager.py" line="524"/>
+        <source>Dicts Manager</source>
+        <translation>Менеджер словарей</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="595"/>
+        <source>OK</source>
+        <translation>OK</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="550"/>
+        <source>Filter:</source>
+        <translation>Фильтр:</translation>
+    </message>
+</context>
+<context>
     <name>FindInSLPanel</name>
     <message>
-        <location filename="FindInSLPanel.py" line="104"/>
+        <location filename="FindInSLPanel.py" line="102"/>
         <source>SL Search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="146"/>
+        <location filename="FindInSLPanel.py" line="144"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="150"/>
+        <location filename="FindInSLPanel.py" line="148"/>
         <source>Expanded search</source>
         <translation>Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="252"/>
+        <location filename="FindInSLPanel.py" line="250"/>
         <source>&lt;em&gt;Enter the word, please&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пожалуйста, введите слово&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="158"/>
+        <location filename="FindInSLPanel.py" line="156"/>
         <source>Word list</source>
         <translation>Список слов</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="162"/>
+        <location filename="FindInSLPanel.py" line="160"/>
         <source>Similar words</source>
         <translation>Похожие слова</translation>
     </message>
@@ -421,12 +429,12 @@ Press &quot;Yes&quot; to ignore</source>
 <context>
     <name>IFAMenu</name>
     <message>
-        <location filename="IFAMenu.py" line="237"/>
+        <location filename="IFAMenu.py" line="236"/>
         <source>IFA</source>
         <translation>IFA</translation>
     </message>
     <message>
-        <location filename="IFAMenu.py" line="238"/>
+        <location filename="IFAMenu.py" line="237"/>
         <source>This applications is already running</source>
         <translation>Это приложение уже было запущено</translation>
     </message>
@@ -519,12 +527,12 @@ Package version: %2</source>
 <context>
     <name>ListBrowser</name>
     <message>
-        <location filename="FindInSLPanel.py" line="92"/>
+        <location filename="FindInSLPanel.py" line="90"/>
         <source>Search (in new tab)</source>
         <translation>Поиск (в новой вкладке)</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="93"/>
+        <location filename="FindInSLPanel.py" line="91"/>
         <source>Expanded search (in new tab)</source>
         <translation>Расширенный поиск (в новой вкладке)</translation>
     </message>
@@ -652,22 +660,22 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="430"/>
+        <location filename="MainWindow.py" line="431"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="448"/>
+        <location filename="MainWindow.py" line="447"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="457"/>
+        <location filename="MainWindow.py" line="456"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="472"/>
+        <location filename="MainWindow.py" line="469"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
@@ -682,7 +690,7 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="440"/>
+        <location filename="MainWindow.py" line="439"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
@@ -768,12 +776,12 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TextBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="241"/>
+        <location filename="TextBrowser.py" line="252"/>
         <source>&lt;em&gt;Empty&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пусто&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="242"/>
+        <location filename="TextBrowser.py" line="253"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
@@ -781,22 +789,22 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TranslateBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="118"/>
+        <location filename="TextBrowser.py" line="116"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="119"/>
+        <location filename="TextBrowser.py" line="117"/>
         <source>Expanded search</source>
         <translation>Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="121"/>
+        <location filename="TextBrowser.py" line="119"/>
         <source>Search (in new tab)</source>
         <translation>Поиск (в новой вкладке)</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="122"/>
+        <location filename="TextBrowser.py" line="120"/>
         <source>Expanded search (in new tab)</source>
         <translation>Расширенный поиск (в новой вкладке)</translation>
     </message>
@@ -804,34 +812,34 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="TrayIcon.py" line="87"/>
+        <location filename="TrayIcon.py" line="86"/>
         <source>Start Spy</source>
         <translation>Запустить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="89"/>
+        <location filename="TrayIcon.py" line="88"/>
         <source>Stop Spy</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="98"/>
+        <location filename="TrayIcon.py" line="97"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="93"/>
+        <location filename="TrayIcon.py" line="92"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="122"/>
+        <location filename="TrayIcon.py" line="123"/>
         <source>XSL - graphical interface for SL
 Spy is stopped</source>
         <translation>XSL - графический интерфейс для SL
 Spy-сервис не запущен</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="114"/>
+        <location filename="TrayIcon.py" line="113"/>
         <source>XSL - graphical interface for SL
 Spy is running</source>
         <translation>XSL - графический интерфейс для SL
