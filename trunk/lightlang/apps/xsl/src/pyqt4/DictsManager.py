@@ -123,6 +123,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 		self.wait_picture_movie_label.setVisible(False)
 		self.wait_picture_movie.stop()
+		self.wait_picture_movie.jumpToFrame(0)
 
 		self.update_information_button.blockSignals(False)
 
@@ -580,6 +581,15 @@ class DictsManager(Qt.QDialog) :
 		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
 		self.dicts_list_buttons_layout.addWidget(self.update_dicts_button)
 
+		self.wait_picture_movie = Qt.QMovie(WaitPicture)
+		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
+		self.wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
+		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_picture_movie_label = Qt.QLabel()
+		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
+		self.wait_picture_movie_label.setVisible(False)
+		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
+
 		self.control_buttons_layout.addStretch()
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("OK"))
@@ -608,11 +618,16 @@ class DictsManager(Qt.QDialog) :
 	### Public ###
 
 	def updateDicts(self) :
-		local_dicts_list = self.syncLists(self.listOfAllDicts(), self.dicts_list.list())
-
 		self.update_dicts_button.blockSignals(True)
 
-		self.dicts_list.setList(local_dicts_list)
+		self.wait_picture_movie_label.setVisible(True)
+		self.wait_picture_movie.start()
+
+		self.dicts_list.setList(self.syncLists(self.listOfAllDicts(), self.dicts_list.list()))
+
+		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie.stop()
+		self.wait_picture_movie.jumpToFrame(0)
 
 		self.update_dicts_button.blockSignals(False)
 
@@ -621,13 +636,13 @@ class DictsManager(Qt.QDialog) :
 		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
 	def loadSettings(self) :
+		self.update_dicts_button.blockSignals(True)
+
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 
 		all_dicts_list = self.listOfAllDicts()
 		local_dicts_list = settings.value("dicts_manager/dicts_list",
 			Qt.QVariant(Qt.QStringList())).toStringList()
-
-		self.update_dicts_button.blockSignals(True)
 
 		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
 
