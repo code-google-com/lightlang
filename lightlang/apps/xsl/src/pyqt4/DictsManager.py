@@ -136,7 +136,10 @@ class DictInformationWindow(Qt.QWidget) :
 			y_window_position = 0
 
 		self.move(Qt.QPoint(x_window_position, y_window_position))
+
 		Qt.QWidget.show(self)
+		self.raise_()
+		self.activateWindow()
 
 		if not self.is_loaded_flag :
 			self.is_loaded_flag = True
@@ -576,9 +579,7 @@ class DictsManager(Qt.QDialog) :
 
 		self.dicts_list_buttons_layout.addStretch()
 
-		self.update_dicts_button = Qt.QToolButton()
-		self.update_dicts_button.setIcon(Qt.QIcon(IconsDir+"update_22.png"))
-		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
+		self.update_dicts_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("Update"))
 		self.dicts_list_buttons_layout.addWidget(self.update_dicts_button)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
@@ -593,6 +594,7 @@ class DictsManager(Qt.QDialog) :
 		self.control_buttons_layout.addStretch()
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("OK"))
+		self.ok_button.setDefault(True)
 		self.control_buttons_layout.addWidget(self.ok_button)
 
 		#####
