@@ -1,0 +1,20 @@
+INFO:
+This script was wrote to convert "dummy" output of makedict to Lightlang format
+
+Requirement:
+*Perl
+*makedict (author: Evgeniy A. Dushistov)
+
+OPTIONS:
+--noconvertmode				do not convert "dummy" to lightlang [default=yes]
+-s, --sound-tag				add sound tags
+--info						dictionary informations from file
+
+USAGE examples:
+makedict -o dummy -i dictd russian-english.index|dummy2lightlang -s ru > result
+
+makedict -o dummy -i stardict english-german.ifo|dummy2lightlang -s en --info english-german.ifo > result
+
+dummy2lightlang -s en --info english-german.ifo english-german.dummy > result
+
+dummy2lightlang --noconvertmode -s ru russian-english_lightlang_format > result
