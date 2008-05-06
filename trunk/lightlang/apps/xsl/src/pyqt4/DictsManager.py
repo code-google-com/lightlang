@@ -579,7 +579,9 @@ class DictsManager(Qt.QDialog) :
 
 		self.dicts_list_buttons_layout.addStretch()
 
-		self.update_dicts_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("Update"))
+		self.update_dicts_button = Qt.QToolButton()
+		self.update_dicts_button.setIcon(Qt.QIcon(IconsDir+"update_22.png"))
+		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
 		self.dicts_list_buttons_layout.addWidget(self.update_dicts_button)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
