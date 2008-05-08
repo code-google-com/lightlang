@@ -150,7 +150,7 @@ class PrefsDialog(gtk.Dialog):
 		hbox = gtk.HBox(False, 0)
 		vbox_spy.pack_start(hbox, False, False, 0)
 
-		label = gtk.Label("Modifier key:")
+		label = gtk.Label(_("Modifier key:"))
 		cmb_keys = gtk.combo_box_new_text()
 		cmb_keys.append_text("Ctrl")
 		cmb_keys.append_text("Alt")
