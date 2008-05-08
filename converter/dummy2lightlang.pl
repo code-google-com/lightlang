@@ -27,10 +27,8 @@ foreach (<FILE>){
 if ($convert){
 	$line = 0;
 	foreach (@dict_data){
-		use utf8;
 		$_ = decode ('utf8', $_);
 		$_ = decode_entities($_);
-		no utf8;
 		$_ = encode ('utf8', $_);
 		if ((($_ =~ /(^[^k]|^k[^e]|^ke[^y]|^key[^:])|^key:[^ ]/)) || (!$_)){
 			s/ / /g;#replace space " " by " " character
