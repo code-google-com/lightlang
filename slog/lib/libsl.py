@@ -3,6 +3,7 @@
 import os
 import re
 import tempfile
+import string
 
 (
 	SL_FIND_LIST,
@@ -193,7 +194,7 @@ def find_word(word, mode, filename):
 	if word == "":
 		return []
 
-	utf8_word = word.lower().rstrip().decode("utf-8")
+	utf8_word = word.lower().rstrip().strip(string.punctuation).decode("utf-8")
 
 	if mode == SL_FIND_FUZZY:
 		return find_word_fuzzy(utf8_word, filename)
