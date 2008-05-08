@@ -1,4 +1,8 @@
 #!/usr/bin/perl -w
+
+use HTML::Entities;
+use Encode;
+
 use Getopt::Long qw(:config permute);
 my $input = "";
 sub add {
@@ -23,12 +27,23 @@ foreach (<FILE>){
 if ($convert){
 	$line = 0;
 	foreach (@dict_data){
+		use utf8;
+		$_ = decode ('utf8', $_);
+		$_ = decode_entities($_);
+		no utf8;
+		$_ = encode ('utf8', $_);
 		if ((($_ =~ /(^[^k]|^k[^e]|^ke[^y]|^key[^:])|^key:[^ ]/)) || (!$_)){
 			s/ / /g;#replace space " " by " " character
 			$dict_data[$line] = $_;
 			if ($line > 0){
-				$dict_data[$line] = $dict_data[$line-1].$dict_data[$line]."\\n";
-				$dict_data[$line-1] = "";
+				if ($_ =~ /^data: <k>.*<\/k>$/){
+					$dict_data[$line] = $dict_data[$line-1];
+					$dict_data[$line -1] = "";
+				}
+				else{
+					$dict_data[$line] = $dict_data[$line-1].$dict_data[$line]."\\n";
+					$dict_data[$line-1] = "";
+				}
 			}
 		}
 		if ($_ =~ /^key: /){
@@ -45,12 +60,17 @@ if ($convert){
 	}
 }
 else{
-	if ($tag_lang){
-		foreach (@dict_data){
+	foreach (@dict_data){
+		if ($tag_lang){
 			@temp = split /  /;
 			s/$temp[0]  //;
 			$_ = $temp[0]."  \\s"."$tag_lang: $temp[0]\\s".$_;
 		}
+		use utf8;
+		$_ = decode ('utf8', $_);
+		$_ = decode_entities($_);
+		no utf8;
+		$_ = encode ('utf8', $_);
 	}
 }
 
@@ -71,6 +91,6 @@ if ($info){
 
 foreach (@dict_data){
 	if ($_){
-		print "$_\n";
+		print $_,"\n";
 	}
 }
