@@ -101,7 +101,7 @@ def strcmp_jump(a, b, precent = 40) :
 	if n > m :
 		a, b = b, a
 		n, m = m, n
-	hard_find = int((n * precent) / 100) # !!!!!
+	hard_find = (n * precent) / 100
 
 	if n == m:
 		for i in xrange(n):
@@ -117,9 +117,8 @@ def strcmp_jump(a, b, precent = 40) :
 				j += 1
 				continue
 			elif a[i] == b[j+1]:
-				errors += 1
-			else:
-				errors += 1
+				j += 1
+			errors += 1
 
 			if (errors + (m - n)) > hard_find:
 				return 1
@@ -137,18 +136,19 @@ def levenshtein(a, b):
 
 	n, m = len(a), len(b)
 
-	# My optimization
-	if abs(n - m) > 2:
-		return FUZZY_MAX_DISTANCE + 1
-
 	if n > m:
 		# Make sure n <= m, to use O(min(n,m)) space
 		a, b = b, a
 		n, m = m, n
 
+	# My optimization
+	if (m - n) > 2:
+		return FUZZY_MAX_DISTANCE + 1
+
 	current = range(n+1)
 	for i in xrange(1, m+1):
 		previous, current = current, [i]+[0]*n
+		#print previous, current
 		for j in xrange(1, n+1):
 			add, delete = previous[j]+1, current[j-1]+1
 			change = previous[j-1]
@@ -158,62 +158,45 @@ def levenshtein(a, b):
 
 	return current[n]
 
+def find_word_fuzzy(utf8_word, filename):
 
-# Implementation "Bitap algorithm"
-def bitap_fuzzy_bitwise_search(text, pattern, k):
-	
-	unot = lambda x: 0xFFFFFFFF + ~(x) + 1
+	lines = []
 
-	retval = False
+	fp = open(filename, "r")
 
-	n = len(text)
-	m = len(pattern)
+	for line in fp:
+		if (line[0] == "#") or (line[0] == "\n"):
+			continue
 
-	if m == 0:
-		return False
+		utf8_str = line.decode("utf-8").lower()
 
-	# The pattern is too long!
-	if m > 31:
-		return False
+		# Parse word
+		i = utf8_str.find(u"  ")
+		if i != -1:
+			dict_word = utf8_str[:i]
+		else:
+			continue
 
-	# Initialize the bit array R
-	R = map(lambda x: unot(1), range(k+1))
+		if levenshtein(utf8_word, dict_word) < FUZZY_MAX_DISTANCE:
+			lines.append(dict_word)
 
-	# Initialize the pattern bitmasks
-	pattern_mask = map(lambda x: unot(0), range(256))
+		# Save memory
+		if len(lines) > 50:
+			break
 
-	for i in xrange(m):
-		idx = ord(pattern[i])
-		pattern_mask[idx] &= unot(1L << i)
+	fp.close()
+	return lines
 
-	for i in xrange(n):
-		# Update the bit arrays
-		old_Rd1 = R[0]
-
-		idx = ord(text[i])
-		R[0] |= pattern_mask[idx]
-		R[0] <<= 1
-
-		for d in xrange(1, k+1):
-			tmp = R[d]
-
-			# Substitution is all we care about 
-			idx = ord(text[i])
-			R[d] = (old_Rd1 & (R[d] | pattern_mask[idx])) << 1
-			old_Rd1 = tmp
-
-		if 0 == (R[k] & (1L << m)):
-			retval = True
-			break;
-
-	return retval
 
 def find_word(word, mode, filename):
+
 	if word == "":
 		return []
 
-	lines = []
 	utf8_word = word.lower().rstrip().decode("utf-8")
+
+	if mode == SL_FIND_FUZZY:
+		return find_word_fuzzy(utf8_word, filename)
 
 	pos = get_index(filename, utf8_word[0])
 	if pos < 0:
@@ -223,6 +206,7 @@ def find_word(word, mode, filename):
 	fp.seek(pos)
 
 	break_flag = False
+	lines = []
 	for line in fp:
 		if (line[0] == "#") or (line[0] == "\n"):
 			continue
@@ -235,14 +219,13 @@ def find_word(word, mode, filename):
 		else:
 			continue
 
-		if mode != SL_FIND_FUZZY:
-			if utf8_word[0] != r_word[0]:
-				if break_flag:
-					break
-				else:
-					continue
+		if utf8_word[0] != r_word[0]:
+			if break_flag:
+				break
 			else:
-				break_flag = True
+				continue
+		else:
+			break_flag = True
 
 		if mode == SL_FIND_LIST: # list
 			if r_word.startswith(utf8_word):
@@ -251,11 +234,6 @@ def find_word(word, mode, filename):
 			if r_word == utf8_word:
 				html = sl_to_html(utf8_str, filename)
 				lines.append(html)
-		elif mode == SL_FIND_FUZZY:
-				if levenshtein(r_word, utf8_word) < FUZZY_MAX_DISTANCE:
-				#if strcmp_jump(r_word, utf8_word) == 0:
-				#if bitap_fuzzy_bitwise_search(r_word, utf8_word, 3):
-					lines.append(r_word)
 
 		# Save memory
 		if len(lines) > 50:
@@ -314,22 +292,12 @@ def indexating(filename):
 	fr.close()
 	fp.close()
 
-def find_and_print(word, fname):
-	items = find_word("LightLang", SL_FIND_FUZZY, fname)
-	print fname
-	print items
-
 #Unit test
 if __name__ == "__main__":
-	from threading import Thread
 	#indexating("/tmp/Sokrat-Mova.ru-en")
 	dicts = ("/home/renat/opt/lightlang/share/sl/dicts/EngFree.en-ru", "/home/renat/opt/lightlang/share/sl/dicts/Mueller-7.en-ru")
-	#for fname in dicts:
-	thread = Thread(target = find_and_print, args = ("LightLang", dicts[0]))
-	thread.start()
-	thread = Thread(target = find_and_print, args = ("LightLang", dicts[1]))
-	thread.start()
-		#items = find_word("LightLang", SL_FIND_FUZZY, fname)
-		#print fname
-		#print items
-	#print bitap_fuzzy_bitwise_search("lightlang", "light", 3)
+	for fname in dicts:
+		items = find_word("LightLang", SL_FIND_FUZZY, fname)
+		print fname
+		print items
+	#print levenshtein("lightlang", "light")

@@ -3,12 +3,13 @@
 #msgfmt --output-file=slog.mo ru.po
 
 SOURCES=../src/*.py
+PLUGINS=../plugins/LightLang/__init__.py
 
 default: ru.po
 	msgfmt --output-file=slog.mo ru.po
 
 update: $(SOURCES)
-	xgettext --language=Python --keyword=_ --output=slog.po $(SOURCES)
+	xgettext --language=Python --keyword=_ --output=slog.po $(SOURCES) $(PLUGINS)
 	msgmerge -U ru.po slog.po
     
 clean:
