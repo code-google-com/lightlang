@@ -243,7 +243,7 @@ class IFAMenu(Qt.QMenu) :
 
 	def execPrecode(self, index) :
 		from Global import main
-		instructions = self.actions_data_list[index][3].split("\n")
+		instructions = self.actions_data_list[index][3].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :
 			instruction = instructions[count].trimmed()
@@ -256,7 +256,7 @@ class IFAMenu(Qt.QMenu) :
 
 	def execPostcode(self, index) :
 		from Global import main
-		instructions = self.actions_data_list[index][4].split("\n")
+		instructions = self.actions_data_list[index][4].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :
 			instruction = instructions[count].trimmed()

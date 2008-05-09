@@ -43,6 +43,7 @@ class TranslateBrowser(Qt.QTextBrowser) :
 		#####
 
 		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
+		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.checkLink)
 
 
 	### Private ###
@@ -82,6 +83,28 @@ class TranslateBrowser(Qt.QTextBrowser) :
 			self.newTabRequestSignal()
 			self.cFindRequestSignal(word)
 
+	###
+
+	def checkLink(self, word) :
+		if word.startsWith("#s") :
+                        word.remove(0, word.indexOf("_")+1)
+                        word = word.simplified()
+                        if word.isEmpty() :
+                                return
+
+			words_list = word.split(Qt.QRegExp("\\W+"), Qt.QString.SkipEmptyParts)
+			if words_list.count() <= 1 :
+				return
+
+			count = 1
+			while count < words_list.count() :
+				if not self.find_sound.checkWord(words_list[0], words_list[count]) :
+					self.statusChangedSignal(self.tr("Sound is not full"))
+					return
+				count += 1
+		elif word.startsWith("http://", Qt.Qt.CaseInsensitive) :
+			self.statusChangedSignal(word)
+
 
 	### Signals ###
 
@@ -94,8 +117,25 @@ class TranslateBrowser(Qt.QTextBrowser) :
 	def cFindRequestSignal(self, word) :
 		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
 
+	def showFindInTextFrameRequestSignal(self) :
+		self.emit(Qt.SIGNAL("showFindInTextFrameRequest()"))
+
+	def hideFindInTextFrameRequestSignal(self) :
+		self.emit(Qt.SIGNAL("hideFindInTextFrameRequest()"))
+
+	def statusChangedSignal(self, str) :
+		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
+
 
 	### Handlers ###
+
+	def keyPressEvent(self, event) :
+		if event.key() == Qt.Qt.Key_Escape :
+			self.hideFindInTextFrameRequestSignal()
+		elif event.key() == Qt.Qt.Key_Slash :
+			self.showFindInTextFrameRequestSignal()
+
+		Qt.QTextBrowser.keyPressEvent(self, event)
 
 	def mousePressEvent(self, event) :
 		if event.button() == Qt.Qt.MidButton :
@@ -122,6 +162,128 @@ class TranslateBrowser(Qt.QTextBrowser) :
 		
 
 #####
+class FindInTextFrame(Qt.QFrame) :
+	def __init__(self, parent = None) :
+		Qt.QFrame.__init__(self, parent)
+
+		self.setFrameShape(Qt.QFrame.Box)
+
+		self.main_layout = Qt.QHBoxLayout()
+		self.main_layout.setMargin(2)
+		self.setLayout(self.main_layout)
+
+		#####
+
+		self.close_button = Qt.QToolButton()
+		self.close_button.setIcon(Qt.QIcon(IconsDir+"close_22.png"))
+		self.close_button.setIconSize(Qt.QSize(16, 16))
+		self.main_layout.addWidget(self.close_button)
+
+		self.vertical_frame1 = Qt.QFrame()
+		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self.vertical_frame1.setMinimumSize(22, 22)
+		self.main_layout.addWidget(self.vertical_frame1)
+
+		self.line_edit_label = Qt.QLabel(self.tr("Search:"))
+		self.main_layout.addWidget(self.line_edit_label)
+
+		self.line_edit = Qt.QLineEdit()
+		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.main_layout.addWidget(self.line_edit)
+
+		self.clear_line_edit_button = Qt.QToolButton()
+		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
+		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
+		self.clear_line_edit_button.setEnabled(False)
+		self.main_layout.addWidget(self.clear_line_edit_button)
+
+		self.vertical_frame2 = Qt.QFrame()
+		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self.main_layout.addWidget(self.vertical_frame2)
+
+		self.next_button = Qt.QToolButton()
+		self.next_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
+		self.next_button.setIconSize(Qt.QSize(16, 16))
+		self.next_button.setEnabled(False)
+		self.main_layout.addWidget(self.next_button)
+
+		self.previous_button = Qt.QToolButton()
+		self.previous_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
+		self.previous_button.setIconSize(Qt.QSize(16, 16))
+		self.previous_button.setEnabled(False)
+		self.main_layout.addWidget(self.previous_button)
+
+		#####
+
+		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
+
+		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.findNextRequest)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatus)
+
+		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
+
+		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.findNextRequest)
+
+		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.findPreviousRequest)
+
+
+	### Public ###
+
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
+		self.line_edit.setFocus(reason)
+		self.line_edit.selectAll()
+
+
+	### Private ###
+
+	def findNextRequest(self) :
+		word = self.line_edit.text()
+		if word.simplified().isEmpty() :
+			return
+		self.findNextRequestSignal(word)
+
+	def findPreviousRequest(self) :
+		word = self.line_edit.text()
+		if word.simplified().isEmpty() :
+			return
+		self.findPreviousRequestSignal(word)
+
+	def setStatus(self) :
+		if self.line_edit.text().simplified().isEmpty() :
+			self.clear_line_edit_button.setEnabled(False)
+
+			self.next_button.setEnabled(False)
+			self.previous_button.setEnabled(False)
+		else :
+			self.clear_line_edit_button.setEnabled(True)
+
+			self.next_button.setEnabled(True)
+			self.previous_button.setEnabled(True)
+
+	def clearLineEdit(self) :
+		self.line_edit.clear()
+		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+
+
+	### Signals ###
+
+	def findNextRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("findNextRequest(const QString &)"), word)
+
+	def findPreviousRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("findPreviousRequest(const QString &)"), word)
+
+
+	### Handlers ###
+
+	def keyPressEvent(self, event) :
+		if event.key() == Qt.Qt.Key_Escape :
+			self.hide()
+
+		Qt.QFrame.keyPressEvent(self, event)
+
+
+#####
 class TextBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
@@ -136,6 +298,8 @@ class TextBrowser(Qt.QWidget) :
 		self.shred_lock_flag = False
 
 		self.translate_browsers = []
+
+		###
 
 		self.tab_widget = Qt.QTabWidget()
 		self.main_layout.addWidget(self.tab_widget)
@@ -154,12 +318,19 @@ class TextBrowser(Qt.QWidget) :
 		self.remove_tab_button.setAutoRaise(True)
 		self.tab_widget.setCornerWidget(self.remove_tab_button, Qt.Qt.TopRightCorner)
 
+		self.find_in_text_frame = FindInTextFrame()
+		self.find_in_text_frame.setVisible(False)
+		self.main_layout.addWidget(self.find_in_text_frame)
+
 		#####
 
 		self.connect(self.add_tab_button, Qt.SIGNAL("clicked()"), self.addTab)
 		self.connect(self.remove_tab_button, Qt.SIGNAL("clicked()"), self.removeTab)
 
 		self.connect(self.tab_widget, Qt.SIGNAL("currentChanged(int)"), self.tabChangedSignal)
+
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.findNext)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.findPrevious)
 
 		#####
 
@@ -170,6 +341,13 @@ class TextBrowser(Qt.QWidget) :
 
 	def setShredLock(self, shred_lock_flag) :
 		self.shred_lock_flag = shred_lock_flag
+
+	def showFindInTextFrame(self) :
+		self.find_in_text_frame.setVisible(True)
+		self.find_in_text_frame.setFocus()
+
+	def hideFindInTextFrame(self) :
+		self.find_in_text_frame.setVisible(False)
 
 	###
 
@@ -182,6 +360,12 @@ class TextBrowser(Qt.QWidget) :
 			self.uFindRequestSignal)
 		self.connect(self.translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"),
 			self.cFindRequestSignal)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("showFindInTextFrameRequest()"),
+			self.showFindInTextFrame)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("hideFindInTextFrameRequest()"),
+			self.hideFindInTextFrame)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("statusChanged(const QString &)"),
+			self.statusChangedSignal)
 		#
 		self.translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.translate_browsers[index], self.tr("(Untitled)"))
@@ -214,7 +398,6 @@ class TextBrowser(Qt.QWidget) :
 
 	def setText(self, index, text) :
 		self.translate_browsers[index].setHtml(text)
-		# TODO: add sound-link checks
 
 	def setCaption(self, index, word) :
 		self.tab_widget.setTabText(index, word)
@@ -271,14 +454,6 @@ class TextBrowser(Qt.QWidget) :
 
 	###
 
-	def findNext(self, index, word) :
-		return self.translate_browsers[index].find(word)
-
-	def findPrevious(self, index, word) :
-		return self.translate_browsers[index].find(word, Qt.QTextDocument.FindBackward)
-
-	###
-
 	def zoomIn(self, index = -1, range = 1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
@@ -288,6 +463,19 @@ class TextBrowser(Qt.QWidget) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
 		self.translate_browsers[index].zoomOut(range)
+
+
+	### Private ###
+
+	def findNext(self, word) :
+		index = self.currentIndex()
+		if not self.translate_browsers[index].find(word) :
+			self.statusChangedSignal(self.tr("Not found"))
+
+	def findPrevious(self, word) :
+		index = self.currentIndex()
+		if not self.translate_browsers[index].find(word, Qt.QTextDocument.FindBackward) :
+			self.statusChangedSignal(self.tr("Not found"))
 
 
 	### Signals ###
@@ -300,6 +488,9 @@ class TextBrowser(Qt.QWidget) :
 
 	def cFindRequestSignal(self, word) :
 		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+
+	def statusChangedSignal(self, str) :
+		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
 
 
 	### Handlers ###
