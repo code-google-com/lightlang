@@ -4,7 +4,7 @@ use HTML::Entities;
 use Encode;
 
 use Pod::Usage;
-pod2usage("No files input.") if ((@ARGV == 0));
+pod2usage("No file input specified.") if ((@ARGV == 0)&&(-t STDIN));
 
 use Getopt::Long;
 $input = "";
@@ -46,6 +46,9 @@ if ($input){
 }
 else{
 	open FILE, "-";
+	if (-t STDIN){
+		die "No file input specified.";
+	}
 }
 if (!<FILE>){
 	exit (-1);
