@@ -132,7 +132,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		#####
 
 		self.line_edit = Qt.QLineEdit()
-		self.line_edit.setFocus()
+		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 		self.line_edit_layout.addWidget(self.line_edit)
 
 		self.clear_line_edit_button = Qt.QToolButton()
@@ -298,7 +298,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 
 	def clearLineEdit(self) :
 		self.line_edit.clear()
-		self.line_edit.setFocus()
+		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
