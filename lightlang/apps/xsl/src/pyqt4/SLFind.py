@@ -218,6 +218,13 @@ class FindSound(Qt.QObject) :
 		self.proc_kill_flag = False
 		self.proc.start(SL, self.proc_args)
 
+	def checkWord(self, lang, word) :
+		word = word.simplified()
+		if word.isEmpty() :
+			return
+		word = word.toLower()
+
+		return Qt.QFile.exists(AllSoundsDir+lang+"/"+word[0]+"/"+word+AudioPostfix)
 
 	### Private ###
 

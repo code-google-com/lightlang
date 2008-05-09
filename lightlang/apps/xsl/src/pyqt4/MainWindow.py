@@ -25,7 +25,6 @@ import Config
 import Const
 import Spy
 import FindInSLPanel
-import FindInTextPanel
 import GoogleTranslatePanel
 import HistoryPanel
 import TextBrowser
@@ -114,7 +113,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.setWindowTitle(Const.Organization+" "+Const.MyName+" "+Const.Version)
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
-		self.setDockOptions(self.dockOptions() | Qt.QMainWindow.VerticalTabs)
+		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
 
 		self.main_widget = Qt.QWidget()
 		self.setCentralWidget(self.main_widget)
@@ -146,10 +145,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel = HistoryPanel.HistoryPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.history_panel)
 		self.tabifyDockWidget(self.google_translate_panel, self.history_panel)
-
-		self.find_in_text_panel = FindInTextPanel.FindInTextPanel()
-		self.find_in_text_panel.setVisible(False)
-		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_text_panel)
 
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
@@ -208,11 +203,6 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
 
-		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"),
-			self.findInTextBrowserNext)
-		self.connect(self.find_in_text_panel, Qt.SIGNAL("findPreviousRequest(const QString &)"),
-			self.findInTextBrowserPrevious)
-
 		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.setWord)
 		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
@@ -221,6 +211,8 @@ class MainWindow(Qt.QMainWindow) :
 			self.find_in_sl_panel.setWord)
 		self.connect(self.text_browser, Qt.SIGNAL("cFindRequest(const QString &)"),
 			self.find_in_sl_panel.cFind)
+		self.connect(self.text_browser, Qt.SIGNAL("statusChanged(const QString &)"),
+			self.status_bar.showStatusMessage)
 
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
 			self.find_in_sl_panel.setDictsList)
@@ -248,7 +240,7 @@ class MainWindow(Qt.QMainWindow) :
 			self.clearAllTextBrowser, Qt.QKeySequence("Ctrl+K"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"find_16.png"), self.tr("Search in translations"),
-			self.showFindInTextPanel, Qt.QKeySequence("Ctrl+F"))
+			self.text_browser.showFindInTextFrame, Qt.QKeySequence("Ctrl+F"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), self.tr("New tab"),
 			self.addTextBrowserTab, Qt.QKeySequence("Ctrl+T"))
@@ -262,9 +254,9 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.view_menu = self.main_menu_bar.addMenu(self.tr("View"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), self.tr("Zoom in"),
-			self.zoomInTextBrowser, Qt.QKeySequence("Ctrl++"))
+			self.text_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), self.tr("Zoom out"),
-			self.zoomOutTextBrowser, Qt.QKeySequence("Ctrl+-"))
+			self.text_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
 		self.view_menu.addSeparator()
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), self.tr("Toggle to fullscreen"),
 			self.toggleFullScreen, Qt.QKeySequence("F11"))
@@ -425,22 +417,6 @@ class MainWindow(Qt.QMainWindow) :
 
 	###
 
-	def findInTextBrowserNext(self, word) :
-		if self.checkBusyStreams() :
-			return
-
-		index = self.text_browser.currentIndex()
-		if not self.text_browser.findNext(index, word) :
-			self.status_bar.showStatusMessage(self.tr("Not found"))
-
-	def findInTextBrowserPrevious(self, word) :
-		if self.checkBusyStreams() :
-			return
-
-		index = self.text_browser.currentIndex()
-		if not self.text_browser.findPrevious(index, word) :
-			self.status_bar.showStatusMessage(self.tr("Not found"))
-
 	def saveCurrentTextBrowserPage(self) :
 		if self.checkBusyStreams() :
 			return
@@ -479,16 +455,6 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.status_bar.showStatusMessage(self.tr("Printing..."))
 
-	def zoomInTextBrowser(self) :
-		if self.checkBusyStreams() :
-			return
-		self.text_browser.zoomIn()
-
-	def zoomOutTextBrowser(self) :
-		if self.checkBusyStreams() :
-			return
-		self.text_browser.zoomOut()
-
 	def clearAllTextBrowser(self) :
 		if self.checkBusyStreams() :
 			return
@@ -517,6 +483,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
+
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
 
@@ -541,11 +508,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.setVisible(True)
 		self.history_panel.setFocus()
 		self.history_panel.raise_()
-
-	def showFindInTextPanel(self) :
-		self.find_in_text_panel.setVisible(True)
-		self.find_in_text_panel.setFocus()
-		self.find_in_text_panel.raise_()
 
 	def showDictsManager(self) :
 		self.dicts_manager.show()
