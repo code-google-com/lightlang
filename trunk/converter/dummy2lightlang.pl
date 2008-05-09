@@ -3,21 +3,52 @@
 use HTML::Entities;
 use Encode;
 
-use Getopt::Long qw(:config permute);
-my $input = "";
+use Pod::Usage;
+pod2usage("No files input.") if ((@ARGV == 0));
+
+use Getopt::Long;
+$input = "";
 sub add {
 	$input = $_[0];
 }
-my $convert = 1;
-my $tag_lang = "";
-my $info = "";
-GetOptions('convertmode!' => \$convert, 'sound-tag|s=s' => \$tag_lang, 'info=s' =>\$info, '<>' => \&add);
+
+$message  = "
+dummy2lightlang [OPTIONS] input
+
+OPTIONS:
+--noconvertmode				do not convert \"dummy\" to lightlang [default=yes]
+-s, --sound-tag				add sound tags
+--info					dictionary informations from file
+-h, --help				print this help
+
+USAGE examples:
+makedict -o dummy -i dictd russian-english.index|dummy2lightlang -s ru > result
+
+makedict -o dummy -i stardict english-german.ifo|dummy2lightlang -s en --info english-german.ifo > result
+
+dummy2lightlang -s en --info english-german.ifo english-german.dummy > result
+
+dummy2lightlang --noconvertmode -s ru russian-english_lightlang_format > result";
+
+$convert = 1;
+$tag_lang = "";
+$info = "";
+$help = "";
+GetOptions('convertmode!' => \$convert, 'sound-tag|s=s' => \$tag_lang, 'info=s' =>\$info, 'help|h' => \$help, '<>' => \&add);
+
+#print help messages
+pod2usage(-message => $message, -output => \*STDOUT) if ($help);
 
 if ($input){
-	open FILE, "<", "$input";
+	if (! open FILE, "<", "$input"){
+		die "File doesn't exist";
+	}
 }
 else{
 	open FILE, "-";
+}
+if (!<FILE>){
+	exit (-1);
 }
 foreach (<FILE>){
 	chomp;
@@ -64,10 +95,8 @@ else{
 			s/$temp[0]  //;
 			$_ = $temp[0]."  \\s"."$tag_lang: $temp[0]\\s".$_;
 		}
-		use utf8;
 		$_ = decode ('utf8', $_);
 		$_ = decode_entities($_);
-		no utf8;
 		$_ = encode ('utf8', $_);
 	}
 }
