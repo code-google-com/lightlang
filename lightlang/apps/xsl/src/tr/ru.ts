@@ -27,67 +27,77 @@
         <translation>Информация о словаре</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="77"/>
+        <location filename="DictsManager.py" line="81"/>
         <source>Update</source>
         <translation>Обновить</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="80"/>
+        <location filename="DictsManager.py" line="84"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="105"/>
+        <location filename="DictsManager.py" line="110"/>
         <source>Caption:</source>
         <translation>Заголовок:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="108"/>
+        <location filename="DictsManager.py" line="113"/>
         <source>Direction:</source>
         <translation>Направление:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="111"/>
+        <location filename="DictsManager.py" line="116"/>
         <source>File path:</source>
         <translation>Путь к файлу:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="114"/>
+        <location filename="DictsManager.py" line="119"/>
         <source>File size (KB):</source>
         <translation>Размер файла (КБ):</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="118"/>
+        <location filename="DictsManager.py" line="123"/>
         <source>Count of words:</source>
         <translation>Количество слов:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="119"/>
+        <location filename="DictsManager.py" line="124"/>
         <source>Description:</source>
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="204"/>
+        <location filename="DictsManager.py" line="213"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="75"/>
+        <source>Please wait...</source>
+        <translation>Пожалуйста, подождите...</translation>
     </message>
 </context>
 <context>
     <name>DictsManager</name>
     <message>
-        <location filename="DictsManager.py" line="524"/>
+        <location filename="DictsManager.py" line="533"/>
         <source>Dicts Manager</source>
         <translation>Менеджер словарей</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="595"/>
+        <location filename="DictsManager.py" line="608"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="550"/>
+        <location filename="DictsManager.py" line="559"/>
         <source>Filter:</source>
         <translation>Фильтр:</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="602"/>
+        <source>Please wait...</source>
+        <translation>Пожалуйста, подождите...</translation>
     </message>
 </context>
 <context>
@@ -270,134 +280,139 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Переводчик Google</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="58"/>
+        <location filename="GoogleTranslatePanel.py" line="64"/>
         <source>Arabic to English</source>
         <translation>Арабский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="59"/>
+        <location filename="GoogleTranslatePanel.py" line="65"/>
         <source>Chinese to English</source>
         <translation>Китайский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="60"/>
+        <location filename="GoogleTranslatePanel.py" line="66"/>
         <source>Chinese (S. to T.)</source>
         <translation>Китайский (У. - Т.)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="61"/>
+        <location filename="GoogleTranslatePanel.py" line="67"/>
         <source>Chinese (T. to S.)</source>
         <translation>Китайский (Т. - У.)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="62"/>
+        <location filename="GoogleTranslatePanel.py" line="68"/>
         <source>English to Arabic</source>
         <translation>Английский - Арабский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="63"/>
+        <location filename="GoogleTranslatePanel.py" line="69"/>
         <source>English to Chinese (S.)</source>
         <translation>Английский - Китайский (У.)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="64"/>
+        <location filename="GoogleTranslatePanel.py" line="70"/>
         <source>English to Chinese (T.)</source>
         <translation>Английский - Китайский (Т.)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="65"/>
+        <location filename="GoogleTranslatePanel.py" line="71"/>
         <source>English to French</source>
         <translation>Английский - Французский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="66"/>
+        <location filename="GoogleTranslatePanel.py" line="72"/>
         <source>English to German</source>
         <translation>Английский - Немецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="67"/>
+        <location filename="GoogleTranslatePanel.py" line="73"/>
         <source>English to Italian</source>
         <translation>Английский - Итальянский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="68"/>
+        <location filename="GoogleTranslatePanel.py" line="74"/>
         <source>English to Japanese</source>
         <translation>Английский - Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="69"/>
+        <location filename="GoogleTranslatePanel.py" line="75"/>
         <source>English to Korean</source>
         <translation>Английский - Корейский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="70"/>
+        <location filename="GoogleTranslatePanel.py" line="76"/>
         <source>English to Portuguese</source>
         <translation>Английский - Португальский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="71"/>
+        <location filename="GoogleTranslatePanel.py" line="77"/>
         <source>English to Russian</source>
         <translation>Английский - Русский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="72"/>
+        <location filename="GoogleTranslatePanel.py" line="78"/>
         <source>English to Spanish</source>
         <translation>Английский - Испанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="73"/>
+        <location filename="GoogleTranslatePanel.py" line="79"/>
         <source>French to English</source>
         <translation>Французский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="74"/>
+        <location filename="GoogleTranslatePanel.py" line="80"/>
         <source>French to German</source>
         <translation>Французский - Немецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="75"/>
+        <location filename="GoogleTranslatePanel.py" line="81"/>
         <source>German to English</source>
         <translation>Немецкий - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="76"/>
+        <location filename="GoogleTranslatePanel.py" line="82"/>
         <source>German to French</source>
         <translation>Немецкий - Французский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="77"/>
+        <location filename="GoogleTranslatePanel.py" line="83"/>
         <source>Italian to English</source>
         <translation>Итальянский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="78"/>
+        <location filename="GoogleTranslatePanel.py" line="84"/>
         <source>Japanese to English</source>
         <translation>Японский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="79"/>
+        <location filename="GoogleTranslatePanel.py" line="85"/>
         <source>Korean to English</source>
         <translation>Корейский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="80"/>
+        <location filename="GoogleTranslatePanel.py" line="86"/>
         <source>Portuguese to English</source>
         <translation>Португальский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="81"/>
+        <location filename="GoogleTranslatePanel.py" line="87"/>
         <source>Russian to English</source>
         <translation>Русский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="82"/>
+        <location filename="GoogleTranslatePanel.py" line="88"/>
         <source>Spanish to English</source>
         <translation>Испанский - Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="85"/>
+        <location filename="GoogleTranslatePanel.py" line="94"/>
         <source>Translate</source>
         <translation>Перевести</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslatePanel.py" line="108"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
     </message>
 </context>
 <context>
@@ -570,169 +585,174 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="238"/>
+        <location filename="MainWindow.py" line="240"/>
         <source>Save current page</source>
         <translation>Сохранить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="240"/>
+        <location filename="MainWindow.py" line="242"/>
         <source>Print current page</source>
         <translation>Распечатать текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="243"/>
+        <location filename="MainWindow.py" line="245"/>
         <source>Clear current page</source>
         <translation>Очистить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="248"/>
+        <location filename="MainWindow.py" line="250"/>
         <source>Search in translations</source>
         <translation>Искать в переводе</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="251"/>
+        <location filename="MainWindow.py" line="253"/>
         <source>New tab</source>
         <translation>Новая вкладка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="253"/>
+        <location filename="MainWindow.py" line="255"/>
         <source>Close tab</source>
         <translation>Закрыть вкладку</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="256"/>
+        <location filename="MainWindow.py" line="258"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="261"/>
+        <location filename="MainWindow.py" line="263"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="262"/>
+        <location filename="MainWindow.py" line="264"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="264"/>
+        <location filename="MainWindow.py" line="266"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="272"/>
+        <location filename="MainWindow.py" line="274"/>
         <source>Spy</source>
         <translation>Spy</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="277"/>
+        <location filename="MainWindow.py" line="279"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="278"/>
+        <location filename="MainWindow.py" line="287"/>
         <source>Dicts management</source>
         <translation>Управление словарями</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="280"/>
+        <location filename="MainWindow.py" line="284"/>
         <source>Search history</source>
         <translation>История поиска</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="299"/>
+        <location filename="MainWindow.py" line="304"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="309"/>
+        <location filename="MainWindow.py" line="314"/>
         <source>About Qt4</source>
         <translation>О библиотеке Qt4</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="328"/>
+        <location filename="MainWindow.py" line="333"/>
         <source>Welcome</source>
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="358"/>
+        <location filename="MainWindow.py" line="370"/>
         <source>Ready</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="431"/>
+        <location filename="MainWindow.py" line="442"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="447"/>
+        <location filename="MainWindow.py" line="458"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="456"/>
+        <location filename="MainWindow.py" line="467"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="469"/>
+        <location filename="MainWindow.py" line="480"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="292"/>
+        <location filename="MainWindow.py" line="297"/>
         <source>Applications</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="284"/>
+        <location filename="MainWindow.py" line="291"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="439"/>
+        <location filename="MainWindow.py" line="450"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="301"/>
+        <location filename="MainWindow.py" line="306"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="307"/>
+        <location filename="MainWindow.py" line="312"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="332"/>
+        <location filename="MainWindow.py" line="337"/>
         <source>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Welcome to the %1 - the system of electronic dictionaries&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</source>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Добро пожаловать в систему электронных словарей %1&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="303"/>
+        <location filename="MainWindow.py" line="308"/>
         <source>Internet links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="237"/>
+        <location filename="MainWindow.py" line="239"/>
         <source>Pages</source>
         <translation>Страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="245"/>
+        <location filename="MainWindow.py" line="247"/>
         <source>Clear all</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="288"/>
+        <location filename="MainWindow.py" line="282"/>
         <source>Google-Translate client</source>
         <translation>Клиент переводчика Google</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="267"/>
+        <location filename="MainWindow.py" line="269"/>
         <source>Toggle to fullscreen</source>
         <translation>Полноэкранный режим</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="280"/>
+        <source>SL search</source>
+        <translation>Поиск в SL</translation>
     </message>
 </context>
 <context>

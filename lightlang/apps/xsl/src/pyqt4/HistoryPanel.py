@@ -67,7 +67,7 @@ class HistoryPanel(Qt.QDockWidget) :
 		#####
 
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.findItems)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
 		self.connect(self.history_browser, Qt.SIGNAL("itemDoubleClicked(QListWidgetItem *)"),
@@ -95,6 +95,10 @@ class HistoryPanel(Qt.QDockWidget) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 		self.setList(settings.value("history_panel/list", Qt.QVariant(Qt.QStringList())).toStringList())
 
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
+		self.line_edit.setFocus(reason)
+		self.line_edit.selectAll()
+
 
 	### Private ###
 
@@ -112,18 +116,14 @@ class HistoryPanel(Qt.QDockWidget) :
 		if list.count() > 0 :
 			self.clear_history_button.setEnabled(True)
 
-	def findItems(self, word) :
+	def setFilter(self, word) :
 		word = word.simplified()
 		count = 0
 		while count < self.history_browser.count() :
-			Qt.QCoreApplication.processEvents()
-			item_word = self.history_browser.item(count).text()
-			if item_word.startsWith(word, Qt.Qt.CaseInsensitive) and not word.isEmpty() :
-				self.history_browser.setCurrentRow(count)
-				return
+			item = self.history_browser.item(count)
+			item_word = item.text();
+			item.setHidden(not item_word.startsWith(word, Qt.Qt.CaseInsensitive))
 			count += 1
-		if self.history_browser.count() >= 1 :
-			self.history_browser.setCurrentRow(0)
 
 	def clearHistory(self) :
 		self.history_browser.clear()

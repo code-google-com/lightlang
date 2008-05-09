@@ -38,8 +38,8 @@ class DictInformationWindow(Qt.QWidget) :
 		self.setWindowTitle(self.tr("Dict Information"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
-		self.setMinimumSize(450, 300)
-		self.resize(450, 300)
+		self.setMinimumSize(550, 400)
+		self.resize(550, 400)
 
 		#####
 
@@ -72,6 +72,10 @@ class DictInformationWindow(Qt.QWidget) :
 		self.wait_picture_movie_label.setVisible(False)
 		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
 
+		self.wait_message_label = Qt.QLabel(self.tr("Please wait..."))
+		self.wait_message_label.setVisible(False)
+		self.control_buttons_layout.addWidget(self.wait_message_label)
+
 		self.control_buttons_layout.addStretch()
 
 		self.update_information_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("Update"))
@@ -97,6 +101,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 		self.wait_picture_movie_label.setVisible(True)
 		self.wait_picture_movie.start()
+		self.wait_message_label.setVisible(True)
 
 		###
 
@@ -124,6 +129,7 @@ class DictInformationWindow(Qt.QWidget) :
 		self.wait_picture_movie_label.setVisible(False)
 		self.wait_picture_movie.stop()
 		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_message_label.setVisible(False)
 
 		self.update_information_button.blockSignals(False)
 
@@ -185,7 +191,7 @@ class DictInformationWindow(Qt.QWidget) :
 		if dict_file.open(Qt.QIODevice.ReadOnly) :
 			first_comment_flag = False
 			while not dict_file.atEnd() :
-				Qt.QCoreApplication.processEvents()
+				Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 				str = dict_file_stream.readLine()
 				if str.isEmpty() :
 					continue
@@ -593,6 +599,10 @@ class DictsManager(Qt.QDialog) :
 		self.wait_picture_movie_label.setVisible(False)
 		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
 
+		self.wait_message_label = Qt.QLabel(self.tr("Please wait..."))
+		self.wait_message_label.setVisible(False)
+		self.control_buttons_layout.addWidget(self.wait_message_label)
+
 		self.control_buttons_layout.addStretch()
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("OK"))
@@ -626,12 +636,14 @@ class DictsManager(Qt.QDialog) :
 
 		self.wait_picture_movie_label.setVisible(True)
 		self.wait_picture_movie.start()
+		self.wait_message_label.setVisible(True)
 
 		self.dicts_list.setList(self.syncLists(self.listOfAllDicts(), self.dicts_list.list()))
 
 		self.wait_picture_movie_label.setVisible(False)
 		self.wait_picture_movie.stop()
 		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_message_label.setVisible(False)
 
 		self.update_dicts_button.blockSignals(False)
 

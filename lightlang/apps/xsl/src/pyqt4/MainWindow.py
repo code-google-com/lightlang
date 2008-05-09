@@ -114,6 +114,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.setWindowTitle(Const.Organization+" "+Const.MyName+" "+Const.Version)
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
+		self.setDockOptions(self.dockOptions() | Qt.QMainWindow.VerticalTabs)
+
 		self.main_widget = Qt.QWidget()
 		self.setCentralWidget(self.main_widget)
 
@@ -136,18 +138,18 @@ class MainWindow(Qt.QMainWindow) :
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
 		self.source_objects_list.append([self.find_in_sl_panel, -1])
 
+		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
+		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.google_translate_panel)
+		self.tabifyDockWidget(self.find_in_sl_panel, self.google_translate_panel)
+		self.source_objects_list.append([self.google_translate_panel, -1])
+
+		self.history_panel = HistoryPanel.HistoryPanel()
+		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.history_panel)
+		self.tabifyDockWidget(self.google_translate_panel, self.history_panel)
+
 		self.find_in_text_panel = FindInTextPanel.FindInTextPanel()
 		self.find_in_text_panel.setVisible(False)
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_text_panel)
-
-		self.history_panel = HistoryPanel.HistoryPanel()
-		self.history_panel.setVisible(False)
-		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.history_panel)
-
-		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
-		self.google_translate_panel.setVisible(False)
-		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.google_translate_panel)
-		self.source_objects_list.append([self.google_translate_panel, -1])
 
 		self.text_browser = TextBrowser.TextBrowser()
 		self.main_layout.addWidget(self.text_browser)
@@ -197,19 +199,19 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"),
 			self.translate_window.setText)
 
-		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"),
-			self.findInTextBrowserNext)
-		self.connect(self.find_in_text_panel, Qt.SIGNAL("findPreviousRequest(const QString &)"),
-			self.findInTextBrowserPrevious)
-
-		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
-
 		self.connect(self.google_translate_panel, Qt.SIGNAL("processStarted()"),
 			self.status_bar.startWaitMovie)
 		self.connect(self.google_translate_panel, Qt.SIGNAL("processFinished()"),
 			self.status_bar.stopWaitMovie)
 		self.connect(self.google_translate_panel, Qt.SIGNAL("statusChanged(const QString &)"),
 			self.status_bar.showStatusMessage)
+
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
+
+		self.connect(self.find_in_text_panel, Qt.SIGNAL("findNextRequest(const QString &)"),
+			self.findInTextBrowserNext)
+		self.connect(self.find_in_text_panel, Qt.SIGNAL("findPreviousRequest(const QString &)"),
+			self.findInTextBrowserPrevious)
 
 		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.setWord)
@@ -232,7 +234,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.main_menu_bar = Qt.QMenuBar()
 		self.setMenuBar(self.main_menu_bar)
 
-		### File Menu
+		### Pages Menu
 
 		self.pages_menu = self.main_menu_bar.addMenu(self.tr("Pages"))
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), self.tr("Save current page"),
@@ -275,18 +277,21 @@ class MainWindow(Qt.QMainWindow) :
 		### Tools Menu
 
 		self.tools_menu = self.main_menu_bar.addMenu(self.tr("Tools"))
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), self.tr("Dicts management"),
-			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), self.tr("SL search"),
+			self.showFindInSLPanel, Qt.QKeySequence("Ctrl+S"))
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
+			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), self.tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addSeparator()
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), self.tr("Dicts management"),
+			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
 		try : # FIXME: fucking debian packagers :-(
+			self.tools_menu.addSeparator()
 			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
 			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 			self.tools_menu.addMenu(self.translate_sites_menu)
 		except : pass
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
-			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		try : # FIXME: fucking debian packagers :-(
 			self.tools_menu.addSeparator()
 			self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
@@ -331,6 +336,9 @@ class MainWindow(Qt.QMainWindow) :
 			"Welcome to the %1 - the system of electronic dictionaries</em></h2></td></tr></table>"
 			"<hr>").arg(Const.Organization))
 
+		self.find_in_sl_panel.setFocus()
+		self.find_in_sl_panel.raise_()
+
 
 	### Public ###
 
@@ -344,17 +352,21 @@ class MainWindow(Qt.QMainWindow) :
 
 	def save(self) :
 		self.saveSettings()
+		self.google_translate_panel.saveSettings()
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
-		self.google_translate_panel.saveSettings()
 		self.spy_menu.saveSettings()
 
 	def load(self) :
 		self.loadSettings()
+		self.google_translate_panel.loadSettings()
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
-		self.google_translate_panel.loadSettings()
 		self.spy_menu.loadSettings()
+
+		self.find_in_sl_panel.setFocus()
+		self.find_in_sl_panel.raise_()
+
 		self.status_bar.showStatusMessage(self.tr("Ready"))
 
 	###
@@ -364,7 +376,6 @@ class MainWindow(Qt.QMainWindow) :
 			self.close()
 		else :
 			self.showNormal()
-			self.setFocus()
 
 	###
 
@@ -502,10 +513,12 @@ class MainWindow(Qt.QMainWindow) :
 
 	def loadSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		self.resize(settings.value("main_window/size", Qt.QVariant(Qt.QSize(845, 650))).toSize())
+		self.resize(settings.value("main_window/size", Qt.QVariant(Qt.QSize(800, 500))).toSize())
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
+		self.find_in_sl_panel.setFocus()
+		self.find_in_sl_panel.raise_()
 
 	def toggleFullScreen(self) :
 		if self.isFullScreen() :
@@ -513,26 +526,31 @@ class MainWindow(Qt.QMainWindow) :
 		else :
 			self.showFullScreen()
 
-	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.find_in_sl_panel.setFocus(reason)
-
 	###
+
+	def showFindInSLPanel(self) :
+		self.find_in_sl_panel.setFocus()
+		self.find_in_sl_panel.raise_()
+
+	def showGoogleTranslatePanel(self) :
+		self.google_translate_panel.setVisible(True)
+		self.google_translate_panel.setFocus()
+		self.google_translate_panel.raise_()
+
+	def showHistoryPanel(self) :
+		self.history_panel.setVisible(True)
+		self.history_panel.setFocus()
+		self.history_panel.raise_()
 
 	def showFindInTextPanel(self) :
 		self.find_in_text_panel.setVisible(True)
 		self.find_in_text_panel.setFocus()
-
-	def showHistoryPanel(self) :
-		self.history_panel.setVisible(True)
+		self.find_in_text_panel.raise_()
 
 	def showDictsManager(self) :
 		self.dicts_manager.show()
 		self.dicts_manager.raise_()
 		self.dicts_manager.activateWindow()
-
-	def showGoogleTranslatePanel(self) :
-		self.google_translate_panel.setVisible(True)
-		self.google_translate_panel.setFocus()
 
 	def showHelpBrowser(self) :
 		self.help_browser.show()
