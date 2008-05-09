@@ -134,38 +134,38 @@
     </message>
 </context>
 <context>
-    <name>FindInTextPanel</name>
+    <name>FindInTextFrame</name>
     <message>
-        <location filename="FindInTextPanel.py" line="36"/>
-        <source>Search in translations</source>
-        <translation>Поиск в переводе</translation>
+        <location filename="TextBrowser.py" line="187"/>
+        <source>Search:</source>
+        <translation>Поиск:</translation>
     </message>
 </context>
 <context>
     <name>FindSound</name>
     <message>
-        <location filename="SLFind.py" line="228"/>
+        <location filename="SLFind.py" line="235"/>
         <source>An error occured when creating the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка при создании поискового процесса.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="SLFind.py" line="254"/>
+        <location filename="SLFind.py" line="261"/>
         <source>Error of the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Ошибка поискового процесса.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="SLFind.py" line="240"/>
+        <location filename="SLFind.py" line="247"/>
         <source>Connection lost with search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>Связь с поисковым процессом потеряна.
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="SLFind.py" line="246"/>
+        <location filename="SLFind.py" line="253"/>
         <source>Unknown error occured while executing the search process.
 Press &quot;Yes&quot; to exit</source>
         <translation>При выполнении поискового процесса произошла неизвестная ошибка.
@@ -585,172 +585,167 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.py" line="240"/>
+        <location filename="MainWindow.py" line="232"/>
         <source>Save current page</source>
         <translation>Сохранить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="242"/>
+        <location filename="MainWindow.py" line="234"/>
         <source>Print current page</source>
         <translation>Распечатать текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="245"/>
+        <location filename="MainWindow.py" line="237"/>
         <source>Clear current page</source>
         <translation>Очистить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="250"/>
+        <location filename="MainWindow.py" line="242"/>
         <source>Search in translations</source>
         <translation>Искать в переводе</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="253"/>
+        <location filename="MainWindow.py" line="245"/>
         <source>New tab</source>
         <translation>Новая вкладка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="255"/>
+        <location filename="MainWindow.py" line="247"/>
         <source>Close tab</source>
         <translation>Закрыть вкладку</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="258"/>
+        <location filename="MainWindow.py" line="250"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="263"/>
+        <location filename="MainWindow.py" line="255"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="264"/>
+        <location filename="MainWindow.py" line="256"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="266"/>
+        <location filename="MainWindow.py" line="258"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="274"/>
+        <location filename="MainWindow.py" line="266"/>
         <source>Spy</source>
         <translation>Spy</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="279"/>
+        <location filename="MainWindow.py" line="271"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="287"/>
+        <location filename="MainWindow.py" line="279"/>
         <source>Dicts management</source>
         <translation>Управление словарями</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="284"/>
+        <location filename="MainWindow.py" line="276"/>
         <source>Search history</source>
         <translation>История поиска</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="304"/>
+        <location filename="MainWindow.py" line="296"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="314"/>
+        <location filename="MainWindow.py" line="306"/>
         <source>About Qt4</source>
         <translation>О библиотеке Qt4</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="333"/>
+        <location filename="MainWindow.py" line="325"/>
         <source>Welcome</source>
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="370"/>
+        <location filename="MainWindow.py" line="362"/>
         <source>Ready</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="442"/>
-        <source>Not found</source>
-        <translation>Не найдено</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="458"/>
+        <location filename="MainWindow.py" line="434"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="467"/>
+        <location filename="MainWindow.py" line="443"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="480"/>
+        <location filename="MainWindow.py" line="456"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="297"/>
+        <location filename="MainWindow.py" line="289"/>
         <source>Applications</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="291"/>
+        <location filename="MainWindow.py" line="283"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="450"/>
+        <location filename="MainWindow.py" line="426"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="306"/>
+        <location filename="MainWindow.py" line="298"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="312"/>
+        <location filename="MainWindow.py" line="304"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="337"/>
+        <location filename="MainWindow.py" line="329"/>
         <source>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Welcome to the %1 - the system of electronic dictionaries&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</source>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Добро пожаловать в систему электронных словарей %1&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="308"/>
+        <location filename="MainWindow.py" line="300"/>
         <source>Internet links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="239"/>
+        <location filename="MainWindow.py" line="231"/>
         <source>Pages</source>
         <translation>Страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="247"/>
+        <location filename="MainWindow.py" line="239"/>
         <source>Clear all</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="282"/>
+        <location filename="MainWindow.py" line="274"/>
         <source>Google-Translate client</source>
         <translation>Клиент переводчика Google</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="269"/>
+        <location filename="MainWindow.py" line="261"/>
         <source>Toggle to fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="280"/>
+        <location filename="MainWindow.py" line="272"/>
         <source>SL search</source>
         <translation>Поиск в SL</translation>
     </message>
@@ -796,37 +791,47 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TextBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="252"/>
+        <location filename="TextBrowser.py" line="435"/>
         <source>&lt;em&gt;Empty&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пусто&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="253"/>
+        <location filename="TextBrowser.py" line="436"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
+    </message>
+    <message>
+        <location filename="TextBrowser.py" line="478"/>
+        <source>Not found</source>
+        <translation>Не найдено</translation>
     </message>
 </context>
 <context>
     <name>TranslateBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="116"/>
+        <location filename="TextBrowser.py" line="156"/>
         <source>Search</source>
         <translation>Поиск</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="117"/>
+        <location filename="TextBrowser.py" line="157"/>
         <source>Expanded search</source>
         <translation>Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="119"/>
+        <location filename="TextBrowser.py" line="159"/>
         <source>Search (in new tab)</source>
         <translation>Поиск (в новой вкладке)</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="120"/>
+        <location filename="TextBrowser.py" line="160"/>
         <source>Expanded search (in new tab)</source>
         <translation>Расширенный поиск (в новой вкладке)</translation>
+    </message>
+    <message>
+        <location filename="TextBrowser.py" line="102"/>
+        <source>Sound is not full</source>
+        <translation>Звук не полон</translation>
     </message>
 </context>
 <context>
