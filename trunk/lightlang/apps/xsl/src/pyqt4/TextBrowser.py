@@ -419,7 +419,7 @@ class TextBrowser(Qt.QWidget) :
 			index = self.tab_widget.currentIndex()
 		return self.translate_browsers[index]
 
-	def document(self, index = -1 ) :
+	def document(self, index = -1) :
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
 		return self.translate_browsers[index].document()
@@ -468,14 +468,34 @@ class TextBrowser(Qt.QWidget) :
 	### Private ###
 
 	def findNext(self, word) :
-		index = self.currentIndex()
-		if not self.translate_browsers[index].find(word) :
-			self.statusChangedSignal(self.tr("Not found"))
+		self.find(word)
 
 	def findPrevious(self, word) :
+		self.find(word, True)
+
+	def find(self, word, backward_flag = False) :
 		index = self.currentIndex()
-		if not self.translate_browsers[index].find(word, Qt.QTextDocument.FindBackward) :
-			self.statusChangedSignal(self.tr("Not found"))
+		browser = self.browser(index)
+		document = self.document(index)
+		text_cursor = browser.textCursor()
+
+		if text_cursor.hasSelection() and backward_flag :
+			text_cursor.setPosition(text_cursor.anchor(), Qt.QTextCursor.MoveAnchor)
+
+		if not backward_flag :
+			new_text_cursor = document.find(word, text_cursor)
+			if new_text_cursor.isNull() :
+				new_text_cursor = text_cursor
+				self.statusChangedSignal(self.tr("Not found"))
+		else :
+			new_text_cursor = document.find(word, text_cursor, Qt.QTextDocument.FindBackward)
+			if new_text_cursor.isNull() :
+				new_text_cursor = text_cursor
+				self.statusChangedSignal(self.tr("Not found"))
+
+		browser.setTextCursor(new_text_cursor)
+
+		
 
 
 	### Signals ###
