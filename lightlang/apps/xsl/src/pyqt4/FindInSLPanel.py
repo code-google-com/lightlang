@@ -141,11 +141,11 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.clear_line_edit_button.setEnabled(False)
 		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
-		self.u_find_button = Qt.QPushButton(self.tr("Search"))
+		self.u_find_button = Qt.QPushButton(self.tr("&Search"))
 		self.u_find_button.setEnabled(False)
 		self.top_find_buttons_layout.addWidget(self.u_find_button)
 
-		self.c_find_button = Qt.QPushButton(self.tr("Expanded search"))
+		self.c_find_button = Qt.QPushButton(self.tr("&Expanded search"))
 		self.c_find_button.setEnabled(False)
 		self.top_find_buttons_layout.addWidget(self.c_find_button)
 
@@ -153,11 +153,11 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.list_browser.setHtml(self.tr("<em>Enter the word, please</em>"))
 		self.list_browser_layout.addWidget(self.list_browser)
 
-		self.l_find_button = Qt.QPushButton(self.tr("Word list"))
+		self.l_find_button = Qt.QPushButton(self.tr("Word &list"))
 		self.l_find_button.setEnabled(False)
 		self.bottom_find_buttons_layout.addWidget(self.l_find_button)
 
-		self.i_find_button = Qt.QPushButton(self.tr("Similar words"))
+		self.i_find_button = Qt.QPushButton(self.tr("S&imilar words"))
 		self.i_find_button.setEnabled(False)
 		self.bottom_find_buttons_layout.addWidget(self.i_find_button)
 

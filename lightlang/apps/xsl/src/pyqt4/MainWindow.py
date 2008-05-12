@@ -228,7 +228,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Pages Menu
 
-		self.pages_menu = self.main_menu_bar.addMenu(self.tr("Pages"))
+		self.pages_menu = self.main_menu_bar.addMenu(self.tr("&Pages"))
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), self.tr("Save current page"),
 			self.saveCurrentTextBrowserPage)
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), self.tr("Print current page"),
@@ -252,7 +252,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		### View Menu
 
-		self.view_menu = self.main_menu_bar.addMenu(self.tr("View"))
+		self.view_menu = self.main_menu_bar.addMenu(self.tr("&View"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), self.tr("Zoom in"),
 			self.text_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), self.tr("Zoom out"),
@@ -263,12 +263,12 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Spy Menu
 
-		self.spy_menu = Spy.SpyMenu(self.tr("Spy"))
+		self.spy_menu = Spy.SpyMenu(self.tr("Sp&y"))
 		self.main_menu_bar.addMenu(self.spy_menu)
 
 		### Tools Menu
 
-		self.tools_menu = self.main_menu_bar.addMenu(self.tr("Tools"))
+		self.tools_menu = self.main_menu_bar.addMenu(self.tr("&Tools"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), self.tr("SL search"),
 			self.showFindInSLPanel, Qt.QKeySequence("Ctrl+S"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
@@ -293,7 +293,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Help Menu
 
-		self.help_menu = self.main_menu_bar.addMenu(self.tr("Help"))
+		self.help_menu = self.main_menu_bar.addMenu(self.tr("&Help"))
 		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"),
 			self.tr("%1 manual").arg(Const.Organization), self.showHelpBrowser, Qt.QKeySequence("F1"))
 		self.help_menu.addSeparator()

@@ -91,10 +91,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.text_edit = Qt.QTextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
 
-		self.translate_button = Qt.QPushButton(self.tr("Translate"))
+		self.translate_button = Qt.QPushButton(self.tr("&Translate"))
 		self.translate_button.setEnabled(False)
-		self.translate_button.adjustSize()
-		self.translate_button.setFixedSize(self.translate_button.size())
 		self.control_buttons_layout.addWidget(self.translate_button)
 
 		self.abort_button = Qt.QToolButton()
@@ -102,12 +100,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.abort_button.setIconSize(Qt.QSize(16, 16))
 		self.abort_button.setEnabled(False)
 		self.control_buttons_layout.addWidget(self.abort_button)
-
-		self.control_buttons_layout.addStretch()
-
-		self.clear_text_edit_button = Qt.QPushButton(self.tr("Clear"))
-		self.clear_text_edit_button.setEnabled(False)
-		self.control_buttons_layout.addWidget(self.clear_text_edit_button)
 
 		#####
 
@@ -124,7 +116,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.translate)
 		self.connect(self.abort_button, Qt.SIGNAL("clicked()"), self.abort)
-		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
 
 
 	### Public ###
@@ -158,10 +149,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.abort_button.setEnabled(True)
 
-	def clearTextEdit(self) :
-		self.text_edit.clear()
-		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
-
 	###
 
 	def setEnabledAbortButton(self) :
@@ -173,10 +160,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 	def setStatusFromTextEdit(self) :
 		if self.text_edit.toPlainText().isEmpty() :
 			self.translate_button.setEnabled(False)
-			self.clear_text_edit_button.setEnabled(False)
 		else :
 			self.translate_button.setEnabled(True)
-			self.clear_text_edit_button.setEnabled(True)
 
 
 	### Signals ###
@@ -198,3 +183,4 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def statusChangedSignal(self, str) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
+
