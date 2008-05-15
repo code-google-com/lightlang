@@ -18,3 +18,6 @@ makedict -o dummy -i stardict english-german.ifo|dummy2lightlang -s en --info en
 dummy2lightlang -s en --info english-german.ifo english-german.dummy > result
 
 dummy2lightlang --noconvertmode -s ru russian-english_lightlang_format > result
+
+-----------------------------------
+ac.sh - script for automatically converting dictionaries. He is wrote in/* => to out/*
