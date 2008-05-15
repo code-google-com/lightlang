@@ -1,0 +1,41 @@
+<!DOCTYPE webproject>
+<webproject>
+  <project type="Local" name="LightLang Russian Documentation" encoding="utf8" >
+    <upload/>
+    <author>Devaev Maxim</author>
+    <email>mdevaev</email>
+    <defaultDTD>-//W3C//DTD HTML 4.01 Transitional//EN</defaultDTD>
+    <item url="common_introduction.html" uploadstatus="1" />
+    <item url="common_new_features.html" uploadstatus="1" />
+    <item url="dict_information_window.png" uploadstatus="1" />
+    <item url="dicts_manager1.png" uploadstatus="1" />
+    <item url="find_in_sl_panel1.png" uploadstatus="1" />
+    <item url="find_in_sl_panel2.png" uploadstatus="1" />
+    <item url="google_translate_panel1.png" uploadstatus="1" />
+    <item url="help_browser1.png" uploadstatus="1" />
+    <item url="help_menu1.png" uploadstatus="1" />
+    <item url="help_menu2.png" uploadstatus="1" />
+    <item url="history_panel1.png" uploadstatus="1" />
+    <item url="index.html" uploadstatus="1" />
+    <item url="lightlang.png" uploadstatus="1" />
+    <item url="main_window1.png" uploadstatus="1" />
+    <item url="main_window2.png" uploadstatus="1" />
+    <item url="pages_menu1.png" uploadstatus="1" />
+    <item url="slengine.png" uploadstatus="1" />
+    <item url="sl_in_konsole.png" uploadstatus="1" />
+    <item url="spy_menu1.png" uploadstatus="1" />
+    <item url="spy_menu2.png" uploadstatus="1" />
+    <item url="text_browser1.png" uploadstatus="1" />
+    <item url="text_browser2.png" uploadstatus="1" />
+    <item url="tools_menu1.png" uploadstatus="1" />
+    <item url="tools_menu2.png" uploadstatus="1" />
+    <item url="translate_window1.png" uploadstatus="1" />
+    <item url="tray_icon1.png" uploadstatus="1" />
+    <item url="tray_icon2.png" uploadstatus="1" />
+    <item url="view_menu1.png" uploadstatus="1" />
+    <item url="" uploadstatus="1" />
+    <templates>templates/</templates>
+    <toolbars>toolbars/</toolbars>
+    <annotations/>
+  </project>
+</webproject>
