@@ -1,1 +1,0 @@
-#cmakedefine HAVE_MMAP 1
