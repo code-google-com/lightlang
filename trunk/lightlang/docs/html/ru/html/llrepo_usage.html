@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Использование менеджера репозитория LLRepo</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><a href="index.html"><img src="lightlang.png" align="top" border="0"></a></h2></td></tr></table>
+<hr>
+<h2>Использование менеджера репозитория LLRepo</h2>
+<hr>
+
+&nbsp;&nbsp;&nbsp;<strong>LLRepo</strong> - менеджер репозитория <strong>LightLang</strong>, предназначенный для пополнения локальных словарных баз и других ресурсов из <strong>FTP</strong>-репозиториев <strong>LightLang</strong>. Можно очень просто добавить новый ресурс в систему, пользуясь командой <strong>llrepo</strong>. Эта команда выполняет автоматически необходимые вам операции при установке ресурсов. Естественно, компьютер должен быть поключен к Интернету <strong>:-)</strong>.<br>
+<br>
+&nbsp;&nbsp;&nbsp;На данный момент <strong>LLRepo</strong> поддерживает четыре операции для работы с ресурсами: <em>remotelist</em>, <em>locallist</em>, <em>install</em>, <em>uninstall</em>. Первые две - информационные, служат для получения информации о доступных (находящихся в удаленном репозитории) и установленных ресурсов (на вашем компьютере), вторые - для установки и удаления установленных ранее ресурсов. Все четыре опции требуют указания типа ресурса - <em>dicts</em> (словари) или <em>sounds</em> (звуки). Опции установки и удаления принимают после типа ресурса имя ресурса, над которым производится операция (может быть указано несколько ресурсов).<br>
+<br>
+&nbsp;&nbsp;&nbsp;Для просмотра доступных словарей в репозитории используйте следующую команду:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remotelist dicts</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для просмотра доступных звуков в репозитории используйте следующую команду:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remotelist sounds</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для установки словарей из репозитория используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo install dicts file1 file2 fileN</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для установки звуков из репозитория используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo install sounds file1 file2 fileN</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для просмотра установленных словарей используйте следующую команду:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo locallist dicts</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для просмотра установленных звуков используйте следующую команду:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo locallist sounds</tt></td></tr></table>
+<br>
+
+&nbsp;&nbsp;&nbsp;Для удаления установленных словарей используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall dicts file1 file2 fileN</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Для удаления установленных звуков используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall sounds file1 file2 fileN</tt></td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Команды <em>help</em> и <em>version</em> выводят краткую справку и информацию о версии программы соответственно.<br>
+<br>
+&nbsp;&nbsp;&nbsp;Если вым необходимо добавить еще одно <strong>FTP</strong>-зеркало, то вы можете обратиться за помощью к странице <a href="llrepo_configuring.html">Тонкая настройка LLRepo</a>.
+
+<hr>
+
+</body>
+</html>

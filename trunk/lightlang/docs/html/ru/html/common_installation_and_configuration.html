@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Установка и конфигурация</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><a href="index.html"><img src="lightlang.png" align="top" border="0"></a></h2></td></tr></table>
+<hr>
+<h2>Установка и конфигурация</h2>
+<hr>
+
+<h3>Установка LightLang</h3>
+&nbsp;&nbsp;&nbsp;Для работы графической части системы необходима библиотека <strong>Qt4</strong> и прослойка для нее для <strong>Python</strong> - <strong>PyQt4</strong>, в свою очередь нуждающаяся в <strong>SIP</strong>. Так же необходима библиотека <strong>python-xlib</strong>. Все эти пакеты вы можете найти в репозиториях своего дистрибутива, тогда установка этих библиотек сведется к выполнению простой команды. Но если этих библиотек не оказалось, то придется все устанавливать вручную. На данный момент <strong>SIP</strong> и <strong>Qt4</strong> присутствуют если не по умолчанию, то в репозиориях современных дистрибутивов. Чаще всего отсутствует <strong>PyQt4</strong>, жизнено важный для <strong>LightLang XSL</strong> компонент. И так, по следующим ссылкам вы можете скачать исходные тексты <strong>Qt4</strong>, <strong>SIP</strong>, <strong>PyQt4</strong> и <strong>python-xlib</strong><sup><a href="#gui">*</a></sup>:<br>
+<ul>
+  <li><a href='http://trolltech.com/developer/downloads/qt/x11' target='http://trolltech.com/developer/downloads/qt/x11'>http://trolltech.com/developer/downloads/qt/x11</a></li>
+  <li><a href='http://www.riverbankcomputing.co.uk/sip/download.php' target='http://www.riverbankcomputing.co.uk/sip/download.php'>http://www.riverbankcomputing.co.uk/sip/download.php</a></li>
+  <li><a href='http://www.riverbankcomputing.co.uk/pyqt/download.php' target='http://www.riverbankcomputing.co.uk/pyqt/download.php'>http://www.riverbankcomputing.co.uk/pyqt/download.php</a></li>
+  <li><a href="http://python-xlib.sourceforge.net">http://python-xlib.sourceforge.net</a></li>
+</ul>
+&nbsp;&nbsp;&nbsp;Компилировать и устанавливать данные библиотеки необходимо в той последовательности, в какой они даны здесь. Их установка не описывается, поскольку она выполняется совершенно стандартными методами.<br>
+&nbsp;&nbsp;&nbsp;Следует помнить, что лучше всего найти их в уже готовых пакетах для вашего дистрибутива.<br>
+&nbsp;&nbsp;&nbsp;Необходимые версии:<br>
+<ul><strong>
+  <li>Qt4 >= 4.3</li>
+  <li>SIP >= 4.7</li>
+  <li>PyQt4 >= 4.3</li>
+  <li>python-xlib >= 0.14</li>
+</strong></ul>
+&nbsp;&nbsp;&nbsp;Затем, после установки этих библиотек можно перейти к установке собственно <strong>LightLang</strong>.<br>
+<br>
+&nbsp;&nbsp;&nbsp;Существует еще несколько зависимостей (<strong>gcc</strong>, <strong>python</strong>, и так далее), но они обычно присутствуют в любой <strong>Linux</strong>-системе или в репозиториях дистрибутива.<br>
+<br>
+&nbsp;&nbsp;&nbsp;Вам доступно несколько опций конфигурации, которые можно передавать скрипту <strong>configure</strong>:
+<ul><li><em>--prefix=prefix_dir</em> - используется для указания префикса каталога установки, по умолчанию - <strong>/usr</strong>;</li>
+<li><em>--with-default-config=normal|recommended|console</em> - используется для указания пресета конфигурации. Это настройки, которые разработчики сочли наиболее подходящими и дали им имена. По умолчанию используется пресет <em>normal</em>, эта конфигурация оптимальна для большинства пользователей, но вы можете воспользоваться и другими опциями, например <em>recommended</em> - эта рекумендуемая конфигурация, которой пользуются разработчики, если же вы хотете иметь только консольную версию <strong>LightLang</strong>, используйте пресет <em>console</em> (не будет установлен графический интерфейс <strong>XSL</strong> и соответственно не будет зависимостей от <strong>Qt4</strong>, <strong>SIP</strong>, <strong>PyQt4</strong> и <strong>python-xlib</strong>);</li>
+<li><em>--with-audio-player=player_prog</em> - используется для указания аудио плеера, которым осуществляетс проигрывание файлов голосовой транскрипции. Плеер должен быть обязательно консольным и запускаться командой вида:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;player filename</td></tr></table>
+&nbsp;&nbsp;&nbsp;Еще одним требованием к нему является обязательная поддержка формата <strong>OGG</strong>, в котором <strong>LightLang</strong> хранит файлы голосовой транскрипции (в отличие от многих других словарей, которые используют несжатый формат <strong>WAV</strong>). Например, можно указать использовать в качестве плеера <strong>MPlayer</strong> таким образом: <em>--with-audio-player=mplayer</em>. При этом путь к исполняемому файлу плеера должен находиться в вашей переменной <strong>PATH</strong>. По умолчанию используется плеер <strong>play</strong>;</li>
+<li><a name="gui"></a><em>--with-gui-flag=no</em> - используется для указания того, следует ли включить в сборку программы графический интерфейс (и проверять на необходимые для него библиотеки). По умолчанию используется значение <em>yes</em>. Отключение сборки графического интерфейса обычно нужно на тех системах, которые не поддерживают систему <strong>X-Window</strong> или пользователь хочет установить другую оболочку для <strong>SL</strong>.</li></ul>
+<br>
+&nbsp;&nbsp;&nbsp;Во время установки вы можете скачать словари и установить их из нашего репозитория, для этого создан скрипт <strong>download.py</strong>, который нужно выполнять между выполнением <strong>configure</strong> и <strong>make</strong>. Если вы хотите посмотреть, какие словари и звуки есть в нашем репозитории, выполните из каталога с <strong>LightLang</strong> команды:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist dicts</td></tr></table>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py remotelist sounds</td></tr></table>
+&nbsp;&nbsp;&nbsp;Потом можете скачать, например, словарь командой:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py install dicts Mueller-24.en-ru</td></tr></table>
+&nbsp;&nbsp;&nbsp;Он будет автоматически распакован и встроен в каталог исходных текстов, затем, на этапе сборки, откомпилирован. Для просмотра доступных опций работы с репозиторием наберите:
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./download.py help</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;В общем случае, устанавливать <strong>LightLang</strong> можно следующими командами (дополнительно будет скачан звук <strong>en</strong> и словарь <strong>Mueller-24.en-ru</strong>):
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max ~]$ tar -xjvf lightlang-0.8.6.tar.bz2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop ~]$ cd lightlang-0.8.6<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop lightlang-0.8.6]$ ./configure<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop lightlang-0.8.6]$ ./download.py install dicts Mueller-24.en-ru<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop lightlang-0.8.6]$ ./download.py install sounds en<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop lightlang-0.8.6]$ make<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[liksys@max_laptop lightlang-0.8.6]$ su<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Password: введите пароль root<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[root@max lightlang-0.8.6]$ make install</td></tr></table>
+<br>
+&nbsp;&nbsp;&nbsp;Если при конфигурировании произошла ошибка, внимательно прочитайте сообщения скрипта, в них будет указано, чего именно в вашей системе не хватает.
+
+<hr>
+
+</body>
+</html>
