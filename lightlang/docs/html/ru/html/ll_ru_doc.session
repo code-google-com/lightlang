@@ -1,8 +1,14 @@
 <!DOCTYPE webprojectsession>
 <webprojectsession>
-  <session usePreviewPrefix="0" previewPrefix="" >
+  <session usePreviewPrefix="0" previewPrefix="" usePersistentBookmarks="0" >
     <itemcursorpositions>
-      <item line="12" column="26" url="common_new_features.html" />
+      <item line="0" column="0" url="common_introduction.html" />
+      <item line="0" column="0" url="llrepo_usage.html" />
+      <item line="74" column="139" url="xsl_ifa.html" />
+      <item line="24" column="57" url="xsl_trsites.html" />
+      <item line="24" column="4" url="common_authors.html" />
+      <item line="50" column="81" url="index.html" />
     </itemcursorpositions>
   </session>
+  <teamdata yourself="" />
 </webprojectsession>
