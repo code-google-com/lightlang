@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "babylon.h"
+#include <fstream>
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -31,6 +32,24 @@ Babylon::Babylon( std::string filename )
   file = NULL;
 }
 
+
+std::ofstream resfile;
+bool Babylon::ResCreate(std::ofstream *embedded_file, std::string &resname){
+	embedded_file->open(resname.c_str());
+	if (!embedded_file->is_open()){
+		return false;
+	}
+	return true;
+}
+
+bool Babylon::ResFinish(std::ofstream *embedded_file){
+	embedded_file->close();
+	return true;
+}
+
+void Babylon::ResWrite(std::ofstream *embedded_file, unsigned char swap){
+	embedded_file->write(reinterpret_cast<char*>(&swap), sizeof(swap));
+}
 
 Babylon::~Babylon()
 {
@@ -220,7 +239,6 @@ bool Babylon::read()
   return true;
 }
 
-
 bgl_entry Babylon::readEntry()
 {
   bgl_entry entry;
@@ -238,6 +256,7 @@ bgl_entry Babylon::readEntry()
   std::string temp;
   std::vector<std::string> alternates;
   std::string alternate;
+
 
   while( readBlock( block ) )
   {
@@ -270,13 +289,13 @@ bgl_entry Babylon::readEntry()
           {
             definition += '\n';
             pos++;
-          }else if( (unsigned char)block.data[pos] < 0x20 )
+          }/*else if( (unsigned char)block.data[pos] < 0x20 )
           {
             if( a < len - 3 && block.data[pos] == 0x14 && block.data[pos+1] == 0x02 )
               definition = partOfSpeech[(unsigned char)block.data[pos+2] - 0x30] + " " + definition;
             pos += len - a;
             break;
-          }else definition += block.data[pos++];
+          }*/else definition += block.data[pos++];
         }
         convertToUtf8( definition, TARGET_CHARSET );
 
@@ -295,7 +314,27 @@ bgl_entry Babylon::readEntry()
         entry.definition = definition;
         entry.alternates = alternates;
         return entry;
+	break;
 
+	  case 2:
+		headword.clear();
+		pos = 0;
+		len = 0;
+		len = (unsigned char)block.data[pos++];
+
+		bool restest;
+		headword.reserve(len);
+		for (uint a=0; a < len; a++) headword +=block.data[pos++];
+		restest = Babylon::ResCreate(&resfile, headword);
+
+		len = block.length - len;
+		for (uint a=0; a<len; a++){
+			if (restest){
+				Babylon::ResWrite(&resfile, block.data[pos++]);
+			}
+		}
+
+		Babylon::ResFinish(&resfile);
         break;
       default:
         ;
@@ -305,8 +344,6 @@ bgl_entry Babylon::readEntry()
   entry.headword = "";
   return entry;
 }
-
-
 
 void Babylon::convertToUtf8( std::string &s, uint type )
 {
