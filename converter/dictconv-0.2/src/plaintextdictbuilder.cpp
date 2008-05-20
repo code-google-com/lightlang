@@ -50,8 +50,10 @@ bool PlainTextDictBuilder::finish()
 
   dictionary::iterator iter;
   for( iter = dic.begin(); iter != dic.end(); ++iter ) {
+    file << "key: ";
     file.write( iter->first.data(), iter->first.length() );
-    file.put( '\t' );
+    file.put( '\n' );
+    file << "data: ";
     file.write( iter->second.data(), iter->second.length() );
     file.put( '\n' );
   }
