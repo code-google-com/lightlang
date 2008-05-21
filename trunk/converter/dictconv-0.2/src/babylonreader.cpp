@@ -24,10 +24,11 @@
 
 #include <stdio.h>
 
-BabylonReader::BabylonReader( std::string filename, DictBuilder *builder )
+BabylonReader::BabylonReader( std::string filename, DictBuilder *builder, int signal )
 {
   m_babylon = new Babylon( filename );
   m_builder = builder;
+  resEnabled = signal;
 }
 
 
@@ -47,12 +48,12 @@ bool BabylonReader::convert()
   }
 
   bgl_entry entry;
-  entry = m_babylon->readEntry();
+  entry = m_babylon->readEntry(resEnabled);
 
   while( entry.headword != "" )
   {
     m_builder->addHeadword( entry.headword.c_str(), entry.definition.c_str(), entry.alternates );
-    entry = m_babylon->readEntry();
+    entry = m_babylon->readEntry(resEnabled);
     printf( "." );
   }
   printf( "\n" );
