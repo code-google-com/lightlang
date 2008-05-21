@@ -289,15 +289,13 @@ bgl_entry Babylon::readEntry()
           {
             definition += '\n';
             pos++;
-          }/*else if( (unsigned char)block.data[pos] < 0x20 )
-          {
-            if( a < len - 3 && block.data[pos] == 0x14 && block.data[pos+1] == 0x02 )
-              definition = partOfSpeech[(unsigned char)block.data[pos+2] - 0x30] + " " + definition;
-            pos += len - a;
-            break;
-          }*/else definition += block.data[pos++];
+          }else if( block.data[pos] == 0x14 ){
+              if ( a < len - 3 && block.data[pos+1] == 0x02 ) definition = partOfSpeech[(unsigned char)block.data[pos+2] - 0x30] + " " + definition;
+              pos += len - a;
+              break;
+          }else definition += block.data[pos++];
         }
-        convertToUtf8( definition, TARGET_CHARSET );
+//         convertToUtf8( definition, TARGET_CHARSET );
 
         // Alternate forms
         while( pos != block.length )
@@ -305,7 +303,7 @@ bgl_entry Babylon::readEntry()
           len = (unsigned char)block.data[pos++];
           alternate.reserve( len );
           for(uint a=0;a<len;a++) alternate += block.data[pos++];
-          convertToUtf8( alternate, SOURCE_CHARSET );
+//           convertToUtf8( alternate, SOURCE_CHARSET );
           alternates.push_back( alternate );
           alternate.clear();
         }
