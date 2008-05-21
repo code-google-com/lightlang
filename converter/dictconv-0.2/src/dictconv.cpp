@@ -31,7 +31,7 @@
 
 void usage( const char *program )
 {
-  printf( "Usage: %s [-hv] -o OUTPUT_FILE INPUT_FILE\n", program );
+  printf( "Usage: %s [-hvr] -o OUTPUT_FILE INPUT_FILE\n", program );
   printf( "\n" );
   printf( "Convert INPUT_FILE dictionary to OUTPUT_FILE dictionary.\n");
   printf( "The extension of file determines the dictionary type.\n");
@@ -41,6 +41,7 @@ void usage( const char *program )
   printf( "  -h\t\t\tprint help message and exit\n" );
   printf( "  -?\t\t\tprint help message and exit\n");
   printf( "  -v\t\t\tshows the version information and exit\n" );
+  printf( "  -r\t\t\tEnable .BGL's resources extraction\n" );
   printf( "\n" );
   printf( "INPUT_FILE can be:\n" );
   printf( "  Babylon Glossary (.bgl)\n" );
@@ -79,8 +80,8 @@ int main(int argc, char ** argv)
   bool quiet = false;
 
   int c;
-
-  while( ( c = getopt( argc, argv, "-o:hqv" ) ) != -1 )
+  int babylon_resEnabled = 0;
+  while( ( c = getopt( argc, argv, "-o:hqvr" ) ) != -1 )
   {
     switch( c )
     {
@@ -89,6 +90,9 @@ int main(int argc, char ** argv)
         break;
       case 'o':
         outfile = optarg;
+        break;
+      case 'r':
+        babylon_resEnabled = 1;
         break;
       case 'v':
         version();
@@ -112,7 +116,7 @@ int main(int argc, char ** argv)
 
   // Reader
   DictReader *reader;
-  if( infile.compare( infile.length() - 4, 4, ".bgl" ) == 0 || infile.compare( infile.length() - 4, 4, ".BGL" ) == 0 ) reader = new BabylonReader( infile, builder );
+  if( infile.compare( infile.length() - 4, 4, ".bgl" ) == 0 || infile.compare( infile.length() - 4, 4, ".BGL" ) == 0 ) reader = new BabylonReader( infile, builder, babylon_resEnabled + 1 );
   else if( infile.compare( infile.length() - 4, 4, ".tei" ) == 0 || infile.compare( infile.length() - 4, 4, ".TEI" ) == 0 ) reader = new FreedictReader( infile, builder );
   else if( infile.compare( infile.length() - 4, 4, ".dct" ) == 0 || infile.compare( infile.length() - 4, 4, ".DCT" ) == 0 ) reader = new SdictReader( infile, builder );
   else if( infile.compare( infile.length() - 4, 4, ".ifo" ) == 0 || infile.compare( infile.length() - 4, 4, ".IFO" ) == 0 ) reader = new StarDictReader( infile, builder );

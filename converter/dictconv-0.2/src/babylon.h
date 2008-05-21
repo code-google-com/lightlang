@@ -23,7 +23,7 @@
 
 #include <stdlib.h>
 #include <zlib.h>
-
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -157,7 +157,7 @@ public:
     void close();
     bool readBlock( bgl_block& );
     bool read();
-    bgl_entry readEntry();
+    bgl_entry readEntry(int);
 
 	//resource extract
 	bool ResCreate(std::ofstream*, std::string&);
@@ -183,6 +183,8 @@ private:
 
     std::string m_filename;
     gzFile file;
+
+    std::ofstream resfile;
 
     std::string m_title;
     std::string m_author;

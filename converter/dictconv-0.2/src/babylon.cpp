@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "babylon.h"
-#include <fstream>
+// #include <fstream>
 
 #include<stdlib.h>
 #include<stdio.h>
@@ -33,7 +33,6 @@ Babylon::Babylon( std::string filename )
 }
 
 
-std::ofstream resfile;
 bool Babylon::ResCreate(std::ofstream *embedded_file, std::string &resname){
 	embedded_file->open(resname.c_str());
 	if (!embedded_file->is_open()){
@@ -239,7 +238,7 @@ bool Babylon::read()
   return true;
 }
 
-bgl_entry Babylon::readEntry()
+bgl_entry Babylon::readEntry(int resEnabled)
 {
   bgl_entry entry;
 
@@ -315,24 +314,26 @@ bgl_entry Babylon::readEntry()
 	break;
 
 	  case 2:
-		headword.clear();
-		pos = 0;
-		len = 0;
-		len = (unsigned char)block.data[pos++];
-
-		bool restest;
-		headword.reserve(len);
-		for (uint a=0; a < len; a++) headword +=block.data[pos++];
-		restest = Babylon::ResCreate(&resfile, headword);
-
-		len = block.length - len;
-		for (uint a=0; a<len; a++){
-			if (restest){
-				Babylon::ResWrite(&resfile, block.data[pos++]);
+		if (resEnabled == 2){
+			headword.clear();
+			pos = 0;
+			len = 0;
+			len = (unsigned char)block.data[pos++];
+	
+			bool restest;
+			headword.reserve(len);
+			for (uint a=0; a < len; a++) headword +=block.data[pos++];
+			restest = Babylon::ResCreate(&resfile, headword);
+	
+			len = block.length - len;
+			for (uint a=0; a<len; a++){
+				if (restest){
+					Babylon::ResWrite(&resfile, block.data[pos++]);
+				}
 			}
+	
+			Babylon::ResFinish(&resfile);
 		}
-
-		Babylon::ResFinish(&resfile);
         break;
       default:
         ;
