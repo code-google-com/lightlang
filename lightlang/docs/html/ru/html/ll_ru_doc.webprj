@@ -64,7 +64,6 @@
     <item url=".svn/prop-base/main_window1.png.svn-base" uploadstatus="1" />
     <item url=".svn/prop-base/main_window2.png.svn-base" uploadstatus="1" />
     <item url=".svn/prop-base/pages_menu1.png.svn-base" uploadstatus="1" />
-    <item url=".svn/prop-base/sl_in_konsole.png.svn-base" uploadstatus="1" />
     <item url=".svn/prop-base/spy_menu1.png.svn-base" uploadstatus="1" />
     <item url=".svn/prop-base/spy_menu2.png.svn-base" uploadstatus="1" />
     <item url=".svn/prop-base/text_browser1.png.svn-base" uploadstatus="1" />
@@ -96,7 +95,6 @@
     <item url=".svn/text-base/main_window2.png.svn-base" uploadstatus="1" />
     <item url=".svn/text-base/pages_menu1.png.svn-base" uploadstatus="1" />
     <item url=".svn/text-base/slengine.png.svn-base" uploadstatus="1" />
-    <item url=".svn/text-base/sl_in_konsole.png.svn-base" uploadstatus="1" />
     <item url=".svn/text-base/spy_menu1.png.svn-base" uploadstatus="1" />
     <item url=".svn/text-base/spy_menu2.png.svn-base" uploadstatus="1" />
     <item url=".svn/text-base/text_browser1.png.svn-base" uploadstatus="1" />
@@ -129,7 +127,6 @@
     <item url="toolbars/.svn/" uploadstatus="1" />
     <item url="toolbars/.svn/prop-base/" uploadstatus="1" />
     <item url="toolbars/.svn/props/" uploadstatus="1" />
-    <item url="toolbars/.svn/props/lightlang.toolbar.tgz.svn-work" uploadstatus="1" />
     <item url="toolbars/.svn/text-base/" uploadstatus="1" />
     <item url="toolbars/.svn/tmp/" uploadstatus="1" />
     <item url="toolbars/.svn/tmp/prop-base/" uploadstatus="1" />
@@ -140,7 +137,10 @@
     <item url="toolbars/.svn/format" uploadstatus="1" />
     <item url="ll_ru_doc.session" uploadstatus="1" />
     <item url="ll_ru_doc.webprj" uploadstatus="1" />
-    <item url="xsl_trsites.html" />
-    <item url="common_authors.html" />
+    <item url="xsl_trsites.html" uploadstatus="1" />
+    <item url="common_authors.html" uploadstatus="1" />
+    <item url="common_bugs.html" />
+    <item url="common_license.html" />
+    <item url="common_internet.html" />
   </project>
 </webproject>

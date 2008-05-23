@@ -30,7 +30,7 @@
 
 /********************************* Macro ***************************************/
 # define MYNAME			"sl"
-# define VERSION 		"6.5"
+# define VERSION 		"6.6"
 # define PACKAGE_VERSION	"0.8.6"
 
 # define DEVELOPER_MAIL		"mdevaev@gmail.com"
