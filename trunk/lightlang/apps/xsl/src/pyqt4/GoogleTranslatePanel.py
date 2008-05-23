@@ -130,6 +130,12 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.langpair_combobox.setCurrentIndex(settings.value("google_translate_panel/langpair_combobox_index",
 			Qt.QVariant(0)).toInt()[0])
 
+	###
+
+	def clear(self) :
+		self.text_edit.clear()
+		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
+
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.text_edit.setFocus(reason)
 		self.text_edit.selectAll()

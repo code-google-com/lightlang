@@ -3,11 +3,17 @@
   <session usePreviewPrefix="0" previewPrefix="" usePersistentBookmarks="0" >
     <itemcursorpositions>
       <item line="0" column="0" url="common_introduction.html" />
-      <item line="0" column="0" url="llrepo_usage.html" />
-      <item line="74" column="139" url="xsl_ifa.html" />
-      <item line="24" column="57" url="xsl_trsites.html" />
+      <item line="0" column="0" url="common_installation_and_configuration.html" />
       <item line="24" column="4" url="common_authors.html" />
-      <item line="50" column="81" url="index.html" />
+      <item line="0" column="0" url="common_new_features.html" />
+      <item line="0" column="0" url="llrepo_usage.html" />
+      <item line="0" column="0" url="sl_console_usage.html" />
+      <item line="0" column="0" url="xsl_ifa.html" />
+      <item line="0" column="0" url="xsl_trsites.html" />
+      <item line="52" column="78" url="index.html" />
+      <item line="3" column="26" url="common_bugs.html" />
+      <item line="12" column="27" url="common_license.html" />
+      <item line="24" column="125" url="common_internet.html" />
     </itemcursorpositions>
   </session>
   <teamdata yourself="" />

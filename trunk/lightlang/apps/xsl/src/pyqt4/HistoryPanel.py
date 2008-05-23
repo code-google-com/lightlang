@@ -87,6 +87,8 @@ class HistoryPanel(Qt.QDockWidget) :
 
 			self.clear_history_button.setEnabled(True)
 
+	###
+
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 		settings.setValue("history_panel/list", Qt.QVariant(self.list()))
@@ -95,9 +97,14 @@ class HistoryPanel(Qt.QDockWidget) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 		self.setList(settings.value("history_panel/list", Qt.QVariant(Qt.QStringList())).toStringList())
 
+	###
+
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
+
+	def clear(self) :
+		self.clearLineEdit()
 
 
 	### Private ###

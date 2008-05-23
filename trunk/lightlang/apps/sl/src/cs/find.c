@@ -123,6 +123,8 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					first_translate_flag = false;
 				}
 				print_translate(str, translate_count);
+
+				if ( translate_count >= MAX_TRANSLATE_COUNT ) break;
 			}
 		}
 
@@ -220,10 +222,15 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					}
 					print_translate(str, translate_count);
 
+					if ( translate_count >= MAX_TRANSLATE_COUNT )
+						goto external_loop_break_label;
+
 					break;
 				}
 			}
 		}
+
+		external_loop_break_label :
 
 		free(str);
 		return translate_count;

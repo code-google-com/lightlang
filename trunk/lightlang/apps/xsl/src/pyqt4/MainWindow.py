@@ -458,10 +458,7 @@ class MainWindow(Qt.QMainWindow) :
 	def clearAllTextBrowser(self) :
 		if self.checkBusyStreams() :
 			return
-
-		self.find_in_sl_panel.clear()
 		self.text_browser.clearAll()
-		self.find_in_sl_panel.setFocus()
 
 	def clearTextBrowserPage(self) :
 		if self.checkBusyStreams() :
