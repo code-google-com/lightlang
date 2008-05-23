@@ -159,12 +159,6 @@ public:
     bool read();
     bgl_entry readEntry(int);
 
-	//resource extract
-	bool ResCreate(std::ofstream*, std::string&);
-	void ResWrite(std::ofstream*, unsigned char);
-	bool ResFinish(std::ofstream*);
-
-
     inline std::string title() const { return m_title; };
     inline std::string author() const { return m_author; };
     inline std::string email() const { return m_email; };
