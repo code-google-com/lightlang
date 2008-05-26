@@ -139,8 +139,9 @@
     <item url="ll_ru_doc.webprj" uploadstatus="1" />
     <item url="xsl_trsites.html" uploadstatus="1" />
     <item url="common_authors.html" uploadstatus="1" />
-    <item url="common_bugs.html" />
-    <item url="common_license.html" />
-    <item url="common_internet.html" />
+    <item url="common_bugs.html" uploadstatus="1" />
+    <item url="common_license.html" uploadstatus="1" />
+    <item url="common_internet.html" uploadstatus="1" />
+    <item url="sl_dictionary_format.html" />
   </project>
 </webproject>
