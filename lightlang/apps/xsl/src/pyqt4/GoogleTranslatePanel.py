@@ -48,7 +48,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.langpair_combobox_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.langpair_combobox_layout)
 
-		self.text_edit_layout = Qt.QVBoxLayout()
+		self.text_edit_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.text_edit_layout)
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
@@ -91,6 +91,15 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.text_edit = Qt.QTextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
 
+		self.clear_text_edit_button = Qt.QToolButton()
+		self.clear_text_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
+		self.clear_text_edit_button.setIconSize(Qt.QSize(16, 16))
+		size_policy = self.clear_text_edit_button.sizePolicy()
+		size_policy.setVerticalPolicy(Qt.QSizePolicy.Expanding)
+		self.clear_text_edit_button.setSizePolicy(size_policy)
+		self.clear_text_edit_button.setEnabled(False)
+		self.text_edit_layout.addWidget(self.clear_text_edit_button)
+
 		self.translate_button = Qt.QPushButton(self.tr("&Translate"))
 		self.translate_button.setEnabled(False)
 		self.control_buttons_layout.addWidget(self.translate_button)
@@ -103,16 +112,16 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		#####
 
-		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.setEnabledAbortButton)
-		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
-		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.setDisabledAbortButton)
-		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
+		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.processStarted)
+		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.processFinished)
 		self.connect(self.google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("wordChanged(const QString &)"), self.wordChangedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
 
 		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
+
+		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
 
 		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.translate)
 		self.connect(self.abort_button, Qt.SIGNAL("clicked()"), self.abort)
@@ -157,17 +166,33 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	###
 
-	def setEnabledAbortButton(self) :
+	def processStarted(self) :
 		self.abort_button.setEnabled(True)
 
-	def setDisabledAbortButton(self) :
+		self.clear_text_edit_button.setEnabled(False)
+		self.translate_button.setEnabled(False)
+
+		self.processStartedSignal()
+
+	def processFinished(self) :
 		self.abort_button.setEnabled(False)
+
+		self.clear_text_edit_button.setEnabled(True)
+		self.translate_button.setEnabled(True)
+
+		self.processFinishedSignal()
 
 	def setStatusFromTextEdit(self) :
 		if self.text_edit.toPlainText().isEmpty() :
+			self.clear_text_edit_button.setEnabled(False)
 			self.translate_button.setEnabled(False)
 		else :
+			self.clear_text_edit_button.setEnabled(True)
 			self.translate_button.setEnabled(True)
+
+	def clearTextEdit(self) :
+		self.text_edit.clear()
+		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###

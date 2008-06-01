@@ -202,6 +202,7 @@ class MainWindow(Qt.QMainWindow) :
 			self.status_bar.showStatusMessage)
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showFindInSLPanel)
 
 		self.connect(self.text_browser, Qt.SIGNAL("uFindRequest(const QString &)"),
 			self.find_in_sl_panel.setWord)
