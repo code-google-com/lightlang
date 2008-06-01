@@ -112,6 +112,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		#####
 
+		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
+
 		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.processStarted)
 		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.processFinished)
 		self.connect(self.google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
@@ -143,7 +145,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def clear(self) :
 		self.text_edit.clear()
-		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.text_edit.setFocus(reason)
@@ -189,6 +190,11 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		else :
 			self.clear_text_edit_button.setEnabled(True)
 			self.translate_button.setEnabled(True)
+
+	def activateDockWidget(self, activate_flag) :
+		if activate_flag :
+			self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self.text_edit.selectAll()
 
 	def clearTextEdit(self) :
 		self.text_edit.clear()

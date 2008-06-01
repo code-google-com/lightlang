@@ -163,6 +163,8 @@ class FindInSLPanel(Qt.QDockWidget) :
 
 		#####
 
+		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
+
 		self.connect(self.delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
 
 		self.connect(self.internal_find, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
@@ -204,7 +206,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.line_edit.selectAll()
 
 	def clear(self) :
-		self.clearLineEdit()
+		self.line_edit.clear()
 
 	def setDictsList(self, dicts_list) :
 		self.internal_find.setDictsList(dicts_list)
@@ -295,6 +297,13 @@ class FindInSLPanel(Qt.QDockWidget) :
 			self.c_find_button.setEnabled(True)
 			self.l_find_button.setEnabled(True)
 			self.i_find_button.setEnabled(True)
+
+	###
+
+	def activateDockWidget(self, activate_flag) :
+		if activate_flag :
+			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self.line_edit.selectAll()
 
 	def clearLineEdit(self) :
 		self.line_edit.clear()

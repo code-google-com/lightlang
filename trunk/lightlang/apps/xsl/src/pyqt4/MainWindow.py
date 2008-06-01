@@ -459,6 +459,11 @@ class MainWindow(Qt.QMainWindow) :
 	def clearAllTextBrowser(self) :
 		if self.checkBusyStreams() :
 			return
+
+		self.find_in_sl_panel.clear()
+		self.google_translate_panel.clear()
+		self.history_panel.clear()
+
 		self.text_browser.clearAll()
 
 	def clearTextBrowserPage(self) :
