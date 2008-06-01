@@ -66,6 +66,8 @@ class HistoryPanel(Qt.QDockWidget) :
 
 		#####
 
+		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
+
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
@@ -104,7 +106,7 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.line_edit.selectAll()
 
 	def clear(self) :
-		self.clearLineEdit()
+		self.line_edit.clear()
 
 
 	### Private ###
@@ -141,6 +143,11 @@ class HistoryPanel(Qt.QDockWidget) :
 			self.clear_line_edit_button.setEnabled(False)
 		else :
 			self.clear_line_edit_button.setEnabled(True)
+
+	def activateDockWidget(self, activate_flag) :
+		if activate_flag :
+			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self.line_edit.selectAll()
 
 	def clearLineEdit(self) :
 		self.line_edit.clear()
