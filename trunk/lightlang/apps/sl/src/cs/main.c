@@ -42,7 +42,7 @@
 #include "options.h"
 #include "info.h"
 
-/********************************* ** Macro ************************************/
+/************************************ Macro ************************************/
 #define HTML_OUTPUT_FORMAT	"html"
 #define TEXT_OUTPUT_FORMAT	"text"
 #define NATIVE_OUTPUT_FORMAT	"native"
@@ -52,7 +52,7 @@ static int get_percent(const char *percent_str);
 static void set_output_format(const char *str);
 static void set_use_terminal_escapes_flag(const char *str);
 
-static int xfind_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list);
+static int xfind_word(char *word, const regimen_t regimen, const int percent, const char *dicts_list);
 
 static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp);
 static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list);
@@ -280,12 +280,14 @@ static void set_use_terminal_escapes_flag(const char *str)
 *	xfind_word() - obolochka dlya funkcii find_word().			*
 *										*
 ********************************************************************************/
-static int xfind_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list)
+static int xfind_word(char *word, const regimen_t regimen, const int percent, const char *dicts_list)
 {
 	//////////////////////////////////////////
 	DIR	*dicts_dp;			// Ukazatel na katalog slovarey
 	FILE	*dict_fp;			// Ukazatel na slovar
 	char	*dict_name;			// Imya slovarya
+	size_t	count;				// Schetchik orezannyh simvolov
+	size_t	word_len;			// Dlina slova
 	bool	no_translate_flag = true;	// Flag otsutstviya perevoda
 	bool	no_dicts_flag = true;		// Flag otsutstviya slovarey
 	extern settings_t settings;		// Parametry sistemy
@@ -316,19 +318,20 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 		}
 
 		if ( no_translate_flag && (regimen == usualy_regimen) )
-		{
-			rewinddir(dicts_dp);
-
-			while ( (dict_fp = get_next_dict_fp_from_dir(&dict_name, dicts_dp)) != NULL )
+			for (word_len = strlen(word), count = strlen(word); (int) count >= (int) word_len / 2; count--)
 			{
-				if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
-					no_translate_flag = false;
+				for (rewinddir(dicts_dp), word[count] = '\0'; (dict_fp = get_next_dict_fp_from_dir(&dict_name, dicts_dp)) != NULL;)
+				{
+					if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
+						no_translate_flag = false;
 
-				if ( fclose(dict_fp) != 0 )
-					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-						MYNAME, dict_name, strerror(errno) );
+					if ( fclose(dict_fp) != 0 )
+						fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
+							MYNAME, dict_name, strerror(errno) );
+				}
+
+				if ( !no_translate_flag ) break;
 			}
-		}
 
 		if ( closedir(dicts_dp) == -1 )
 			fprintf(stderr, "%s: cannot close dict folder \"%s\": %s\n",
@@ -349,17 +352,20 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 		}
 
 		if ( no_translate_flag && (regimen == usualy_regimen) )
-		{
-			while ( (dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list)) != NULL )
+			for (word_len = strlen(word), count = strlen(word); (int) count >= (int) word_len / 2; count--)
 			{
-				if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
-					no_translate_flag = false;
+				for (word[count] = '\0'; (dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list)) != NULL;)
+				{
+					if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
+						no_translate_flag = false;
 
-				if ( fclose(dict_fp) != 0 )
-					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-						MYNAME, dict_name, strerror(errno) );
+					if ( fclose(dict_fp) != 0 )
+						fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
+							MYNAME, dict_name, strerror(errno) );
+				}
+
+				if ( !no_translate_flag ) break;
 			}
-		}
 	}
 
 	if ( no_translate_flag )
