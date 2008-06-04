@@ -42,9 +42,13 @@ REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
 SL_TMP_DIR = "/tmp/sl"
 
 def is_path_writable(path):
+
 	if os.path.exists(path):
 		s = os.stat(path)
 		mode = s[stat.ST_MODE] & 0777
+	else:
+	    return False
+		
 
 	if mode & 02:
 		return True
@@ -403,11 +407,11 @@ class InstDataModel(gtk.ListStore):
 		used_dict_list = conf.get_used_dicts()
 		spy_file_list = conf.get_spy_dicts()
 
+		dict_list = []
 		try:
 			dict_list = os.listdir(conf.sl_dicts_dir)
 		except OSError, msg:
 			print str(msg)
-			dicts_list = []
 
 		for fname in dict_list:
 			used = fname in used_dict_list
