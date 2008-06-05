@@ -98,6 +98,7 @@ class DictInformationWindow(Qt.QWidget) :
 			return
 
 		self.update_information_button.blockSignals(True)
+		self.update_information_button.setEnabled(False)
 
 		self.wait_picture_movie_label.setVisible(True)
 		self.wait_picture_movie.start()
@@ -131,6 +132,9 @@ class DictInformationWindow(Qt.QWidget) :
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_message_label.setVisible(False)
 
+		Qt.QCoreApplication.processEvents()
+
+		self.update_information_button.setEnabled(True)
 		self.update_information_button.blockSignals(False)
 
 	def show(self) :
@@ -628,11 +632,16 @@ class DictsManager(Qt.QDialog) :
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
+		#####
+
+		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
+
 
 	### Public ###
 
 	def updateDicts(self) :
 		self.update_dicts_button.blockSignals(True)
+		self.update_dicts_button.setEnabled(False)
 
 		self.wait_picture_movie_label.setVisible(True)
 		self.wait_picture_movie.start()
@@ -645,6 +654,9 @@ class DictsManager(Qt.QDialog) :
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_message_label.setVisible(False)
 
+		Qt.QCoreApplication.processEvents()
+
+		self.update_dicts_button.setEnabled(True)
 		self.update_dicts_button.blockSignals(False)
 
 	def saveSettings(self) :
@@ -653,6 +665,7 @@ class DictsManager(Qt.QDialog) :
 
 	def loadSettings(self) :
 		self.update_dicts_button.blockSignals(True)
+		self.update_dicts_button.setEnabled(False)
 
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 
@@ -662,6 +675,9 @@ class DictsManager(Qt.QDialog) :
 
 		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
 
+		Qt.QCoreApplication.processEvents()
+
+		self.update_dicts_button.setEnabled(True)
 		self.update_dicts_button.blockSignals(False)
 
 
@@ -729,6 +745,12 @@ class DictsManager(Qt.QDialog) :
 	def clearLineEdit(self) :
 		self.line_edit.clear()
 		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+
+	###
+
+	def show(self) :
+		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
+		Qt.QDialog.show(self)
 
 
 	### Signals ###
