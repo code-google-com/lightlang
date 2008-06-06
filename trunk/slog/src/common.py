@@ -3,7 +3,7 @@
 import os
 
 APP_NAME = "SLog"
-VERSION = "0.9.2"
+VERSION = "0.9.3"
 WEBSITE = "http://lightlang.org.ru"
 
 LICENSE = """

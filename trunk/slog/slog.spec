@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           slog
-Version:        0.9.1
+Version:        0.9.2
 Release:        1%{?dist}
 Summary:        PyGTK based GUI for the LightLang SL
 Group:          Applications/Desktops
@@ -38,7 +38,7 @@ desktop-file-install --vendor="fedora"                          \
         --delete-original                                       \
         ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
-rm -rf $RPM_BUILD_ROOT%{_datadir}/slog
+rm -rf $RPM_BUILD_ROOT%{_datadir}/sonata
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -49,6 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog COPYING README 
 %{python_sitearch}/*
 %{_bindir}/%{name}
+%{_datadir}/%{name}/
 %{_datadir}/applications/*.desktop
 %{_datadir}/pixmaps/%{name}*
 

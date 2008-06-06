@@ -423,7 +423,7 @@ class InstDataModel(gtk.ListStore):
 		l_iter = self.append()
 		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
 						COL_I_NAME, name, COL_I_TARGET, target)
-	
+
 class DictInstallerEvent:
 	def __init__(self, state = 0, msg = None, data = None):
 		self.state = state # 0 - Notify, 1 - Error, 2 - Done
