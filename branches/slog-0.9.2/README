@@ -1,0 +1,17 @@
+lto: renatn@gmail.com
+
+REQUIREMENTS:
+	* python-gtk2
+	* python-notify (optional)
+	* python-gtkhtml2
+	* lightlang-sl
+	
+	for see:
+	# python setup.py --requires
+
+INSTALLATION:
+
+    from a command shell type as root:
+    
+    # python setup.py install
+    

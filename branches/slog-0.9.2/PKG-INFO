@@ -1,0 +1,13 @@
+Metadata-Version: 1.1
+Name: slog
+Version: 0.9.2
+Summary: SLog is a PyGTK-based GUI for the LightLang SL
+Home-page: http://lightlang.org.ru
+Author: Nasyrov Renat
+Author-email: renatn@gmail.com
+License: GPL
+Description: UNKNOWN
+Platform: UNKNOWN
+Requires: gtk (>=2.10.0)
+Requires: pynotify
+Requires: gtkhtml2
