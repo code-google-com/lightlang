@@ -109,12 +109,10 @@ void debug(void)
 	printf("GCC version\t\t:\t%s\n", __VERSION__);
 #endif
 
-#ifdef  __STDC_VERSION__
-# if __STDC_VERSION__ == 199901L
+#if __STDC_VERSION__ == 199901L
 	puts("C standard\t\t:\tC99");
-# else
-	puts("C standerd\t\t:\tNot C99");
-# endif
+#else
+	puts("C standard\t\t:\tNot C99");
 #endif
 
 #ifdef __OPTIMIZE__
@@ -127,26 +125,33 @@ void debug(void)
 	printf("CFLAGS\t\t\t:\t%s\n", __CFLAGS);
 #endif
 
-#if defined linux || __linux || __linux__
+#if defined(linux) || defined(__linux) || defined(__linux__)
 	puts("System\t\t\t:\tLinux");
-#elif defined __FreeBSD__
+#elif defined(__FreeBSD__)
 	puts("System\t\t\t:\tFreeBSD");
-#elif defined __NetBSD__
+#elif defined(__NetBSD__)
 	puts("System\t\t\t:\tNetBSD");
-#elif defined __OpenBSD__
+#elif defined(__OpenBSD__)
 	puts("System\t\t\t:\tOpenBSD");
-#elif defined sun || __sun
+#elif defined(__DragonFly__)
+	puts("System\t\t\t:\tDragonFlyBSD");
+#elif defined(sun) || defined(__sun)
 	puts("System\t\t\t:\tSolaris");
-#elif defined __CYGWIN__
-	puts("System\t\t\t:\tCygwin?!?");
+#elif defined(__CYGWIN__)
+	puts("System\t\t\t:\tCygwin o_O ?!?");
 #else
-	puts("System\t\t\t:\tUnknown");
+	puts("System\t\t\t:\tOther");
 #endif
 
-#if defined __i386__ || __i386
+#if defined(__i386) || defined(__i386__)
 	puts("Architecture\t\t:\ti386");
+#elif defined(__x86_64) || defined(__x86_64__)
+	puts("Architecture\t\t:\tx86_64");
+# if defined(__amd64) || defined(__amd64__)
+	puts("Architecture\t\t:\tAMD64");
+# endif
 #else
-	puts("Architecture\t\t:\tUnknown");
+	puts("Architecture\t\t:\tOther");
 #endif
 
 	puts("------------------------------------------------------------------------");
