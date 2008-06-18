@@ -685,6 +685,7 @@ BZIP2_PROG
 PYTHON_PROG
 AUDIO_PLAYER_PROG
 INS_PKG_LIBS_DIR
+INS_PKG_LIBS64_DIR
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -1222,36 +1223,11 @@ Configuration:
 Installation directories:
   --prefix=PREFIX         install architecture-independent files in PREFIX
 			  [$ac_default_prefix]
-  --exec-prefix=EPREFIX   install architecture-dependent files in EPREFIX
-			  [PREFIX]
 
 By default, \`make install' will install all the files in
 \`$ac_default_prefix/bin', \`$ac_default_prefix/lib' etc.  You can specify
 an installation prefix other than \`$ac_default_prefix' using \`--prefix',
 for instance \`--prefix=\$HOME'.
-
-For better control, use the options below.
-
-Fine tuning of the installation directories:
-  --bindir=DIR           user executables [EPREFIX/bin]
-  --sbindir=DIR          system admin executables [EPREFIX/sbin]
-  --libexecdir=DIR       program executables [EPREFIX/libexec]
-  --sysconfdir=DIR       read-only single-machine data [PREFIX/etc]
-  --sharedstatedir=DIR   modifiable architecture-independent data [PREFIX/com]
-  --localstatedir=DIR    modifiable single-machine data [PREFIX/var]
-  --libdir=DIR           object code libraries [EPREFIX/lib]
-  --includedir=DIR       C header files [PREFIX/include]
-  --oldincludedir=DIR    C header files for non-gcc [/usr/include]
-  --datarootdir=DIR      read-only arch.-independent data root [PREFIX/share]
-  --datadir=DIR          read-only architecture-independent data [DATAROOTDIR]
-  --infodir=DIR          info documentation [DATAROOTDIR/info]
-  --localedir=DIR        locale-dependent data [DATAROOTDIR/locale]
-  --mandir=DIR           man documentation [DATAROOTDIR/man]
-  --docdir=DIR           documentation root [DATAROOTDIR/doc/PACKAGE]
-  --htmldir=DIR          html documentation [DOCDIR]
-  --dvidir=DIR           dvi documentation [DOCDIR]
-  --pdfdir=DIR           pdf documentation [DOCDIR]
-  --psdir=DIR            ps documentation [DOCDIR]
 _ACEOF
 
   cat <<\_ACEOF
@@ -1263,8 +1239,6 @@ if test -n "$ac_init_help"; then
   cat <<\_ACEOF
 
 Optional Packages:
-  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
-  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-default-config   set default configuration, default: normal,
                           available: normal, recommended, console
   --with-audio-player     set audio player, default: play
@@ -6589,6 +6563,9 @@ fi
 INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
 
 
+INS_PKG_LIBS64_DIR="/usr/lib64/pkgconfig"
+
+
 printf "python-test: importing \"sys\" module... "
 $PYTHON_PROG -c "import sys"
 if [ "$?" != "0" ]; then
@@ -7440,11 +7417,12 @@ BZIP2_PROG!$BZIP2_PROG$ac_delim
 PYTHON_PROG!$PYTHON_PROG$ac_delim
 AUDIO_PLAYER_PROG!$AUDIO_PLAYER_PROG$ac_delim
 INS_PKG_LIBS_DIR!$INS_PKG_LIBS_DIR$ac_delim
+INS_PKG_LIBS64_DIR!$INS_PKG_LIBS64_DIR$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 75; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
