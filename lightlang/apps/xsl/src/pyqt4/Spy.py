@@ -94,6 +94,9 @@ class MouseSelector(Qt.QObject) :
 		self.selectionChangedSignal(word)
 
 	def checkModifier(self) :
+		if self.modifier == NoModifier :
+			return True
+
 		keymap = self.display.query_keymap()
 		keys = []
 
@@ -101,9 +104,6 @@ class MouseSelector(Qt.QObject) :
 			Qt.QCoreApplication.processEvents()
 			for count2 in range(0, 32) :
 				keys.append(int(keymap[count1] & (1 << count2)))
-
-		if self.modifier == NoModifier :
-			return True
 
 		if keys[self.modifier] != 0 :
 			return True

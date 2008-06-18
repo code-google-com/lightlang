@@ -685,6 +685,7 @@ BZIP2_PROG
 PYTHON_PROG
 AUDIO_PLAYER_PROG
 INS_PKG_LIBS_DIR
+INS_PKG_LIBS64_DIR
 LIB@&t@OBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -6589,6 +6590,9 @@ fi
 INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
 
 
+INS_PKG_LIBS64_DIR="/usr/lib64/pkgconfig"
+
+
 printf "python-test: importing \"sys\" module... "
 $PYTHON_PROG -c "import sys"
 if [ "$?" != "0" ]; then
@@ -7440,11 +7444,12 @@ BZIP2_PROG!$BZIP2_PROG$ac_delim
 PYTHON_PROG!$PYTHON_PROG$ac_delim
 AUDIO_PLAYER_PROG!$AUDIO_PLAYER_PROG$ac_delim
 INS_PKG_LIBS_DIR!$INS_PKG_LIBS_DIR$ac_delim
+INS_PKG_LIBS64_DIR!$INS_PKG_LIBS64_DIR$ac_delim
 LIB@&t@OBJS!$LIB@&t@OBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 74; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 75; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
