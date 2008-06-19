@@ -26,6 +26,14 @@ def change_cursor(cursor):
 	for w in gtk.gdk.window_get_toplevels():
 		w.set_cursor(cursor)
 
+def create_hig_frame(title):
+	label = create_bold_label(title)
+	frame = gtk.Frame()
+	frame.set_shadow_type(gtk.SHADOW_NONE)
+	frame.set_label_widget(label)
+	frame.show()
+	return frame
+
 class ProgressDialog(gtk.Dialog):
 	def __init__(self, parent, title, task):
 		gtk.Dialog.__init__(self, title, parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
