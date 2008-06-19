@@ -26,6 +26,9 @@ class SlogConf:
 			self.tray_start = 0
 			self.spy_auto = 0
 			self.mod_key = 0
+			self.proxy = 0
+			self.proxy_host = ""
+			self.proxy_port = 0
 
 			self.__load()
 
@@ -71,6 +74,12 @@ class SlogConf:
 				self.google_target = conf.getint("google", "target")
 			if conf.has_option("plugins", "enabled"):
 				self.enabled_plugins = conf.get("plugins", "enabled")
+			if conf.has_option("network", "proxy"):
+				self.proxy = conf.get("network", "proxy")
+			if conf.has_option("network", "proxy_host"):
+				self.proxy_host = conf.get("network", "proxy_host")
+			if conf.has_option("network", "proxy_port"):
+				self.proxy_port = conf.get("network", "proxy_port")
 
 			# Try import used dict list from XSL configuration
 			if self.used_dicts_list == "":
@@ -104,6 +113,10 @@ class SlogConf:
 			conf.set("google", "target", self.google_target)
 			conf.add_section("plugins")
 			conf.set("plugins", "enabled", self.enabled_plugins)
+			conf.add_section("network")
+			conf.set("network", "proxy", self.proxy)
+			conf.set("network", "proxy_host", self.proxy_host)
+			conf.set("network", "proxy_port", self.proxy_port)
 
 			conf.write(file(os.path.expanduser("~/.config/slog/slogrc"), "w"))
 

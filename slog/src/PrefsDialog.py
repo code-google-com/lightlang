@@ -116,6 +116,52 @@ class PluginsView(gtk.HBox):
 			self.plugins.disable_plugin(plugin_name)
 		self.btn_prop.set_sensitive(config)
 
+class NetworkView(gtk.HBox):
+	def __init__(self):
+		gtk.HBox.__init__(self, False, 0)
+
+		self.cfg = SlogConf()
+
+		vbox = gtk.VBox()
+		vbox.set_border_width(8)
+		self.pack_start(vbox, True, True, 0)
+
+		# Spy stuff
+		frame = ghlp.create_hig_frame(_("Proxy Server"))
+		vbox.pack_start(frame, False, True, 0)
+		vbox.show_all()
+
+		vbox_proxy = gtk.VBox(False, 8)
+		vbox_proxy.set_border_width(8)
+
+		check_box = gtk.CheckButton(_("Custom proxy server"))
+		check_box.connect("toggled", self.on_checkbox_toggled)
+		if self.cfg.proxy != 0:
+			check_box.set_active(True)
+		vbox_proxy.pack_start(check_box, False, True, 0)
+
+		hbox = gtk.HBox(False, 0)
+		vbox_proxy.pack_start(hbox, False, False, 0)
+
+		label = gtk.Label(_("Host/Port:"))
+		host_entry = gtk.Entry()
+
+		adj = gtk.Adjustment(0.0, 0.0, 65000.0, 1.0, 100.0, 0.0)
+		spinner = gtk.SpinButton(adj, 0, 0)
+		spinner.set_wrap(False)
+		spinner.set_size_request(64, -1)
+
+		hbox.pack_start(label, False, True, 4)
+		hbox.pack_start(host_entry, True, False, 0)
+		hbox.pack_start(spinner, False, True, 0)
+
+		frame.add(vbox_proxy)
+		vbox_proxy.show_all()
+
+	def on_checkbox_toggled(self, widget, data=None):
+		self.cfg.proxy = widget.get_active()
+
+
 class PrefsDialog(gtk.Dialog):
 	def __init__(self, parent, plugins):
 		gtk.Dialog.__init__(self, _("Preferences"), parent,
@@ -130,6 +176,10 @@ class PrefsDialog(gtk.Dialog):
 		notebook.append_page(main_page, gtk.Label(_("Main")))
 		main_page.show()
 
+		network_page = NetworkView()
+		notebook.append_page(network_page, gtk.Label(_("Network")))
+		network_page.show()
+
 		plugins_page = PluginsView(self, plugins)
 		notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
 		plugins_page.show()
@@ -141,7 +191,7 @@ class PrefsDialog(gtk.Dialog):
 		vbox.set_border_width(8)
 
 		# Spy stuff
-		frame = self.__create_hig_frame(_("Service Spy"))
+		frame = ghlp.create_hig_frame(_("Service Spy"))
 		vbox.pack_start(frame, False, True, 0)
 
 		vbox_spy = gtk.VBox(False, 8)
@@ -171,7 +221,7 @@ class PrefsDialog(gtk.Dialog):
 		vbox_spy.show_all()
 
 		# Tray icon stuff
-		frame = self.__create_hig_frame(_("System Tray"))
+		frame = ghlp.create_hig_frame(_("System Tray"))
 		vbox.pack_start(frame, False, True, 0)
 
 		vbox_tray = gtk.VBox(False, 8)
@@ -191,13 +241,6 @@ class PrefsDialog(gtk.Dialog):
 
 		return vbox
 
-	def __create_hig_frame(self, title):
-		label = ghlp.create_bold_label(title)
-		frame = gtk.Frame()
-		frame.set_shadow_type(gtk.SHADOW_NONE)
-		frame.set_label_widget(label)
-		frame.show()
-		return frame
 
 	def __create_check_box(self, text, state, name):
 		check_box = gtk.CheckButton(text)

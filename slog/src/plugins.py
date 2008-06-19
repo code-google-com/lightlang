@@ -14,10 +14,15 @@ class PluginManager:
 		self.conf = SlogConf()
 		
 	def __sync_config(self):
+		""" Save enabled plugins in the file configuration """
+
 		list_enabled = self.get_enabled()
 		self.conf.enabled_plugins = ":".join(list_enabled)
 
 	def scan_for_plugins(self):
+		""" Search installed plugins in the directory and 
+			try loaded him"""
+	
 		plugins_dir = os.path.join(DATA_DIR, "plugins")
 
 		for modname in os.listdir(plugins_dir):
@@ -58,5 +63,4 @@ class PluginManager:
 	def is_configurable(self, name):
 		plugin = self.enabled_plugins[name]
 		return ("configure" in dir(plugin))
-
 
