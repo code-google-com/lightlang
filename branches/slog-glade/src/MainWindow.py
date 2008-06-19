@@ -2,6 +2,7 @@
 
 import os
 import gtk, gobject
+import gtk.glade
 import pynotify
 import gettext
 
@@ -45,15 +46,9 @@ ui_info = \
 </ui>'''
 
 
-class MainWindow(gtk.Window):
+class MainWindow():
 
-	def __init__(self, parent=None):
-		gtk.Window.__init__(self)
-		try:
-			self.set_screen(parent.get_screen())
-		except AttributeError:
-			self.connect('destroy', lambda *w: gtk.main_quit())
-
+	def __init__(self):
 		self.conf = SlogConf()
 
 		# Translation stuff
@@ -63,70 +58,74 @@ class MainWindow(gtk.Window):
 			pass
 		gettext.textdomain("slog")
 
+		gladefile = os.path.join(DATA_DIR, "slog.glade")
+		self.wTree = gtk.glade.XML(gladefile, "MainWindow", domain="slog")
+		self.wTree.signal_autoconnect(self)
+		self.main_window = self.wTree.get_widget("MainWindow")
+
 		# Create tray icon 
+		tray_glade = gtk.glade.XML(gladefile, "trayMenu", domain="slog")
+		tray_glade.signal_autoconnect(self)
+		self.tray_menu = tray_glade.get_widget("trayMenu")
+
 		self.status_icon = gtk.status_icon_new_from_file(get_icon("slog.png"))
 		self.status_icon.set_tooltip(APP_NAME)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
 		# Create main window
-		self.tooltips = gtk.Tooltips()
-		self.notebook = MyNotebook()
+		#self.tooltips = gtk.Tooltips()
+		#self.notebook = MyNotebook()
 
-		self.set_icon_from_file(get_icon("slog.png"))
-		self.set_border_width(1)
-		self.set_title("%s %s" % (APP_NAME, VERSION))
-		self.set_size_request(396, 256)
+		self.main_window.set_icon_from_file(get_icon("slog.png"))
+		self.main_window.set_border_width(1)
+		self.main_window.set_title("%s %s" % (APP_NAME, VERSION))
+		self.main_window.set_size_request(396, 256)
 
 		(width, height) = self.conf.get_size()
 		(left, top) = self.conf.get_pos()
 		if left != 0 or top != 0:
-			self.move(left, top)
-		self.set_default_size(width, height)
+			self.main_window.move(left, top)
+		self.main_window.set_default_size(width, height)
 
-		self.connect("key-press-event", self.on_press_hotkey)
-		self.connect("delete_event", self.delete_event)
-		self.connect("destroy", self.destroy)
+		#self.connect("key-press-event", self.on_press_hotkey)
 
 		# Create Actions
-		self.uimanager = gtk.UIManager()
-		self.set_data("ui-manager", self.uimanager)
-		self.uimanager.insert_action_group(self.__create_action_group(), 0)
-		self.add_accel_group(self.uimanager.get_accel_group())
+		#self.uimanager = gtk.UIManager()
+		#self.set_data("ui-manager", self.uimanager)
+		#self.uimanager.insert_action_group(self.__create_action_group(), 0)
+		#self.add_accel_group(self.uimanager.get_accel_group())
 
-		try:
-			uimanagerid = self.uimanager.add_ui_from_string(ui_info)
-		except gobject.GError, msg:
-			print "building menus failed: %s" % msg
+		#try:
+		#	uimanagerid = self.uimanager.add_ui_from_string(ui_info)
+		#except gobject.GError, msg:
+		#	print "building menus failed: %s" % msg
 
-		vbox = gtk.VBox(False, 4)
-		self.add(vbox)
+		#vbox = gtk.VBox(False, 4)
+		#self.add(vbox)
 
-		menubar = self.uimanager.get_widget("/MenuBar")
-		vbox.pack_start(menubar, False, False, 0)
 
-		self.hpaned = gtk.HPaned()
+		self.hpaned = self.wTree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
-		vbox.pack_start(self.hpaned, True, True, 0)
 
-		self.sidebar = SideBar()
+		#self.sidebar = SideBar()
 
-		self.hpaned.add1(self.sidebar)
-		self.hpaned.add2(self.notebook)
-		self.new_translate_page()
+		#self.hpaned.add1(self.sidebar)
+		#self.hpaned.add2(self.notebook)
+		#self.new_translate_page()
 
-		self.statusbar = gtk.Statusbar()
-		self.context_id = self.statusbar.get_context_id("slog")
-		vbox.pack_start(self.statusbar, False, False, 0)
+		#self.statusbar = gtk.Statusbar()
+		#self.context_id = self.statusbar.get_context_id("slog")
+		#vbox.pack_start(self.statusbar, False, False, 0)
 
 		if self.conf.tray_start == 0:
-			self.show_all()
+			self.main_window.show_all()
 
-		if self.conf.spy_auto == 1:
-			self.spy_action.activate()
+		#if self.conf.spy_auto == 1:
+		#	self.spy_action.activate()
 
 		#self.add_events(gtk.gdk.KEY_PRESS_MASK)
-		self.__load_plugins()
+		#self.__load_plugins()
 		#gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
@@ -188,25 +187,25 @@ class MainWindow(gtk.Window):
 	# GUI Callbacks #
 	#################
 
-	def delete_event(self, widget, data=None):
+	def on_window_closed(self, widget, data=None):
 		if self.conf.tray_exit != 0:
-			self.destroy(widget, data)
+			self.main_window.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
 			n = self.__create_notify(APP_NAME, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
-		self.hide()
+		self.main_window.hide()
 		return True
 
-	def destroy(self, widget, data=None):
-		(width, height) = self.get_size()
-		(left, top) = self.get_position()
+	def on_window_exit(self, widget, data=None):
+		(width, height) = self.main_window.get_size()
+		(left, top) = self.main_window.get_position()
 		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		self.conf.set_engine(self.sidebar.get_active())
+		#self.conf.set_engine(self.sidebar.get_active())
 		self.conf.save()
 		gtk.main_quit()
 
@@ -250,8 +249,7 @@ class MainWindow(gtk.Window):
 		self.window_toggle()
 
 	def on_tray_popup(self, icon, event_button, event_time):
-		menu = self.uimanager.get_widget("/TrayMenu")
-		menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
+		self.tray_menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
 	#Thread safe update
 	def __set_translate(self, word, translate, newtab=False):
@@ -275,18 +273,18 @@ class MainWindow(gtk.Window):
 	###########
 
 	def window_toggle(self):
-		if self.get_property("visible"):
-			self.hide()
+		if self.main_window.get_property("visible"):
+			self.main_window.hide()
 		else:
 			self.app_show()
 
 	def app_show(self):
-		self.show_all()
+		self.main_window.show_all()
 		gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
-		self.present()
-		self.grab_focus()
+		self.main_window.present()
+		self.main_window.grab_focus()
 
 	def new_translate_page(self, event=None):
 		label = gtk.Label()
