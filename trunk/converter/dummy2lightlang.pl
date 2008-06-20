@@ -4,7 +4,7 @@ use HTML::Entities;
 use Encode;
 
 use Pod::Usage;
-pod2usage("No file input specified.") if ((@ARGV == 0)&&(-t STDIN));
+pod2usage("No files input.") if ((@ARGV == 0));
 
 use Getopt::Long;
 $input = "";
@@ -45,63 +45,13 @@ if ($input){
 	}
 }
 else{
-	open FILE, "-";
-	if (-t STDIN){
-		die "No file input specified.";
+	if (! open FILE, "-"){
+		exit (-1);
 	}
-}
-if (!<FILE>){
-	exit (-1);
 }
 foreach (<FILE>){
 	chomp;
 	push @dict_data, $_;
-}
-
-if ($convert){
-	$line = 0;
-	foreach (@dict_data){
-		$_ = decode ('utf8', $_);
-		$_ = decode_entities($_);
-		$_ = encode ('utf8', $_);
-		if ((($_ =~ /(^[^k]|^k[^e]|^ke[^y]|^key[^:])|^key:[^ ]/)) || (!$_)){
-			s/ / /g;#replace space " " by " " character
-			$dict_data[$line] = $_;
-			if ($line > 0){
-				if ($_ =~ /^data: <k>.*<\/k>$/){
-					$dict_data[$line] = $dict_data[$line-1];
-					$dict_data[$line -1] = "";
-				}
-				else{
-					$dict_data[$line] = $dict_data[$line-1].$dict_data[$line]."\\n";
-					$dict_data[$line-1] = "";
-				}
-			}
-		}
-		if ($_ =~ /^key: /){
-			s/$/  \\n/g;
-			s/^key: //g;
-			if ($tag_lang){
-				$_ = $_."\\s"."$tag_lang:"." $_";#add tag \s...\s here
-				s/  \\n$/\\s\\n/g;
-				s/\\n//;
-			}
-			$dict_data[$line] = $_;
-		}
-		$line++;
-	}
-}
-else{
-	foreach (@dict_data){
-		if ($tag_lang){
-			@temp = split /  /;
-			s/$temp[0]  //;
-			$_ = $temp[0]."  \\s"."$tag_lang: $temp[0]\\s".$_;
-		}
-		$_ = decode ('utf8', $_);
-		$_ = decode_entities($_);
-		$_ = encode ('utf8', $_);
-	}
 }
 
 if ($info){
@@ -119,8 +69,44 @@ if ($info){
 	}
 }
 
-foreach (@dict_data){
-	if ($_){
-		print $_,"\n";
+if ($convert){
+	$line = 0;
+	foreach (@dict_data){
+		$_ = decode ('utf8', $_);
+		$_ = decode_entities($_);
+		$_ = encode ('utf8', $_);
+		if ($_ =~ /^key: /){
+			s/$/  /g;
+			s/^key: //g;
+			if ($tag_lang){
+				$_ = $_."\\s"."$tag_lang:"." $_";#add tag \s...\s here
+				s/  $/\\s/g;
+			}
+			if ($line){
+				$_ = "\n".$_;
+			}
+			print $_.'\n';
+		} else{
+			s/ / /g;#replace space " " by " " character
+			unless (($_ =~ /^data: <k>.*<\/k>$/) || ($_ =~ /^<k>[^<]*<\/k>$/)){
+				print $_.'\n';
+			}
+		}
+		$line = 1;
+	}
+}
+else{
+	foreach (@dict_data){
+		if ($tag_lang){
+			if ($_ =~ /^[^#]/){
+				@temp = split /  /;
+				s/$temp[0]  //;
+				$_ = $temp[0]."  \\s"."$tag_lang: $temp[0]\\s".$_;
+			}
+		}
+		$_ = decode ('utf8', $_);
+		$_ = decode_entities($_);
+		$_ = encode ('utf8', $_);
+		print $_."\n";
 	}
 }
