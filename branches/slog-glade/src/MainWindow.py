@@ -17,35 +17,6 @@ from slog.spy import Spy
 from slog.plugins import PluginManager
 from slog.remote import SLogDBus
 
-ui_info = \
-'''<ui>
-		<menubar name="MenuBar">
-			<menu action="FileMenu">
-				<menuitem action="NewTab"/>
-				<separator/>
-				<menuitem action="Preferences"/>
-				<separator/>
-				<menuitem action="Close"/>
-				<menuitem action="Quit"/>
-			</menu>
-			<menu action="ToolsMenu">
-				<menuitem action="DictMng"/>
-				<menuitem action="Spy"/>
-			</menu>
-			<menu action="HelpMenu">
-				<menuitem action="About"/>
-			</menu>
-		</menubar>
-		<toolbar name="ToolBar">
-		</toolbar>
-		<popup name="TrayMenu">
-			<menuitem action="Spy"/>
-			<separator/>
-			<menuitem action="Quit"/>
-		</popup>
-</ui>'''
-
-
 class MainWindow():
 
 	def __init__(self):
@@ -59,9 +30,6 @@ class MainWindow():
 		gettext.textdomain("slog")
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
-		self.wTree = gtk.glade.XML(gladefile, "MainWindow", domain="slog")
-		self.wTree.signal_autoconnect(self)
-		self.main_window = self.wTree.get_widget("MainWindow")
 
 		# Create tray icon 
 		tray_glade = gtk.glade.XML(gladefile, "trayMenu", domain="slog")
@@ -74,49 +42,33 @@ class MainWindow():
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
 		# Create main window
-		#self.tooltips = gtk.Tooltips()
-		#self.notebook = MyNotebook()
+		self.wtree = gtk.glade.XML(gladefile, "mainWindow", domain="slog")
+		self.wtree.signal_autoconnect(self)
+		self.main_window = self.wtree.get_widget("mainWindow")
 
 		self.main_window.set_icon_from_file(get_icon("slog.png"))
-		self.main_window.set_border_width(1)
 		self.main_window.set_title("%s %s" % (APP_NAME, VERSION))
 		self.main_window.set_size_request(396, 256)
 
+		# Restore window settings
 		(width, height) = self.conf.get_size()
 		(left, top) = self.conf.get_pos()
 		if left != 0 or top != 0:
 			self.main_window.move(left, top)
 		self.main_window.set_default_size(width, height)
 
-		#self.connect("key-press-event", self.on_press_hotkey)
-
-		# Create Actions
-		#self.uimanager = gtk.UIManager()
-		#self.set_data("ui-manager", self.uimanager)
-		#self.uimanager.insert_action_group(self.__create_action_group(), 0)
-		#self.add_accel_group(self.uimanager.get_accel_group())
-
-		#try:
-		#	uimanagerid = self.uimanager.add_ui_from_string(ui_info)
-		#except gobject.GError, msg:
-		#	print "building menus failed: %s" % msg
-
-		#vbox = gtk.VBox(False, 4)
-		#self.add(vbox)
-
-
-		self.hpaned = self.wTree.get_widget("hPaned")
+		self.hpaned = self.wtree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
+		self.tooltips = gtk.Tooltips()
+		self.notebook = MyNotebook()
+		self.sidebar = SideBar()
 
-		#self.sidebar = SideBar()
+		self.hpaned.add1(self.sidebar)
+		self.hpaned.add2(self.notebook)
+		self.new_translate_page()
 
-		#self.hpaned.add1(self.sidebar)
-		#self.hpaned.add2(self.notebook)
-		#self.new_translate_page()
-
-		#self.statusbar = gtk.Statusbar()
-		#self.context_id = self.statusbar.get_context_id("slog")
-		#vbox.pack_start(self.statusbar, False, False, 0)
+		self.statusbar = self.wtree.get_widget("statusBar")
+		self.context_id = self.statusbar.get_context_id("slog")
 
 		if self.conf.tray_start == 0:
 			self.main_window.show_all()
@@ -124,9 +76,8 @@ class MainWindow():
 		#if self.conf.spy_auto == 1:
 		#	self.spy_action.activate()
 
-		#self.add_events(gtk.gdk.KEY_PRESS_MASK)
-		#self.__load_plugins()
-		#gobject.idle_add(self.__load_plugins)
+		self.main_window.add_events(gtk.gdk.KEY_PRESS_MASK)
+		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
 		self.plugin_manager = PluginManager()
@@ -150,29 +101,6 @@ class MainWindow():
 		self.spy = Spy()
 
 		self.sidebar.set_active(self.conf.get_engine())
-
-	def __create_action_group(self):
-		entries = (
-			("FileMenu", None, _("_File")),
-			("ToolsMenu", None, _("_Tools")),
-			("HelpMenu", None, _("_Help")),
-			("NewTab",  gtk.STOCK_NEW, _("New _Tab"), "<control>T", "NewTab", self.new_translate_page),
-			("Preferences",  gtk.STOCK_PREFERENCES, _("_Preferences"), None,
-									"Preferences", self.on_preferences_activate),
-			("Close",  gtk.STOCK_CLOSE, _("_Close"), "<control>W", "Close", self.delete_event),
-			("Quit",  gtk.STOCK_QUIT, _("_Quit"), "<control>Q", "Quit", self.destroy),
-			("DictMng", gtk.STOCK_PROPERTIES, _("_Manage dictionaries"), "<control>D", "Manage dictionaries", \
-						self.on_dicts_manage_activate),
-			("About", gtk.STOCK_ABOUT,	_("_About..."), None, "About", self.on_about_activate),
-		)
-
-		self.spy_action = gtk.ToggleAction("Spy", "_Spy", "Spy service", None)
-		self.spy_action.connect("toggled", self.on_spy_clicked)
-
-		action_group = gtk.ActionGroup("AppWindowActions")
-		action_group.add_actions(entries)
-		action_group.add_action_with_accel(self.spy_action, "<control>S")
-		return action_group
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -205,7 +133,7 @@ class MainWindow():
 		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		#self.conf.set_engine(self.sidebar.get_active())
+		self.conf.set_engine(self.sidebar.get_active())
 		self.conf.save()
 		gtk.main_quit()
 
@@ -225,12 +153,12 @@ class MainWindow():
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
-		dialog = PrefsDialog(self, self.plugin_manager)
+		dialog = PrefsDialog(self.main_window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
 
 	def on_dicts_manage_activate(self, widget, data=None):
-		dialog = DictsDialog(self)
+		dialog = DictsDialog(self.main_window)
 		dialog.run()
 		dialog.destroy()
 
@@ -259,7 +187,6 @@ class MainWindow():
 		tv = self.notebook.get_page()
 		tv.set_translate(word, translate)
 
-
 	# Activated by Translate Engine
 	def on_translate(self, word, translate, newtab=False):
 		gobject.idle_add(self.__set_translate, word, translate, newtab)
@@ -276,11 +203,7 @@ class MainWindow():
 		if self.main_window.get_property("visible"):
 			self.main_window.hide()
 		else:
-			self.app_show()
-
-	def app_show(self):
-		self.main_window.show_all()
-		gobject.idle_add(self.window_present_and_focus)
+			gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
 		self.main_window.present()

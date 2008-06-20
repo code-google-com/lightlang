@@ -20,16 +20,11 @@ class SideBar(gtk.VBox):
 		self.notebook.append_page(view)
 		self.tabs.append(view)
 
-	#def notebook_set_page(self):
-	#	index = self.combo_box.get_active()
-	#	self.notebook.set_current_page(index)
-
 	def on_engine_selected(self, widget, data=None):
 		index = widget.get_active()
 		self.notebook.set_current_page(index)
 		view = self.tabs[index]
 		view.grab_focus()
-		#gobject.idle_add(self.notebook_set_page)
 
 	def get_active(self):
 		return self.combo_box.get_active()

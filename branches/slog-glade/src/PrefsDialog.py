@@ -3,7 +3,9 @@
 import os
 import gtk, gtk.gdk as gdk
 import gobject
+import gtk.glade
 
+from slog.common import *
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
@@ -162,29 +164,34 @@ class NetworkView(gtk.HBox):
 		self.cfg.proxy = widget.get_active()
 
 
-class PrefsDialog(gtk.Dialog):
+class PrefsDialog():
 	def __init__(self, parent, plugins):
-		gtk.Dialog.__init__(self, _("Preferences"), parent,
-								gtk.DIALOG_MODAL, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
 
+		gladefile = os.path.join(DATA_DIR, "slog.glade")
+		pref_glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
+		self.dialog =  pref_glade.get_widget("prefDialog")
+		
 		self.conf = SlogConf()
 
-		notebook = gtk.Notebook()
-		self.vbox.pack_start(notebook, True, True, 0)
+		#notebook = gtk.Notebook()
+		#self.vbox.pack_start(notebook, True, True, 0)
 
-		main_page = self.__create_main_page()
-		notebook.append_page(main_page, gtk.Label(_("Main")))
-		main_page.show()
+		#main_page = self.__create_main_page()
+		#notebook.append_page(main_page, gtk.Label(_("Main")))
+		#main_page.show()
 
-		network_page = NetworkView()
-		notebook.append_page(network_page, gtk.Label(_("Network")))
-		network_page.show()
+		#network_page = NetworkView()
+		#notebook.append_page(network_page, gtk.Label(_("Network")))
+		#network_page.show()
 
-		plugins_page = PluginsView(self, plugins)
-		notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
-		plugins_page.show()
+		#plugins_page = PluginsView(self, plugins)
+		#notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
+		#plugins_page.show()
 
-		notebook.show()
+		#notebook.show()
+
+	def run(self):
+		self.dialog.run()
 
 	def __create_main_page(self):
 		vbox = gtk.VBox()
