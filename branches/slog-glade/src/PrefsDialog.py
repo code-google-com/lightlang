@@ -118,160 +118,81 @@ class PluginsView(gtk.HBox):
 			self.plugins.disable_plugin(plugin_name)
 		self.btn_prop.set_sensitive(config)
 
-class NetworkView(gtk.HBox):
-	def __init__(self):
-		gtk.HBox.__init__(self, False, 0)
-
-		self.cfg = SlogConf()
-
-		vbox = gtk.VBox()
-		vbox.set_border_width(8)
-		self.pack_start(vbox, True, True, 0)
-
-		# Spy stuff
-		frame = ghlp.create_hig_frame(_("Proxy Server"))
-		vbox.pack_start(frame, False, True, 0)
-		vbox.show_all()
-
-		vbox_proxy = gtk.VBox(False, 8)
-		vbox_proxy.set_border_width(8)
-
-		check_box = gtk.CheckButton(_("Custom proxy server"))
-		check_box.connect("toggled", self.on_checkbox_toggled)
-		if self.cfg.proxy != 0:
-			check_box.set_active(True)
-		vbox_proxy.pack_start(check_box, False, True, 0)
-
-		hbox = gtk.HBox(False, 0)
-		vbox_proxy.pack_start(hbox, False, False, 0)
-
-		label = gtk.Label(_("Host/Port:"))
-		host_entry = gtk.Entry()
-
-		adj = gtk.Adjustment(0.0, 0.0, 65000.0, 1.0, 100.0, 0.0)
-		spinner = gtk.SpinButton(adj, 0, 0)
-		spinner.set_wrap(False)
-		spinner.set_size_request(64, -1)
-
-		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(host_entry, True, False, 0)
-		hbox.pack_start(spinner, False, True, 0)
-
-		frame.add(vbox_proxy)
-		vbox_proxy.show_all()
-
-	def on_checkbox_toggled(self, widget, data=None):
-		self.cfg.proxy = widget.get_active()
-
 
 class PrefsDialog():
 	def __init__(self, parent, plugins):
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
-		pref_glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
-		self.dialog =  pref_glade.get_widget("prefDialog")
+		self.pref_glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
+		self.dialog = self.pref_glade.get_widget("prefDialog")
 		
 		self.conf = SlogConf()
 
-		#notebook = gtk.Notebook()
-		#self.vbox.pack_start(notebook, True, True, 0)
+		# Creating combobox for modifer keys
+		model = gtk.ListStore(str)
+		model.append(["Ctrl"])
+		model.append(["Alt"])
+		model.append(["Shift"])
+		model.append(["Win"])
+		model.append(["None"])
+	
+		combo_keys = self.pref_glade.get_widget("comboKeys")
+		cell = gtk.CellRendererText()
+		combo_keys.pack_start(cell, True)
+		combo_keys.add_attribute(cell, "text", 0)
+		combo_keys.set_model(model)
+		combo_keys.set_active(self.conf.mod_key)
+		combo_keys.connect("changed", self.on_modkey_changed)
 
-		#main_page = self.__create_main_page()
-		#notebook.append_page(main_page, gtk.Label(_("Main")))
-		#main_page.show()
+		self.entry_proxy_host = self.pref_glade.get_widget("entryProxyHost")
+		self.entry_proxy_port = self.pref_glade.get_widget("entryProxyPort")
 
-		#network_page = NetworkView()
-		#notebook.append_page(network_page, gtk.Label(_("Network")))
-		#network_page.show()
+		self.__setup_checkbox("chkSpyAutoStart", self.conf.spy_auto)
+		self.__setup_checkbox("chkTrayExit", self.conf.tray_exit)
+		self.__setup_checkbox("chkTrayInfo", self.conf.tray_info)
+		self.__setup_checkbox("chkTrayStart", self.conf.tray_start)
+		self.__setup_checkbox("chkProxyServer", self.conf.proxy)
+
 
 		#plugins_page = PluginsView(self, plugins)
 		#notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
 		#plugins_page.show()
 
-		#notebook.show()
-
 	def run(self):
 		self.dialog.run()
 
-	def __create_main_page(self):
-		vbox = gtk.VBox()
-		vbox.set_border_width(8)
+	def destroy(self):
+		self.dialog.destroy()
 
-		# Spy stuff
-		frame = ghlp.create_hig_frame(_("Service Spy"))
-		vbox.pack_start(frame, False, True, 0)
-
-		vbox_spy = gtk.VBox(False, 8)
-		vbox_spy.set_border_width(8)
-
-		hbox = gtk.HBox(False, 0)
-		vbox_spy.pack_start(hbox, False, False, 0)
-
-		label = gtk.Label(_("Modifier key:"))
-		cmb_keys = gtk.combo_box_new_text()
-		cmb_keys.append_text("Ctrl")
-		cmb_keys.append_text("Alt")
-		cmb_keys.append_text("Shift")
-		cmb_keys.append_text("Win")
-		cmb_keys.append_text("None")
-		cmb_keys.set_active(self.conf.mod_key)
-		cmb_keys.connect("changed", self.on_modkey_changed)
-
-		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(cmb_keys, True, False, 0)
-		hbox.show_all()
-
-		check_box = self.__create_check_box(_("Autostart"), self.conf.spy_auto, "spy_auto")
-		vbox_spy.pack_start(check_box, False, True, 0)
-
-		frame.add(vbox_spy)
-		vbox_spy.show_all()
-
-		# Tray icon stuff
-		frame = ghlp.create_hig_frame(_("System Tray"))
-		vbox.pack_start(frame, False, True, 0)
-
-		vbox_tray = gtk.VBox(False, 8)
-		vbox_tray.set_border_width(8)
-
-		check_box = self.__create_check_box(_("Terminate instead of minimizing to tray icon"), self.conf.tray_exit, "tray_exit")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		check_box = self.__create_check_box(_("Notify when minimizing to tray icon"), self.conf.tray_info, "tray_info")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		check_box = self.__create_check_box(_("Start in tray"), self.conf.tray_start, "tray_start")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		frame.add(vbox_tray)
-		vbox_tray.show_all()
-
-		return vbox
-
-
-	def __create_check_box(self, text, state, name):
-		check_box = gtk.CheckButton(text)
-		check_box.connect("toggled", self.on_checkbox_toggled, name)
+	def __setup_checkbox(self, name, state):
+		checkbox = self.pref_glade.get_widget(name)
+		checkbox.connect("toggled", self.on_checkbox_toggled, name)
 		if state != 0:
-			check_box.set_active(True)
-		return check_box
+			checkbox.set_active(True)
 
 	def on_modkey_changed(self, widget, data=None):
 		idx = widget.get_active()
 		self.conf.mod_key = idx
 
-	def on_checkbox_toggled(self, widget, data):
+	def on_checkbox_toggled(self, widget, data=None):
 		if widget.get_active():
 			val = 1
 		else:
 			val = 0
 
-		if data == "tray_exit":
+		name = widget.get_name()
+		if name == "chkTrayExit":
 			self.conf.tray_exit = val
-		elif data == "tray_info":
+		elif name == "chkTrayInfo":
 			self.conf.tray_info = val
-		elif data == "tray_start":
+		elif name == "chkTrayStart":
 			self.conf.tray_start = val
-		elif data == "spy_auto":
+		elif name == "chkSpyAutoStart":
 			self.conf.spy_auto = val
+		elif name == "chkProxyServer":
+			self.conf.proxy = val
+
+			enabled = widget.get_active()
+			self.entry_proxy_host.set_sensitive(enabled)
+			self.entry_proxy_port.set_sensitive(enabled)
 

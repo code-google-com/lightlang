@@ -203,6 +203,7 @@ class MainWindow():
 		if self.main_window.get_property("visible"):
 			self.main_window.hide()
 		else:
+			self.main_window.show_all()
 			gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
