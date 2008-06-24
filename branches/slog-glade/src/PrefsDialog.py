@@ -59,8 +59,8 @@ class PrefsDialog():
 		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=1)
 		treeview.append_column(column)
 
-		selection = treeview.get_selection()
-		selection.connect("changed", self.on_plugin_clicked)
+		self.__selection = treeview.get_selection()
+		self.__selection.connect("changed", self.on_plugin_clicked)
 
 		gobject.idle_add(self.__load_plugins)
 
@@ -72,18 +72,25 @@ class PrefsDialog():
 			iter = self.plugins_model.append()
 			self.plugins_model.set(iter, 0, enabled, 1, plugin.plugin_name)
 
-	def __get_selected_plugin(self, selection):
-		model, iter = selection.get_selected()
+	def __get_selected_plugin(self):
+		model, iter = self.__selection.get_selected()
 		name = model.get_value(iter, 1)
 		plugin = self.__plugins.get_plugin(name)
 		return plugin
 
-	def on_btnPluginProps_activate(self, widget, selection):
-		plugin = self.__get_selected_plugin(selection)
+	def __setup_checkbox(self, name, state):
+		checkbox = self.__glade.get_widget(name)
+		checkbox.connect("toggled", self.on_checkbox_toggled, name)
+		if state != 0:
+			checkbox.set_active(True)
+
+	def on_btnPluginProps_clicked(self, widget, data=None):
+		print "Pressed"
+		plugin = self.__get_selected_plugin()
 		self.__plugins.configure_plugin(plugin.plugin_name, self.dialog)
 
 	def on_plugin_clicked(self, selection):
-		plugin = self.__get_selected_plugin(selection)
+		plugin = self.__get_selected_plugin()
 		self.__glade.get_widget("labelPluginDescr").set_text(plugin.plugin_description)
 		self.__glade.get_widget("labelPluginAuthor").set_text(plugin.plugin_author)
 		self.__glade.get_widget("labelPluginVersion").set_text(plugin.plugin_version)
@@ -107,20 +114,8 @@ class PrefsDialog():
 			self.__plugins.disable_plugin(plugin_name)
 		self.__glade.get_widget("btnPluginProps").set_sensitive(config)
 
-	def run(self):
-		self.dialog.run()
-
-	def destroy(self):
-		self.dialog.destroy()
-
-	def __setup_checkbox(self, name, state):
-		checkbox = self.__glade.get_widget(name)
-		checkbox.connect("toggled", self.on_checkbox_toggled, name)
-		if state != 0:
-			checkbox.set_active(True)
 
 	def on_comboKeys_changed(self, widget, data=None):
-		print "Changed"
 		idx = widget.get_active()
 		self.conf.mod_key = idx
 
@@ -146,3 +141,8 @@ class PrefsDialog():
 			self.entry_proxy_host.set_sensitive(enabled)
 			self.entry_proxy_port.set_sensitive(enabled)
 
+	def run(self):
+		self.dialog.run()
+
+	def destroy(self):
+		self.dialog.destroy()

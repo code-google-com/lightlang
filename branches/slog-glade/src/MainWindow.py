@@ -44,18 +44,18 @@ class MainWindow():
 		# Create main window
 		self.wtree = gtk.glade.XML(gladefile, "mainWindow", domain="slog")
 		self.wtree.signal_autoconnect(self)
-		self.main_window = self.wtree.get_widget("mainWindow")
+		self.window = self.wtree.get_widget("mainWindow")
 
-		self.main_window.set_icon_from_file(get_icon("slog.png"))
-		self.main_window.set_title("%s %s" % (APP_NAME, VERSION))
-		self.main_window.set_size_request(396, 256)
+		self.window.set_icon_from_file(get_icon("slog.png"))
+		self.window.set_title("%s %s" % (APP_NAME, VERSION))
+		self.window.set_size_request(396, 256)
 
 		# Restore window settings
 		(width, height) = self.conf.get_size()
 		(left, top) = self.conf.get_pos()
 		if left != 0 or top != 0:
-			self.main_window.move(left, top)
-		self.main_window.set_default_size(width, height)
+			self.window.move(left, top)
+		self.window.set_default_size(width, height)
 
 		self.hpaned = self.wtree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
@@ -71,12 +71,12 @@ class MainWindow():
 		self.context_id = self.statusbar.get_context_id("slog")
 
 		if self.conf.tray_start == 0:
-			self.main_window.show_all()
+			self.window.show_all()
 
 		#if self.conf.spy_auto == 1:
 		#	self.spy_action.activate()
 
-		self.main_window.add_events(gtk.gdk.KEY_PRESS_MASK)
+		self.window.add_events(gtk.gdk.KEY_PRESS_MASK)
 		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
@@ -117,19 +117,19 @@ class MainWindow():
 
 	def on_window_closed(self, widget, data=None):
 		if self.conf.tray_exit != 0:
-			self.main_window.destroy(widget, data)
+			self.window.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
 			n = self.__create_notify(APP_NAME, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
-		self.main_window.hide()
+		self.window.hide()
 		return True
 
 	def on_window_exit(self, widget, data=None):
-		(width, height) = self.main_window.get_size()
-		(left, top) = self.main_window.get_position()
+		(width, height) = self.window.get_size()
+		(left, top) = self.window.get_position()
 		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
@@ -153,12 +153,12 @@ class MainWindow():
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
-		dialog = PrefsDialog(self.main_window, self.plugin_manager)
+		dialog = PrefsDialog(self.window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
 
 	def on_dicts_manage_activate(self, widget, data=None):
-		dialog = DictsDialog(self.main_window)
+		dialog = DictsDialog(self.window)
 		dialog.run()
 		dialog.destroy()
 
@@ -200,15 +200,15 @@ class MainWindow():
 	###########
 
 	def window_toggle(self):
-		if self.main_window.get_property("visible"):
-			self.main_window.hide()
+		if self.window.get_property("visible"):
+			self.window.hide()
 		else:
-			self.main_window.show_all()
+			self.window.show_all()
 			gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
-		self.main_window.present()
-		self.main_window.grab_focus()
+		self.window.present()
+		self.window.grab_focus()
 
 	def new_translate_page(self, event=None):
 		label = gtk.Label()
