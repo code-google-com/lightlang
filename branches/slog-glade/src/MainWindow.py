@@ -76,10 +76,19 @@ class MainWindow():
 		#if self.conf.spy_auto == 1:
 		#	self.spy_action.activate()
 
-		self.window.add_events(gtk.gdk.KEY_PRESS_MASK)
-		gobject.idle_add(self.__load_plugins)
+		self.__load_plugins()
 
 	def __load_plugins(self):
+		
+		menu = gtk.Menu()
+		menuView = self.wtree.get_widget("menuItemView")
+		menuView.set_submenu(menu)
+		group = None
+		i = 0
+		
+		accel_group = gtk.AccelGroup()
+		self.window.add_accel_group(accel_group)
+
 		self.plugin_manager = PluginManager()
 		self.plugin_manager.scan_for_plugins()
 
@@ -95,12 +104,28 @@ class MainWindow():
 			self.sidebar.append_page(plugin, view)
 			view.show_all()
 
+			menu_item = gtk.RadioMenuItem(group, plugin)
+
+			if i < 9:
+				hotkey = ord(str(i+1))
+				menu_item.add_accelerator("activate", accel_group, hotkey, gtk.gdk.MOD1_MASK, gtk.ACCEL_VISIBLE)
+
+			menu_item.connect("activate", self.on_menuitem_view_activate, i)
+			menu.append(menu_item)
+			menu_item.show()
+
+			if i == self.conf.get_engine():
+				menu_item.set_active(True)
+
+			group = menu_item
+			i += 1
+
 			while gtk.events_pending():
 				gtk.main_iteration(False)
 
 		self.spy = Spy()
 
-		self.sidebar.set_active(self.conf.get_engine())
+		#self.sidebar.set_active(self.conf.get_engine())
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -137,12 +162,16 @@ class MainWindow():
 		self.conf.save()
 		gtk.main_quit()
 
+	def on_menuitem_view_activate(self, widget, data):
+		self.sidebar.set_active(data)
+
 	def on_press_hotkey(self, widget, event):
+		pass
 		# Process hotkey like <Alt>-1,2,3,...
-		if event.keyval in (49, 50, 51):
-			if event.state & gtk.gdk.MOD1_MASK:
-				engine = (event.keyval - 49)
-				self.sidebar.set_active(engine)
+		#if event.keyval in (49, 50, 51):
+		#	if event.state & gtk.gdk.MOD1_MASK:
+		#		engine = (event.keyval - 49)
+		#		self.sidebar.set_active(engine)
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():

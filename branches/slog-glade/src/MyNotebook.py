@@ -9,7 +9,7 @@ class MyNotebook(gtk.Notebook):
 	
 	def __create_tab_header(self, label, page):
 		hbox = gtk.HBox(False, 2)
-		hbox.pack_start(label, False, True, 0);
+		hbox.pack_start(label, False, False);
 
 		img = gtk.Image()
 		img.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
@@ -19,11 +19,16 @@ class MyNotebook(gtk.Notebook):
 		close.add(img)
 		close.connect("clicked", self.on_close_tab_clicked, page)
 
-		hbox.pack_start(close, False, False, 0);
+		hbox.pack_start(close, False, False);
 		hbox.show_all()
 		return hbox
 
 	def on_close_tab_clicked(self, widget, page):
+
+		# Always show one tab		
+		if len(self.tabs) == 1:
+			return
+
 		idx = self.page_num(page)
 		self.remove_page(idx)
 		self.tabs.remove(page)
@@ -33,11 +38,6 @@ class MyNotebook(gtk.Notebook):
 		self.append_page(page)
 		self.tabs.append(page)
 		page.show()
-
-		# Always show one tab		
-		if len(self.tabs) == 1:
-			self.set_tab_label(page, label)
-			return
 
 		header = self.__create_tab_header(label, page)
 		self.set_tab_label(page, header)

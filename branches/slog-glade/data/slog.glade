@@ -118,7 +118,7 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkMenuItem" id="menuitem3">
+              <widget class="GtkMenuItem" id="menuItemView">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_Вид</property>
                 <property name="use_underline">True</property>
