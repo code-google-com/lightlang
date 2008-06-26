@@ -61,9 +61,11 @@ class MainWindow():
 		self.hpaned.set_position(self.conf.paned)
 		self.tooltips = gtk.Tooltips()
 		self.notebook = MyNotebook()
-		self.sidebar = SideBar()
 
-		self.hpaned.add1(self.sidebar)
+		#self.sidebar = SideBar()
+		self.sidebar = self.wtree.get_widget("sideBar")
+
+		#self.hpaned.add1(self.sidebar)
 		self.hpaned.add2(self.notebook)
 		self.new_translate_page()
 
@@ -101,7 +103,8 @@ class MainWindow():
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
-			self.sidebar.append_page(plugin, view)
+			#self.sidebar.append_page(plugin, view)
+			self.sidebar.append_page(view)
 			view.show_all()
 
 			menu_item = gtk.RadioMenuItem(group, plugin)
@@ -124,8 +127,6 @@ class MainWindow():
 				gtk.main_iteration(False)
 
 		self.spy = Spy()
-
-		#self.sidebar.set_active(self.conf.get_engine())
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -158,12 +159,12 @@ class MainWindow():
 		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		self.conf.set_engine(self.sidebar.get_active())
+		self.conf.set_engine(self.sidebar.get_current_page())
 		self.conf.save()
 		gtk.main_quit()
 
 	def on_menuitem_view_activate(self, widget, data):
-		self.sidebar.set_active(data)
+		self.sidebar.set_current_page(data)
 
 	def on_press_hotkey(self, widget, event):
 		pass
