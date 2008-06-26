@@ -34,6 +34,22 @@ def create_hig_frame(title):
 	frame.show()
 	return frame
 
+def create_tab_header(label, page, callback):
+	hbox = gtk.HBox(False, 2)
+	hbox.pack_start(label, False, False);
+
+	img = gtk.Image()
+	img.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+	close = gtk.Button()
+	close.set_focus_on_click(False)
+	close.set_relief(gtk.RELIEF_NONE)
+	close.add(img)
+	close.connect("clicked", callback, page)
+
+	hbox.pack_start(close, False, False);
+	hbox.show_all()
+	return hbox
+
 class ProgressDialog(gtk.Dialog):
 	def __init__(self, parent, title, task):
 		gtk.Dialog.__init__(self, title, parent, gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,

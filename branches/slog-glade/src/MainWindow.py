@@ -10,12 +10,11 @@ from slog.common import *
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
-from slog.MyNotebook import MyNotebook
-from slog.SideBar import SideBar
 from slog.config import SlogConf
 from slog.spy import Spy
 from slog.plugins import PluginManager
 from slog.remote import SLogDBus
+import slog.gui_helper as ghlp
 
 class MainWindow():
 
@@ -57,16 +56,13 @@ class MainWindow():
 			self.window.move(left, top)
 		self.window.set_default_size(width, height)
 
+		self.tooltips = gtk.Tooltips()
 		self.hpaned = self.wtree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
-		self.tooltips = gtk.Tooltips()
-		self.notebook = MyNotebook()
-
-		#self.sidebar = SideBar()
 		self.sidebar = self.wtree.get_widget("sideBar")
 
-		#self.hpaned.add1(self.sidebar)
-		self.hpaned.add2(self.notebook)
+		self.notebook = self.wtree.get_widget("noteBook")
+		self.notebook.remove_page(0)
 		self.new_translate_page()
 
 		self.statusbar = self.wtree.get_widget("statusBar")
@@ -100,10 +96,12 @@ class MainWindow():
 			if plugin not in list_enabled:
 				continue
 
+			if i == 0:
+				self.sidebar.remove_page(0)
+
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
-			#self.sidebar.append_page(plugin, view)
 			self.sidebar.append_page(view)
 			view.show_all()
 
@@ -166,14 +164,6 @@ class MainWindow():
 	def on_menuitem_view_activate(self, widget, data):
 		self.sidebar.set_current_page(data)
 
-	def on_press_hotkey(self, widget, event):
-		pass
-		# Process hotkey like <Alt>-1,2,3,...
-		#if event.keyval in (49, 50, 51):
-		#	if event.state & gtk.gdk.MOD1_MASK:
-		#		engine = (event.keyval - 49)
-		#		self.sidebar.set_active(engine)
-
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
 			self.status_icon.set_from_file(get_icon("slog_spy.png"))
@@ -214,7 +204,8 @@ class MainWindow():
 		if newtab:
 			self.new_translate_page()
 
-		tv = self.notebook.get_page()
+		index = self.notebook.get_current_page()
+		tv = self.notebook.get_nth_page(index)
 		tv.set_translate(word, translate)
 
 	# Activated by Translate Engine
@@ -224,6 +215,16 @@ class MainWindow():
 	def on_status_changed(self, msg):
 		self.statusbar.pop(self.context_id);
 		self.statusbar.push(self.context_id, msg)
+
+	def on_close_tab_clicked(self, widget, page):
+
+		# Always show one tab		
+		if self.notebook.get_n_pages() == 1:
+			return
+
+		idx = self.notebook.page_num(page)
+		self.notebook.remove_page(idx)
+		page.destroy()
 
 	###########
 	# Private #
@@ -243,7 +244,11 @@ class MainWindow():
 	def new_translate_page(self, event=None):
 		label = gtk.Label()
 		tv = TransView(label)
-		self.notebook.add_page(label, tv)
+		self.notebook.append_page(tv)
+		header = ghlp.create_tab_header(label, tv, self.on_close_tab_clicked)
+		self.notebook.set_tab_label(tv, header)
+		tv.show()
+		self.notebook.next_page()
 
 	def run(self):
 		self.ipc = SLogDBus(self)
@@ -254,3 +259,4 @@ class MainWindow():
 		gtk.gdk.threads_enter()
 		gtk.main()
 		gtk.gdk.threads_leave()
+
