@@ -1,3 +1,9 @@
+SLog (0.9.3) unstable
+	* Проект переведен на GLADE
+	* Добавлено меню "Вид"
+
+	-- Renat Nasyrov (renatn@gmail.com) 2008/06/24
+
 SLog (0.9.2) unstable
 
 	* Система плагинов:

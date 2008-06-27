@@ -75,11 +75,11 @@ class SlogConf:
 			if conf.has_option("plugins", "enabled"):
 				self.enabled_plugins = conf.get("plugins", "enabled")
 			if conf.has_option("network", "proxy"):
-				self.proxy = conf.get("network", "proxy")
+				self.proxy = conf.getint("network", "proxy")
 			if conf.has_option("network", "proxy_host"):
 				self.proxy_host = conf.get("network", "proxy_host")
 			if conf.has_option("network", "proxy_port"):
-				self.proxy_port = conf.get("network", "proxy_port")
+				self.proxy_port = conf.getint("network", "proxy_port")
 
 			# Try import used dict list from XSL configuration
 			if self.used_dicts_list == "":

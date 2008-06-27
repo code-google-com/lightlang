@@ -2,6 +2,7 @@
 
 import os
 import gtk, gobject
+import gtk.glade
 import pynotify
 import gettext
 
@@ -9,51 +10,15 @@ from slog.common import *
 from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
-from slog.MyNotebook import MyNotebook
-from slog.SideBar import SideBar
 from slog.config import SlogConf
 from slog.spy import Spy
 from slog.plugins import PluginManager
 from slog.remote import SLogDBus
+import slog.gui_helper as ghlp
 
-ui_info = \
-'''<ui>
-		<menubar name="MenuBar">
-			<menu action="FileMenu">
-				<menuitem action="NewTab"/>
-				<separator/>
-				<menuitem action="Preferences"/>
-				<separator/>
-				<menuitem action="Close"/>
-				<menuitem action="Quit"/>
-			</menu>
-			<menu action="ToolsMenu">
-				<menuitem action="DictMng"/>
-				<menuitem action="Spy"/>
-			</menu>
-			<menu action="HelpMenu">
-				<menuitem action="About"/>
-			</menu>
-		</menubar>
-		<toolbar name="ToolBar">
-		</toolbar>
-		<popup name="TrayMenu">
-			<menuitem action="Spy"/>
-			<separator/>
-			<menuitem action="Quit"/>
-		</popup>
-</ui>'''
+class MainWindow():
 
-
-class MainWindow(gtk.Window):
-
-	def __init__(self, parent=None):
-		gtk.Window.__init__(self)
-		try:
-			self.set_screen(parent.get_screen())
-		except AttributeError:
-			self.connect('destroy', lambda *w: gtk.main_quit())
-
+	def __init__(self):
 		self.conf = SlogConf()
 
 		# Translation stuff
@@ -63,73 +28,73 @@ class MainWindow(gtk.Window):
 			pass
 		gettext.textdomain("slog")
 
+		gladefile = os.path.join(DATA_DIR, "slog.glade")
+
 		# Create tray icon 
+		tray_glade = gtk.glade.XML(gladefile, "trayMenu", domain="slog")
+		tray_glade.signal_autoconnect(self)
+		self.tray_menu = tray_glade.get_widget("trayMenu")
+
 		self.status_icon = gtk.status_icon_new_from_file(get_icon("slog.png"))
 		self.status_icon.set_tooltip(APP_NAME)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
 		# Create main window
-		self.tooltips = gtk.Tooltips()
-		self.notebook = MyNotebook()
+		self.wtree = gtk.glade.XML(gladefile, "mainWindow", domain="slog")
+		self.wtree.signal_autoconnect(self)
+		self.window = self.wtree.get_widget("mainWindow")
 
-		self.set_icon_from_file(get_icon("slog.png"))
-		self.set_border_width(1)
-		self.set_title("%s %s" % (APP_NAME, VERSION))
-		self.set_size_request(396, 256)
+		self.window.set_icon_from_file(get_icon("slog.png"))
+		self.window.set_title("%s %s" % (APP_NAME, VERSION))
+		self.window.set_size_request(396, 256)
 
+		# Restore window settings
 		(width, height) = self.conf.get_size()
 		(left, top) = self.conf.get_pos()
 		if left != 0 or top != 0:
-			self.move(left, top)
-		self.set_default_size(width, height)
+			self.window.move(left, top)
+		self.window.set_default_size(width, height)
 
-		self.connect("key-press-event", self.on_press_hotkey)
-		self.connect("delete_event", self.delete_event)
-		self.connect("destroy", self.destroy)
-
-		# Create Actions
-		self.uimanager = gtk.UIManager()
-		self.set_data("ui-manager", self.uimanager)
-		self.uimanager.insert_action_group(self.__create_action_group(), 0)
-		self.add_accel_group(self.uimanager.get_accel_group())
-
-		try:
-			uimanagerid = self.uimanager.add_ui_from_string(ui_info)
-		except gobject.GError, msg:
-			print "building menus failed: %s" % msg
-
-		vbox = gtk.VBox(False, 4)
-		self.add(vbox)
-
-		menubar = self.uimanager.get_widget("/MenuBar")
-		vbox.pack_start(menubar, False, False, 0)
-
-		self.hpaned = gtk.HPaned()
+		self.hpaned = self.wtree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
-		vbox.pack_start(self.hpaned, True, True, 0)
+		self.sidebar = self.wtree.get_widget("sideBar")
 
-		self.sidebar = SideBar()
-
-		self.hpaned.add1(self.sidebar)
-		self.hpaned.add2(self.notebook)
+		self.notebook = self.wtree.get_widget("noteBook")
+		self.notebook.remove_page(0)
 		self.new_translate_page()
 
-		self.statusbar = gtk.Statusbar()
+		#Create Spy object
+		self.spy = Spy()
+		mb_menuitem_spy = self.wtree.get_widget("menuItemSpy1")
+		tray_menuitem_spy = tray_glade.get_widget("menuItemSpy2")
+		self.spy_action = gtk.ToggleAction("Spy", "_Spy", "Spy Service", None)
+		self.spy_action.connect("activate", self.on_spy_clicked)
+		self.spy_action.connect_proxy(tray_menuitem_spy)
+		self.spy_action.connect_proxy(mb_menuitem_spy)
+
+		self.statusbar = self.wtree.get_widget("statusBar")
 		self.context_id = self.statusbar.get_context_id("slog")
-		vbox.pack_start(self.statusbar, False, False, 0)
 
 		if self.conf.tray_start == 0:
-			self.show_all()
+			self.window.show_all()
 
 		if self.conf.spy_auto == 1:
 			self.spy_action.activate()
 
-		#self.add_events(gtk.gdk.KEY_PRESS_MASK)
 		self.__load_plugins()
-		#gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
+		
+		menu = gtk.Menu()
+		menuView = self.wtree.get_widget("menuItemView")
+		menuView.set_submenu(menu)
+		group = None
+		i = 0
+		
+		accel_group = gtk.AccelGroup()
+		self.window.add_accel_group(accel_group)
+
 		self.plugin_manager = PluginManager()
 		self.plugin_manager.scan_for_plugins()
 
@@ -139,41 +104,34 @@ class MainWindow(gtk.Window):
 			if plugin not in list_enabled:
 				continue
 
+			if i == 0:
+				self.sidebar.remove_page(0)
+
 			view = self.plugin_manager.enable_plugin(plugin)
 			view.connect("translate_it", self.on_translate)
 			view.connect("changed", self.on_status_changed)
-			self.sidebar.append_page(plugin, view)
+			self.sidebar.append_page(view)
 			view.show_all()
+
+			menu_item = gtk.RadioMenuItem(group, plugin)
+
+			if i < 9:
+				hotkey = ord(str(i+1))
+				menu_item.add_accelerator("activate", accel_group, hotkey, gtk.gdk.MOD1_MASK, gtk.ACCEL_VISIBLE)
+
+			menu_item.connect("activate", self.on_menuitem_view_activate, i)
+			menu.append(menu_item)
+			menu_item.show()
+
+			if i == self.conf.get_engine():
+				menu_item.set_active(True)
+
+			group = menu_item
+			i += 1
 
 			while gtk.events_pending():
 				gtk.main_iteration(False)
 
-		self.spy = Spy()
-
-		self.sidebar.set_active(self.conf.get_engine())
-
-	def __create_action_group(self):
-		entries = (
-			("FileMenu", None, _("_File")),
-			("ToolsMenu", None, _("_Tools")),
-			("HelpMenu", None, _("_Help")),
-			("NewTab",  gtk.STOCK_NEW, _("New _Tab"), "<control>T", "NewTab", self.new_translate_page),
-			("Preferences",  gtk.STOCK_PREFERENCES, _("_Preferences"), None,
-									"Preferences", self.on_preferences_activate),
-			("Close",  gtk.STOCK_CLOSE, _("_Close"), "<control>W", "Close", self.delete_event),
-			("Quit",  gtk.STOCK_QUIT, _("_Quit"), "<control>Q", "Quit", self.destroy),
-			("DictMng", gtk.STOCK_PROPERTIES, _("_Manage dictionaries"), "<control>D", "Manage dictionaries", \
-						self.on_dicts_manage_activate),
-			("About", gtk.STOCK_ABOUT,	_("_About..."), None, "About", self.on_about_activate),
-		)
-
-		self.spy_action = gtk.ToggleAction("Spy", "_Spy", "Spy service", None)
-		self.spy_action.connect("toggled", self.on_spy_clicked)
-
-		action_group = gtk.ActionGroup("AppWindowActions")
-		action_group.add_actions(entries)
-		action_group.add_action_with_accel(self.spy_action, "<control>S")
-		return action_group
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -188,34 +146,30 @@ class MainWindow(gtk.Window):
 	# GUI Callbacks #
 	#################
 
-	def delete_event(self, widget, data=None):
+	def on_window_closed(self, widget, data=None):
 		if self.conf.tray_exit != 0:
-			self.destroy(widget, data)
+			self.window.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
 			n = self.__create_notify(APP_NAME, "Close in system tray")
 			if not n.show():
 				print "Failed to send notification"
 
-		self.hide()
+		self.window.hide()
 		return True
 
-	def destroy(self, widget, data=None):
-		(width, height) = self.get_size()
-		(left, top) = self.get_position()
+	def on_window_exit(self, widget, data=None):
+		(width, height) = self.window.get_size()
+		(left, top) = self.window.get_position()
 		self.conf.paned = self.hpaned.get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		self.conf.set_engine(self.sidebar.get_active())
+		self.conf.set_engine(self.sidebar.get_current_page())
 		self.conf.save()
 		gtk.main_quit()
 
-	def on_press_hotkey(self, widget, event):
-		# Process hotkey like <Alt>-1,2,3,...
-		if event.keyval in (49, 50, 51):
-			if event.state & gtk.gdk.MOD1_MASK:
-				engine = (event.keyval - 49)
-				self.sidebar.set_active(engine)
+	def on_menuitem_view_activate(self, widget, data):
+		self.sidebar.set_current_page(data)
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
@@ -226,12 +180,12 @@ class MainWindow(gtk.Window):
 			self.spy.stop()
 
 	def on_preferences_activate(self, widget, data=None):
-		dialog = PrefsDialog(self, self.plugin_manager)
+		dialog = PrefsDialog(self.window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
 
 	def on_dicts_manage_activate(self, widget, data=None):
-		dialog = DictsDialog(self)
+		dialog = DictsDialog(self.window)
 		dialog.run()
 		dialog.destroy()
 
@@ -250,17 +204,16 @@ class MainWindow(gtk.Window):
 		self.window_toggle()
 
 	def on_tray_popup(self, icon, event_button, event_time):
-		menu = self.uimanager.get_widget("/TrayMenu")
-		menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
+		self.tray_menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
 	#Thread safe update
 	def __set_translate(self, word, translate, newtab=False):
 		if newtab:
 			self.new_translate_page()
 
-		tv = self.notebook.get_page()
+		index = self.notebook.get_current_page()
+		tv = self.notebook.get_nth_page(index)
 		tv.set_translate(word, translate)
-
 
 	# Activated by Translate Engine
 	def on_translate(self, word, translate, newtab=False):
@@ -270,28 +223,39 @@ class MainWindow(gtk.Window):
 		self.statusbar.pop(self.context_id);
 		self.statusbar.push(self.context_id, msg)
 
+	def on_close_tab_clicked(self, widget, page):
+		# Always show one tab		
+		if self.notebook.get_n_pages() == 1:
+			page.clear()
+			return
+
+		idx = self.notebook.page_num(page)
+		self.notebook.remove_page(idx)
+		page.destroy()
+
 	###########
 	# Private #
 	###########
 
 	def window_toggle(self):
-		if self.get_property("visible"):
-			self.hide()
+		if self.window.get_property("visible"):
+			self.window.hide()
 		else:
-			self.app_show()
-
-	def app_show(self):
-		self.show_all()
-		gobject.idle_add(self.window_present_and_focus)
+			self.window.show_all()
+			gobject.idle_add(self.window_present_and_focus)
 
 	def window_present_and_focus(self):
-		self.present()
-		self.grab_focus()
+		self.window.present()
+		self.window.grab_focus()
 
 	def new_translate_page(self, event=None):
 		label = gtk.Label()
 		tv = TransView(label)
-		self.notebook.add_page(label, tv)
+		self.notebook.append_page(tv)
+		header = ghlp.create_tab_header(label, tv, self.on_close_tab_clicked)
+		self.notebook.set_tab_label(tv, header)
+		tv.show()
+		self.notebook.next_page()
 
 	def run(self):
 		self.ipc = SLogDBus(self)
@@ -302,3 +266,4 @@ class MainWindow(gtk.Window):
 		gtk.gdk.threads_enter()
 		gtk.main()
 		gtk.gdk.threads_leave()
+

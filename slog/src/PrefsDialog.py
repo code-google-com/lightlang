@@ -3,30 +3,54 @@
 import os
 import gtk, gtk.gdk as gdk
 import gobject
+import gtk.glade
 
+from slog.common import *
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
-class PluginsView(gtk.HBox):
-	def __init__(self, dialog, plugins):
-		gtk.HBox.__init__(self, False, 0)
+class PrefsDialog():
+	def __init__(self, parent, plugins):
 
-		self.dialog = dialog
-		self.plugins = plugins
+		self.__plugins = plugins
 
-		sw = gtk.ScrolledWindow()
-		sw.set_shadow_type(gtk.SHADOW_IN)
-		sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		gladefile = os.path.join(DATA_DIR, "slog.glade")
+		self.__glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
+		self.__glade.signal_autoconnect(self)
+		self.dialog = self.__glade.get_widget("prefDialog")
+		
+		self.conf = SlogConf()
 
-		self.model = gtk.ListStore(gobject.TYPE_BOOLEAN, gobject.TYPE_STRING)
-		treeview = gtk.TreeView(self.model)
-		treeview.set_rules_hint(True)
-		treeview.set_size_request(260, 200)
-		selection = treeview.get_selection()
-		selection.connect("changed", self.on_plugin_clicked)
+		# Creating combobox for modifer keys
+		model = gtk.ListStore(str)
+		model.append(["Ctrl"])
+		model.append(["Alt"])
+		model.append(["Shift"])
+		model.append(["Win"])
+		model.append(["None"])
+	
+		combo_keys = self.__glade.get_widget("comboKeys")
+		cell = gtk.CellRendererText()
+		combo_keys.pack_start(cell, True)
+		combo_keys.add_attribute(cell, "text", 0)
+		combo_keys.set_model(model)
+		combo_keys.set_active(self.conf.mod_key)
+
+		self.entry_proxy_host = self.__glade.get_widget("entryProxyHost")
+		self.entry_proxy_port = self.__glade.get_widget("entryProxyPort")
+
+		self.__setup_checkbox("chkSpyAutoStart", self.conf.spy_auto)
+		self.__setup_checkbox("chkTrayExit", self.conf.tray_exit)
+		self.__setup_checkbox("chkTrayInfo", self.conf.tray_info)
+		self.__setup_checkbox("chkTrayStart", self.conf.tray_start)
+		self.__setup_checkbox("chkProxyServer", self.conf.proxy)
+
+		self.plugins_model = gtk.ListStore(bool, str)
+		treeview = self.__glade.get_widget("tablePlugins")
+		treeview.set_model(self.plugins_model)
 
 		renderer = gtk.CellRendererToggle()
-		renderer.connect('toggled', self.on_item_toggled, self.model)
+		renderer.connect('toggled', self.on_item_toggled, self.plugins_model)
 		column = gtk.TreeViewColumn(_("Enabled"), renderer, active=0)
 		column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
 		column.set_fixed_width(64)
@@ -35,73 +59,47 @@ class PluginsView(gtk.HBox):
 		column = gtk.TreeViewColumn(_("Name"), gtk.CellRendererText(), text=1)
 		treeview.append_column(column)
 
-		sw.add(treeview)
-		treeview.show()
-
-		self.pack_start(sw, True, True, 0)
-		sw.show()
-
-		vbox = gtk.VBox(False, 8)
-		vbox.set_border_width(8)
-		vbox.set_size_request(240, 200)
-
-		label = ghlp.create_bold_label(_("Description:"))
-		vbox.pack_start(label, False, False, 0)
-
-		self.label_desc = gtk.Label()
-		vbox.pack_start(self.label_desc, False, False, 0)
-
-		label = ghlp.create_bold_label(_("Author:"))
-		vbox.pack_start(label, False, False, 0)
-
-		self.label_auth = gtk.Label()
-		vbox.pack_start(self.label_auth, False, False, 0)
-
-		label = ghlp.create_bold_label(_("Version:"))
-		vbox.pack_start(label, False, False, 0)
-
-		self.label_version = gtk.Label()
-		vbox.pack_start(self.label_version, False, False, 0)
-
-		self.btn_prop = gtk.Button(stock=gtk.STOCK_PROPERTIES)
-		self.btn_prop.set_sensitive(False)
-		self.btn_prop.connect("clicked", self.on_btn_prop_clicked, selection)
-		vbox.pack_start(self.btn_prop, False, False, 0)
-
-		self.pack_start(vbox, True, True, 0)
-		vbox.show_all()
+		self.__selection = treeview.get_selection()
+		self.__selection.connect("changed", self.on_plugin_clicked)
 
 		gobject.idle_add(self.__load_plugins)
 
 	def __load_plugins(self):
-		for pname in self.plugins.get_available():
-			plugin = self.plugins.get_plugin(pname)
+		for pname in self.__plugins.get_available():
+			plugin = self.__plugins.get_plugin(pname)
 			enabled = pname in SlogConf().get_enabled_plugins()
 
-			iter = self.model.append()
-			self.model.set(iter, 0, enabled, 1, plugin.plugin_name)
+			iter = self.plugins_model.append()
+			self.plugins_model.set(iter, 0, enabled, 1, plugin.plugin_name)
 
-	def __get_selected_plugin(self, selection):
-		model, iter = selection.get_selected()
+	def __get_selected_plugin(self):
+		model, iter = self.__selection.get_selected()
 		name = model.get_value(iter, 1)
-		plugin = self.plugins.get_plugin(name)
+		plugin = self.__plugins.get_plugin(name)
 		return plugin
 
-	def on_btn_prop_clicked(self, widget, selection):
-		plugin = self.__get_selected_plugin(selection)
-		self.plugins.configure_plugin(plugin.plugin_name, self.dialog)
+	def __setup_checkbox(self, name, state):
+		checkbox = self.__glade.get_widget(name)
+		checkbox.connect("toggled", self.on_checkbox_toggled, name)
+		if state != 0:
+			checkbox.set_active(True)
+
+	def on_btnPluginProps_clicked(self, widget, data=None):
+		print "Pressed"
+		plugin = self.__get_selected_plugin()
+		self.__plugins.configure_plugin(plugin.plugin_name, self.dialog)
 
 	def on_plugin_clicked(self, selection):
-		plugin = self.__get_selected_plugin(selection)
-		self.label_desc.set_text(plugin.plugin_description)
-		self.label_auth.set_text(plugin.plugin_author)
-		self.label_version.set_text(plugin.plugin_version)
+		plugin = self.__get_selected_plugin()
+		self.__glade.get_widget("labelPluginDescr").set_text(plugin.plugin_description)
+		self.__glade.get_widget("labelPluginAuthor").set_text(plugin.plugin_author)
+		self.__glade.get_widget("labelPluginVersion").set_text(plugin.plugin_version)
 
-		if plugin.plugin_name in self.plugins.get_enabled():
-			config = self.plugins.is_configurable(plugin.plugin_name)
-			self.btn_prop.set_sensitive(config)
+		if plugin.plugin_name in self.__plugins.get_enabled():
+			config = self.__plugins.is_configurable(plugin.plugin_name)
+			self.__glade.get_widget("btnPluginProps").set_sensitive(config)
 		else:
-			self.btn_prop.set_sensitive(False)
+			self.__glade.get_widget("btnPluginProps").set_sensitive(False)
 
 	def on_item_toggled(self, cell, path, model):
 		l_iter = model.get_iter((int(path),))
@@ -109,162 +107,42 @@ class PluginsView(gtk.HBox):
 		enabled = not enabled
 		model.set(l_iter, 0, enabled)
 		if enabled:
-			self.plugins.enable_plugin(plugin_name)
-			config = self.plugins.is_configurable(plugin_name)
+			self.__plugins.enable_plugin(plugin_name)
+			config = self.__plugins.is_configurable(plugin_name)
 		else:
 			config = False
-			self.plugins.disable_plugin(plugin_name)
-		self.btn_prop.set_sensitive(config)
-
-class NetworkView(gtk.HBox):
-	def __init__(self):
-		gtk.HBox.__init__(self, False, 0)
-
-		self.cfg = SlogConf()
-
-		vbox = gtk.VBox()
-		vbox.set_border_width(8)
-		self.pack_start(vbox, True, True, 0)
-
-		# Spy stuff
-		frame = ghlp.create_hig_frame(_("Proxy Server"))
-		vbox.pack_start(frame, False, True, 0)
-		vbox.show_all()
-
-		vbox_proxy = gtk.VBox(False, 8)
-		vbox_proxy.set_border_width(8)
-
-		check_box = gtk.CheckButton(_("Custom proxy server"))
-		check_box.connect("toggled", self.on_checkbox_toggled)
-		if self.cfg.proxy != 0:
-			check_box.set_active(True)
-		vbox_proxy.pack_start(check_box, False, True, 0)
-
-		hbox = gtk.HBox(False, 0)
-		vbox_proxy.pack_start(hbox, False, False, 0)
-
-		label = gtk.Label(_("Host/Port:"))
-		host_entry = gtk.Entry()
-
-		adj = gtk.Adjustment(0.0, 0.0, 65000.0, 1.0, 100.0, 0.0)
-		spinner = gtk.SpinButton(adj, 0, 0)
-		spinner.set_wrap(False)
-		spinner.set_size_request(64, -1)
-
-		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(host_entry, True, False, 0)
-		hbox.pack_start(spinner, False, True, 0)
-
-		frame.add(vbox_proxy)
-		vbox_proxy.show_all()
-
-	def on_checkbox_toggled(self, widget, data=None):
-		self.cfg.proxy = widget.get_active()
+			self.__plugins.disable_plugin(plugin_name)
+		self.__glade.get_widget("btnPluginProps").set_sensitive(config)
 
 
-class PrefsDialog(gtk.Dialog):
-	def __init__(self, parent, plugins):
-		gtk.Dialog.__init__(self, _("Preferences"), parent,
-								gtk.DIALOG_MODAL, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
-
-		self.conf = SlogConf()
-
-		notebook = gtk.Notebook()
-		self.vbox.pack_start(notebook, True, True, 0)
-
-		main_page = self.__create_main_page()
-		notebook.append_page(main_page, gtk.Label(_("Main")))
-		main_page.show()
-
-		network_page = NetworkView()
-		notebook.append_page(network_page, gtk.Label(_("Network")))
-		network_page.show()
-
-		plugins_page = PluginsView(self, plugins)
-		notebook.append_page(plugins_page, gtk.Label(_("Plugins")))
-		plugins_page.show()
-
-		notebook.show()
-
-	def __create_main_page(self):
-		vbox = gtk.VBox()
-		vbox.set_border_width(8)
-
-		# Spy stuff
-		frame = ghlp.create_hig_frame(_("Service Spy"))
-		vbox.pack_start(frame, False, True, 0)
-
-		vbox_spy = gtk.VBox(False, 8)
-		vbox_spy.set_border_width(8)
-
-		hbox = gtk.HBox(False, 0)
-		vbox_spy.pack_start(hbox, False, False, 0)
-
-		label = gtk.Label(_("Modifier key:"))
-		cmb_keys = gtk.combo_box_new_text()
-		cmb_keys.append_text("Ctrl")
-		cmb_keys.append_text("Alt")
-		cmb_keys.append_text("Shift")
-		cmb_keys.append_text("Win")
-		cmb_keys.append_text("None")
-		cmb_keys.set_active(self.conf.mod_key)
-		cmb_keys.connect("changed", self.on_modkey_changed)
-
-		hbox.pack_start(label, False, True, 4)
-		hbox.pack_start(cmb_keys, True, False, 0)
-		hbox.show_all()
-
-		check_box = self.__create_check_box(_("Autostart"), self.conf.spy_auto, "spy_auto")
-		vbox_spy.pack_start(check_box, False, True, 0)
-
-		frame.add(vbox_spy)
-		vbox_spy.show_all()
-
-		# Tray icon stuff
-		frame = ghlp.create_hig_frame(_("System Tray"))
-		vbox.pack_start(frame, False, True, 0)
-
-		vbox_tray = gtk.VBox(False, 8)
-		vbox_tray.set_border_width(8)
-
-		check_box = self.__create_check_box(_("Terminate instead of minimizing to tray icon"), self.conf.tray_exit, "tray_exit")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		check_box = self.__create_check_box(_("Notify when minimizing to tray icon"), self.conf.tray_info, "tray_info")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		check_box = self.__create_check_box(_("Start in tray"), self.conf.tray_start, "tray_start")
-		vbox_tray.pack_start(check_box, False, True, 0)
-
-		frame.add(vbox_tray)
-		vbox_tray.show_all()
-
-		return vbox
-
-
-	def __create_check_box(self, text, state, name):
-		check_box = gtk.CheckButton(text)
-		check_box.connect("toggled", self.on_checkbox_toggled, name)
-		if state != 0:
-			check_box.set_active(True)
-		return check_box
-
-	def on_modkey_changed(self, widget, data=None):
+	def on_comboKeys_changed(self, widget, data=None):
 		idx = widget.get_active()
 		self.conf.mod_key = idx
 
-	def on_checkbox_toggled(self, widget, data):
+	def on_checkbox_toggled(self, widget, data=None):
 		if widget.get_active():
 			val = 1
 		else:
 			val = 0
 
-		if data == "tray_exit":
+		name = widget.get_name()
+		if name == "chkTrayExit":
 			self.conf.tray_exit = val
-		elif data == "tray_info":
+		elif name == "chkTrayInfo":
 			self.conf.tray_info = val
-		elif data == "tray_start":
+		elif name == "chkTrayStart":
 			self.conf.tray_start = val
-		elif data == "spy_auto":
+		elif name == "chkSpyAutoStart":
 			self.conf.spy_auto = val
+		elif name == "chkProxyServer":
+			self.conf.proxy = val
 
+			enabled = widget.get_active()
+			self.entry_proxy_host.set_sensitive(enabled)
+			self.entry_proxy_port.set_sensitive(enabled)
+
+	def run(self):
+		self.dialog.run()
+
+	def destroy(self):
+		self.dialog.destroy()
