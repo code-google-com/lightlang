@@ -19,6 +19,7 @@ OPTIONS:
 --noconvertmode				do not convert \"dummy\" to lightlang [default=yes]
 -s, --sound-tag				add sound tags
 --info					dictionary informations from file
+--html					convert HTML tags to lightlang tags
 -h, --help				print this help
 
 USAGE examples:
@@ -34,7 +35,8 @@ $convert = 1;
 $tag_lang = "";
 $info = "";
 $help = "";
-GetOptions('convertmode!' => \$convert, 'sound-tag|s=s' => \$tag_lang, 'info=s' =>\$info, 'help|h' => \$help, '<>' => \&add);
+$html = "";
+GetOptions('convertmode!' => \$convert, 'sound-tag|s=s' => \$tag_lang, 'info=s' =>\$info, 'html' => \$html, 'help|h' => \$help, '<>' => \&add);
 
 #print help messages
 pod2usage(-message => $message, -output => \*STDOUT) if ($help);
@@ -51,7 +53,25 @@ else{
 }
 foreach (<FILE>){
 	chomp;
+	if ($html){
+		s/<(br|p)>/\\n/ig;
+		s/<(b>|b [^>]*>)/\\[/ig;
+		s/<abr>/\\</ig;
+		s/<\/abr>/\\>/ig;
+		s/<\/b>/\\]/ig;
+		s/<i>/\\(/ig;
+		s/<\/i>/\\)/ig;
+		s/<k>/\\</ig;
+		s/<\/k>/\\>/ig;
+		s/<img[^<]*>/\\[[i•]\\]/ig;
+	}
 	push @dict_data, $_;
+	my $tags = ();
+	while ($_ =~ /(<[^>]*>)/){
+		push @{$tags}, $1;
+		s/<[^>]*>//;
+	}
+	push @TAGS, $tags;
 }
 
 if ($info){
@@ -66,6 +86,32 @@ if ($info){
 			s/=/: /g;
 			print "$_\n";
 		}
+	}
+}
+
+if ($html){
+	$line = 0;
+	foreach (@dict_data){
+		my @font_tags = ();
+		foreach $match(@{$TAGS[$line]}){
+			if ($match =~ /<font/i){
+				push @font_tags, $match;
+				if ($match =~ /color/i){
+					s/<font color[^>]*>/\\</i;
+				} else{
+					s/<font[^>]*>//i;
+				}
+			} elsif ($match =~ /\/font/i){
+				if (($swap = pop @font_tags) && ($swap =~ /color/i)){
+					s/<\/font[^>]*>/\\>/i;
+				} else{
+					s/<\/font[^>]*>//i;
+				}
+			} elsif ($match =~ /<\/([a-zA-Z]+)>/i){
+				s/<(|\/)\Q${1}\E[^<]*>//ig;
+			}
+		}
+		$line++;
 	}
 }
 
@@ -87,6 +133,9 @@ if ($convert){
 			}
 			print $_.'\n';
 		} else{
+			if ($_ =~ /^data: /){
+				s/^data: //;
+			}
 			s/ / /g;#replace space " " by " " character
 			unless (($_ =~ /^data: <k>.*<\/k>$/) || ($_ =~ /^<k>[^<]*<\/k>$/)){
 				print $_.'\n';
