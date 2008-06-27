@@ -56,7 +56,6 @@ class MainWindow():
 			self.window.move(left, top)
 		self.window.set_default_size(width, height)
 
-		self.tooltips = gtk.Tooltips()
 		self.hpaned = self.wtree.get_widget("hPaned")
 		self.hpaned.set_position(self.conf.paned)
 		self.sidebar = self.wtree.get_widget("sideBar")
@@ -65,14 +64,23 @@ class MainWindow():
 		self.notebook.remove_page(0)
 		self.new_translate_page()
 
+		#Create Spy object
+		self.spy = Spy()
+		mb_menuitem_spy = self.wtree.get_widget("menuItemSpy1")
+		tray_menuitem_spy = tray_glade.get_widget("menuItemSpy2")
+		self.spy_action = gtk.ToggleAction("Spy", "_Spy", "Spy Service", None)
+		self.spy_action.connect("activate", self.on_spy_clicked)
+		self.spy_action.connect_proxy(tray_menuitem_spy)
+		self.spy_action.connect_proxy(mb_menuitem_spy)
+
 		self.statusbar = self.wtree.get_widget("statusBar")
 		self.context_id = self.statusbar.get_context_id("slog")
 
 		if self.conf.tray_start == 0:
 			self.window.show_all()
 
-		#if self.conf.spy_auto == 1:
-		#	self.spy_action.activate()
+		if self.conf.spy_auto == 1:
+			self.spy_action.activate()
 
 		self.__load_plugins()
 
@@ -124,7 +132,6 @@ class MainWindow():
 			while gtk.events_pending():
 				gtk.main_iteration(False)
 
-		self.spy = Spy()
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -217,9 +224,9 @@ class MainWindow():
 		self.statusbar.push(self.context_id, msg)
 
 	def on_close_tab_clicked(self, widget, page):
-
 		# Always show one tab		
 		if self.notebook.get_n_pages() == 1:
+			page.clear()
 			return
 
 		idx = self.notebook.page_num(page)

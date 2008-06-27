@@ -70,7 +70,6 @@ class DictsDialog():
 		self.dialog = self.__glade.get_widget("dictsDialog")
 
 		self.conf = SlogConf()
-		self.tooltips = gtk.Tooltips()
 
 		self.list_avail = AvailDataModel()
 		tree_avail = self.__glade.get_widget("tableAvailDicts")
