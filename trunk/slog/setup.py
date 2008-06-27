@@ -9,7 +9,7 @@ from distutils.command.install import install as _install
 from distutils.command.install_data import install_data as _install_data
 
 APP_NAME = "SLog"
-VERSION = "0.9.2"
+VERSION = "0.9.3"
 WEBSITE = "http://lightlang.org.ru"
 
 # Thanks to Iain Nicol for code to save the location for installed prefix
@@ -78,6 +78,7 @@ cmdclass = {
 data = [
 		('share/applications', ['data/slog.desktop']),
 		('share/pixmaps', ['data/icons/slog.png', 'data/icons/slog_spy.png']),
+		('share/slog', ['data/slog.glade']),
 		('share/locale/ru/LC_MESSAGES', ['po/slog.mo'])
 ]
 

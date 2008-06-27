@@ -3,6 +3,7 @@
 import os, shutil, stat
 import gtk, gobject
 import gtk.gdk as gdk
+import gtk.glade
 import pango
 import urllib, urllib2
 import threading
@@ -10,6 +11,8 @@ import xml.sax
 
 from bz2 import BZ2File
 import libsl
+
+from slog.common import *
 import slog.gui_helper as ghlp
 from slog.config import SlogConf
 from slog.dhandler import DictHandler
@@ -47,9 +50,8 @@ def is_path_writable(path):
 		s = os.stat(path)
 		mode = s[stat.ST_MODE] & 0777
 	else:
-	    return False
+		return False
 		
-
 	if mode & 02:
 		return True
 	elif s[stat.ST_GID] == os.getgid() and mode & 020:
@@ -59,28 +61,20 @@ def is_path_writable(path):
 
 	return False
 
-class DictsDialog(gtk.Dialog):
+class DictsDialog():
 	def __init__(self, parent):
-		gtk.Dialog.__init__(self, _("Manage dictionaries"), parent,
-								gtk.DIALOG_DESTROY_WITH_PARENT, (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
 
-		self.tooltips = gtk.Tooltips()
-		hbox = gtk.HBox(False, 0)
-		self.vbox.pack_start(hbox, True, True, 0)
+		gladefile = os.path.join(DATA_DIR, "slog.glade")
+		self.__glade = gtk.glade.XML(gladefile, "dictsDialog", domain="slog")
+		self.__glade.signal_autoconnect(self)
+		self.dialog = self.__glade.get_widget("dictsDialog")
 
-		frame_left = gtk.Frame(_(" Available "))
-		frame_left.set_border_width(4)
-		frame_right = gtk.Frame(_(" Installed "))
-		frame_right.set_border_width(4)
-
-		hbox_left = gtk.HBox(False, 4)
-		hbox_left.set_border_width(4)
-		hbox_right = gtk.HBox(False, 4)
-		hbox_right.set_border_width(4)
+		self.conf = SlogConf()
 
 		self.list_avail = AvailDataModel()
-		sw1, tree_avail = self.__create_treeview(self.list_avail)
-		avail_selection = tree_avail.get_selection()
+		tree_avail = self.__glade.get_widget("tableAvailDicts")
+		tree_avail.set_model(self.list_avail)
+		self.__avail_selection = tree_avail.get_selection()
 
 		cell = gtk.CellRendererText()
 		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
@@ -101,11 +95,12 @@ class DictsDialog(gtk.Dialog):
 		column.set_sort_column_id(COL_A_SIZE)
 		column.set_reorderable(True)
 		tree_avail.append_column(column)
-		#self.list_avail.set_sort_column_id(COL_A_TARGET, gtk.SORT_ASCENDING)
+		self.list_avail.set_sort_column_id(COL_A_TARGET, gtk.SORT_ASCENDING)
 
 		self.list_inst = InstDataModel()
-		sw2, tree_inst = self.__create_treeview(self.list_inst)
-		inst_selection = tree_inst.get_selection()
+		tree_inst = self.__glade.get_widget("tableInstDicts")
+		tree_inst.set_model(self.list_inst)
+		self.__inst_selection = tree_inst.get_selection()
 
 		renderer = gtk.CellRendererToggle()
 		renderer.connect('toggled', self.on_item_toggled, self.list_inst)
@@ -132,69 +127,17 @@ class DictsDialog(gtk.Dialog):
 		column.set_sort_column_id(COL_I_NAME)
 		column.set_reorderable(True)
 		tree_inst.append_column(column)
+
 		column = gtk.TreeViewColumn(_("Target"), gtk.CellRendererText(), text=COL_I_TARGET)
 		column.set_sort_column_id(COL_I_TARGET)
 		column.set_reorderable(True)
 		tree_inst.append_column(column)
 
-		btn_fresh = self.__create_button(gtk.STOCK_REFRESH, _("Refresh"))
-		btn_fresh.connect("clicked", self.on_btn_fresh_clicked)
-		btn_right = self.__create_button(gtk.STOCK_GO_FORWARD, _("Add"))
-		btn_right.connect("clicked", self.on_btn_right_clicked, avail_selection)
-		btn_left  = self.__create_button(gtk.STOCK_GO_BACK, _("Remove"))
-		btn_left.connect("clicked", self.on_btn_left_clicked, inst_selection)
-		btn_up    = self.__create_button(gtk.STOCK_GO_UP, _("Up"))
-		btn_up.connect("clicked", self.on_btn_up_clicked, inst_selection)
-		btn_down  = self.__create_button(gtk.STOCK_GO_DOWN, _("Down"))
-		btn_down.connect("clicked", self.on_btn_down_clicked, inst_selection)
+	def run(self):
+		self.dialog.run()
 
-		vbox_left, vbox_1 = self.__create_bbox()
-		vbox_right, vbox_2 = self.__create_bbox()
-
-		vbox_1.pack_start(btn_fresh, False, False, 0)
-		vbox_1.pack_start(btn_right, False, False, 0)
-		vbox_2.pack_start(btn_up, False, False, 0)
-		vbox_2.pack_start(btn_left, False, False, 0)
-		vbox_2.pack_start(btn_down, False, False, 0)
-
-		hbox_left.pack_start(sw1, True, True, 0)
-		hbox_left.pack_start(vbox_left, False, False, 0)
-
-		hbox_right.pack_start(vbox_right, False, False, 0)
-		hbox_right.pack_start(sw2, True, True, 0)
-
-		frame_left.add(hbox_left)
-		frame_right.add(hbox_right)
-
-		hbox.pack_start(frame_left, True, True, 0)
-		hbox.pack_start(frame_right, True, True, 0)
-		hbox.show_all()
-
-		self.conf = SlogConf()
-
-	def __create_treeview(self, model):
-		scrollwin = gtk.ScrolledWindow()
-		scrollwin.set_shadow_type(gtk.SHADOW_IN)
-		scrollwin.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-
-		treeview = gtk.TreeView(model)
-		treeview.set_rules_hint(True)
-		treeview.set_size_request(360, 280)
-		#treeview.set_fixed_height_mode(True)
-
-		scrollwin.add(treeview)
-		return scrollwin, treeview
-
-	def	__create_button(self, stock, tooltip):
-		btn = ghlp.create_speed_button(stock)
-		self.tooltips.set_tip(btn, tooltip)
-		return btn
-
-	def __create_bbox(self):
-		vbox_out = gtk.VBox(False, 4)
-		vbox_in = gtk.VBox(False, 4)
-		vbox_out.pack_start(vbox_in, True, False, 0)
-		return vbox_out, vbox_in
+	def destroy(self):
+		self.dialog.destroy()
 
 	# Thread function, showing progressbar while connecting
 	def __wait_connection(self, event, progressbar):
@@ -216,7 +159,7 @@ class DictsDialog(gtk.Dialog):
 				self.pg.pulse()
 
 		elif event.state == DL_STATE_ERROR:
-			gobject.idle_add(ghlp.show_error, self, event.msg)
+			gobject.idle_add(ghlp.show_error, self.dialog, event.msg)
 
 		elif event.state == DL_STATE_DONE:
 			dname, dtarget = libsl.filename_parse(event.data)
@@ -235,8 +178,8 @@ class DictsDialog(gtk.Dialog):
 		self.list_avail.refresh()
 
 	# Install dictionary
-	def on_btn_right_clicked(self, widget, selection):
-		(model, l_iter) = selection.get_selected()
+	def on_btn_right_clicked(self, widget, data=None):
+		(model, l_iter) = self.__avail_selection.get_selected()
 		if l_iter is None:
 			return
 
@@ -245,12 +188,12 @@ class DictsDialog(gtk.Dialog):
 		#Check duplicate
 		ff = os.path.join(self.conf.sl_dicts_dir, fname[:-4])
 		if os.path.isfile(ff):
-			ghlp.show_error(self, _("Dictionary already installed!"))
+			ghlp.show_error(self.dialog, _("Dictionary already installed!"))
 			return
 
 		#Check permissions
 		if not is_path_writable(self.conf.sl_dicts_dir):
-			ghlp.show_error(self, _("You do not have permissions!"))
+			ghlp.show_error(self.dialog, _("You do not have permissions!"))
 			return
 
 		ghlp.change_cursor(gdk.Cursor(gdk.WATCH))
@@ -259,7 +202,7 @@ class DictsDialog(gtk.Dialog):
 		installer = DictInstaller(fname, event)
 		installer.connect(self.on_installer_change)
 
-		self.pg = ghlp.ProgressDialog(self, "Installation...", "Connecting...")
+		self.pg = ghlp.ProgressDialog(self.dialog, "Installation...", "Connecting...")
 		self.pg.connect("response", lambda x, y: (y == -6 and installer.cancel()))
 		self.pg.show_all()
 
@@ -268,8 +211,8 @@ class DictsDialog(gtk.Dialog):
 		installer.start()
 
 	# Remove installed dictionary
-	def on_btn_left_clicked(self, widget, selection):
-		(model, l_iter) = selection.get_selected()
+	def on_btn_left_clicked(self, widget, data=None):
+		(model, l_iter) = self.__inst_selection.get_selected()
 		if l_iter is None:
 			return
 		dname, dtarget = model.get(l_iter, COL_I_NAME, COL_I_TARGET)
@@ -277,11 +220,11 @@ class DictsDialog(gtk.Dialog):
 
 		#Check permissions
 		if not is_path_writable(self.conf.sl_dicts_dir):
-			ghlp.show_error(self, _("You do not have permissions!"))
+			ghlp.show_error(self.dialog, _("You do not have permissions!"))
 			return
 
 		#Question user to delete dictionary
-		dlg = gtk.MessageDialog(self,
+		dlg = gtk.MessageDialog(self.dialog,
 					gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
 					gtk.MESSAGE_QUESTION,
 					gtk.BUTTONS_YES_NO,
@@ -297,20 +240,20 @@ class DictsDialog(gtk.Dialog):
 				os.unlink(path)
 			except OSError, oserr:
 				msg = oserr.strerror
-				ghlp.show_error(self, _("An error happened while erasing dictionary!\n%s\n%s") % (msg, path))
+				ghlp.show_error(self.dialog, _("An error happened while erasing dictionary!\n%s\n%s") % (msg, path))
 			else:
 				model.remove(l_iter)
 				self.sync_used_dicts()
 
-	def on_btn_up_clicked(self, widget, selection):
-		(model, iter) = selection.get_selected()
+	def on_btn_up_clicked(self, widget, data=None):
+		(model, iter) = self.__inst_selection.get_selected()
 		if iter is None:
 			return
 		model.move_after(iter, None)
 		self.sync_used_dicts()
 
-	def on_btn_down_clicked(self, widget, selection):
-		(model, iter) = selection.get_selected()
+	def on_btn_down_clicked(self, widget, data=None):
+		(model, iter) = self.__inst_selection.get_selected()
 		if iter is None:
 			return
 		model.move_before(iter, None)
@@ -526,7 +469,7 @@ class DictInstaller(threading.Thread):
 			return
 
 		except EOFError, msg:
-			ghlp.show_error(self, str(msg))
+			ghlp.show_error(self.dialog, str(msg))
 		else:
 			self.__filename = self.__filename[:-4]
 		finally:
