@@ -4,7 +4,6 @@ import os
 import gtk, gobject
 import gtk.glade
 import pynotify
-import gettext
 
 from slog.common import *
 from slog.TransPanel import TransView
@@ -20,13 +19,6 @@ class MainWindow():
 
 	def __init__(self):
 		self.conf = SlogConf()
-
-		# Translation stuff
-		try:
-			gettext.install("slog", LOCALE_DIR, unicode=1)
-		except:
-			pass
-		gettext.textdomain("slog")
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
 

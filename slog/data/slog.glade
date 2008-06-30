@@ -488,7 +488,6 @@
                                 <property name="sensitive">False</property>
                                 <property name="can_focus">True</property>
                                 <signal name="changed" handler="on_proxyhost_changed"/>
-                                <signal name="editing_done" handler="on_proxyhost_done"/>
                               </widget>
                               <packing>
                                 <property name="fill">False</property>

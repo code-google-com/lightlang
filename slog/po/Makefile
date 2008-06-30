@@ -9,7 +9,7 @@ default: ru.po
 	msgfmt --output-file=slog.mo ru.po
 
 update: $(SOURCES)
-	xgettext --language=Python --keyword=_ --output=slog.po $(SOURCES) $(PLUGINS)
+	xgettext --language=Python --keyword=_ --keyword=N_ --output=slog.po $(SOURCES) $(PLUGINS) slog.glade.h
 	msgmerge -U ru.po slog.po
     
 clean:
