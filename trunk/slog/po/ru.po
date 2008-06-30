@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SLog 0.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-08 12:13+0400\n"
+"POT-Creation-Date: 2008-06-30 16:58+0400\n"
 "PO-Revision-Date: 2007-12-25 23:52+0300\n"
 "Last-Translator: Renat <renatn@gmail.com>\n"
 "Language-Team: Russian\n"
@@ -18,76 +18,44 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/DictsDialog.py:60
-msgid "Manage dictionaries"
-msgstr "Управление словарями"
-
-#: ../src/DictsDialog.py:67
-msgid " Available "
-msgstr " Доступны "
-
-#: ../src/DictsDialog.py:69
-msgid " Installed "
-msgstr " Установлены "
-
-#: ../src/DictsDialog.py:83 ../src/DictsDialog.py:124 ../src/PrefsDialog.py:35
+#: ../src/DictsDialog.py:81 ../src/DictsDialog.py:123 ../src/PrefsDialog.py:61
 msgid "Name"
 msgstr "Название"
 
-#: ../src/DictsDialog.py:91 ../src/DictsDialog.py:131
+#: ../src/DictsDialog.py:89 ../src/DictsDialog.py:131
 msgid "Target"
 msgstr "Направление"
 
-#: ../src/DictsDialog.py:96
+#: ../src/DictsDialog.py:94
 msgid "Size"
 msgstr "Размер"
 
-#: ../src/DictsDialog.py:109
+#: ../src/DictsDialog.py:108
 msgid "Used"
 msgstr "Использовать"
 
-#: ../src/DictsDialog.py:117
+#: ../src/DictsDialog.py:116 slog.glade.h:25
 msgid "Spy"
 msgstr "Spy"
 
-#: ../src/DictsDialog.py:136
-msgid "Refresh"
-msgstr "Обновить"
-
-#: ../src/DictsDialog.py:138
-msgid "Add"
-msgstr "Добавить"
-
-#: ../src/DictsDialog.py:140
-msgid "Remove"
-msgstr "Удалить"
-
-#: ../src/DictsDialog.py:142
-msgid "Up"
-msgstr "Поднять"
-
-#: ../src/DictsDialog.py:144
-msgid "Down"
-msgstr "Опустить"
-
-#: ../src/DictsDialog.py:244
+#: ../src/DictsDialog.py:191
 msgid "Dictionary already installed!"
 msgstr "Словарь уже установлен!"
 
-#: ../src/DictsDialog.py:249 ../src/DictsDialog.py:276
+#: ../src/DictsDialog.py:196 ../src/DictsDialog.py:223
 msgid "You do not have permissions!"
 msgstr "У вас не хватает прав на запись!"
 
-#: ../src/DictsDialog.py:284
+#: ../src/DictsDialog.py:231
 msgid "Are you sure you want uninstall this dictionary?"
 msgstr "Вы дйествительно хотите удалить словарь?"
 
-#: ../src/DictsDialog.py:285
+#: ../src/DictsDialog.py:232
 #, fuzzy
 msgid "Uninstall dictionary"
 msgstr "Управление словарями"
 
-#: ../src/DictsDialog.py:296
+#: ../src/DictsDialog.py:243
 #, python-format
 msgid ""
 "An error happened while erasing dictionary!\n"
@@ -103,97 +71,9 @@ msgstr "Перевести"
 msgid "Empty text"
 msgstr ""
 
-#: ../src/MainWindow.py:157
-msgid "_File"
-msgstr "_Файл"
-
-#: ../src/MainWindow.py:158
-msgid "_Tools"
-msgstr "_Инструменты"
-
-#: ../src/MainWindow.py:159
-msgid "_Help"
-msgstr "_Помощь"
-
-#: ../src/MainWindow.py:160
-msgid "New _Tab"
-msgstr "_Новая вкладка"
-
-#: ../src/MainWindow.py:161
-msgid "_Preferences"
-msgstr "_Параметры"
-
-#: ../src/MainWindow.py:163
-msgid "_Close"
-msgstr "_Закрыть"
-
-#: ../src/MainWindow.py:164
-msgid "_Quit"
-msgstr "_Выход"
-
-#: ../src/MainWindow.py:165
-msgid "_Manage dictionaries"
-msgstr "_Управление словарями"
-
-#: ../src/MainWindow.py:167
-msgid "_About..."
-msgstr "О _программе..."
-
-#: ../src/PrefsDialog.py:30
+#: ../src/PrefsDialog.py:56
 msgid "Enabled"
 msgstr "Включен"
-
-#: ../src/PrefsDialog.py:48
-msgid "Description:"
-msgstr "Описание:"
-
-#: ../src/PrefsDialog.py:54
-msgid "Author:"
-msgstr "Автор:"
-
-#: ../src/PrefsDialog.py:60
-msgid "Version:"
-msgstr "Версия"
-
-#: ../src/PrefsDialog.py:121
-msgid "Preferences"
-msgstr "Параметры"
-
-#: ../src/PrefsDialog.py:130
-msgid "Main"
-msgstr "Основное"
-
-#: ../src/PrefsDialog.py:134
-msgid "Plugins"
-msgstr "Плагины"
-
-#: ../src/PrefsDialog.py:144
-msgid "Service Spy"
-msgstr "Сервис Spy"
-
-#: ../src/PrefsDialog.py:153
-msgid "Modifier key:"
-msgstr "Клавиша модификатор:"
-
-#: ../src/PrefsDialog.py:167
-msgid "Autostart"
-msgstr "Автозапуск"
-
-#: ../src/PrefsDialog.py:174
-msgid "System Tray"
-msgstr "Системный лоток"
-
-#: ../src/PrefsDialog.py:180
-msgid "Terminate instead of minimizing to tray icon"
-msgstr "Завершить приложение, а не сворачивать в системный лоток"
-
-#: ../src/PrefsDialog.py:183
-msgid "Notify when minimizing to tray icon"
-msgstr "Сообщить при сворачивании в системный лоток"
-
-#: ../src/PrefsDialog.py:186
-msgid "Start in tray"
-msgstr "При запуске сворачивать в системный лоток"
 
 #: ../src/TransPanel.py:54
 msgid "Welcome"
@@ -233,3 +113,147 @@ msgstr "Управление словарями"
 msgid "Path not exists!"
 msgstr "Путь не существует!"
 
+#: slog.glade.h:1
+msgid "<b> Available </b>"
+msgstr "<b> Доступны </b>"
+
+#: slog.glade.h:2
+msgid "<b> Installed </b>"
+msgstr "<b> Установлены </b>"
+
+#: slog.glade.h:3
+msgid "<b>Author:</b>"
+msgstr "<b>Автор:</b>"
+
+#: slog.glade.h:4
+msgid "<b>Description:</b>"
+msgstr "<b>Описание:</b>"
+
+#: slog.glade.h:5
+msgid "<b>Proxy Server</b>"
+msgstr "<b>Прокси-сервер</b>"
+
+#: slog.glade.h:6
+msgid "<b>Service Spy</b>"
+msgstr "<b>Сервис Spy</b>"
+
+#: slog.glade.h:7
+msgid "<b>System Tray</b>"
+msgstr "<b>Системный лоток</b>"
+
+#: slog.glade.h:8
+msgid "<b>Version:</b>"
+msgstr "<b>Версия:</b>"
+
+#: slog.glade.h:9
+msgid "Autostart"
+msgstr "Автозапуск"
+
+#: slog.glade.h:10
+msgid "Custom proxy server"
+msgstr "Настроить прокси-сервер"
+
+#: slog.glade.h:11
+msgid "Down"
+msgstr "Опустить"
+
+#: slog.glade.h:13
+msgid "Host/Port:"
+msgstr "Хост/Порт"
+
+#: slog.glade.h:14
+msgid "Install"
+msgstr "Установить"
+
+#: slog.glade.h:15
+msgid "Main"
+msgstr "Основное"
+
+#: slog.glade.h:16
+msgid "Manage dictionaries"
+msgstr "Управление словарями"
+
+#: slog.glade.h:17
+msgid "Modifier key:"
+msgstr "Клавиша модификатор:"
+
+#: slog.glade.h:18
+msgid "Network"
+msgstr "Сеть"
+
+#: slog.glade.h:19
+msgid "New _Tab"
+msgstr "_Новая вкладка"
+
+#: slog.glade.h:20
+msgid "No active engine"
+msgstr ""
+
+#: slog.glade.h:21
+msgid "Notify when minimizing to tray icon"
+msgstr "Сообщить при сворачивании в системный лоток"
+
+#: slog.glade.h:22
+msgid "Plugins"
+msgstr "Модули"
+
+#: slog.glade.h:23
+msgid "Preferences"
+msgstr "Параметры"
+
+#: slog.glade.h:24
+msgid "Refresh"
+msgstr "Обновить"
+
+#: slog.glade.h:26
+msgid "Start in tray"
+msgstr "При запуске сворачивать в системный лоток"
+
+#: slog.glade.h:27
+msgid "Terminate instead of minimizing to tray icon"
+msgstr "Завершить приложение, а не сворачивать в системный лоток"
+
+#: slog.glade.h:28
+msgid "Uninstall"
+msgstr "Удалить"
+
+#: slog.glade.h:29
+msgid "Up"
+msgstr "Поднять"
+
+#: slog.glade.h:30
+msgid "_Manage dictionaries"
+msgstr "_Управление словарями"
+
+#: slog.glade.h:31
+msgid "_Preferences"
+msgstr "_Параметры"
+
+#: slog.glade.h:32
+msgid "_Spy"
+msgstr "Spy"
+
+#: slog.glade.h:33
+msgid "_Tools"
+msgstr "_Инструменты"
+
+#~ msgid "Add"
+#~ msgstr "Добавить"
+
+#~ msgid "Remove"
+#~ msgstr "Удалить"
+
+#~ msgid "_File"
+#~ msgstr "_Файл"
+
+#~ msgid "_Help"
+#~ msgstr "_Помощь"
+
+#~ msgid "_Close"
+#~ msgstr "_Закрыть"
+
+#~ msgid "_Quit"
+#~ msgstr "_Выход"
+
+#~ msgid "_About..."
+#~ msgstr "О _программе..."
