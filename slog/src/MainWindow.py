@@ -56,8 +56,7 @@ class MainWindow():
 			self.window.move(left, top)
 		self.window.set_default_size(width, height)
 
-		self.hpaned = self.wtree.get_widget("hPaned")
-		self.hpaned.set_position(self.conf.paned)
+		self.wtree.get_widget("hPaned").set_position(self.conf.paned)
 		self.sidebar = self.wtree.get_widget("sideBar")
 
 		self.notebook = self.wtree.get_widget("noteBook")
@@ -161,7 +160,7 @@ class MainWindow():
 	def on_window_exit(self, widget, data=None):
 		(width, height) = self.window.get_size()
 		(left, top) = self.window.get_position()
-		self.conf.paned = self.hpaned.get_position()
+		self.conf.paned = self.wtree.get_widget("hPaned").get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
 		self.conf.set_engine(self.sidebar.get_current_page())

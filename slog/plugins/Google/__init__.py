@@ -56,11 +56,18 @@ class GoogleEngine:
 		import socket
 		socket.setdefaulttimeout(5)
 
+		conf = SlogConf()
+		if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
+			proxy_url = "http://%s:%s" % (conf.proxy_host, conf.proxy_port)
+			proxy_support = urllib2.ProxyHandler({"http" : proxy_url})
+			opener = urllib2.build_opener(proxy_support, urllib2.HTTPHandler)
+		else:
+			opener = urllib2.build_opener(urllib2.HTTPHandler)
+
 		src, dst = self.targets[target]
 		pair = src + "|" + dst
 
 		params = urllib.urlencode({'langpair': pair, 'text': text.encode("utf8")})
-		opener = urllib2.build_opener()
 		opener.addheaders = [('User-agent', 'Mozilla/5.0')]
 		f = opener.open("http://translate.google.com/translate_t?%s" % params)
 

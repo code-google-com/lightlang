@@ -37,7 +37,9 @@ class PrefsDialog():
 		combo_keys.set_active(self.conf.mod_key)
 
 		self.entry_proxy_host = self.__glade.get_widget("entryProxyHost")
+		self.entry_proxy_host.set_text(self.conf.proxy_host)
 		self.entry_proxy_port = self.__glade.get_widget("entryProxyPort")
+		self.entry_proxy_port.set_value(self.conf.proxy_port)
 
 		self.__setup_checkbox("chkSpyAutoStart", self.conf.spy_auto)
 		self.__setup_checkbox("chkTrayExit", self.conf.tray_exit)
@@ -85,7 +87,6 @@ class PrefsDialog():
 			checkbox.set_active(True)
 
 	def on_btnPluginProps_clicked(self, widget, data=None):
-		print "Pressed"
 		plugin = self.__get_selected_plugin()
 		self.__plugins.configure_plugin(plugin.plugin_name, self.dialog)
 
@@ -114,7 +115,6 @@ class PrefsDialog():
 			self.__plugins.disable_plugin(plugin_name)
 		self.__glade.get_widget("btnPluginProps").set_sensitive(config)
 
-
 	def on_comboKeys_changed(self, widget, data=None):
 		idx = widget.get_active()
 		self.conf.mod_key = idx
@@ -140,6 +140,12 @@ class PrefsDialog():
 			enabled = widget.get_active()
 			self.entry_proxy_host.set_sensitive(enabled)
 			self.entry_proxy_port.set_sensitive(enabled)
+
+	def on_proxyhost_changed(self, widget, data=None):
+		self.conf.proxy_host = widget.get_text()
+
+	def on_proxyport_changed(self, widget, data=None):
+		self.conf.proxy_port = widget.get_value_as_int()
 
 	def run(self):
 		self.dialog.run()
