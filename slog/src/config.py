@@ -29,6 +29,7 @@ class SlogConf:
 			self.proxy = 0
 			self.proxy_host = ""
 			self.proxy_port = 0
+			self.sl_dicts = []
 
 			self.__load()
 
@@ -80,6 +81,15 @@ class SlogConf:
 				self.proxy_host = conf.get("network", "proxy_host")
 			if conf.has_option("network", "proxy_port"):
 				self.proxy_port = conf.getint("network", "proxy_port")
+			if conf.has_section("sl_dicts"):
+				for opt in conf.options("sl_dicts"):
+					v = conf.get("sl_dicts", opt)
+					try:
+						t = eval(v)
+					except:
+						pass
+					else:
+						self.sl_dicts.append(t)
 
 			# Try import used dict list from XSL configuration
 			if self.used_dicts_list == "":
@@ -117,6 +127,14 @@ class SlogConf:
 			conf.set("network", "proxy", self.proxy)
 			conf.set("network", "proxy_host", self.proxy_host)
 			conf.set("network", "proxy_port", self.proxy_port)
+
+			conf.add_section("sl_dicts")
+			i = 1
+			for rec in self.sl_dicts:
+				print rec
+				o = "d%0.3d" % i
+				conf.set("sl_dicts", o, rec)
+				i += 1
 
 			conf.write(file(os.path.expanduser("~/.config/slog/slogrc"), "w"))
 

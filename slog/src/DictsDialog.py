@@ -51,7 +51,7 @@ def is_path_writable(path):
 		mode = s[stat.ST_MODE] & 0777
 	else:
 		return False
-		
+
 	if mode & 02:
 		return True
 	elif s[stat.ST_GID] == os.getgid() and mode & 020:
@@ -335,16 +335,18 @@ class InstDataModel(gtk.ListStore):
 		used_dict_list = conf.get_used_dicts()
 		spy_file_list = conf.get_spy_dicts()
 
-		dict_list = []
-		try:
-			dict_list = os.listdir(conf.sl_dicts_dir)
-		except OSError, msg:
-			print str(msg)
+		#dict_list = []
+		#try:
+		#	dict_list = os.listdir(conf.sl_dicts_dir)
+		#except OSError, msg:
+		#	print str(msg)
 
-		for fname in dict_list:
-			used = fname in used_dict_list
-			spy = fname in spy_file_list
+		for rec in conf.sl_dicts:
+			fname, used, spy = rec
+			#used = fname in used_dict_list
+			#spy = fname in spy_file_list
 			dname, dtarget = libsl.filename_parse(fname)
+
 			self.append_row(used, spy, dname, dtarget)
 
 		self.connect("row-changed", self.on_row_changed)
@@ -355,6 +357,7 @@ class InstDataModel(gtk.ListStore):
 						COL_I_NAME, name, COL_I_TARGET, target)
 
 	def on_row_changed(self, model, path, iter, data=None):
+		return
 		used_dicts = []
 		spy_dicts = []
 		l_iter = self.get_iter_first()
@@ -399,7 +402,7 @@ class DictInstaller(threading.Thread):
 			print msg
 		event = DictInstallerEvent(state = DL_STATE_INFO, msg = msg, data = data)
 		self.__fire_state_change(event)
-			
+
 	# Finished with Done or Error
 	def __finish(self, state, msg):
 		print msg

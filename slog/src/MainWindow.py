@@ -76,13 +76,13 @@ class MainWindow():
 		self.__load_plugins()
 
 	def __load_plugins(self):
-		
+
 		menu = gtk.Menu()
 		menuView = self.wtree.get_widget("menuItemView")
 		menuView.set_submenu(menu)
 		group = None
 		i = 0
-		
+
 		accel_group = gtk.AccelGroup()
 		self.window.add_accel_group(accel_group)
 
