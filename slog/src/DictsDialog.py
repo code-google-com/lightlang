@@ -311,7 +311,15 @@ class AvailDataModel(gtk.ListStore):
 			import socket
 			socket.setdefaulttimeout(5)
 
-			doc = urllib2.urlopen(FTP_REPO_URL)
+			conf = SlogConf()
+			if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
+				proxy_url = "http://%s:%s" % (conf.proxy_host, conf.proxy_port)
+				proxy_support = urllib2.ProxyHandler({"ftp" : proxy_url})
+				opener = urllib2.build_opener(proxy_support, urllib2.FTPHandler)
+			else:
+				opener = urllib2.build_opener(urllib2.FTPHandler)
+
+			doc = opener.open(FTP_REPO_URL)
 		except IOError, e:
 			print str(e)
 		else:
@@ -434,9 +442,16 @@ class DictInstaller(threading.Thread):
 			import socket
 			socket.setdefaulttimeout(5)
 
+			conf = SlogConf()
+			proxies = None
+			if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
+				proxy_url = "http://%s:%s" % (conf.proxy_host, conf.proxy_port)
+				proxies = {"ftp" : proxy_url}
+			downloader = urllib.FancyURLopener(proxies)
+
 			file_dist = os.path.join(SL_TMP_DIR, self.__filename)
 			url_dict = FTP_DICTS_URL +"/" + self.__filename
-			urllib.urlretrieve(url_dict, file_dist, self.url_hook_report)
+			downloader.retrieve(url_dict, file_dist, self.url_hook_report)
 
 		except IOError, ioerr:
 			state = DL_STATE_ERROR
