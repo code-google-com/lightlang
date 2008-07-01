@@ -72,6 +72,8 @@ class DictsDialog():
 		self.conf = SlogConf()
 
 		self.list_avail = AvailDataModel()
+		self.avail_filter = self.list_avail.filter_new()
+
 		tree_avail = self.__glade.get_widget("tableAvailDicts")
 		tree_avail.set_model(self.list_avail)
 		self.__avail_selection = tree_avail.get_selection()
@@ -164,7 +166,6 @@ class DictsDialog():
 		elif event.state == DL_STATE_DONE:
 			dname, dtarget = libsl.filename_parse(event.data)
 			self.list_inst.append_row(True, False, dname, dtarget)
-			self.sync_used_dicts()
 
 		if event.state in (DL_STATE_ERROR, DL_STATE_DONE, DL_STATE_CANCEL):
 			self.pg.destroy()
@@ -243,21 +244,18 @@ class DictsDialog():
 				ghlp.show_error(self.dialog, _("An error happened while erasing dictionary!\n%s\n%s") % (msg, path))
 			else:
 				model.remove(l_iter)
-				self.sync_used_dicts()
 
 	def on_btn_up_clicked(self, widget, data=None):
 		(model, iter) = self.__inst_selection.get_selected()
 		if iter is None:
 			return
 		model.move_after(iter, None)
-		self.sync_used_dicts()
 
 	def on_btn_down_clicked(self, widget, data=None):
 		(model, iter) = self.__inst_selection.get_selected()
 		if iter is None:
 			return
 		model.move_before(iter, None)
-		self.sync_used_dicts()
 
 	def on_item_toggled(self, cell, path, model):
 		column = cell.get_data("column")
@@ -265,27 +263,6 @@ class DictsDialog():
 		used = model.get_value(l_iter, column)
 		used = not used
 		model.set(l_iter, column, used)
-		self.sync_used_dicts()
-
-	def sync_used_dicts(self):
-		used_dicts = []
-		spy_dicts = []
-		l_iter = self.list_inst.get_iter_first()
-		while l_iter:
-			used, spy, name, target = self.list_inst.get(l_iter, COL_I_USED, COL_I_SPY,
-															COL_I_NAME, COL_I_TARGET)
-			fname = name + "." + target
-			if used:
-				used_dicts.append(fname)
-			if spy:
-				spy_dicts.append(fname)
-			l_iter = self.list_inst.iter_next(l_iter)
-
-		ud = "|".join(used_dicts)
-		sd = "|".join(spy_dicts)
-
-		self.conf.set_used_dicts(ud)
-		self.conf.set_spy_dicts(sd)
 
 class AvailDataModel(gtk.ListStore):
 	def __init__(self):
@@ -370,10 +347,32 @@ class InstDataModel(gtk.ListStore):
 			dname, dtarget = libsl.filename_parse(fname)
 			self.append_row(used, spy, dname, dtarget)
 
+		self.connect("row-changed", self.on_row_changed)
+
 	def append_row(self, used, spy, name, target):
 		l_iter = self.append()
 		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
 						COL_I_NAME, name, COL_I_TARGET, target)
+
+	def on_row_changed(self, model, path, iter, data=None):
+		used_dicts = []
+		spy_dicts = []
+		l_iter = self.get_iter_first()
+		while l_iter:
+			used, spy, name, target = self.get(l_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
+			fname = name + "." + target
+			if used:
+				used_dicts.append(fname)
+			if spy:
+				spy_dicts.append(fname)
+			l_iter = self.iter_next(l_iter)
+
+		ud = "|".join(used_dicts)
+		sd = "|".join(spy_dicts)
+
+		conf = SlogConf()
+		conf.set_used_dicts(ud)
+		conf.set_spy_dicts(sd)
 
 class DictInstallerEvent:
 	def __init__(self, state = 0, msg = None, data = None):
