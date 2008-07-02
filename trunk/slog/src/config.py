@@ -182,6 +182,38 @@ class SlogConf:
 		def get_dic_path(self, dic):
 			return os.path.join(self.sl_dicts_dir, dic)
 
+		def get_sl_dicts(self):
+			c_list = [r[0] for r in self.sl_dicts]
+			return c_list
+
+		def get_sl_dict_state(self, fname):
+			used = False
+			spy = False
+			c_list = [r[0] for r in self.sl_dicts]
+			if fname in c_list:
+				idx = c_list.index(fname)
+				rec = self.sl_dicts[idx]
+				used, spy = rec[1], rec[2]
+			return used, spy
+
+		def set_sl_dict_state(self, fname, used, spy):
+			c_list = [r[0] for r in self.sl_dicts]
+			if fname in c_list:
+				idx = c_list.index(fname)
+				rec = self.sl_dicts[idx]
+				if used == False and spy == False:
+					self.sl_dicts.remove(rec)
+				else:
+					rec[1], rec[2] = used, spy
+			else:
+				if used == False and spy == False:
+					pass
+				else:
+					rec = [fname, used, spy]
+					self.sl_dicts.append(rec)
+
+			print self.sl_dicts
+
 	__instance = __impl( )
 
 	def __getattr__(self, attr):

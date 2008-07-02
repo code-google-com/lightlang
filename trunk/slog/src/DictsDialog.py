@@ -329,24 +329,21 @@ class InstDataModel(gtk.ListStore):
 	def __init__(self):
 		gtk.ListStore.__init__(self, bool, bool, str, str)
 		gobject.idle_add(self.__load)
+		self.conf = SlogConf()
 
 	def __load(self):
-		conf = SlogConf()
-		used_dict_list = conf.get_used_dicts()
-		spy_file_list = conf.get_spy_dicts()
+		#used_dict_list = conf.get_used_dicts()
+		#spy_file_list = conf.get_spy_dicts()
 
-		#dict_list = []
-		#try:
-		#	dict_list = os.listdir(conf.sl_dicts_dir)
-		#except OSError, msg:
-		#	print str(msg)
+		fname_list = []
+		try:
+			fname_list = os.listdir(self.conf.sl_dicts_dir)
+		except OSError, msg:
+			print str(msg)
 
-		for rec in conf.sl_dicts:
-			fname, used, spy = rec
-			#used = fname in used_dict_list
-			#spy = fname in spy_file_list
+		for fname in fname_list:
+			used, spy = self.conf.get_sl_dict_state(fname)
 			dname, dtarget = libsl.filename_parse(fname)
-
 			self.append_row(used, spy, dname, dtarget)
 
 		self.connect("row-changed", self.on_row_changed)
@@ -356,7 +353,13 @@ class InstDataModel(gtk.ListStore):
 		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
 						COL_I_NAME, name, COL_I_TARGET, target)
 
-	def on_row_changed(self, model, path, iter, data=None):
+	def on_row_changed(self, model, path, r_iter, data=None):
+		used, spy, name, target = model.get(r_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
+		print used, spy, name, target
+
+		fname = name + "." + target
+		self.conf.set_sl_dict_state(fname, used, spy)
+
 		return
 		used_dicts = []
 		spy_dicts = []
