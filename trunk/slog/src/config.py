@@ -81,6 +81,7 @@ class SlogConf:
 				self.proxy_host = conf.get("network", "proxy_host")
 			if conf.has_option("network", "proxy_port"):
 				self.proxy_port = conf.getint("network", "proxy_port")
+
 			if conf.has_section("sl_dicts"):
 				for opt in conf.options("sl_dicts"):
 					v = conf.get("sl_dicts", opt)
@@ -131,7 +132,6 @@ class SlogConf:
 			conf.add_section("sl_dicts")
 			i = 1
 			for rec in self.sl_dicts:
-				print rec
 				o = "d%0.3d" % i
 				conf.set("sl_dicts", o, rec)
 				i += 1
@@ -152,17 +152,6 @@ class SlogConf:
 			self.left = left
 			self.top = top
 
-		def get_used_dicts(self):
-			return self.used_dicts_list.split("|")
-
-		def set_used_dicts(self, used_dicts):
-			self.used_dicts_list = used_dicts
-
-		def get_spy_dicts(self):
-			return self.spy_dicts_param.split("|")
-
-		def set_spy_dicts(self, spy_dicts):
-			self.spy_dicts_param = spy_dicts
 
 		def get_engine(self):
 			return self.engine
@@ -182,8 +171,16 @@ class SlogConf:
 		def get_dic_path(self, dic):
 			return os.path.join(self.sl_dicts_dir, dic)
 
-		def get_sl_dicts(self):
-			c_list = [r[0] for r in self.sl_dicts]
+		def get_sl_used_dicts(self):
+			isused = lambda x: x[1] == True or False
+			d_list = filter(isused, self.sl_dicts)
+			c_list = [r[0] for r in d_list]
+			return c_list
+
+		def get_sl_spy_dicts(self):
+			isspy = lambda x: x[2] == True or False
+			d_list = filter(isspy, self.sl_dicts)
+			c_list = [r[0] for r in d_list]
 			return c_list
 
 		def get_sl_dict_state(self, fname):
@@ -211,8 +208,6 @@ class SlogConf:
 				else:
 					rec = [fname, used, spy]
 					self.sl_dicts.append(rec)
-
-			print self.sl_dicts
 
 	__instance = __impl( )
 

@@ -119,7 +119,7 @@ class SLView(gtk.VBox):
 		model = self.treestore
 		model.clear()
 
-		dictionaries = self.conf.get_used_dicts()
+		dictionaries = self.conf.get_sl_used_dicts()
 		for dic in dictionaries:
 
 			filename = self.conf.get_dic_path(dic)

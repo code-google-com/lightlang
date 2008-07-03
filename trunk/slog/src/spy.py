@@ -20,7 +20,7 @@ class Spy:
 	#Thread function
 	def __fuzzy_search(self, word):
 		all_lines = []
-		used_dicts = self.conf.get_spy_dicts()
+		used_dicts = self.conf.get_sl_spy_dicts()
 		for dic in used_dicts:
 			filename = self.conf.get_dic_path(dic)
 			lines = libsl.find_word(word, libsl.SL_FIND_FUZZY, filename)
@@ -42,7 +42,7 @@ class Spy:
 
 	def __get_translate(self, word):
 		all_lines = []
-		used_dicts = self.conf.get_spy_dicts()
+		used_dicts = self.conf.get_sl_spy_dicts()
 		for dic in used_dicts:
 			filename = self.conf.get_dic_path(dic)
 			lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
