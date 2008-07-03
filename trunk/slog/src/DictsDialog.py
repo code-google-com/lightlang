@@ -37,14 +37,10 @@ from slog.dhandler import DictHandler
 	DL_STATE_CANCEL
 ) = range (4)
 
-#FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
-FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
-FTP_DICTS_URL = FTP_LL_URL + "/dicts"
-FTP_REPO_URL = FTP_DICTS_URL + "/repodata/primary.xml"
-REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
-SL_TMP_DIR = "/tmp/sl"
-
 def is_path_writable(path):
+	""" Функция возвращет True если пользователь имеет
+		права на запись в каталог, иначе False
+	"""
 
 	if os.path.exists(path):
 		s = os.stat(path)
@@ -143,8 +139,11 @@ class DictsDialog():
 	def destroy(self):
 		self.dialog.destroy()
 
-	# Thread function, showing progressbar while connecting
 	def __wait_connection(self, event, progressbar):
+		""" Функция выполняющася в отдельном потоке, изменяет
+			состояние компонента progressbar, пока не возникнет 
+			событие event
+		"""
 		while not event.isSet():
 			progressbar.pulse()
 			event.wait(0.1)
@@ -152,6 +151,8 @@ class DictsDialog():
 				gtk.main_iteration(False)
 
 	def on_installer_change(self, event):
+		"""	Обработчик событий возникающих при установке словаря.
+		"""
 		if event.state == DL_STATE_INFO:
 			if event.msg is not None:
 				self.pg.set_task(event.msg)
@@ -266,6 +267,9 @@ class DictsDialog():
 		gobject.idle_add(self.reorder_list_dicts, model)
 
 	def on_item_toggled(self, cell, path, model):
+		""" Обработчик события нажатия на галочку в таблице
+			установленных словарей		
+		"""
 		column = cell.get_data("column")
 		l_iter = model.get_iter((int(path),))
 		used = model.get_value(l_iter, column)
@@ -273,8 +277,11 @@ class DictsDialog():
 		model.set(l_iter, column, used)
 
 	def reorder_list_dicts(self, model):
-		l_iter = model.get_iter_first()
+		""" Процедура выполняющая синхронизацию таблицы установленных
+			словарей с файлом конфигурации
+		"""
 		d_list = []
+		l_iter = model.get_iter_first()
 		while l_iter:
 			used, spy, dname, dtarget, = model.get(l_iter, *range(4))
 			fname = dname + "." + dtarget
@@ -287,14 +294,16 @@ class DictsDialog():
 		self.conf.sl_dicts = d_list
 
 	def on_row_inserted(self, model, path, r_iter, data=None):
-		""" Изменен порядок 
+		""" Обработчик события изменения порядка установленных словарей
 		"""
 		gobject.idle_add(self.reorder_list_dicts, model)
 
 	def on_row_changed(self, model, path, r_iter, data=None):
+		""" Обработчик события изменения свойства либо used либо spy
+			установленного словаря
+		"""
 		used, spy, name, target = model.get(r_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
 		fname = name + "." + target
-		#print fname
 		self.conf.set_sl_dict_state(fname, used, spy)
 
 
@@ -391,7 +400,6 @@ class InstDataModel(gtk.ListStore):
 		for fname in fs_list:
 			dname, dtarget = libsl.filename_parse(fname)
 			self.append_row(False, False, dname, dtarget)
-
 
 	def append_row(self, used, spy, name, target):
 		l_iter = self.append()

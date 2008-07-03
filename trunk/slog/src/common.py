@@ -35,5 +35,12 @@ DATA_DIR   = os.path.join(INSTALL_PREFIX, "share", "slog")
 LOGO_ICON = "slog.png"
 LOGO_ICON_SPY = "slog_spy.png"
 
+#FTP_LL_URL = "ftp://ftp.lightlang.org.ru/dicts"
+FTP_LL_URL = "ftp://etc.edu.ru/pub/soft/for_linux/lightlang"
+FTP_DICTS_URL = FTP_LL_URL + "/dicts"
+FTP_REPO_URL = FTP_DICTS_URL + "/repodata/primary.xml"
+REPO_FILE = os.path.expanduser("~/.config/slog/primary.xml")
+SL_TMP_DIR = "/tmp/sl"
+
 def get_icon(filename):
 	return os.path.join(PIXMAP_DIR, filename)
