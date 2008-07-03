@@ -161,6 +161,8 @@ class MainWindow():
 
 	def on_menuitem_view_activate(self, widget, data):
 		self.sidebar.set_current_page(data)
+		view = self.sidebar.get_nth_page(data)
+		view.grab_focus()
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():

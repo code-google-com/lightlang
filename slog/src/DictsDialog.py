@@ -100,6 +100,8 @@ class DictsDialog():
 		self.list_avail.set_sort_column_id(COL_A_TARGET, gtk.SORT_ASCENDING)
 
 		self.list_inst = InstDataModel()
+		self.list_inst.connect("row-changed", self.on_row_changed)
+		self.list_inst.connect("row-inserted", self.on_row_inserted)
 		tree_inst = self.__glade.get_widget("tableInstDicts")
 		tree_inst.set_model(self.list_inst)
 		self.__inst_selection = tree_inst.get_selection()
@@ -252,10 +254,16 @@ class DictsDialog():
 		model.move_after(iter, None)
 
 	def on_btn_down_clicked(self, widget, data=None):
-		(model, iter) = self.__inst_selection.get_selected()
-		if iter is None:
+		(model, l_iter) = self.__inst_selection.get_selected()
+		if l_iter is None:
 			return
-		model.move_before(iter, None)
+
+		next_iter = model.iter_next(l_iter)
+		if next_iter is None:
+			return
+
+		model.move_after(l_iter, next_iter)
+		gobject.idle_add(self.reorder_list_dicts, model)
 
 	def on_item_toggled(self, cell, path, model):
 		column = cell.get_data("column")
@@ -263,6 +271,32 @@ class DictsDialog():
 		used = model.get_value(l_iter, column)
 		used = not used
 		model.set(l_iter, column, used)
+
+	def reorder_list_dicts(self, model):
+		l_iter = model.get_iter_first()
+		d_list = []
+		while l_iter:
+			used, spy, dname, dtarget, = model.get(l_iter, *range(4))
+			fname = dname + "." + dtarget
+			if used == spy and spy == False:
+				pass
+			else:
+				d_list.append([fname, used, spy])
+			l_iter = model.iter_next(l_iter)
+
+		self.conf.sl_dicts = d_list
+
+	def on_row_inserted(self, model, path, r_iter, data=None):
+		""" Изменен порядок 
+		"""
+		gobject.idle_add(self.reorder_list_dicts, model)
+
+	def on_row_changed(self, model, path, r_iter, data=None):
+		used, spy, name, target = model.get(r_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
+		fname = name + "." + target
+		#print fname
+		self.conf.set_sl_dict_state(fname, used, spy)
+
 
 class AvailDataModel(gtk.ListStore):
 	def __init__(self):
@@ -328,57 +362,41 @@ class AvailDataModel(gtk.ListStore):
 class InstDataModel(gtk.ListStore):
 	def __init__(self):
 		gtk.ListStore.__init__(self, bool, bool, str, str)
-		gobject.idle_add(self.__load)
 		self.conf = SlogConf()
+		self.__load()
 
 	def __load(self):
-		#used_dict_list = conf.get_used_dicts()
-		#spy_file_list = conf.get_spy_dicts()
-
-		fname_list = []
+		""" Загрузить список установленных словарей в таблицу
+		"""
+		#Cписок словарей на файловой системе в директории sl_dicts_dir
+		fs_list = []
 		try:
-			fname_list = os.listdir(self.conf.sl_dicts_dir)
+			fs_list = os.listdir(self.conf.sl_dicts_dir)
 		except OSError, msg:
 			print str(msg)
 
-		for fname in fname_list:
-			used, spy = self.conf.get_sl_dict_state(fname)
+		# Список словарей сохранненый в конфигурационом файле
+		for rec in self.conf.sl_dicts:
+			fname, used, spy = rec
+			if fname not in fs_list:
+				print "Dictionary <%s> not exists in directory" % fname
+				continue
+			else:
+				fs_list.remove(fname)
+
 			dname, dtarget = libsl.filename_parse(fname)
 			self.append_row(used, spy, dname, dtarget)
 
-		self.connect("row-changed", self.on_row_changed)
+		# Словари которые не подключены
+		for fname in fs_list:
+			dname, dtarget = libsl.filename_parse(fname)
+			self.append_row(False, False, dname, dtarget)
+
 
 	def append_row(self, used, spy, name, target):
 		l_iter = self.append()
 		self.set(l_iter, COL_I_USED, used, COL_I_SPY, spy,
 						COL_I_NAME, name, COL_I_TARGET, target)
-
-	def on_row_changed(self, model, path, r_iter, data=None):
-		used, spy, name, target = model.get(r_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
-		print used, spy, name, target
-
-		fname = name + "." + target
-		self.conf.set_sl_dict_state(fname, used, spy)
-
-		return
-		used_dicts = []
-		spy_dicts = []
-		l_iter = self.get_iter_first()
-		while l_iter:
-			used, spy, name, target = self.get(l_iter, COL_I_USED, COL_I_SPY, COL_I_NAME, COL_I_TARGET)
-			fname = name + "." + target
-			if used:
-				used_dicts.append(fname)
-			if spy:
-				spy_dicts.append(fname)
-			l_iter = self.iter_next(l_iter)
-
-		ud = "|".join(used_dicts)
-		sd = "|".join(spy_dicts)
-
-		conf = SlogConf()
-		conf.set_used_dicts(ud)
-		conf.set_spy_dicts(sd)
 
 class DictInstallerEvent:
 	def __init__(self, state = 0, msg = None, data = None):
