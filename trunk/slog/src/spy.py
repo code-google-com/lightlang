@@ -19,6 +19,11 @@ class Spy:
 
 	#Thread function
 	def __fuzzy_search(self, word):
+		""" Выполняет нечеткий поиск слова <word>, в словарях
+			отмеченных в конфигурации как <spy>. Выводит результат
+			как список, элементами которого являются гипер-ссылки на
+			похожие слова.
+		"""
 		all_lines = []
 		used_dicts = self.conf.get_sl_spy_dicts()
 		for dic in used_dicts:
@@ -41,6 +46,9 @@ class Spy:
 		gobject.idle_add(self.spy_view.set_translate, word, translate)
 
 	def __get_translate(self, word):
+		""" Возвращает доступные статьи перевода слова <word>, в словарях
+		    отмеченных в конфигурации как <spy>. 
+		"""
 		all_lines = []
 		used_dicts = self.conf.get_sl_spy_dicts()
 		for dic in used_dicts:
@@ -51,6 +59,10 @@ class Spy:
 		return all_lines
 
 	def __on_clipboard_text_received(self, clipboard, text, data):
+		""" Обработчик события появления текста в буффере обмена.
+			Выполняет поиск слова, если не найдено ни одной статьи перевода,
+			в отдельном потоке запускается функция нечеткого поиска.
+		"""
 		if text is None:
 			return
 
@@ -59,7 +71,6 @@ class Spy:
 			return
 		self.prev_selection = selection
 
-		#TODO: remove characters like , . ;
 		word = selection
 		all_lines = self.__get_translate(word)
 
@@ -157,4 +168,7 @@ class SpyView(gtk.Window):
 		x, y = self.__get_pos()
 		self.move(x, y)
 		self.show()
+
+if __name__ == "__main__" :
+	spy = Spy()
 

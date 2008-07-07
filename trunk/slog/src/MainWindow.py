@@ -123,7 +123,6 @@ class MainWindow():
 			while gtk.events_pending():
 				gtk.main_iteration(False)
 
-
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
 		n.attach_to_status_icon(self.status_icon)
@@ -131,7 +130,6 @@ class MainWindow():
 		n.set_timeout(timeout)
 		n.set_icon_from_pixbuf(gtk.gdk.pixbuf_new_from_file_at_size(get_icon("slog.png"), 48, 48))
 		return n
-
 
 	#################
 	# GUI Callbacks #

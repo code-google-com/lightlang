@@ -142,10 +142,6 @@ def levenshtein(a, b):
 		a, b = b, a
 		n, m = m, n
 
-	# My optimization
-	if (m - n) > 2:
-		return FUZZY_MAX_DISTANCE + 1
-
 	current = range(n+1)
 	for i in xrange(1, m+1):
 		previous, current = current, [i]+[0]*n
@@ -178,8 +174,9 @@ def find_word_fuzzy(utf8_word, filename):
 		else:
 			continue
 
-		if levenshtein(utf8_word, dict_word) < FUZZY_MAX_DISTANCE:
-			lines.append(dict_word)
+		distance = levenshtein(utf8_word, dict_word)
+		if distance < FUZZY_MAX_DISTANCE:
+			lines.insert(distance, dict_word)
 
 		# Save memory
 		if len(lines) > 50:
