@@ -4,7 +4,7 @@ import os
 
 APP_NAME = "SLog"
 VERSION = "0.9.3"
-WEBSITE = "http://lightlang.org.ru"
+WEBSITE = "http://vialinx.org"
 
 LICENSE = """
 SLog is a PyGTK-based GUI for the LightLang SL dictionary.
