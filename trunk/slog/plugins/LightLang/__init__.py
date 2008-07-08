@@ -160,11 +160,10 @@ class SLView():
 
 		response = dlg.run()
 		if response == gtk.RESPONSE_OK:
-			print "Saving..."
 			ddir = dir_entry.get_text()
 			if not os.path.exists(ddir):
 				ghlp.show_error(window, _("Path not exists!"))
-			conf.sl_dicts_dir = ddir
+			self.conf.sl_dicts_dir = ddir
 
 		dlg.destroy()
 
