@@ -289,6 +289,7 @@
   <widget class="GtkDialog" id="prefDialog">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Preferences</property>
+    <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
     <property name="has_separator">False</property>
@@ -676,9 +677,6 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
               <widget class="GtkButton" id="buttonClose">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -686,9 +684,6 @@
                 <property name="label" translatable="yes">Закрыть</property>
                 <property name="response_id">0</property>
               </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </widget>
           <packing>

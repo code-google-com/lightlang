@@ -5,6 +5,7 @@ import gtk, gobject
 import pango
 
 import libsl
+from slog.common import *
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
@@ -16,42 +17,28 @@ plugin_description = _("Client for LightLang SL dictionary")
 def enable():
 	return SLView()
 
-class SLView(gtk.VBox):
+def slog_init(plugin_path):
+	global path
+	path = plugin_path
+
+class SLView():
 	def __init__(self):
-		gtk.VBox.__init__(self, False, 0)
 
 		self.conf = SlogConf()
 		self.timer = 0
 		self.callbacks = {}
-
-		tooltips = gtk.Tooltips()
-		hbox = gtk.HBox(False, 0)
-		hbox.set_border_width(4)
-		self.pack_start(hbox, False, False, 0)
-
-		self.word_entry = gtk.Entry()
-		self.word_entry.set_size_request(60, -1)
-		self.word_entry.connect("activate", self.on_word_entry_activate)
-		self.word_entry.connect("changed", self.on_word_entry_changed)
-		hbox.pack_start(self.word_entry, True, True, 4)
-
-		btn_clear = ghlp.create_speed_button(gtk.STOCK_CLEAR)
-		tooltips.set_tip(btn_clear, _("Clear field"))
-		btn_clear.connect("clicked", self.on_btn_clear_clicked)
-		hbox.pack_start(btn_clear, False, False, 0)
-
-		sw = gtk.ScrolledWindow()
-		sw.set_border_width(4)
-		sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_IN)
-		self.pack_start(sw, True, True, 0)
+		
+		gladefile = os.path.join(path, "xsl.glade")
+		self.glade = gtk.glade.XML(gladefile, domain="slog")
+		self.glade.signal_autoconnect(self)
+		self.vbox = self.glade.get_widget("sl_vbox")
+		self.vbox.unparent()
+		
+		self.word_entry = self.glade.get_widget("sl_entry")
 
 		self.treestore = gtk.TreeStore(str)
-		self.treeview = gtk.TreeView(self.treestore)
-		self.treeview.set_headers_visible(False)
-		self.treeview.set_rules_hint(True)
-		self.treeview.connect("row-activated", self.on_row_activated)
-		sw.add(self.treeview)
+		self.treeview = self.glade.get_widget("sl_tree")
+		self.treeview.set_model(self.treestore)
 
 		cell = gtk.CellRendererText()
 		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
@@ -61,13 +48,6 @@ class SLView(gtk.VBox):
 		self.treestore.append(None, [_("Enter the word, please...")])
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
-
-		img = gtk.image_new_from_stock(gtk.STOCK_FIND, gtk.ICON_SIZE_MENU)
-		btn_fuzzy = gtk.Button(_("Fuzzy Search"))
-		btn_fuzzy.set_image(img)
-		btn_fuzzy.set_border_width(4)
-		btn_fuzzy.connect("clicked", self.on_btn_fuzzy_clicked)
-		self.pack_start(btn_fuzzy, False, True, 0)
 
 	def __fire_status_changed(self, message):
 		callback = self.callbacks["changed"]
@@ -160,40 +140,27 @@ class SLView(gtk.VBox):
 		self.callbacks[event] = callback
 
 	def grab_focus(self):
+		print "Focused"
 		self.word_entry.grab_focus()
 
 	# ================================ Plugin support ============================
 
+	def get_panel(self):
+		return self.vbox
+
 	def configure(self, window):
-		conf = SlogConf()
 
-		dlg = gtk.Dialog(plugin_name, window, 0, (gtk.STOCK_OK, gtk.RESPONSE_OK))
-
-		hbox = gtk.HBox(False, 8)
-		hbox.set_border_width(8)
-		dlg.vbox.pack_start(hbox, False, False, 0)
-
-		stock = gtk.image_new_from_stock(
-				gtk.STOCK_DIALOG_QUESTION,
-				gtk.ICON_SIZE_DIALOG)
-		hbox.pack_start(stock, False, False, 0)
-
-		label = gtk.Label(_("Dictionaries dir:"))
-		hbox.pack_start(label, False, False, 0)
-
-		dir_entry = gtk.Entry()
-		dir_entry.set_text(conf.sl_dicts_dir)
-		hbox.pack_start(dir_entry, True, True, 0)
-		
-		btn_browse = gtk.Button("...")
+		dlg = self.glade.get_widget("sl_pref_dialog")
+		dlg.set_transient_for(window)
+		dlg.set_default_response(gtk.RESPONSE_OK)
+		dir_entry = self.glade.get_widget("sl_dir_entry")
+		dir_entry.set_text(self.conf.sl_dicts_dir)
+		btn_browse = self.glade.get_widget("sl_btn_browse")
 		btn_browse.connect("clicked", self.on_browse_clicked, window, dir_entry)
-		hbox.pack_start(btn_browse, False, False, 0)
-
-		label.set_mnemonic_widget(dir_entry)
-		dlg.show_all()
 
 		response = dlg.run()
 		if response == gtk.RESPONSE_OK:
+			print "Saving..."
 			ddir = dir_entry.get_text()
 			if not os.path.exists(ddir):
 				ghlp.show_error(window, _("Path not exists!"))
@@ -211,8 +178,8 @@ class SLView(gtk.VBox):
 
 		response = chooser.run()
 		if response == gtk.RESPONSE_OK:
-			path = chooser.get_filename()
-			entry.set_text(path)
+			selected_path = chooser.get_filename()
+			entry.set_text(selected_path)
 
 		chooser.destroy()
 

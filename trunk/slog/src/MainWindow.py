@@ -98,11 +98,11 @@ class MainWindow():
 			if i == 0:
 				self.sidebar.remove_page(0)
 
-			view = self.plugin_manager.enable_plugin(plugin)
-			view.connect("translate_it", self.on_translate)
-			view.connect("changed", self.on_status_changed)
-			self.sidebar.append_page(view)
-			view.show_all()
+			module = self.plugin_manager.enable_plugin(plugin)
+			module.connect("translate_it", self.on_translate)
+			module.connect("changed", self.on_status_changed)
+			panel = module.get_panel()
+			self.sidebar.append_page(panel)
 
 			menu_item = gtk.RadioMenuItem(group, plugin)
 

@@ -18,6 +18,7 @@ class PrefsDialog():
 		self.__glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
 		self.__glade.signal_autoconnect(self)
 		self.dialog = self.__glade.get_widget("prefDialog")
+		self.dialog.set_transient_for(parent)
 		
 		self.conf = SlogConf()
 

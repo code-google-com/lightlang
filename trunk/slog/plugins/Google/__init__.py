@@ -15,6 +15,10 @@ plugin_description = _("Client for Google Translate")
 def enable():
 	return GoogleView()
 
+def slog_init(plugin_path):
+	global path
+	path = plugin_path
+
 LANG_ARABIC = "ar";
 LANG_CHINESE = "zh";
 LANG_ENGLISH = "en";
