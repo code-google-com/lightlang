@@ -18,6 +18,10 @@ plugin_configurable = False
 def enable():
 	return DCView()
 
+def slog_init(plugin_path):
+	global path
+	path = plugin_path
+
 class DictClient:
 	def __init__(self):
 		self.verbose = 1

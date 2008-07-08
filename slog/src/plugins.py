@@ -29,12 +29,13 @@ class PluginManager:
 			path = os.path.join(plugins_dir, modname)
 			if "__init__.py" in os.listdir(path):
 				filename = os.path.join(path, "__init__.py")
-				(stream, path, desc) = imp.find_module("__init__", [path])
+				(stream, path_mod, desc) = imp.find_module("__init__", [path])
 				try:
 					mod = imp.load_module(modname, stream, filename, desc)
 				finally:
 					stream.close()
 
+				mod.slog_init(path)
 				self.plugins[mod.plugin_name] = mod
 
 	def get_available(self):

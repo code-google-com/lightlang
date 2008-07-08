@@ -157,10 +157,8 @@ def levenshtein(a, b):
 
 def find_word_fuzzy(utf8_word, filename):
 
-	lines = []
-
 	fp = open(filename, "r")
-
+	lines = []
 	for line in fp:
 		if (line[0] == "#") or (line[0] == "\n"):
 			continue
