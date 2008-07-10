@@ -21,19 +21,19 @@ def slog_init(plugin_path):
 	global path
 	path = plugin_path
 
-class SLView():
+class SLView(object):
 	def __init__(self):
 
 		self.conf = SlogConf()
 		self.timer = 0
 		self.callbacks = {}
-		
+
 		gladefile = os.path.join(path, "xsl.glade")
 		self.glade = gtk.glade.XML(gladefile, domain="slog")
 		self.glade.signal_autoconnect(self)
 		self.vbox = self.glade.get_widget("sl_vbox")
 		self.vbox.unparent()
-		
+
 		self.word_entry = self.glade.get_widget("sl_entry")
 
 		self.treestore = gtk.TreeStore(str)
@@ -59,12 +59,8 @@ class SLView():
 		if callback is not None:
 			callback(word, translate, newtab)
 
-	def on_row_activated(self, widget, path, column, data=None):
-		treeiter = self.treestore.get_iter(path)
-		self.find_word(treeiter, newTab = True)
-
 	def on_btn_fuzzy_clicked(self, widget, data=None):
-		word = self.word_entry.get_text().lower()
+		word = self.word_entry.get_text()
 		self.find_list(word, mode = libsl.SL_FIND_FUZZY)
 
 	def on_btn_clear_clicked(self, widget, data=None):
@@ -79,7 +75,7 @@ class SLView():
 		word = self.word_entry.get_text().lower()
 		self.find_list(word)
 
-	def on_word_entry_changed(self, widget, data=None):
+	def on_word_changed(self, widget, data=None):
 		if self.timer == 0:
 			self.timer = gobject.timeout_add(500, self.on_timer_timeout)
 
@@ -107,11 +103,11 @@ class SLView():
 			count += len(items)
 			if items == []:
 				continue
-				
+
 			root_node = model.append(None, [dic])
 			for item in items:
 				model.append(root_node, [item])
-				
+
 		if count>0:
 			self.treeview.expand_all()
 			self.word_selection.select_path((0,0))
@@ -123,7 +119,7 @@ class SLView():
 	def find_word(self, treeiter, mode = libsl.SL_FIND_MATCH, newTab=False):
 		if treeiter is None:
 			return
-		
+
 		parentiter = self.treestore.iter_parent(treeiter)
 		if parentiter is None:
 			return
