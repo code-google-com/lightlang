@@ -127,7 +127,7 @@ def strcmp_jump(a, b, precent = 40) :
 
 		if (errors + (m - n)) <= hard_find:
 			return 0
-	
+
 	return 1
 
 # (c) From Wikipedia 

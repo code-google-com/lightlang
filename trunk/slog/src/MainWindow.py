@@ -15,28 +15,23 @@ from slog.plugins import PluginManager
 from slog.remote import SLogDBus
 import slog.gui_helper as ghlp
 
-class MainWindow():
+class MainWindow(object):
 
 	def __init__(self):
 		self.conf = SlogConf()
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
+		self.wtree = gtk.glade.XML(gladefile, domain="slog")
+		self.wtree.signal_autoconnect(self)
 
 		# Create tray icon 
-		tray_glade = gtk.glade.XML(gladefile, "trayMenu", domain="slog")
-		tray_glade.signal_autoconnect(self)
-		self.tray_menu = tray_glade.get_widget("trayMenu")
-
 		self.status_icon = gtk.status_icon_new_from_file(get_icon("slog.png"))
 		self.status_icon.set_tooltip(APP_NAME)
 		self.status_icon.connect("popup-menu", self.on_tray_popup)
 		self.status_icon.connect("activate", self.on_tray_clicked)
 
 		# Create main window
-		self.wtree = gtk.glade.XML(gladefile, "mainWindow", domain="slog")
-		self.wtree.signal_autoconnect(self)
 		self.window = self.wtree.get_widget("mainWindow")
-
 		self.window.set_icon_from_file(get_icon("slog.png"))
 		self.window.set_title("%s %s" % (APP_NAME, VERSION))
 		self.window.set_size_request(396, 256)
@@ -58,7 +53,7 @@ class MainWindow():
 		#Create Spy object
 		self.spy = Spy()
 		mb_menuitem_spy = self.wtree.get_widget("menuItemSpy1")
-		tray_menuitem_spy = tray_glade.get_widget("menuItemSpy2")
+		tray_menuitem_spy = self.wtree.get_widget("menuItemSpy2")
 		self.spy_action = gtk.ToggleAction("Spy", "_Spy", "Spy Service", None)
 		self.spy_action.connect("activate", self.on_spy_clicked)
 		self.spy_action.connect_proxy(tray_menuitem_spy)
@@ -195,7 +190,8 @@ class MainWindow():
 		self.window_toggle()
 
 	def on_tray_popup(self, icon, event_button, event_time):
-		self.tray_menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
+		tray_menu = self.wtree.get_widget("trayMenu")
+		tray_menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
 	#Thread safe update
 	def __set_translate(self, word, translate, newtab=False):
