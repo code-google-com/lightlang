@@ -396,10 +396,14 @@ class InstDataModel(gtk.ListStore):
 			dname, dtarget = libsl.filename_parse(fname)
 			self.append_row(used, spy, dname, dtarget)
 
-		# Словари которые не подключены
+		# Добавляем словари которые не подключены
 		for fname in fs_list:
-			dname, dtarget = libsl.filename_parse(fname)
-			self.append_row(False, False, dname, dtarget)
+			fullname = os.path.join(self.conf.sl_dicts_dir, fname)
+			if not os.path.isfile(fullname):
+				continue	
+			d_struct = libsl.filename_parse(fname)
+			if d_struct is not None:
+				self.append_row(False, False, d_struct[0], d_struct[1])
 
 	def append_row(self, used, spy, name, target):
 		l_iter = self.append()
