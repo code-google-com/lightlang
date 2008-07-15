@@ -153,9 +153,12 @@ class MainWindow(object):
 		gtk.main_quit()
 
 	def on_menuitem_view_activate(self, widget, data):
+		""" Обработчик события активизации плагина, в
+			параметре data передается номер элемента.
+		"""
 		self.sidebar.set_current_page(data)
-		view = self.sidebar.get_nth_page(data)
-		view.grab_focus()
+		plugin = self.plugin_manager.get_nth_plugin(data)
+		plugin.grab_focus()
 
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
@@ -236,6 +239,8 @@ class MainWindow(object):
 		self.window.grab_focus()
 
 	def new_translate_page(self, event=None):
+		""" Добавляет новую вкладку с окном перевода
+		"""
 		label = gtk.Label()
 		tv = TransView(label)
 		self.notebook.append_page(tv)
