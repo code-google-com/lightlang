@@ -14,18 +14,26 @@ import string
 FUZZY_MAX_DISTANCE = 4
 
 def get_dict_html_block(filename):
+	""" Возвращает html фортматированный блок
+		содержащий имя словаря
+	"""
 	dictionary = os.path.basename(filename)
 
 	return "<br/>" \
 		"<p style='background-color: #DFEDFF; font-weight: bold; text-align: center'>" \
 		"%s</p><br/>" % dictionary
 
-
-# Dictionary filename format: | Dictionary Name |.| Target |.| bz2 |
 def filename_parse(fullfilename):
+	"""	Выполняет парсинг имени файла словаря, возвращает 
+		кортеж: (имя словаря, направление перевода) или
+		None, в случае неудачи
+		filename format: | Dictionary Name |.| Target |.| bz2 |
+	"""
 	fname = os.path.basename(fullfilename)
 	i = fname.find(".")
 	j = fname.find(".", i+1)
+	if i == -1:
+		return None
 	dname = fname[:i]
 	if j == -1:
 		dtarget = fname[i+1:]
