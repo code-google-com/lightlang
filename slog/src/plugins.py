@@ -21,8 +21,9 @@ class PluginManager:
 
 	def scan_for_plugins(self):
 		""" Search installed plugins in the directory and 
-			try loaded him"""
-	
+			try loaded him
+		"""
+   
 		plugins_dir = os.path.join(DATA_DIR, "plugins")
 
 		for modname in os.listdir(plugins_dir):
@@ -39,21 +40,37 @@ class PluginManager:
 				self.plugins[mod.plugin_name] = mod
 
 	def get_available(self):
+		""" Возвращает список установленных плагинов
+		"""
 		return self.plugins.keys()
 
 	def get_enabled(self):
+		""" Возвращает список подключенных плагинов
+		"""
 		return self.enabled_plugins.keys()
 
 	def get_plugin(self, name):
+		""" Возвращает плагин по имени
+		"""
 		return self.plugins[name]
 
+	def get_nth_plugin(self, number):
+		""" Возвращает подключенный плагин по номеру
+		"""
+		name = self.enabled_plugins.keys()[number]
+		return self.enabled_plugins[name]
+
 	def enable_plugin(self, name):
+		""" Подключает плагин
+		"""
 		plugin = self.plugins[name]
 		self.enabled_plugins[name] = plugin.enable()
 		self.__sync_config()
 		return self.enabled_plugins[name]
 
 	def disable_plugin(self, name):
+		""" Отключает плагин
+		"""
 		del self.enabled_plugins[name]
 		self.__sync_config()
 

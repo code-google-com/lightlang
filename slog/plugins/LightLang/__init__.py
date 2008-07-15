@@ -135,20 +135,18 @@ class SLView(object):
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
 
-	def grab_focus(self):
-		print "Focused"
-		self.word_entry.grab_focus()
-
 	# ================================ Plugin support ============================
 
 	def get_panel(self):
 		return self.vbox
 
+	def grab_focus(self):
+		self.word_entry.grab_focus()
+
 	def configure(self, window):
 
 		dlg = self.glade.get_widget("sl_pref_dialog")
 		dlg.set_transient_for(window)
-		dlg.set_default_response(gtk.RESPONSE_OK)
 		dir_entry = self.glade.get_widget("sl_dir_entry")
 		dir_entry.set_text(self.conf.sl_dicts_dir)
 		btn_browse = self.glade.get_widget("sl_btn_browse")
