@@ -16,8 +16,7 @@ def enable():
 	return GoogleView()
 
 def slog_init(plugin_path):
-	global path
-	path = plugin_path
+	pass
 
 LANG_ARABIC = "ar";
 LANG_CHINESE = "zh";
@@ -31,7 +30,7 @@ LANG_PORTUGESE = "pt";
 LANG_RUSSIAN = "ru";
 LANG_SPANISH = "es";
 
-class GoogleEngine:
+class GoogleEngine(object):
 
 	def __init__(self):
 
@@ -58,7 +57,7 @@ class GoogleEngine:
 
 	def translate(self, target, text):
 		import socket
-		socket.setdefaulttimeout(5)
+		socket.setdefaulttimeout(10)
 
 		conf = SlogConf()
 		if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
@@ -87,18 +86,18 @@ class GoogleEngine:
 
 		return translate
 
-class GoogleView(gtk.VBox):
+class GoogleView(object):
 	def __init__(self):
-		gtk.VBox.__init__(self, False, 0)
 
 		self.callbacks = {}
 		self.google = GoogleEngine()
 		self.conf = SlogConf()
+		self.vbox = gtk.VBox(False, 0)
 
 		tooltips = gtk.Tooltips()
 		hbox = gtk.HBox(False, 4)
 		hbox.set_border_width(4)
-		self.pack_start(hbox, False, False, 0)
+		self.vbox.pack_start(hbox, False, False, 0)
 
 		self.cmb_target = gtk.combo_box_new_text()
 
@@ -116,7 +115,7 @@ class GoogleView(gtk.VBox):
 		sw.set_border_width(4)
 		sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_IN)
-		self.pack_start(sw, True, True, 0)
+		self.vbox.pack_start(sw, True, True, 0)
 
 		self.textview = gtk.TextView()
 		self.textview.set_wrap_mode(gtk.WRAP_WORD)
@@ -125,7 +124,8 @@ class GoogleView(gtk.VBox):
 		btn_translate = gtk.Button(_("Translate"))
 		btn_translate.set_border_width(4)
 		btn_translate.connect("clicked", self.on_translate_clicked)
-		self.pack_start(btn_translate, False, True, 0)
+		self.vbox.pack_start(btn_translate, False, True, 0)
+		self.vbox.show_all()
 
 	def __fire_translate_changed(self, translate):
 		callback = self.callbacks["translate_it"]
@@ -182,6 +182,14 @@ class GoogleView(gtk.VBox):
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+
+	# ================================ Plugin support ============================
+
+	def get_panel(self):
+		return self.vbox
+
+	def grab_focus(self):
+		self.textview.grab_focus()
 
 	def configure(self, window):
 		ghlp.show_error(window, "Under construction!")
