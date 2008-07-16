@@ -61,16 +61,16 @@ class DictsDialog():
 	def __init__(self, parent):
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
-		self.__glade = gtk.glade.XML(gladefile, "dictsDialog", domain="slog")
-		self.__glade.signal_autoconnect(self)
-		self.dialog = self.__glade.get_widget("dictsDialog")
+		self.wtree = gtk.glade.XML(gladefile, "dictsDialog", domain="slog")
+		self.wtree.signal_autoconnect(self)
+		self.dialog = self.wtree.get_widget("dictsDialog")
 
 		self.conf = SlogConf()
 
 		self.list_avail = AvailDataModel()
-		self.avail_filter = self.list_avail.filter_new()
+		#self.avail_filter = self.list_avail.filter_new()
 
-		tree_avail = self.__glade.get_widget("tableAvailDicts")
+		tree_avail = self.wtree.get_widget("tableAvailDicts")
 		tree_avail.set_model(self.list_avail)
 		self.__avail_selection = tree_avail.get_selection()
 
@@ -98,7 +98,7 @@ class DictsDialog():
 		self.list_inst = InstDataModel()
 		self.list_inst.connect("row-changed", self.on_row_changed)
 		self.list_inst.connect("row-inserted", self.on_row_inserted)
-		tree_inst = self.__glade.get_widget("tableInstDicts")
+		tree_inst = self.wtree.get_widget("tableInstDicts")
 		tree_inst.set_model(self.list_inst)
 		self.__inst_selection = tree_inst.get_selection()
 
