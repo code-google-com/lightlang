@@ -380,7 +380,7 @@ class InstDataModel(gtk.ListStore):
 		#Cписок словарей на файловой системе в директории sl_dicts_dir
 		fs_list = []
 		try:
-			fs_list = os.listdir(self.conf.sl_dicts_dir)
+			fs_list = [f for f in os.listdir(self.conf.sl_dicts_dir) if os.path.isfile(os.path.join(self.conf.sl_dicts_dir, f))]
 		except OSError, msg:
 			print str(msg)
 
@@ -398,9 +398,6 @@ class InstDataModel(gtk.ListStore):
 
 		# Добавляем словари которые не подключены
 		for fname in fs_list:
-			fullname = os.path.join(self.conf.sl_dicts_dir, fname)
-			if not os.path.isfile(fullname):
-				continue	
 			d_struct = libsl.filename_parse(fname)
 			if d_struct is not None:
 				self.append_row(False, False, d_struct[0], d_struct[1])
