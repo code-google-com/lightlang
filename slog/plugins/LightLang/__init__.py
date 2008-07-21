@@ -29,23 +29,23 @@ class SLView(object):
 		self.callbacks = {}
 
 		gladefile = os.path.join(path, "xsl.glade")
-		self.glade = gtk.glade.XML(gladefile, domain="slog")
-		self.glade.signal_autoconnect(self)
-		self.vbox = self.glade.get_widget("sl_vbox")
+		self.wtree = gtk.glade.XML(gladefile, domain="slog")
+		self.wtree.signal_autoconnect(self)
+		self.vbox = self.wtree.get_widget("sl_vbox")
 		self.vbox.unparent()
 
-		self.word_entry = self.glade.get_widget("sl_entry")
+		self.word_entry = self.wtree.get_widget("word_entry")
 
 		self.treestore = gtk.TreeStore(str)
-		self.treeview = self.glade.get_widget("sl_tree")
+		self.treeview = self.wtree.get_widget("sl_tree")
 		self.treeview.set_model(self.treestore)
 
 		cell = gtk.CellRendererText()
 		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
 		tvcolumn = gtk.TreeViewColumn("Result", cell, text=0)
 		self.treeview.append_column(tvcolumn)
-
 		self.treestore.append(None, [_("Enter the word, please...")])
+
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
 
@@ -132,10 +132,10 @@ class SLView(object):
 		translate = "<body>%s</body>" % ("".join(lines))
 		self.__fire_translate_changed(word, translate, newTab)
 
+	# ================================ SLog Plugins API ============================
+
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
-
-	# ================================ Plugin support ============================
 
 	def get_panel(self):
 		return self.vbox
@@ -144,35 +144,14 @@ class SLView(object):
 		self.word_entry.grab_focus()
 
 	def configure(self, window):
-
-		dlg = self.glade.get_widget("sl_pref_dialog")
+		dlg = self.wtree.get_widget("pref_dialog")
 		dlg.set_transient_for(window)
-		dir_entry = self.glade.get_widget("sl_dir_entry")
-		dir_entry.set_text(self.conf.sl_dicts_dir)
-		btn_browse = self.glade.get_widget("sl_btn_browse")
-		btn_browse.connect("clicked", self.on_browse_clicked, window, dir_entry)
+		dir_entry = self.wtree.get_widget("entry_folder")
+		dir_entry.set_current_folder(self.conf.sl_dicts_dir)
 
 		response = dlg.run()
 		if response == gtk.RESPONSE_OK:
-			ddir = dir_entry.get_text()
-			if not os.path.exists(ddir):
-				ghlp.show_error(window, _("Path not exists!"))
-			self.conf.sl_dicts_dir = ddir
+			self.conf.sl_dicts_dir = dir_entry.get_filename()
 
-		dlg.destroy()
-
-	def on_browse_clicked(self, widget, window, entry):
-		chooser = gtk.FileChooserDialog("Open..", window, gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER,
-							(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, gtk.STOCK_OK, gtk.RESPONSE_OK))
-
-		dicts_dir = entry.get_text()
-		if os.path.exists(dicts_dir):
-			chooser.set_current_folder(dicts_dir)
-
-		response = chooser.run()
-		if response == gtk.RESPONSE_OK:
-			selected_path = chooser.get_filename()
-			entry.set_text(selected_path)
-
-		chooser.destroy()
+		dlg.hide()
 
