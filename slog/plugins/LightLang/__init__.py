@@ -3,11 +3,11 @@
 import os
 import gtk, gobject
 import pango
+import threading
 
 import libsl
 from slog.common import *
 from slog.config import SlogConf
-import slog.gui_helper as ghlp
 
 plugin_name = "LightLang SL"
 plugin_version = "0.1.0"
@@ -49,6 +49,8 @@ class SLView(object):
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
 
+		self.treemodel_lock = threading.Lock()
+
 	def __fire_status_changed(self, message):
 		callback = self.callbacks["changed"]
 		if callback is not None:
@@ -87,32 +89,52 @@ class SLView(object):
 		model, treeiter = selection.get_selected()
 		self.find_word(treeiter, newTab = False)
 
+	def __thread_find(self, node, word, mode, dict_name):
+
+		filename = self.conf.get_dic_path(dict_name)
+		items = libsl.find_word(word, mode, filename)
+
+		self.treemodel_lock.acquire()
+		if items == []:
+			self.treestore.remove(node)
+		else:
+			for item in items:
+				self.treestore.append(node, [item])
+		self.treemodel_lock.release()
+
 	def find_list(self, word, mode = libsl.SL_FIND_LIST):
 		if word == "":
 			return
 
 		count = 0
-		model = self.treestore
-		model.clear()
+		self.treestore.clear()
+		threads = []
 
 		dictionaries = self.conf.get_sl_used_dicts()
 		for dic in dictionaries:
+			
+			node = self.treestore.append(None, [dic])
+			t = threading.Thread(target = self.__thread_find, args = (node, word, mode, dic))
+			threads.append(t)
+			t.start()
 
-			filename = self.conf.get_dic_path(dic)
-			items = libsl.find_word(word, mode, filename)
-			count += len(items)
-			if items == []:
-				continue
+		for t in threads:
+			t.join()
 
-			root_node = model.append(None, [dic])
-			for item in items:
-				model.append(root_node, [item])
+		it = self.treestore.get_iter_first()
+		while it:
+			if self.treestore.iter_has_child(it):
+				ti = self.treestore.iter_children(it)
+				while ti:
+					count += 1
+					ti = self.treestore.iter_next(ti)
+			it = self.treestore.iter_next(it)
 
 		if count>0:
 			self.treeview.expand_all()
 			self.word_selection.select_path((0,0))
 		else:
-			model.append(None, [_("This word is not found")])
+			self.treestore.append(None, [_("This word is not found")])
 
 		self.__fire_status_changed(_("Total: %i") % (count))
 
