@@ -19,8 +19,7 @@ def enable():
 	return DCView()
 
 def slog_init(plugin_path):
-	global path
-	path = plugin_path
+	pass
 
 class DictClient:
 	def __init__(self):
@@ -196,10 +195,9 @@ class DictClient:
 		code = line[0:3]
 		return code, line
 
-
-class DCView(gtk.VBox):
+class DCView(object):
 	def __init__(self):
-		gtk.VBox.__init__(self, False, 0)
+		self.vbox = gtk.VBox(False, 0)
 
 		self.callbacks = {}
 		self.dclient = DictClient()
@@ -207,7 +205,7 @@ class DCView(gtk.VBox):
 		tooltips = gtk.Tooltips()
 		hbox = gtk.HBox(False, 0)
 		hbox.set_border_width(4)
-		self.pack_start(hbox, False, False, 0)
+		self.vbox.pack_start(hbox, False, False, 0)
 
 		self.word_entry = gtk.Entry()
 		self.word_entry.connect("activate", self.on_word_entry_activate)
@@ -223,7 +221,7 @@ class DCView(gtk.VBox):
 
 		sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 		sw.set_shadow_type(gtk.SHADOW_IN)
-		self.pack_start(sw, True, True, 0)
+		self.vbox.pack_start(sw, True, True, 0)
 
 		self.treestore = gtk.TreeStore(str)
 		self.treeview = gtk.TreeView(self.treestore)
@@ -238,6 +236,8 @@ class DCView(gtk.VBox):
 		self.treestore.append(None, [_("Enter the word, please...")])
 		self.word_selection = self.treeview.get_selection()
 		self.word_selection.connect("changed", self.on_wordlist_changed)
+
+		self.vbox.show_all()
 
 	def __fire_status_changed(self, message):
 		callback = self.callbacks["changed"]
@@ -302,6 +302,14 @@ class DCView(gtk.VBox):
 
 		self.__fire_translate_changed(word, translate)
 
+	# ================================ SLog Plugins API ============================
+
 	def connect(self, event, callback):
 		self.callbacks[event] = callback
+
+	def get_panel(self):
+		return self.vbox
+
+	def grab_focus(self):
+		self.word_entry.grab_focus()
 
