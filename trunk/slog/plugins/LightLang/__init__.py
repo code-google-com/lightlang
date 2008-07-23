@@ -63,7 +63,7 @@ class SLView(object):
 
 	def on_btn_fuzzy_clicked(self, widget, data=None):
 		word = self.word_entry.get_text()
-		self.find_list(word, mode = libsl.SL_FIND_FUZZY)
+		self.find_all(word, mode = libsl.SL_FIND_FUZZY)
 
 	def on_btn_clear_clicked(self, widget, data=None):
 		self.word_entry.set_text("")
@@ -75,7 +75,7 @@ class SLView(object):
 	def on_timer_timeout(self):
 		self.timer = 0;
 		word = self.word_entry.get_text().lower()
-		self.find_list(word)
+		self.find_all(word)
 
 	def on_word_changed(self, widget, data=None):
 		if self.timer == 0:
@@ -83,7 +83,7 @@ class SLView(object):
 
 	def on_word_entry_activate(self, widget, data=None):
 		word = widget.get_text().lower()
-		self.find_list(word)
+		self.find_all(word)
 
 	def on_wordlist_changed(self, selection):
 		model, treeiter = selection.get_selected()
@@ -101,12 +101,28 @@ class SLView(object):
 			for item in items:
 				self.treestore.append(node, [item])
 		self.treemodel_lock.release()
+	
+	def __get_n_rows(self):
+		""" Функция возвращает количество выведенных
+			вариантов слова
+		"""
+		count = 0
 
-	def find_list(self, word, mode = libsl.SL_FIND_LIST):
+		it = self.treestore.get_iter_first()
+		while it:
+			if self.treestore.iter_has_child(it):
+				ti = self.treestore.iter_children(it)
+				while ti:
+					count += 1
+					ti = self.treestore.iter_next(ti)
+			it = self.treestore.iter_next(it)
+
+		return count
+
+	def find_all(self, word, mode = libsl.SL_FIND_LIST):
 		if word == "":
 			return
 
-		count = 0
 		self.treestore.clear()
 		threads = []
 
@@ -121,14 +137,7 @@ class SLView(object):
 		for t in threads:
 			t.join()
 
-		it = self.treestore.get_iter_first()
-		while it:
-			if self.treestore.iter_has_child(it):
-				ti = self.treestore.iter_children(it)
-				while ti:
-					count += 1
-					ti = self.treestore.iter_next(ti)
-			it = self.treestore.iter_next(it)
+		count = self.__get_n_rows()
 
 		if count>0:
 			self.treeview.expand_all()
