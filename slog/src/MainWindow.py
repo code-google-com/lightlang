@@ -49,6 +49,7 @@ class MainWindow(object):
 		self.notebook = self.wtree.get_widget("noteBook")
 		self.notebook.remove_page(0)
 		self.new_translate_page()
+		self.notebook.connect("button-press-event", self.on_notebook_pressed)
 
 		#Create Spy object
 		self.spy = Spy()
@@ -129,6 +130,10 @@ class MainWindow(object):
 	#################
 	# GUI Callbacks #
 	#################
+
+	def on_notebook_pressed(self, widget, event, data=None):
+		if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS:
+			self.new_translate_page()
 
 	def on_window_closed(self, widget, data=None):
 		if self.conf.tray_exit != 0:
