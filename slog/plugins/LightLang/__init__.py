@@ -1,7 +1,7 @@
 # -*- mode: python; coding: utf-8; -*-
 
 import os
-import gtk, gobject
+import gtk, gobject, gtk.glade
 import pango
 import threading
 
@@ -120,6 +120,10 @@ class SLView(object):
 		return count
 
 	def find_all(self, word, mode = libsl.SL_FIND_LIST):
+		""" Выполняет поиск слова в отмеченных пользователем
+			словарях, и добавляет найденные варианты на панель
+			результатов поиска.
+		"""
 		if word == "":
 			return
 
