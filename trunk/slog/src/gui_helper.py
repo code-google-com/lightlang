@@ -26,15 +26,14 @@ def change_cursor(cursor):
 	for w in gtk.gdk.window_get_toplevels():
 		w.set_cursor(cursor)
 
-def create_hig_frame(title):
-	label = create_bold_label(title)
-	frame = gtk.Frame()
-	frame.set_shadow_type(gtk.SHADOW_NONE)
-	frame.set_label_widget(label)
-	frame.show()
-	return frame
-
 def create_tab_header(label, page, callback):
+
+	button_press_handler = lambda w, e: (e.button == 1 and e.type == gtk.gdk._2BUTTON_PRESS) or False
+
+	ebox = gtk.EventBox()
+	ebox.set_visible_window(False)
+	ebox.connect("button-press-event", button_press_handler)
+
 	hbox = gtk.HBox(False, 2)
 	hbox.pack_start(label, False, False);
 
@@ -46,9 +45,10 @@ def create_tab_header(label, page, callback):
 	close.add(img)
 	close.connect("clicked", callback, page)
 
-	hbox.pack_start(close, False, False);
+	hbox.pack_end(close, False, False);
 	hbox.show_all()
-	return hbox
+	ebox.add(hbox)
+	return ebox
 
 class ProgressDialog(gtk.Dialog):
 	def __init__(self, parent, title, task):
