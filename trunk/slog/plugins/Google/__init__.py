@@ -99,7 +99,8 @@ class GoogleView(object):
 		self.wtree = gtk.glade.XML(gladefile, domain="slog")
 		self.wtree.signal_autoconnect({
 				"on_btn_clear_clicked" : self.on_btn_clear_clicked,
-				"on_btn_translate_clicked" : self.on_translate_clicked
+				"on_btn_translate_clicked" : self.on_translate_clicked,
+				"on_combo_targets_changed" : self.on_targets_changed
 		})
 
 		self.vbox = self.wtree.get_widget("vbox1")
@@ -156,9 +157,6 @@ class GoogleView(object):
 			ghlp.show_error(None, _("Empty text"))
 			return
 
-		#TODO: Move to on_combobox_changed()
-		self.conf.google_target = self.cmb_target.get_active()
-
 		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
 		self.__fire_status_changed("Send request...")
 
@@ -169,10 +167,11 @@ class GoogleView(object):
 		textbuffer = self.textview.get_buffer()
 		start, end = textbuffer.get_bounds()
 		textbuffer.delete(start, end)
-		self.__fire_status_changed("")
 
+	def on_targets_changed(self, widget, data=None):
+		self.conf.google_target = self.cmb_target.get_active()
 
-	# ================================ Plugin support ============================
+	# ================================ SLog Plugins API ============================
 
 	def connect(self, event, callback):
 		self.callbacks[event] = callback

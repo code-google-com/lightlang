@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.4 on Wed Jul 23 18:18:57 2008 -->
+<!--Generated with glade3 3.4.4 on Wed Jul 23 18:38:57 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog1">
     <property name="border_width">5</property>
@@ -49,6 +49,7 @@
             <child>
               <widget class="GtkComboBox" id="combo_targets">
                 <property name="visible">True</property>
+                <signal name="changed" handler="on_combo_targets_changed"/>
               </widget>
             </child>
             <child>
