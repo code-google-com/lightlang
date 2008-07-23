@@ -27,7 +27,6 @@ def change_cursor(cursor):
 		w.set_cursor(cursor)
 
 def create_tab_header(label, page, callback):
-
 	button_press_handler = lambda w, e: (e.button == 1 and e.type == gtk.gdk._2BUTTON_PRESS) or False
 
 	ebox = gtk.EventBox()

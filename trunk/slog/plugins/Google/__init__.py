@@ -1,6 +1,7 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import gtk, gobject
+import os
+import gtk, gobject, gtk.glade
 import urllib, urllib2
 import threading
 
@@ -16,7 +17,8 @@ def enable():
 	return GoogleView()
 
 def slog_init(plugin_path):
-	pass
+	global path
+	path = plugin_path
 
 LANG_ARABIC = "ar";
 LANG_CHINESE = "zh";
@@ -92,40 +94,29 @@ class GoogleView(object):
 		self.callbacks = {}
 		self.google = GoogleEngine()
 		self.conf = SlogConf()
-		self.vbox = gtk.VBox(False, 0)
 
-		tooltips = gtk.Tooltips()
-		hbox = gtk.HBox(False, 4)
-		hbox.set_border_width(4)
-		self.vbox.pack_start(hbox, False, False, 0)
+		gladefile = os.path.join(path, "google.glade")
+		self.wtree = gtk.glade.XML(gladefile, domain="slog")
+		self.wtree.signal_autoconnect({
+				"on_btn_clear_clicked" : self.on_btn_clear_clicked,
+				"on_btn_translate_clicked" : self.on_translate_clicked
+		})
 
-		self.cmb_target = gtk.combo_box_new_text()
+		self.vbox = self.wtree.get_widget("vbox1")
+		self.vbox.unparent()
 
+		self.textview = self.wtree.get_widget("textview1")
+
+		self.cmb_target = self.wtree.get_widget("combo_targets")
+		cell = gtk.CellRendererText()
+		self.cmb_target.pack_start(cell, True)
+		self.cmb_target.add_attribute(cell, 'text', 0)
+		model = gtk.ListStore(str)
 		for target in self.google.get_targets():
-			self.cmb_target.append_text(target)
+			model.append([target])
+
+		self.cmb_target.set_model(model)
 		self.cmb_target.set_active(self.conf.google_target)
-
-		hbox.pack_start(self.cmb_target, True, True, 0)
-
-		btn_clear = ghlp.create_speed_button(gtk.STOCK_CLEAR)
-		btn_clear.connect("clicked", self.on_btn_clear_clicked)
-		hbox.pack_start(btn_clear, False, False, 0)
-
-		sw = gtk.ScrolledWindow()
-		sw.set_border_width(4)
-		sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
-		sw.set_shadow_type(gtk.SHADOW_IN)
-		self.vbox.pack_start(sw, True, True, 0)
-
-		self.textview = gtk.TextView()
-		self.textview.set_wrap_mode(gtk.WRAP_WORD)
-		sw.add(self.textview)
-
-		btn_translate = gtk.Button(_("Translate"))
-		btn_translate.set_border_width(4)
-		btn_translate.connect("clicked", self.on_translate_clicked)
-		self.vbox.pack_start(btn_translate, False, True, 0)
-		self.vbox.show_all()
 
 	def __fire_translate_changed(self, translate):
 		callback = self.callbacks["translate_it"]
@@ -180,10 +171,11 @@ class GoogleView(object):
 		textbuffer.delete(start, end)
 		self.__fire_status_changed("")
 
-	def connect(self, event, callback):
-		self.callbacks[event] = callback
 
 	# ================================ Plugin support ============================
+
+	def connect(self, event, callback):
+		self.callbacks[event] = callback
 
 	def get_panel(self):
 		return self.vbox
