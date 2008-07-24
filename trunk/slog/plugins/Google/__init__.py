@@ -4,10 +4,12 @@ import os
 import gtk, gobject, gtk.glade
 import urllib, urllib2
 import threading
+import pango
 
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
+_ = str
 plugin_name = "Google Translate"
 plugin_version = "0.1.1"
 plugin_author = "Nasyrov Renat <renatn@gmail.com>"
@@ -57,6 +59,9 @@ class GoogleEngine(object):
 			res.append(target_str)
 		return res
 
+	def get_langs(self):
+		return self.languages
+
 	def translate(self, target, text):
 		import socket
 		socket.setdefaulttimeout(10)
@@ -100,7 +105,8 @@ class GoogleView(object):
 		self.wtree.signal_autoconnect({
 				"on_btn_clear_clicked" : self.on_btn_clear_clicked,
 				"on_btn_translate_clicked" : self.on_translate_clicked,
-				"on_combo_targets_changed" : self.on_targets_changed
+				"on_combo_targets_changed" : self.on_targets_changed,
+				"on_btn_add_clicked" : self.on_target_added
 		})
 
 		self.vbox = self.wtree.get_widget("vbox1")
@@ -146,7 +152,6 @@ class GoogleView(object):
 			ghlp.change_cursor(None)
 
 	def on_translate_clicked(self, widget, data=None):
-
 		target = self.cmb_target.get_active()
 
 		textbuffer = self.textview.get_buffer()
@@ -171,6 +176,28 @@ class GoogleView(object):
 	def on_targets_changed(self, widget, data=None):
 		self.conf.google_target = self.cmb_target.get_active()
 
+	def on_target_added(self, widget, data=None):
+		langs = self.google.get_langs()
+		l_from = self.cmb_from.get_active()
+		l_to = self.cmb_to.get_active()
+		print "From:", langs[l_from]
+		print "To:", langs[l_to]
+
+	#def __select_only_two(self, selection, model, path, is_selected, data=None):
+	#	count = selection.count_selected_rows()
+	#	print "Count:", count
+	#	if count == 2:
+	#			selection.unselect_all()
+	#			return False
+	#	return True
+
+	def __init_combobox(self, combobox, model):
+		cell = gtk.CellRendererText()
+		combobox.pack_start(cell, True)
+		combobox.add_attribute(cell, 'text', 0)
+		combobox.set_model(model)
+		combobox.set_active(0)
+
 	# ================================ SLog Plugins API ============================
 
 	def connect(self, event, callback):
@@ -183,5 +210,32 @@ class GoogleView(object):
 		self.textview.grab_focus()
 
 	def configure(self, window):
-		ghlp.show_error(window, "Under construction!")
+		dlg = self.wtree.get_widget("pref_dialog")
+		dlg.set_transient_for(window)
 
+		model = gtk.ListStore(str)
+		langs = self.google.get_langs()
+		for l in langs:
+			model.append([langs[l]])
+
+		self.cmb_from = self.wtree.get_widget("combo_from")
+		self.cmb_to = self.wtree.get_widget("combo_to")
+		self.__init_combobox(self.cmb_from, model)
+		self.__init_combobox(self.cmb_to, model)
+
+		self.model_targets = gtk.ListStore(str)
+		self.tv_targets = self.wtree.get_widget("tree_targets")
+		self.tv_targets.set_model(self.model_targets)
+
+		cell = gtk.CellRendererText()
+		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
+		tvcolumn = gtk.TreeViewColumn("Target", cell, text=0)
+		self.tv_targets.append_column(tvcolumn)
+
+		response = dlg.run()
+		dlg.hide()
+
+if __name__ == "__main__":
+	slog_init("./")
+	g = enable()
+	g.configure(None)
