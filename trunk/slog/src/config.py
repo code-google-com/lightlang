@@ -15,11 +15,7 @@ class SlogConf:
 			self.left = 0;
 			self.top = 0;
 			self.paned = 240;
-			self.used_dicts_list = ""
-			self.spy_dicts_param = ""
 			self.enabled_plugins = "LightLang SL:Google Translate"
-			self.sl_dicts_dir = "/usr/share/sl/dicts"
-			self.google_target = 6
 			self.engine = 0
 			self.tray_exit = 0
 			self.tray_info = 1
@@ -29,7 +25,11 @@ class SlogConf:
 			self.proxy = 0
 			self.proxy_host = ""
 			self.proxy_port = 0
+
 			self.sl_dicts = []
+			self.google_target = 6
+			self.google_targets = []
+			self.sl_dicts_dir = "/usr/share/sl/dicts"
 
 			self.__load()
 
@@ -67,10 +67,6 @@ class SlogConf:
 				self.mod_key = conf.getint("spy", "mod_key")
 			if conf.has_option("sl", "dicts_dir"):
 				self.sl_dicts_dir = conf.get("sl", "dicts_dir")
-			if conf.has_option("sl", "used_dicts"):
-				self.used_dicts_list = conf.get("sl", "used_dicts")
-			if conf.has_option("sl", "spy_dicts"):
-				self.spy_dicts_param = conf.get("sl", "spy_dicts")
 			if conf.has_option("google", "target"):
 				self.google_target = conf.getint("google", "target")
 			if conf.has_option("plugins", "enabled"):
@@ -93,13 +89,13 @@ class SlogConf:
 						self.sl_dicts.append(t)
 
 			# Try import used dict list from XSL configuration
-			if self.used_dicts_list == "":
-				xsl_conf_file = os.path.join(os.path.expanduser("~"), ".config/LightLang/XSL.conf")
-				if os.path.isfile(xsl_conf_file):
-					ini = ConfigParser.ConfigParser()
-					ini.read(xsl_conf_file)
-					raw_used_dicts_list = ini.get("dicts_manager", "used_dicts_list")
-					self.used_dicts_list = raw_used_dicts_list.replace(", ", "|")
+			#if self.used_dicts_list == "":
+			#	xsl_conf_file = os.path.join(os.path.expanduser("~"), ".config/LightLang/XSL.conf")
+			#	if os.path.isfile(xsl_conf_file):
+			#		ini = ConfigParser.ConfigParser()
+			#		ini.read(xsl_conf_file)
+			#		raw_used_dicts_list = ini.get("dicts_manager", "used_dicts_list")
+			#		self.used_dicts_list = raw_used_dicts_list.replace(", ", "|")
 
 		def save(self):
 			conf = ConfigParser.ConfigParser()
@@ -118,8 +114,6 @@ class SlogConf:
 			conf.set("spy", "auto", self.spy_auto)
 			conf.add_section("sl")
 			conf.set("sl", "dicts_dir", self.sl_dicts_dir)
-			conf.set("sl", "used_dicts", self.used_dicts_list)
-			conf.set("sl", "spy_dicts", self.spy_dicts_param)
 			conf.add_section("google")
 			conf.set("google", "target", self.google_target)
 			conf.add_section("plugins")

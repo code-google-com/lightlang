@@ -9,9 +9,11 @@ import pango
 from slog.config import SlogConf
 import slog.gui_helper as ghlp
 
+#TODO: Remove from prodaction
 _ = str
+
 plugin_name = "Google Translate"
-plugin_version = "0.1.1"
+plugin_version = "0.1.2"
 plugin_author = "Nasyrov Renat <renatn@gmail.com>"
 plugin_description = _("Client for Google Translate")
 
@@ -93,6 +95,114 @@ class GoogleEngine(object):
 
 		return translate
 
+class PrefDialog(object):
+
+	model_targets = gtk.ListStore(str)
+
+	def __init__(self, window, conf, google):
+		gladefile = os.path.join(path, "google.glade")
+		wtree = gtk.glade.XML(gladefile, domain="slog")
+		wtree.signal_autoconnect({
+				"on_btn_add_clicked" : self.on_target_added,
+				"on_btn_del_clicked" : self.on_target_removed,
+				"on_btn_def_clicked" : lambda w: self.__load_default_targets()
+		})
+
+		self.google = google
+		self.conf = conf
+
+		self.dlg = wtree.get_widget("pref_dialog")
+		self.dlg.set_transient_for(window)
+
+		self.__init_tooltips(wtree)
+
+		model = gtk.ListStore(str)
+		langs = self.google.get_langs()
+		for l in langs:
+			model.append([langs[l]])
+
+		self.cmb_from = wtree.get_widget("combo_from")
+		self.cmb_to = wtree.get_widget("combo_to")
+		self.__init_combobox(self.cmb_from, model)
+		self.__init_combobox(self.cmb_to, model)
+	
+		if "google_targets" in dir(self.conf):
+			if self.conf.google_targets == []:
+				self.__load_default_targets()
+
+		self.tv_targets = wtree.get_widget("tree_targets")
+		selection = self.tv_targets.get_selection()
+		selection.set_mode(gtk.SELECTION_MULTIPLE)
+		self.tv_targets.set_model(self.model_targets)
+
+		cell = gtk.CellRendererText()
+		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
+		tvcolumn = gtk.TreeViewColumn("Target", cell, text=0)
+		self.tv_targets.append_column(tvcolumn)
+
+	def __init_tooltips(self, wtree):
+		tooltips = gtk.Tooltips()
+		w = wtree.get_widget("btn_add")
+		tooltips.set_tip(w, _("Add"))
+		w = wtree.get_widget("btn_del")
+		tooltips.set_tip(w, _("Remove selected"))
+		w = wtree.get_widget("btn_def")
+		tooltips.set_tip(w, _("Load default"))
+
+	def __load_default_targets(self):
+		self.model_targets.clear()
+		for target in self.google.get_targets():
+			self.model_targets.append([target])
+
+	def __init_combobox(self, combobox, model):
+		cell = gtk.CellRendererText()
+		combobox.pack_start(cell, True)
+		combobox.add_attribute(cell, 'text', 0)
+		combobox.set_model(model)
+		combobox.set_active(0)
+
+	def on_target_added(self, widget, data=None):
+		langs = self.google.get_langs()
+		i = self.cmb_from.get_active()
+		j = self.cmb_to.get_active()
+		if i == j:
+			print "Warning: Selected languages is equal"
+			return
+
+		l_from = langs.keys()[i]
+		l_to = langs.keys()[j]
+
+		#TODO: Check dublicate
+		#TODO: Insert if exists selection
+		#TODO: Save into configuration
+	
+		target = langs[l_from] + " - " + langs[l_to]
+		self.model_targets.append([target])
+
+		#self.conf.google_targets.append((l_from, l_to,))
+		#print "Conf:", self.cong.google_targets
+
+	def on_target_removed(self, widget, data=None):
+		selection = self.tv_targets.get_selection()
+		model, rows = selection.get_selected_rows()
+		
+		rowref_list = []
+		for path in rows:
+			rowref_list.append(gtk.TreeRowReference(model, path))
+		for rowref in rowref_list:
+			path = rowref.get_path()
+			if path:
+				iter = model.get_iter(path)
+				if iter: model.remove(iter)
+
+	#====================== Public =============================
+
+	def run(self):
+		return self.dlg.run()
+
+	def destroy(self):
+		self.dlg.destroy()
+
 class GoogleView(object):
 	def __init__(self):
 
@@ -105,8 +215,7 @@ class GoogleView(object):
 		self.wtree.signal_autoconnect({
 				"on_btn_clear_clicked" : self.on_btn_clear_clicked,
 				"on_btn_translate_clicked" : self.on_translate_clicked,
-				"on_combo_targets_changed" : self.on_targets_changed,
-				"on_btn_add_clicked" : self.on_target_added
+				"on_combo_targets_changed" : self.on_targets_changed
 		})
 
 		self.vbox = self.wtree.get_widget("vbox1")
@@ -176,28 +285,6 @@ class GoogleView(object):
 	def on_targets_changed(self, widget, data=None):
 		self.conf.google_target = self.cmb_target.get_active()
 
-	def on_target_added(self, widget, data=None):
-		langs = self.google.get_langs()
-		l_from = self.cmb_from.get_active()
-		l_to = self.cmb_to.get_active()
-		print "From:", langs[l_from]
-		print "To:", langs[l_to]
-
-	#def __select_only_two(self, selection, model, path, is_selected, data=None):
-	#	count = selection.count_selected_rows()
-	#	print "Count:", count
-	#	if count == 2:
-	#			selection.unselect_all()
-	#			return False
-	#	return True
-
-	def __init_combobox(self, combobox, model):
-		cell = gtk.CellRendererText()
-		combobox.pack_start(cell, True)
-		combobox.add_attribute(cell, 'text', 0)
-		combobox.set_model(model)
-		combobox.set_active(0)
-
 	# ================================ SLog Plugins API ============================
 
 	def connect(self, event, callback):
@@ -210,30 +297,9 @@ class GoogleView(object):
 		self.textview.grab_focus()
 
 	def configure(self, window):
-		dlg = self.wtree.get_widget("pref_dialog")
-		dlg.set_transient_for(window)
-
-		model = gtk.ListStore(str)
-		langs = self.google.get_langs()
-		for l in langs:
-			model.append([langs[l]])
-
-		self.cmb_from = self.wtree.get_widget("combo_from")
-		self.cmb_to = self.wtree.get_widget("combo_to")
-		self.__init_combobox(self.cmb_from, model)
-		self.__init_combobox(self.cmb_to, model)
-
-		self.model_targets = gtk.ListStore(str)
-		self.tv_targets = self.wtree.get_widget("tree_targets")
-		self.tv_targets.set_model(self.model_targets)
-
-		cell = gtk.CellRendererText()
-		cell.set_property("ellipsize", pango.ELLIPSIZE_END)
-		tvcolumn = gtk.TreeViewColumn("Target", cell, text=0)
-		self.tv_targets.append_column(tvcolumn)
-
-		response = dlg.run()
-		dlg.hide()
+		dlg = PrefDialog(window, self.conf, self.google)
+		dlg.run()
+		dlg.destroy()
 
 if __name__ == "__main__":
 	slog_init("./")
