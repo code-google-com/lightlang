@@ -3,6 +3,8 @@
 <!--*- mode: xml -*-->
 <glade-interface>
   <widget class="GtkDialog" id="pref_dialog">
+    <property name="width_request">320</property>
+    <property name="height_request">240</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Preferences</property>
     <property name="modal">True</property>
@@ -103,11 +105,12 @@
                     <property name="visible">True</property>
                     <property name="spacing">4</property>
                     <child>
-                      <widget class="GtkButton" id="button2">
+                      <widget class="GtkButton" id="btn_del">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="response_id">0</property>
+                        <signal name="clicked" handler="on_btn_del_clicked"/>
                         <child>
                           <widget class="GtkImage" id="image4">
                             <property name="visible">True</property>
@@ -117,28 +120,12 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="button3">
+                      <widget class="GtkButton" id="btn_def">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="response_id">0</property>
-                        <child>
-                          <widget class="GtkImage" id="image5">
-                            <property name="visible">True</property>
-                            <property name="stock">gtk-clear</property>
-                          </widget>
-                        </child>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkButton" id="button4">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="response_id">0</property>
+                        <signal name="clicked" handler="on_btn_def_clicked"/>
                         <child>
                           <widget class="GtkImage" id="image6">
                             <property name="visible">True</property>
@@ -147,7 +134,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </widget>
