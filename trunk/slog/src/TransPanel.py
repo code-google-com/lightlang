@@ -54,12 +54,26 @@ class TransView(gtk.ScrolledWindow):
 		self.label.set_text(_("Welcome"))
 		self.__clear_htmlview()
 
+		bg = self.label.get_style().base[gtk.STATE_SELECTED]
+		fg = self.label.get_style().base[gtk.STATE_NORMAL]
+		bg_hex = self.color_to_hex(bg)
+		fg_hex = self.color_to_hex(fg)
+		p = "<p style='background-color: %s; font-size: 200%%; text-align: center'>" % (bg_hex)
+
 		self.htmlview.display_html(
-			"""
-			<body>
-			<br/><p style='background-color: #DFEDFF; font-size: 200%; text-align: center'>
-			Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>
-			</body>
-			"""
+			"<body><br/>" + p +
+			"Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>" +
+			"</body>"
 		)
+
+	def color_to_hex(self, color):
+
+		r = color.red / 256
+		g = color.green / 256
+		b = color.blue / 256
+
+		rgb = r << 16 | g << 8 | b
+		rgb_hex = str(hex(rgb))[2:]
+
+		return "#%s" % (rgb_hex.zfill(6))
 
