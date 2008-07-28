@@ -51,7 +51,7 @@ class GoogleTranslate(Qt.QObject) :
 
 	### Public ###
 
-	def translate(self, langpair, text) :
+	def translate(self, sl, tl, text) :
 		self.http_abort_flag = True
 		self.http.abort()
 		self.http_abort_flag = False
@@ -69,7 +69,7 @@ class GoogleTranslate(Qt.QObject) :
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
 		http_request_header = Qt.QHttpRequestHeader("GET",
-			"/translate_t?langpair="+langpair+"&text="+text)
+			"/translate_t?sl="+sl+"&tl="+tl+"&text="+text)
 		http_request_header.setValue("Host", GoogleTranslateHost)
 		http_request_header.setValue("User-Agent", "Mozilla/5.0")
 
