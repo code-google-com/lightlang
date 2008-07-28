@@ -54,11 +54,10 @@ class TransView(gtk.ScrolledWindow):
 		self.label.set_text(_("Welcome"))
 		self.__clear_htmlview()
 
-		bg = self.label.get_style().base[gtk.STATE_SELECTED]
-		fg = self.label.get_style().base[gtk.STATE_NORMAL]
+		bg = self.label.get_style().bg[gtk.STATE_ACTIVE]
 		bg_hex = self.color_to_hex(bg)
-		fg_hex = self.color_to_hex(fg)
 		p = "<p style='background-color: %s; font-size: 200%%; text-align: center'>" % (bg_hex)
+		print bg_hex
 
 		self.htmlview.display_html(
 			"<body><br/>" + p +
