@@ -10,11 +10,11 @@ def show_error(parent, message):
 	dlg.destroy()
 
 def create_speed_button(stock):
-		img = gtk.Image()
-		img.set_from_stock(stock, gtk.ICON_SIZE_MENU)
-		btn = gtk.Button()
-		btn.add(img)
-		return btn
+	img = gtk.Image()
+	img.set_from_stock(stock, gtk.ICON_SIZE_MENU)
+	btn = gtk.Button()
+	btn.add(img)
+	return btn
 
 def create_bold_label(text):
 	label = gtk.Label()
