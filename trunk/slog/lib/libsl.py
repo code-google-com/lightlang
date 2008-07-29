@@ -26,7 +26,7 @@ def get_dict_html_block(filename):
 def filename_parse(fullfilename):
 	"""	Выполняет парсинг имени файла словаря, возвращает 
 		кортеж: (имя словаря, направление перевода) или
-		None, в случае неудачи
+		None, в случае неудачи,
 		filename format: | Dictionary Name |.| Target |.| bz2 |
 	"""
 	fname = os.path.basename(fullfilename)

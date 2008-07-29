@@ -1,7 +1,29 @@
 # -*- mode: python; coding: utf-8; -*-
 
-import gtk
+import re
+import gtk, gobject
 import htmltextview
+
+def get_style_colors(widget):
+	""" Возвращает кортеж из двух строк
+	"""
+	style = widget.get_style()
+	bg = color_to_hex(style.bg[gtk.STATE_ACTIVE])
+	fg = color_to_hex(style.text[gtk.STATE_NORMAL])
+	return (bg, fg)
+
+def color_to_hex(color):
+	""" Конвертирует объект color класса gtk.gdk.Color
+		в строку содержащую, шестнадцеричное значение цвета
+		формата RGB
+	"""
+	r = color.red / 256
+	g = color.green / 256
+	b = color.blue / 256
+
+	rgb = r << 16 | g << 8 | b
+	rgb_hex = str(hex(rgb))[2:]
+	return "#%s" % (rgb_hex.zfill(6))
 
 class TransView(gtk.ScrolledWindow):
 
@@ -28,10 +50,23 @@ class TransView(gtk.ScrolledWindow):
 		self.htmlview.set_left_margin(2)
 		self.htmlview.set_right_margin(2)
 
-		self.clear()
-
 		self.add(self.htmlview)
 		self.htmlview.show()
+
+		self.clear()
+
+	def replace_colors(self, html):
+		(bg, fg) = get_style_colors(self.htmlview)
+		bg_to = "background-color: %s;" % bg
+		fg_to = " color: %s;" % fg
+
+		bg_re = re.compile("background-color: #\w{6};")
+		fg_re = re.compile("[^-]color: #\w{6};")
+
+		retval = bg_re.sub(bg_to, html)
+		retval = fg_re.sub(fg_to, retval)
+
+		return retval
 
 	def __clear_htmlview(self):
 		textbuffer = self.htmlview.get_buffer()
@@ -48,31 +83,23 @@ class TransView(gtk.ScrolledWindow):
 
 		self.label.set_text(word)
 		self.__clear_htmlview()
-		self.htmlview.display_html(translate)
+
+		#doc = translate
+		doc = self.replace_colors(translate)
+
+		self.htmlview.display_html(doc)
+
+	def __show_welcome(self):
+		h = """<body><br/>
+			<p style='background-color: #000000; color: #ffffff; font-size: 200%; text-align: center'>
+			Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>
+			</body>"""
+		r = self.replace_colors(h)
+		self.htmlview.display_html(r)
 
 	def clear(self):
 		self.label.set_text(_("Welcome"))
 		self.__clear_htmlview()
+		gobject.idle_add(self.__show_welcome)
 
-		bg = self.label.get_style().bg[gtk.STATE_ACTIVE]
-		bg_hex = self.color_to_hex(bg)
-		p = "<p style='background-color: %s; font-size: 200%%; text-align: center'>" % (bg_hex)
-		print bg_hex
-
-		self.htmlview.display_html(
-			"<body><br/>" + p +
-			"Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>" +
-			"</body>"
-		)
-
-	def color_to_hex(self, color):
-
-		r = color.red / 256
-		g = color.green / 256
-		b = color.blue / 256
-
-		rgb = r << 16 | g << 8 | b
-		rgb_hex = str(hex(rgb))[2:]
-
-		return "#%s" % (rgb_hex.zfill(6))
 
