@@ -6,6 +6,7 @@ import pango
 import threading
 
 import libsl
+
 from slog.common import *
 from slog.config import SlogConf
 
