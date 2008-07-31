@@ -8,26 +8,22 @@ class PluginManager:
 	def __init__(self):
 		self.plugins = {}
 		self.enabled_plugins = {}
-		self.plugins_dirs = []
+		self.plugin_dirs = []
 
 	def add_plugin_dir(self, directory):
-		self.plugins_dirs.append(directory)
+		self.plugin_dirs.append(directory)
+		sys.path.append(directory)
 	
 	def scan_for_plugins(self):
 		""" Search installed plugins in the directory and 
 			try loaded him
 		"""
-		for folder in self.plugins_dirs:
+		for folder in self.plugin_dirs:
 			for modname in os.listdir(folder):
 				path = os.path.join(folder, modname)
 				if "__init__.py" in os.listdir(path):
 					filename = os.path.join(path, "__init__.py")
-					(stream, path_mod, desc) = imp.find_module("__init__", [path])
-					try:
-						mod = imp.load_module(modname, stream, filename, desc)
-					finally:
-						stream.close()
-
+					mod = __import__(modname, globals(), locals(), [''])
 					mod.slog_init(path)
 					self.plugins[mod.plugin_name] = mod
 
