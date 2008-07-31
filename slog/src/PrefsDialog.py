@@ -104,17 +104,25 @@ class PrefsDialog():
 			self.__glade.get_widget("btnPluginProps").set_sensitive(False)
 
 	def on_item_toggled(self, cell, path, model):
+		""" Обработчик события нажатия на компонент CheckButton 
+			в таблице плагинов.
+		"""
 		l_iter = model.get_iter((int(path),))
 		enabled, plugin_name = model.get(l_iter, 0, 1)
 		enabled = not enabled
 		model.set(l_iter, 0, enabled)
+
 		if enabled:
 			self.__plugins.enable_plugin(plugin_name)
-			config = self.__plugins.is_configurable(plugin_name)
+			is_config = self.__plugins.is_configurable(plugin_name)
 		else:
 			config = False
 			self.__plugins.disable_plugin(plugin_name)
-		self.__glade.get_widget("btnPluginProps").set_sensitive(config)
+
+		self.__glade.get_widget("btnPluginProps").set_sensitive(is_config)
+
+		list_enabled = self.__plugins.get_enabled()
+		self.conf.enabled_plugins = ":".join(list_enabled)
 
 	def on_comboKeys_changed(self, widget, data=None):
 		idx = widget.get_active()

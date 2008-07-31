@@ -4,40 +4,32 @@ import os
 import sys
 import imp
 
-from slog.config import SlogConf
-from slog.common import DATA_DIR
-
 class PluginManager:
 	def __init__(self):
 		self.plugins = {}
 		self.enabled_plugins = {}
-		self.conf = SlogConf()
-		
-	def __sync_config(self):
-		""" Save enabled plugins in the file configuration """
+		self.plugins_dirs = []
 
-		list_enabled = self.get_enabled()
-		self.conf.enabled_plugins = ":".join(list_enabled)
-
+	def add_plugin_dir(self, directory):
+		self.plugins_dirs.append(directory)
+	
 	def scan_for_plugins(self):
 		""" Search installed plugins in the directory and 
 			try loaded him
 		"""
-   
-		plugins_dir = os.path.join(DATA_DIR, "plugins")
+		for folder in self.plugins_dirs:
+			for modname in os.listdir(folder):
+				path = os.path.join(folder, modname)
+				if "__init__.py" in os.listdir(path):
+					filename = os.path.join(path, "__init__.py")
+					(stream, path_mod, desc) = imp.find_module("__init__", [path])
+					try:
+						mod = imp.load_module(modname, stream, filename, desc)
+					finally:
+						stream.close()
 
-		for modname in os.listdir(plugins_dir):
-			path = os.path.join(plugins_dir, modname)
-			if "__init__.py" in os.listdir(path):
-				filename = os.path.join(path, "__init__.py")
-				(stream, path_mod, desc) = imp.find_module("__init__", [path])
-				try:
-					mod = imp.load_module(modname, stream, filename, desc)
-				finally:
-					stream.close()
-
-				mod.slog_init(path)
-				self.plugins[mod.plugin_name] = mod
+					mod.slog_init(path)
+					self.plugins[mod.plugin_name] = mod
 
 	def get_available(self):
 		""" Возвращает список установленных плагинов
@@ -65,14 +57,12 @@ class PluginManager:
 		"""
 		plugin = self.plugins[name]
 		self.enabled_plugins[name] = plugin.enable()
-		self.__sync_config()
 		return self.enabled_plugins[name]
 
 	def disable_plugin(self, name):
 		""" Отключает плагин
 		"""
 		del self.enabled_plugins[name]
-		self.__sync_config()
 
 	def configure_plugin(self, name, window):
 		plugin = self.enabled_plugins[name]
