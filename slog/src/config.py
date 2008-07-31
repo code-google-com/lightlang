@@ -27,9 +27,10 @@ class SlogConf:
 			self.proxy_port = 0
 
 			self.sl_dicts = []
+			self.sl_dicts_dir = "/usr/share/sl/dicts"
+
 			self.google_target = 6
 			self.google_targets = []
-			self.sl_dicts_dir = "/usr/share/sl/dicts"
 
 			self.__load()
 
@@ -65,10 +66,6 @@ class SlogConf:
 				self.spy_auto = conf.getint("spy", "auto")
 			if conf.has_option("spy", "mod_key"):
 				self.mod_key = conf.getint("spy", "mod_key")
-			if conf.has_option("sl", "dicts_dir"):
-				self.sl_dicts_dir = conf.get("sl", "dicts_dir")
-			if conf.has_option("google", "target"):
-				self.google_target = conf.getint("google", "target")
 			if conf.has_option("plugins", "enabled"):
 				self.enabled_plugins = conf.get("plugins", "enabled")
 			if conf.has_option("network", "proxy"):
@@ -77,6 +74,20 @@ class SlogConf:
 				self.proxy_host = conf.get("network", "proxy_host")
 			if conf.has_option("network", "proxy_port"):
 				self.proxy_port = conf.getint("network", "proxy_port")
+
+			if conf.has_option("google", "current"):
+				self.google_target = conf.getint("google", "current")
+
+			if conf.has_option("google", "targets"):
+				v = conf.get("google", "targets")
+				try:
+					self.google_targets = eval(v)
+				except:
+					print "Warning: Wron Google targets format"
+					pass
+
+			if conf.has_option("sl", "dicts_dir"):
+				self.sl_dicts_dir = conf.get("sl", "dicts_dir")
 
 			if conf.has_section("sl_dicts"):
 				for opt in conf.options("sl_dicts"):
@@ -112,16 +123,19 @@ class SlogConf:
 			conf.add_section("spy")
 			conf.set("spy", "mod_key", self.mod_key)
 			conf.set("spy", "auto", self.spy_auto)
-			conf.add_section("sl")
-			conf.set("sl", "dicts_dir", self.sl_dicts_dir)
-			conf.add_section("google")
-			conf.set("google", "target", self.google_target)
 			conf.add_section("plugins")
 			conf.set("plugins", "enabled", self.enabled_plugins)
 			conf.add_section("network")
 			conf.set("network", "proxy", self.proxy)
 			conf.set("network", "proxy_host", self.proxy_host)
 			conf.set("network", "proxy_port", self.proxy_port)
+
+			conf.add_section("google")
+			conf.set("google", "current", self.google_target)
+			conf.set("google", "targets", self.google_targets)
+
+			conf.add_section("sl")
+			conf.set("sl", "dicts_dir", self.sl_dicts_dir)
 
 			conf.add_section("sl_dicts")
 			i = 1
@@ -202,6 +216,16 @@ class SlogConf:
 				else:
 					rec = [fname, used, spy]
 					self.sl_dicts.append(rec)
+
+		def get_google_targets(self):
+			targets = []
+			for s in self.google_targets:
+				fr, to = s.split(":")
+				targets.append((fr, to))
+			return targets
+
+		def get_google_defaults(self):
+			return [("en:ru"), ("ru:en")]
 
 	__instance = __impl( )
 
