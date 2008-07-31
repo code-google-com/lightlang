@@ -111,12 +111,12 @@ class PrefsDialog():
 		enabled, plugin_name = model.get(l_iter, 0, 1)
 		enabled = not enabled
 		model.set(l_iter, 0, enabled)
+		is_config = False
 
 		if enabled:
 			self.__plugins.enable_plugin(plugin_name)
 			is_config = self.__plugins.is_configurable(plugin_name)
 		else:
-			config = False
 			self.__plugins.disable_plugin(plugin_name)
 
 		self.__glade.get_widget("btnPluginProps").set_sensitive(is_config)

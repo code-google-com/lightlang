@@ -82,7 +82,9 @@ class MainWindow(object):
 		accel_group = gtk.AccelGroup()
 		self.window.add_accel_group(accel_group)
 
+		plugin_dir = os.path.join(DATA_DIR, "plugins")
 		self.plugin_manager = PluginManager()
+		self.plugin_manager.add_plugin_dir(plugin_dir)
 		self.plugin_manager.scan_for_plugins()
 
 		list_enabled = self.conf.get_enabled_plugins()
