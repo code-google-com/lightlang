@@ -16,6 +16,7 @@ from slog.common import *
 import slog.gui_helper as ghlp
 from slog.config import SlogConf
 from slog.dhandler import DictHandler
+from slog.proxy import Proxy
 
 (
     COL_A_NAME,
@@ -332,14 +333,10 @@ class AvailDataModel(gtk.ListStore):
 			socket.setdefaulttimeout(5)
 
 			conf = SlogConf()
-			if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
-				proxy_url = "http://%s:%s" % (conf.proxy_host, conf.proxy_port)
-				proxy_support = urllib2.ProxyHandler({"ftp" : proxy_url})
-				opener = urllib2.build_opener(proxy_support, urllib2.FTPHandler)
-			else:
-				opener = urllib2.build_opener(urllib2.FTPHandler)
-
+			proxy = Proxy(conf)
+			opener = proxy.get_ftp_opener()
 			doc = opener.open(FTP_REPO_URL)
+
 		except IOError, e:
 			print str(e)
 		else:
@@ -475,11 +472,8 @@ class DictInstaller(threading.Thread):
 			socket.setdefaulttimeout(5)
 
 			conf = SlogConf()
-			proxies = None
-			if conf.proxy != 0 and conf.proxy_host != "" and conf.proxy_port != 0:
-				proxy_url = "http://%s:%s" % (conf.proxy_host, conf.proxy_port)
-				proxies = {"ftp" : proxy_url}
-			downloader = urllib.FancyURLopener(proxies)
+			proxy = Proxy(conf)
+			downloader = proxy.get_ftp_downloader()
 
 			file_dist = os.path.join(SL_TMP_DIR, self.__filename)
 			url_dict = FTP_DICTS_URL +"/" + self.__filename
