@@ -9,6 +9,7 @@ import pango
 from Google.google_translate import GoogleEngine
 
 from slog.config import SlogConf
+from slog.proxy import Proxy
 import slog.gui_helper as ghlp
 
 plugin_name = "Google Translate"
@@ -23,11 +24,14 @@ def slog_init(plugin_path):
 	global path
 	path = plugin_path
 
+def target_to_str(src, dst):
+	return src + " - " + dst
+
 def reload_targets(languages, model, targets):
 	model.clear()
 	for t in targets:
 		src, dst = t
-		title = languages[src] + " - " + languages[dst]
+		title = target_to_str(languages[src], languages[dst])
 		model.append([title, src, dst])
 			
 class PrefDialog(object):
@@ -79,8 +83,8 @@ class PrefDialog(object):
 		tooltips.set_tip(w, _("Load default"))
 
 	def __load_default_targets(self):
-		reload_targets(self.google.languages, self.model, self.conf.get_google_defaults())
-		self.sync_with_config()
+		self.conf.set_google_defaults()
+		reload_targets(self.google.languages, self.model, self.conf.get_google_targets())
 
 	def __init_combobox(self, combobox, model):
 		cell = gtk.CellRendererText()
@@ -90,7 +94,7 @@ class PrefDialog(object):
 		combobox.set_active(0)
 
 	def on_target_added(self, widget, data=None):
-		langs = self.google.get_langs()
+		langs = self.google.languages
 		i = self.cmb_from.get_active()
 		j = self.cmb_to.get_active()
 		if i == j:
@@ -99,15 +103,16 @@ class PrefDialog(object):
 
 		src = langs.keys()[i]
 		dst = langs.keys()[j]
+		t = src + ":" + dst
 
-		title = langs[src] + " - " + langs[dst]
+		# Check dublicate
+		if t in self.conf.google_targets:
+			print "Warning: Target exists"
+			return
 
-		#TODO: Check dublicate
-		#TODO: Insert if exists selection
-		#TODO: Save into configuration
-	
+		title = target_to_str(langs[src], langs[dst])
 		self.model.append([title, src, dst])
-		self.conf.google_targets.append(src+":"+dst)
+		self.conf.google_targets.append(t)
 
 	def on_target_removed(self, widget, data=None):
 		selection = self.tv_targets.get_selection()
@@ -120,15 +125,10 @@ class PrefDialog(object):
 			path = rowref.get_path()
 			if path:
 				it = model.get_iter(path)
-				if it: model.remove(it)
-
-		self.sync_with_config()
-
-	def sync_with_config(self):
-
-		for row in self.model:
-			src, dst = row[1], row[2]
-		self.conf.google_targets =
+				if it:
+					src, dst = model.get(it, 1, 2)
+					self.conf.del_google_target(src, dst)
+					model.remove(it)
 
 	#====================== Public =============================
 
@@ -142,8 +142,9 @@ class GoogleView(object):
 	def __init__(self):
 
 		self.callbacks = {}
-		self.google = GoogleEngine()
 		self.conf = SlogConf()
+		proxy = Proxy(self.conf)
+		self.google = GoogleEngine(proxy)
 
 		gladefile = os.path.join(path, "google.glade")
 		self.wtree = gtk.glade.XML(gladefile, domain="slog")
