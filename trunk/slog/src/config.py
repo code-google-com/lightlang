@@ -224,8 +224,11 @@ class SlogConf:
 				targets.append((fr, to))
 			return targets
 
-		def get_google_defaults(self):
-			return [("en:ru"), ("ru:en")]
+		def set_google_defaults(self):
+			self.google_targets = ["en:ru", "ru:en"]
+
+		def del_google_target(self, src, dst):
+			self.google_targets.remove(src+":"+dst)
 
 	__instance = __impl( )
 
