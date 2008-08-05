@@ -334,17 +334,13 @@ class AvailDataModel(gtk.ListStore):
 
 			conf = SlogConf()
 			proxy = Proxy(conf)
-			opener = proxy.get_ftp_opener()
-			doc = opener.open(FTP_REPO_URL)
+			downloader = proxy.get_ftp_downloader()
+			downloader.retrieve(FTP_REPO_URL, REPO_FILE)
 
 		except IOError, e:
 			print str(e)
-		else:
-			fp = open(REPO_FILE, "w")
-			fp.write(doc.read())
-			fp.close()
-			doc.close()
-		event.set()
+		finally:
+			event.set()
 
 	def refresh(self):
 		ghlp.change_cursor(gdk.Cursor(gdk.WATCH))

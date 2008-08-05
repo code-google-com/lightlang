@@ -160,7 +160,6 @@ class SlogConf:
 			self.left = left
 			self.top = top
 
-
 		def get_engine(self):
 			return self.engine
 
@@ -175,6 +174,12 @@ class SlogConf:
 
 		def get_enabled_plugins(self):
 			return self.enabled_plugins.split(":")
+
+		def get_proxy_url(self):
+			proxy_url = None
+			if self.proxy != 0 and self.proxy_host != "" and self.proxy_port != 0:
+				proxy_url = "http://%s:%s" % (self.proxy_host, self.proxy_port)
+			return proxy_url
 
 		def get_dic_path(self, dic):
 			return os.path.join(self.sl_dicts_dir, dic)
