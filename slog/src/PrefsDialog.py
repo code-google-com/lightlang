@@ -15,9 +15,9 @@ class PrefsDialog():
 		self.__plugins = plugins
 
 		gladefile = os.path.join(DATA_DIR, "slog.glade")
-		self.__glade = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
-		self.__glade.signal_autoconnect(self)
-		self.dialog = self.__glade.get_widget("prefDialog")
+		self.wtree = gtk.glade.XML(gladefile, "prefDialog", domain="slog")
+		self.wtree.signal_autoconnect(self)
+		self.dialog = self.wtree.get_widget("prefDialog")
 		self.dialog.set_transient_for(parent)
 		
 		self.conf = SlogConf()
@@ -30,16 +30,16 @@ class PrefsDialog():
 		model.append(["Win"])
 		model.append(["None"])
 	
-		combo_keys = self.__glade.get_widget("comboKeys")
+		combo_keys = self.wtree.get_widget("comboKeys")
 		cell = gtk.CellRendererText()
 		combo_keys.pack_start(cell, True)
 		combo_keys.add_attribute(cell, "text", 0)
 		combo_keys.set_model(model)
 		combo_keys.set_active(self.conf.mod_key)
 
-		self.entry_proxy_host = self.__glade.get_widget("entryProxyHost")
+		self.entry_proxy_host = self.wtree.get_widget("entryProxyHost")
 		self.entry_proxy_host.set_text(self.conf.proxy_host)
-		self.entry_proxy_port = self.__glade.get_widget("entryProxyPort")
+		self.entry_proxy_port = self.wtree.get_widget("entryProxyPort")
 		self.entry_proxy_port.set_value(self.conf.proxy_port)
 
 		self.__setup_checkbox("chkSpyAutoStart", self.conf.spy_auto)
@@ -49,7 +49,7 @@ class PrefsDialog():
 		self.__setup_checkbox("chkProxyServer", self.conf.proxy)
 
 		self.plugins_model = gtk.ListStore(bool, str)
-		treeview = self.__glade.get_widget("tablePlugins")
+		treeview = self.wtree.get_widget("tablePlugins")
 		treeview.set_model(self.plugins_model)
 
 		renderer = gtk.CellRendererToggle()
@@ -70,10 +70,10 @@ class PrefsDialog():
 	def __load_plugins(self):
 		for pname in self.__plugins.get_available():
 			plugin = self.__plugins.get_plugin(pname)
-			enabled = pname in SlogConf().get_enabled_plugins()
+			enabled = pname in self.__plugins.get_enabled()
 
-			iter = self.plugins_model.append()
-			self.plugins_model.set(iter, 0, enabled, 1, plugin.plugin_name)
+			it = self.plugins_model.append()
+			self.plugins_model.set(it, 0, enabled, 1, plugin.plugin_name)
 
 	def __get_selected_plugin(self):
 		model, iter = self.__selection.get_selected()
@@ -82,7 +82,7 @@ class PrefsDialog():
 		return plugin
 
 	def __setup_checkbox(self, name, state):
-		checkbox = self.__glade.get_widget(name)
+		checkbox = self.wtree.get_widget(name)
 		checkbox.connect("toggled", self.on_checkbox_toggled, name)
 		if state != 0:
 			checkbox.set_active(True)
@@ -93,15 +93,15 @@ class PrefsDialog():
 
 	def on_plugin_clicked(self, selection):
 		plugin = self.__get_selected_plugin()
-		self.__glade.get_widget("labelPluginDescr").set_text(plugin.plugin_description)
-		self.__glade.get_widget("labelPluginAuthor").set_text(plugin.plugin_author)
-		self.__glade.get_widget("labelPluginVersion").set_text(plugin.plugin_version)
+		self.wtree.get_widget("labelPluginDescr").set_text(plugin.plugin_description)
+		self.wtree.get_widget("labelPluginAuthor").set_text(plugin.plugin_author)
+		self.wtree.get_widget("labelPluginVersion").set_text(plugin.plugin_version)
 
 		if plugin.plugin_name in self.__plugins.get_enabled():
 			config = self.__plugins.is_configurable(plugin.plugin_name)
-			self.__glade.get_widget("btnPluginProps").set_sensitive(config)
+			self.wtree.get_widget("btnPluginProps").set_sensitive(config)
 		else:
-			self.__glade.get_widget("btnPluginProps").set_sensitive(False)
+			self.wtree.get_widget("btnPluginProps").set_sensitive(False)
 
 	def on_item_toggled(self, cell, path, model):
 		""" Обработчик события нажатия на компонент CheckButton 
@@ -119,7 +119,7 @@ class PrefsDialog():
 		else:
 			self.__plugins.disable_plugin(plugin_name)
 
-		self.__glade.get_widget("btnPluginProps").set_sensitive(is_config)
+		self.wtree.get_widget("btnPluginProps").set_sensitive(is_config)
 
 		list_enabled = self.__plugins.get_enabled()
 		self.conf.enabled_plugins = ":".join(list_enabled)

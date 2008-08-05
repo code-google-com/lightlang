@@ -201,13 +201,9 @@
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label13">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">page 1</property>
-                  </widget>
+                  <placeholder/>
                   <packing>
                     <property name="type">tab</property>
-                    <property name="tab_fill">False</property>
                   </packing>
                 </child>
               </widget>
