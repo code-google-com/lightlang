@@ -63,6 +63,9 @@ class MainWindow(object):
 		self.statusbar = self.wtree.get_widget("statusBar")
 		self.context_id = self.statusbar.get_context_id("slog")
 
+		self.accel_group = gtk.AccelGroup()
+		self.window.add_accel_group(self.accel_group)
+
 		if self.conf.tray_start == 0:
 			self.window.show_all()
 
@@ -71,16 +74,21 @@ class MainWindow(object):
 
 		self.__load_plugins()
 
+	def __create_plugin_menuitem(self, plugin_name, group, number):
+		menu_item = gtk.RadioMenuItem(group, plugin_name)
+
+		if number < 9:
+			hotkey = ord(str(number+1))
+			menu_item.add_accelerator("activate", self.accel_group, hotkey, gtk.gdk.MOD1_MASK, gtk.ACCEL_VISIBLE)
+
+		if number == self.conf.get_engine():
+			menu_item.set_active(True)
+
+		menu_item.connect("activate", self.on_menuitem_view_activate, number)
+
+		return menu_item
+
 	def __load_plugins(self):
-
-		menu = gtk.Menu()
-		menuView = self.wtree.get_widget("menuItemView")
-		menuView.set_submenu(menu)
-		group = None
-		i = 0
-
-		accel_group = gtk.AccelGroup()
-		self.window.add_accel_group(accel_group)
 
 		plugin_dir = os.path.join(DATA_DIR, "plugins")
 		self.plugin_manager = PluginManager()
@@ -88,13 +96,18 @@ class MainWindow(object):
 		self.plugin_manager.scan_for_plugins()
 
 		list_enabled = self.conf.get_enabled_plugins()
+		if list_enabled == []:
+			return
+
+		menu = gtk.Menu()
+		group = None
+		i = 0
+		
+		self.sidebar.remove_page(0)
 		for plugin in self.plugin_manager.get_available():
 
 			if plugin not in list_enabled:
 				continue
-
-			if i == 0:
-				self.sidebar.remove_page(0)
 
 			module = self.plugin_manager.enable_plugin(plugin)
 			module.connect("translate_it", self.on_translate)
@@ -102,24 +115,16 @@ class MainWindow(object):
 			panel = module.get_panel()
 			self.sidebar.append_page(panel)
 
-			menu_item = gtk.RadioMenuItem(group, plugin)
-
-			if i < 9:
-				hotkey = ord(str(i+1))
-				menu_item.add_accelerator("activate", accel_group, hotkey, gtk.gdk.MOD1_MASK, gtk.ACCEL_VISIBLE)
-
-			menu_item.connect("activate", self.on_menuitem_view_activate, i)
+			menu_item = self.__create_plugin_menuitem(plugin, group, i)
 			menu.append(menu_item)
 			menu_item.show()
-
-			if i == self.conf.get_engine():
-				menu_item.set_active(True)
-
 			group = menu_item
 			i += 1
 
 			while gtk.events_pending():
 				gtk.main_iteration(False)
+				
+		self.wtree.get_widget("menuItemView").set_submenu(menu)
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -134,6 +139,8 @@ class MainWindow(object):
 	#################
 
 	def on_notebook_pressed(self, widget, event, data=None):
+		""" Обработчик события двойного клика на панели вкладок
+		"""
 		if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS:
 			self.new_translate_page()
 
@@ -161,7 +168,7 @@ class MainWindow(object):
 
 	def on_menuitem_view_activate(self, widget, data):
 		""" Обработчик события активизации плагина, в
-			параметре data передается номер элемента.
+			параметре <data> передается номер элемента.
 		"""
 		self.sidebar.set_current_page(data)
 		plugin = self.plugin_manager.get_nth_plugin(data)
