@@ -12,8 +12,10 @@ from slog.DictsDialog import DictsDialog
 from slog.config import SlogConf
 from slog.spy import Spy
 from slog.plugins import PluginManager
+from slog.plugins import PluginView
 from slog.remote import SLogDBus
 import slog.gui_helper as ghlp
+
 
 class MainWindow(object):
 
@@ -63,9 +65,6 @@ class MainWindow(object):
 		self.statusbar = self.wtree.get_widget("statusBar")
 		self.context_id = self.statusbar.get_context_id("slog")
 
-		self.accel_group = gtk.AccelGroup()
-		self.window.add_accel_group(self.accel_group)
-
 		if self.conf.tray_start == 0:
 			self.window.show_all()
 
@@ -74,20 +73,6 @@ class MainWindow(object):
 
 		self.__load_plugins()
 
-	def __create_plugin_menuitem(self, plugin_name, group, number):
-		menu_item = gtk.RadioMenuItem(group, plugin_name)
-
-		if number < 9:
-			hotkey = ord(str(number+1))
-			menu_item.add_accelerator("activate", self.accel_group, hotkey, gtk.gdk.MOD1_MASK, gtk.ACCEL_VISIBLE)
-
-		if number == self.conf.get_engine():
-			menu_item.set_active(True)
-
-		menu_item.connect("activate", self.on_menuitem_view_activate, number)
-
-		return menu_item
-
 	def __load_plugins(self):
 
 		plugin_dir = os.path.join(DATA_DIR, "plugins")
@@ -95,14 +80,12 @@ class MainWindow(object):
 		self.plugin_manager.add_plugin_dir(plugin_dir)
 		self.plugin_manager.scan_for_plugins()
 
+		self.plugin_view = PluginView(self.wtree, self.plugin_manager)
+
 		list_enabled = self.conf.get_enabled_plugins()
 		if list_enabled == []:
 			return
 
-		menu = gtk.Menu()
-		group = None
-		i = 0
-		
 		self.sidebar.remove_page(0)
 		for plugin in self.plugin_manager.get_available():
 
@@ -112,19 +95,13 @@ class MainWindow(object):
 			module = self.plugin_manager.enable_plugin(plugin)
 			module.connect("translate_it", self.on_translate)
 			module.connect("changed", self.on_status_changed)
-			panel = module.get_panel()
-			self.sidebar.append_page(panel)
 
-			menu_item = self.__create_plugin_menuitem(plugin, group, i)
-			menu.append(menu_item)
-			menu_item.show()
-			group = menu_item
-			i += 1
-
+			self.plugin_view.add_plugin(plugin, module)
+			
 			while gtk.events_pending():
 				gtk.main_iteration(False)
-				
-		self.wtree.get_widget("menuItemView").set_submenu(menu)
+
+		self.plugin_view.set_active(self.conf.get_engine())
 
 	def __create_notify(self, title, message, timeout=3000):
 		n = pynotify.Notification(title, message)
@@ -162,7 +139,7 @@ class MainWindow(object):
 		self.conf.paned = self.wtree.get_widget("hPaned").get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		self.conf.set_engine(self.sidebar.get_current_page())
+		self.conf.set_engine(self.plugin_view.get_active())
 		self.conf.save()
 		gtk.main_quit()
 
@@ -186,6 +163,7 @@ class MainWindow(object):
 		dialog = PrefsDialog(self.window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
+		self.plugin_view.update()
 
 	def on_dicts_manage_activate(self, widget, data=None):
 		dialog = DictsDialog(self.window)
