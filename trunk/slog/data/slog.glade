@@ -70,7 +70,7 @@
                 <child>
                   <widget class="GtkMenu" id="menuitem2_menu">
                     <child>
-                      <widget class="GtkImageMenuItem" id="imagemenuitem6">
+                      <widget class="GtkImageMenuItem" id="menuitem_cut">
                         <property name="visible">True</property>
                         <property name="label">gtk-cut</property>
                         <property name="use_underline">True</property>
