@@ -6,7 +6,6 @@ import gtk.glade
 import pynotify
 
 from slog.common import *
-from slog.TransPanel import TransView
 from slog.PrefsDialog import PrefsDialog
 from slog.DictsDialog import DictsDialog
 from slog.config import SlogConf
@@ -15,7 +14,6 @@ from slog.plugins import PluginManager
 from slog.plugins import PluginView
 from slog.remote import SLogDBus
 import slog.gui_helper as ghlp
-
 
 class MainWindow(object):
 
@@ -48,11 +46,6 @@ class MainWindow(object):
 		self.wtree.get_widget("hPaned").set_position(self.conf.paned)
 		self.sidebar = self.wtree.get_widget("sideBar")
 
-		self.notebook = self.wtree.get_widget("noteBook")
-		self.notebook.remove_page(0)
-		self.new_translate_page()
-		self.notebook.connect("button-press-event", self.on_notebook_pressed)
-
 		#Create Spy object
 		self.spy = Spy()
 		mb_menuitem_spy = self.wtree.get_widget("menuItemSpy1")
@@ -62,25 +55,21 @@ class MainWindow(object):
 		self.spy_action.connect_proxy(tray_menuitem_spy)
 		self.spy_action.connect_proxy(mb_menuitem_spy)
 
-		self.statusbar = self.wtree.get_widget("statusBar")
-		self.context_id = self.statusbar.get_context_id("slog")
-
 		if self.conf.tray_start == 0:
 			self.window.show_all()
 
 		if self.conf.spy_auto == 1:
 			self.spy_action.activate()
 
-		self.__load_plugins()
-
-	def __load_plugins(self):
-
 		plugin_dir = os.path.join(DATA_DIR, "plugins")
 		self.plugin_manager = PluginManager()
 		self.plugin_manager.add_plugin_dir(plugin_dir)
 		self.plugin_manager.scan_for_plugins()
-
 		self.plugin_view = PluginView(self.wtree, self.plugin_manager)
+
+		self.__load_plugins()
+
+	def __load_plugins(self):
 
 		list_enabled = self.conf.get_enabled_plugins()
 		if list_enabled == []:
@@ -88,15 +77,10 @@ class MainWindow(object):
 
 		self.sidebar.remove_page(0)
 		for plugin in self.plugin_manager.get_available():
-
 			if plugin not in list_enabled:
 				continue
 
-			module = self.plugin_manager.enable_plugin(plugin)
-			module.connect("translate_it", self.on_translate)
-			module.connect("changed", self.on_status_changed)
-
-			self.plugin_view.add_plugin(plugin, module)
+			self.plugin_manager.enable_plugin(plugin)
 			
 			while gtk.events_pending():
 				gtk.main_iteration(False)
@@ -114,12 +98,6 @@ class MainWindow(object):
 	#################
 	# GUI Callbacks #
 	#################
-
-	def on_notebook_pressed(self, widget, event, data=None):
-		""" Обработчик события двойного клика на панели вкладок
-		"""
-		if event.button == 1 and event.type == gtk.gdk._2BUTTON_PRESS:
-			self.new_translate_page()
 
 	def on_window_closed(self, widget, data=None):
 		if self.conf.tray_exit != 0:
@@ -143,14 +121,6 @@ class MainWindow(object):
 		self.conf.save()
 		gtk.main_quit()
 
-	def on_menuitem_view_activate(self, widget, data):
-		""" Обработчик события активизации плагина, в
-			параметре <data> передается номер элемента.
-		"""
-		self.sidebar.set_current_page(data)
-		plugin = self.plugin_manager.get_nth_plugin(data)
-		plugin.grab_focus()
-
 	def on_spy_clicked(self, widget):
 		if widget.get_active():
 			self.status_icon.set_from_file(get_icon("slog_spy.png"))
@@ -163,7 +133,6 @@ class MainWindow(object):
 		dialog = PrefsDialog(self.window, self.plugin_manager)
 		dialog.run()
 		dialog.destroy()
-		self.plugin_view.update()
 
 	def on_dicts_manage_activate(self, widget, data=None):
 		dialog = DictsDialog(self.window)
@@ -188,33 +157,6 @@ class MainWindow(object):
 		tray_menu = self.wtree.get_widget("trayMenu")
 		tray_menu.popup(None, None, gtk.status_icon_position_menu, event_button, event_time, self.status_icon)
 
-	#Thread safe update
-	def __set_translate(self, word, translate, newtab=False):
-		if newtab:
-			self.new_translate_page()
-
-		index = self.notebook.get_current_page()
-		tv = self.notebook.get_nth_page(index)
-		tv.set_translate(word, translate)
-
-	# Activated by Translate Engine
-	def on_translate(self, word, translate, newtab=False):
-		gobject.idle_add(self.__set_translate, word, translate, newtab)
-
-	def on_status_changed(self, msg):
-		self.statusbar.pop(self.context_id);
-		self.statusbar.push(self.context_id, msg)
-
-	def on_close_tab_clicked(self, widget, page):
-		# Always show one tab		
-		if self.notebook.get_n_pages() == 1:
-			page.clear()
-			return
-
-		idx = self.notebook.page_num(page)
-		self.notebook.remove_page(idx)
-		page.destroy()
-
 	###########
 	# Private #
 	###########
@@ -229,17 +171,6 @@ class MainWindow(object):
 	def window_present_and_focus(self):
 		self.window.present()
 		self.window.grab_focus()
-
-	def new_translate_page(self, event=None):
-		""" Добавляет новую вкладку с окном перевода
-		"""
-		label = gtk.Label()
-		tv = TransView(label)
-		self.notebook.append_page(tv)
-		header = ghlp.create_tab_header(label, tv, self.on_close_tab_clicked)
-		self.notebook.set_tab_label(tv, header)
-		tv.show()
-		self.notebook.next_page()
 
 	def run(self):
 		self.ipc = SLogDBus(self)
