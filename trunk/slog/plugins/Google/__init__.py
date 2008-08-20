@@ -222,9 +222,7 @@ class GoogleView(object):
 		thread.start()
 
 	def on_btn_clear_clicked(self, widget, data=None):
-		textbuffer = self.textview.get_buffer()
-		start, end = textbuffer.get_bounds()
-		textbuffer.delete(start, end)
+		self.clear()
 
 	# ================================ SLog Plugins API ============================
 
@@ -233,6 +231,11 @@ class GoogleView(object):
 
 	def get_panel(self):
 		return self.vbox
+
+	def clear(self):
+		textbuffer = self.textview.get_buffer()
+		start, end = textbuffer.get_bounds()
+		textbuffer.delete(start, end)
 
 	def grab_focus(self):
 		self.textview.grab_focus()
