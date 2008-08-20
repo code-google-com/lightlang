@@ -45,8 +45,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		#####
 
-		self.langpair_combobox_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.langpair_combobox_layout)
+		self.langs_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.langs_layout)
 
 		self.text_edit_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.text_edit_layout)
@@ -58,35 +58,51 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.google_translate = GoogleTranslate.GoogleTranslate()
 
+		self.langs_list = [
+			[ self.tr("English"),	Qt.QVariant("en") ],
+			[ self.tr("Arabic"),	Qt.QVariant("ar") ],
+			[ self.tr("Bulgarian"),	Qt.QVariant("bg") ],
+			[ self.tr("Dutch"),	Qt.QVariant("nl") ],
+			[ self.tr("Greek"),	Qt.QVariant("el") ],
+			[ self.tr("Danish"),	Qt.QVariant("da") ],
+			[ self.tr("Spanish"),	Qt.QVariant("es") ],
+			[ self.tr("Italian"),	Qt.QVariant("it") ],
+			[ self.tr("Chinese (T)"),Qt.QVariant("zh-TW") ],
+			[ self.tr("Chinese (S)"),Qt.QVariant("zh-CN") ],
+			[ self.tr("Korean"),	Qt.QVariant("ko") ],
+			[ self.tr("German"),	Qt.QVariant("de") ],
+			[ self.tr("Norwegian"),	Qt.QVariant("no") ],
+			[ self.tr("Polish"),	Qt.QVariant("pl") ],
+			[ self.tr("Portuguese"),Qt.QVariant("pt") ],
+			[ self.tr("Romanian"),	Qt.QVariant("ro") ],
+			[ self.tr("Russian"),	Qt.QVariant("ru") ],
+			[ self.tr("Finnish"),	Qt.QVariant("fi") ],
+			[ self.tr("French"),	Qt.QVariant("fr") ],
+			[ self.tr("Hindi"),	Qt.QVariant("hi") ],
+			[ self.tr("Croatian"),	Qt.QVariant("hr") ],
+			[ self.tr("Czech"),	Qt.QVariant("cs") ],
+			[ self.tr("Swedish"),	Qt.QVariant("sv") ],
+			[ self.tr("Japanese"),	Qt.QVariant("ja") ]
+			]
+
 		#####
 
-		self.langpair_combobox = Qt.QComboBox()
-		self.langpair_combobox.addItem(self.tr("Arabic to English"), Qt.QVariant("ar|en"))
-		self.langpair_combobox.addItem(self.tr("Chinese to English"), Qt.QVariant("zh|en"))
-		self.langpair_combobox.addItem(self.tr("Chinese (S. to T.)"), Qt.QVariant("zh-CN|zh-TW"))
-		self.langpair_combobox.addItem(self.tr("Chinese (T. to S.)"), Qt.QVariant("zh-TW|zh-CN"))
-		self.langpair_combobox.addItem(self.tr("English to Arabic"), Qt.QVariant("en|ar"))
-		self.langpair_combobox.addItem(self.tr("English to Chinese (S.)"), Qt.QVariant("en|zh-CN"))
-		self.langpair_combobox.addItem(self.tr("English to Chinese (T.)"), Qt.QVariant("en|zh-TW"))
-		self.langpair_combobox.addItem(self.tr("English to French"), Qt.QVariant("en|fr"))
-		self.langpair_combobox.addItem(self.tr("English to German"), Qt.QVariant("en|de"))
-		self.langpair_combobox.addItem(self.tr("English to Italian"), Qt.QVariant("en|it"))
-		self.langpair_combobox.addItem(self.tr("English to Japanese"), Qt.QVariant("en|ja"))
-		self.langpair_combobox.addItem(self.tr("English to Korean"), Qt.QVariant("en|ko"))
-		self.langpair_combobox.addItem(self.tr("English to Portuguese"), Qt.QVariant("en|pt"))
-		self.langpair_combobox.addItem(self.tr("English to Russian"), Qt.QVariant("en|ru"))
-		self.langpair_combobox.addItem(self.tr("English to Spanish"), Qt.QVariant("en|es"))
-		self.langpair_combobox.addItem(self.tr("French to English"), Qt.QVariant("fr|en"))
-		self.langpair_combobox.addItem(self.tr("French to German"), Qt.QVariant("fr|de"))
-		self.langpair_combobox.addItem(self.tr("German to English"), Qt.QVariant("de|en"))
-		self.langpair_combobox.addItem(self.tr("German to French"), Qt.QVariant("de|fr"))
-		self.langpair_combobox.addItem(self.tr("Italian to English"), Qt.QVariant("it|en"))
-		self.langpair_combobox.addItem(self.tr("Japanese to English"), Qt.QVariant("ja|en"))
-		self.langpair_combobox.addItem(self.tr("Korean to English"), Qt.QVariant("ko|en"))
-		self.langpair_combobox.addItem(self.tr("Portuguese to English"), Qt.QVariant("pt|en"))
-		self.langpair_combobox.addItem(self.tr("Russian to English"), Qt.QVariant("ru|en"))
-		self.langpair_combobox.addItem(self.tr("Spanish to English"), Qt.QVariant("es|en"))
-		self.langpair_combobox_layout.addWidget(self.langpair_combobox)
+		self.sl_combobox = Qt.QComboBox()
+		for langs_list_item in self.langs_list :
+			self.sl_combobox.addItem(langs_list_item[0], langs_list_item[1])
+		self.langs_layout.addWidget(self.sl_combobox)
+
+		self.invert_langs_button = Qt.QToolButton()
+		self.invert_langs_button.setIcon(Qt.QIcon(IconsDir+"invert_16.png"))
+		self.invert_langs_button.setIconSize(Qt.QSize(16, 16))
+		self.invert_langs_button.setCursor(Qt.Qt.ArrowCursor)
+		self.invert_langs_button.setAutoRaise(True)
+		self.langs_layout.addWidget(self.invert_langs_button)
+
+		self.tl_combobox = Qt.QComboBox()
+		for langs_list_item in self.langs_list :
+			self.tl_combobox.addItem(langs_list_item[0], langs_list_item[1])
+		self.langs_layout.addWidget(self.tl_combobox)
 
 		self.text_edit = Qt.QTextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
@@ -121,6 +137,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.connect(self.google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 		self.connect(self.google_translate, Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
 
+		self.connect(self.invert_langs_button, Qt.SIGNAL("clicked()"), self.invertLangs)
+
 		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
 
 		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
@@ -133,12 +151,16 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		settings.setValue("google_translate_panel/langpair_combobox_index",
-			Qt.QVariant(self.langpair_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/sl_combobox_index",
+			Qt.QVariant(self.sl_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/tl_combobox_index",
+			Qt.QVariant(self.tl_combobox.currentIndex()))
 
 	def loadSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		self.langpair_combobox.setCurrentIndex(settings.value("google_translate_panel/langpair_combobox_index",
+		self.sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index",
+			Qt.QVariant(0)).toInt()[0])
+		self.tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index",
 			Qt.QVariant(0)).toInt()[0])
 
 	###
@@ -153,17 +175,28 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	### Private ###
 
-	def abort(self) :
-		self.google_translate.abort()
+	def invertLangs(self) :
+		sl_index = self.sl_combobox.currentIndex()
+		tl_index = self.tl_combobox.currentIndex()
+
+		self.sl_combobox.setCurrentIndex(tl_index)
+		self.tl_combobox.setCurrentIndex(sl_index)
 
 	def translate(self) :
-		index = self.langpair_combobox.currentIndex()
-		langpair = self.langpair_combobox.itemData(index).toString()
+		sl_index = self.sl_combobox.currentIndex()
+		sl = self.sl_combobox.itemData(sl_index).toString()
+
+		tl_index = self.tl_combobox.currentIndex()
+		tl = self.tl_combobox.itemData(tl_index).toString()
+
 		text = self.text_edit.toPlainText()
 
-		self.google_translate.translate(langpair, text)
+		self.google_translate.translate(sl, tl, text)
 
 		self.abort_button.setEnabled(True)
+
+	def abort(self) :
+		self.google_translate.abort()
 
 	###
 
@@ -195,6 +228,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		if activate_flag :
 			self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
 			self.text_edit.selectAll()
+
+	###
 
 	def clearTextEdit(self) :
 		self.text_edit.clear()
