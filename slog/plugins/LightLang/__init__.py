@@ -179,6 +179,9 @@ class SLView(object):
 	def grab_focus(self):
 		self.word_entry.grab_focus()
 
+	def clear(self):
+		self.word_entry.set_text("")
+
 	def configure(self, window):
 		dlg = self.wtree.get_widget("pref_dialog")
 		dlg.set_transient_for(window)
