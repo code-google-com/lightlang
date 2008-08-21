@@ -88,6 +88,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		#####
 
 		self.sl_combobox = Qt.QComboBox()
+		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		for langs_list_item in self.langs_list :
 			self.sl_combobox.addItem(langs_list_item[0], langs_list_item[1])
 		self.langs_layout.addWidget(self.sl_combobox)
@@ -100,6 +101,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.langs_layout.addWidget(self.invert_langs_button)
 
 		self.tl_combobox = Qt.QComboBox()
+		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		for langs_list_item in self.langs_list :
 			self.tl_combobox.addItem(langs_list_item[0], langs_list_item[1])
 		self.langs_layout.addWidget(self.tl_combobox)
