@@ -108,6 +108,18 @@ class GoogleTranslate(Qt.QObject) :
 	def setText(self) :
 		self.http_output.append(self.http.readAll())
 
+	def requestFinished(self, request_id, error_flag) :
+		if request_id != self.http_request_id :
+			return
+
+		if error_flag and not self.http_abort_flag :
+			Qt.QMessageBox.warning(None, Const.MyName,
+				self.tr("HTTP error: %1\nPress \"Yes\" to ignore")
+					.arg(self.http.errorString()),
+				Qt.QMessageBox.Yes)
+
+		self.timer.stop()
+
 		codec = Qt.QTextCodec.codecForName("UTF-8")
 		text = codec.toUnicode(self.http_output.data())
 
@@ -121,18 +133,6 @@ class GoogleTranslate(Qt.QObject) :
 			text = text[29:index]
 
 		self.textChangedSignal(text)
-
-	def requestFinished(self, request_id, error_flag) :
-		if request_id != self.http_request_id :
-			return
-
-		if error_flag and not self.http_abort_flag :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("HTTP error: %1\nPress \"Yes\" to ignore")
-					.arg(self.http.errorString()),
-				Qt.QMessageBox.Yes)
-
-		self.timer.stop()
 
 		self.processFinishedSignal()
 
