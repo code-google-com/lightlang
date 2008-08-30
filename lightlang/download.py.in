@@ -245,6 +245,7 @@ def download_resource(remote_resource, out_file) :
 		print MyName+": "+ftp.connect(remote_resource.server, remote_resource.port)
 		print MyName+": "+ftp.login(remote_resource.user, remote_resource.passwd)
 		ftp.retrbinary("RETR "+remote_resource.file_path, download_handler)
+		print
 		try :
 			print MyName+": "+ftp.quit()
 		except : pass
