@@ -224,8 +224,11 @@ def download_handler(data_block) :
 	global dh_data_count
 	dh_out_file.write(data_block)
 	dh_data_count += len(data_block)
+	percent = 100 * dh_data_count / dh_out_file_full_size
 	sys.stdout.write(MyName+": downloading progress: ")
-	sys.stdout.write(str(dh_data_count)+" of "+str(dh_out_file_full_size)+" bytes...\r")
+	sys.stdout.write("|"+"="*(percent/5)+" "*(20-percent/5)+"| "+str(percent)+"%, ")
+	sys.stdout.write(str(dh_data_count/1024)+" of "+str(dh_out_file_full_size/1024)+" Kb\r")
+	sys.stdout.flush()
 
 def download_resource(remote_resource, out_file) :
 	global dh_data_count
