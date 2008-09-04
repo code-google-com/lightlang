@@ -45,7 +45,6 @@ SoundsDir = "resources/sounds/sounds"
 CATProg = "@CAT_PROG@"
 TARProg = "@TAR_PROG@"
 BZip2Prog = "@BZIP2_PROG@"
-SLProg = "@prefix@/bin/sl"
 
 ###
 RemoteListCommand = "remotelist"
