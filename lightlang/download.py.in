@@ -23,7 +23,7 @@ import ftplib
 
 #####
 MyName = "download.py"
-Version = "2.0"
+Version = "2.1"
 
 DeveloperMail = "mdevaev@gmail.com"
 
@@ -88,12 +88,19 @@ class LocalResource :
 		self.file_size = file_size
 
 
-#####
+#####################################################
+#####						#####
+#####		Repositories list		#####
+#####						#####
+#####################################################
 RepositoriesList = [
 	#FTPRepositoryServer("ftp.server", port, "user", "passwd", "path/to/root"),
 	#FTPRepositoryServer("ftp.lightlang.org.ru", 0, "", "", ""),
 	FTPRepositoryServer("ftp.etc.edu.ru", 0, "", "", "pub/soft/for_linux/lightlang")
 	]
+#####################################################
+#####################################################
+#####################################################
 
 
 #####
@@ -112,9 +119,13 @@ def get_remote_resources_list(resources_type = "") :
 			files_list = ftp.nlst(os.path.join(repositories_list_item.path, resources_type))
 			for files_list_item in files_list :
 				try :
+					if files_list_item[0] == "." :
+						continue
+
 					file_size = ftp.size(files_list_item)
-				except :
-					file_size = -1
+					if file_size <= 0 :
+						continue
+				except : continue
 
 				resource_name = os.path.basename(files_list_item)
 				if resources_type == DictsResources :
@@ -150,17 +161,22 @@ def get_local_resources_list(resources_type = "") :
 			files_list = os.listdir(SoundsDir)
 
 		for files_list_item in files_list :
+			try :
+				if files_list_item[0] == "." :
+					continue
+			except : continue
+
 			if resources_type == DictsResources :
 				files_list_item = os.path.join(DictsDir, files_list_item)
-			elif resources_type == SoundsDir :
+			elif resources_type == SoundsResources :
 				files_list_item = os.path.join(SoundsDir, files_list_item)
 
-			file_size = -1
 			if resources_type == DictsResources :
 				try :
 					file_size = os.stat(files_list_item).st_size
-				except :
-					file_size = -1
+					if file_size <= 0 :
+						continue
+				except : continue
 			elif resources_type == SoundsResources :
 				try :
 					file_size = 0
@@ -169,8 +185,9 @@ def get_local_resources_list(resources_type = "") :
 							file_size += os.stat(os.path.join(root, file)).st_size
 						for dir in dirs :
 							file_size += os.stat(os.path.join(root, dir)).st_size
-				except :
-					file_size = -1
+					if file_size <= 0 :
+						continue
+				except : continue
 
 			resource_name = os.path.basename(files_list_item)
 
