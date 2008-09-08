@@ -30,7 +30,7 @@ import HistoryPanel
 import TextBrowser
 import TranslateWindow
 import DictsManager
-try : # FIXME: fucking debian packagers :-(
+try : # FIXME: Rrrrr... :-(
 	import IFAMenu
 	import TranslateSitesMenu
 except : pass
@@ -129,6 +129,8 @@ class MainWindow(Qt.QMainWindow) :
 		##############################
 
 		self.source_objects_list = []
+
+		self.panels_focus_flags = [True, False, False]
 
 		self.printer = Qt.QPrinter()
 		self.print_dialog = Qt.QPrintDialog(self.printer)
@@ -279,13 +281,13 @@ class MainWindow(Qt.QMainWindow) :
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), self.tr("Dicts management"),
 			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
-		try : # FIXME: fucking debian packagers :-(
+		try : # FIXME: Rrrrr... :-(
 			self.tools_menu.addSeparator()
 			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
 			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 			self.tools_menu.addMenu(self.translate_sites_menu)
 		except : pass
-		try : # FIXME: fucking debian packagers :-(
+		try : # FIXME: Rrrrr... :-(
 			self.tools_menu.addSeparator()
 			self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
 			self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
@@ -369,6 +371,24 @@ class MainWindow(Qt.QMainWindow) :
 			self.close()
 		else :
 			self.showNormal()
+			self.activateFocus()
+
+	###
+
+	def focusChanged(self) :
+		new_panels_focus_flags = [self.find_in_sl_panel.hasInternalFocus(),
+			self.google_translate_panel.hasInternalFocus(),
+			self.history_panel.hasInternalFocus()]
+		if True in new_panels_focus_flags :
+			self.panels_focus_flags = new_panels_focus_flags
+
+	def activateFocus(self) :
+		if self.panels_focus_flags[0] :
+			self.find_in_sl_panel.setFocus()
+		elif self.panels_focus_flags[1] :
+			self.google_translate_panel.setFocus()
+		elif self.panels_focus_flags[2] :
+			self.history_panel.setFocus()
 
 	###
 
@@ -466,10 +486,14 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.text_browser.clearAll()
 
+		self.activateFocus()
+
 	def clearTextBrowserPage(self) :
 		if self.checkBusyStreams() :
 			return
 		self.text_browser.clearPage()
+
+		self.activateFocus()
 
 	###
 

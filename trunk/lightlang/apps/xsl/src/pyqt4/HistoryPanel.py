@@ -105,6 +105,9 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
 
+	def hasInternalFocus(self) :
+		return self.line_edit.hasFocus()
+
 	def clear(self) :
 		self.line_edit.clear()
 
