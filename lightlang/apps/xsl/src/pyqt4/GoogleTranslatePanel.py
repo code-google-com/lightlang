@@ -174,6 +174,9 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.text_edit.setFocus(reason)
 		self.text_edit.selectAll()
 
+	def hasInternalFocus(self) :
+		return self.text_edit.hasFocus()
+
 
 	### Private ###
 
