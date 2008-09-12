@@ -34,6 +34,8 @@ class ListBrowser(Qt.QTextBrowser) :
 
 		self.setOpenLinks(False)
 
+		self.setFocusPolicy(Qt.Qt.NoFocus)
+
 		self.last_anchor = Qt.QString()
 
 		###

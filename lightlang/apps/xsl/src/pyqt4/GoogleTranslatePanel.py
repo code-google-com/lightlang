@@ -118,7 +118,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.clear_text_edit_button.setEnabled(False)
 		self.text_edit_layout.addWidget(self.clear_text_edit_button)
 
-		self.translate_button = Qt.QPushButton(self.tr("&Translate"))
+		self.translate_button = Qt.QPushButton(self.tr("T&ranslate"))
 		self.translate_button.setEnabled(False)
 		self.control_buttons_layout.addWidget(self.translate_button)
 
