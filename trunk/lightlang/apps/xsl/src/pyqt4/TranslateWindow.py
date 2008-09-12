@@ -276,6 +276,7 @@ class TranslateWindow(PopupWindow) :
 
 		self.text_browser = Qt.QTextBrowser()
 		self.text_browser.setOpenLinks(False)
+		self.text_browser.setFocusPolicy(Qt.Qt.NoFocus)
 		self.main_layout.addWidget(self.text_browser)
 
 		#####
