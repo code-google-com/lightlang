@@ -1,1 +1,0 @@
-../docs/text/ru/text/README
