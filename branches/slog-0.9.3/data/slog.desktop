@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Terminal=false
+Name=SLog
+GenericName=LightLang SLog
+Comment=PyGTK based GUI for LightLang SL dictionary
+Icon=slog.png
+Exec=slog
+Categories=GNOME;GTK;Utility;
+
