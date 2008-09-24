@@ -561,8 +561,13 @@ static void print_header(const char *dict_name)
 
 
 	if ( settings.output_format == html_output_format )
-		printf("\t<table border=\"0\" width=\"100%\"><tr><td bgcolor=\"#DFEDFF\">"
-			"<h2 align=\"center\"><em>%s</em></h2></td></tr></table>\n", dict_name);
+	{
+		printf("\t<table border=\"0\" width=\"100%\"><tr><td bgcolor=\"#DFEDFF\"><h2 align=\"center\"><em>");
+		for (; (*dict_name); dict_name++)
+			if ( (*dict_name) == '_' ) putchar(' ');
+			else putchar(*dict_name);
+		printf("</em></h2></td></tr></table>\n");
+	}
 	else if ( settings.output_format == text_output_format )
 	{
 		if ( strlen(dict_name) >= settings.max_terminal_line_len )
