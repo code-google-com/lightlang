@@ -215,10 +215,17 @@ class FindInTextFrame(Qt.QFrame) :
 
 		#####
 
+		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette()) # construct new palette :-)
+		self.line_edit_red_alert_palette = Qt.QPalette()
+		self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, Qt.QColor(255, 110, 110, 255))
+
+		#####
+
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
 
 		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.findNextRequest)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatus)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
 
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
@@ -232,6 +239,12 @@ class FindInTextFrame(Qt.QFrame) :
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
+
+	def setLineEditRedAlertPalette(self) :
+		self.line_edit.setPalette(self.line_edit_red_alert_palette)
+
+	def setLineEditDefaultPalette(self) :
+		self.line_edit.setPalette(self.line_edit_default_palette)
 
 
 	### Private ###
@@ -247,6 +260,9 @@ class FindInTextFrame(Qt.QFrame) :
 		if word.simplified().isEmpty() :
 			return
 		self.findPreviousRequestSignal(word)
+
+	def instantSearchRequest(self, word) :
+		self.instantSearchRequestSignal(word)
 
 	def setStatus(self) :
 		if self.line_edit.text().simplified().isEmpty() :
@@ -273,6 +289,9 @@ class FindInTextFrame(Qt.QFrame) :
 	def findPreviousRequestSignal(self, word) :
 		self.emit(Qt.SIGNAL("findPreviousRequest(const QString &)"), word)
 
+	def instantSearchRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("instantSearchRequest(const QString &)"), word)
+
 
 	### Handlers ###
 
@@ -298,6 +317,8 @@ class TextBrowser(Qt.QWidget) :
 		self.shred_lock_flag = False
 
 		self.translate_browsers = []
+
+		self.tmp_text_cursor = Qt.QTextCursor()
 
 		###
 
@@ -331,6 +352,7 @@ class TextBrowser(Qt.QWidget) :
 
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.findNext)
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.findPrevious)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.instantSearch)
 
 		#####
 
@@ -495,7 +517,34 @@ class TextBrowser(Qt.QWidget) :
 
 		browser.setTextCursor(new_text_cursor)
 
-		
+	def instantSearch(self, word) : # Thanks :-)
+		index = self.currentIndex()
+
+		if word.isEmpty() :
+			my_text_cursor = self.tmp_text_cursor = self.translate_browsers[index].textCursor()
+		else :
+			my_text_cursor = self.translate_browsers[index].textCursor()
+
+		my_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.KeepAnchor)
+		self.translate_browsers[index].setTextCursor(my_text_cursor)
+
+		my_text_cursor = self.translate_browsers[index].document().find(word, my_text_cursor)
+
+		if my_text_cursor.isNull() and not word.isEmpty() :
+			my_text_cursor = self.translate_browsers[index].document().find(word, False)
+			if my_text_cursor.isNull() :
+				self.find_in_text_frame.setLineEditRedAlertPalette()
+				self.tmp_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.KeepAnchor)
+				self.translate_browsers[index].setTextCursor(self.tmp_text_cursor)
+			else :
+				self.tmp_text_cursor = my_text_cursor
+				self.translate_browsers[index].setTextCursor(my_text_cursor)
+		elif not my_text_cursor.isNull() :
+			self.tmp_text_cursor = my_text_cursor
+			self.translate_browsers[index].setTextCursor(my_text_cursor)
+			self.find_in_text_frame.setLineEditDefaultPalette()
+		else :
+			self.find_in_text_frame.setLineEditDefaultPalette()
 
 
 	### Signals ###
