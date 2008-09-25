@@ -525,7 +525,7 @@ class TextBrowser(Qt.QWidget) :
 		else :
 			my_text_cursor = self.translate_browsers[index].textCursor()
 
-		my_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.KeepAnchor)
+		my_text_cursor.setPosition(my_text_cursor.selectionStart(), Qt.QTextCursor.MoveAnchor)
 		self.translate_browsers[index].setTextCursor(my_text_cursor)
 
 		my_text_cursor = self.translate_browsers[index].document().find(word, my_text_cursor)
@@ -534,7 +534,7 @@ class TextBrowser(Qt.QWidget) :
 			my_text_cursor = self.translate_browsers[index].document().find(word, False)
 			if my_text_cursor.isNull() :
 				self.find_in_text_frame.setLineEditRedAlertPalette()
-				self.tmp_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.KeepAnchor)
+				self.tmp_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.MoveAnchor)
 				self.translate_browsers[index].setTextCursor(self.tmp_text_cursor)
 			else :
 				self.tmp_text_cursor = my_text_cursor
