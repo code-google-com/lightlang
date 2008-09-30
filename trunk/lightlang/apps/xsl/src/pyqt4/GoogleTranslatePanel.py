@@ -85,6 +85,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			[ self.tr("Japanese"),	Qt.QVariant("ja") ]
 			]
 
+		self.internalSortLangs(0, len(self.langs_list) -1)
+
 		#####
 
 		self.sl_combobox = Qt.QComboBox()
@@ -179,6 +181,22 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 
 	### Private ###
+
+	def internalSortLangs(self, left, right) :
+		if left >= right :
+			return
+
+		i = j = left
+		while j <= right :
+			if self.langs_list[j][0] <= self.langs_list[right][0] :
+				self.langs_list[i], self.langs_list[j] = self.langs_list[j], self.langs_list[i]
+				i += 1
+			j += 1
+
+		self.internalSortLangs(left, i - 2)
+		self.internalSortLangs(i, right)
+
+	###
 
 	def invertLangs(self) :
 		sl_index = self.sl_combobox.currentIndex()
