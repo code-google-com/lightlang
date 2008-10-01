@@ -21,10 +21,15 @@
 
 from PyQt4 import Qt
 import sys
-import Xlib
-import Xlib.display
 import Config
 import Const
+try : # optional requires python-xlib
+	import Xlib
+	import Xlib.display
+	PythonXlibExistsFlag = True
+except :
+	PythonXlibExistsFlag = False
+	print Const.MyName+": python-xlib is not found, please, install it"
 
 #####
 SL = Config.Prefix+"/bin/sl"
@@ -51,7 +56,8 @@ class MouseSelector(Qt.QObject) :
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(300)
 
-		self.display = Xlib.display.Display()
+		if PythonXlibExistsFlag :
+			self.display = Xlib.display.Display()
 
 		self.modifier = LeftCtrlModifier
 
@@ -94,6 +100,9 @@ class MouseSelector(Qt.QObject) :
 		self.selectionChangedSignal(word)
 
 	def checkModifier(self) :
+		if not PythonXlibExistsFlag :
+			return True
+
 		if self.modifier == NoModifier :
 			return True
 
@@ -146,6 +155,10 @@ class KeyboardModifierMenu(Qt.QMenu) :
 		#####
 
 		self.setIndex(0)
+
+		if not PythonXlibExistsFlag :
+			self.setTitle(self.tr("No modifiers available"))
+			self.setEnabled(False)
 
 
 	### Public ###
