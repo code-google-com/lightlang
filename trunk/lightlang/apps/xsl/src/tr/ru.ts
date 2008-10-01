@@ -400,7 +400,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="121"/>
+        <location filename="GoogleTranslatePanel.py" line="123"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
@@ -484,49 +484,54 @@ Package version: %2</source>
 <context>
     <name>KeyboardModifierMenu</name>
     <message>
-        <location filename="Spy.py" line="130"/>
+        <location filename="Spy.py" line="139"/>
         <source>Left Ctrl</source>
         <translation>Ctrl слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="131"/>
+        <location filename="Spy.py" line="140"/>
         <source>Left Alt</source>
         <translation>Alt слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="132"/>
+        <location filename="Spy.py" line="141"/>
         <source>Left Shift</source>
         <translation>Shift слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="133"/>
+        <location filename="Spy.py" line="142"/>
         <source>Left Win</source>
         <translation>Win слева</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="135"/>
+        <location filename="Spy.py" line="144"/>
         <source>Right Ctrl</source>
         <translation>Ctrl справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="136"/>
+        <location filename="Spy.py" line="145"/>
         <source>Right Alt</source>
         <translation>Alt справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="137"/>
+        <location filename="Spy.py" line="146"/>
         <source>Right Shift</source>
         <translation>Shift справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="138"/>
+        <location filename="Spy.py" line="147"/>
         <source>Right Win</source>
         <translation>Win справа</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="140"/>
+        <location filename="Spy.py" line="149"/>
         <source>No modifier</source>
         <translation>Без модификатора</translation>
+    </message>
+    <message>
+        <location filename="Spy.py" line="160"/>
+        <source>No modifiers available</source>
+        <translation>Нет доступных модификаторов</translation>
     </message>
 </context>
 <context>
@@ -743,37 +748,37 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>SpyMenu</name>
     <message>
-        <location filename="Spy.py" line="202"/>
+        <location filename="Spy.py" line="215"/>
         <source>Start Spy</source>
         <translation>Запустить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="204"/>
+        <location filename="Spy.py" line="217"/>
         <source>Stop Spy</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="207"/>
+        <location filename="Spy.py" line="220"/>
         <source>Show popup window</source>
         <translation>Показывать всплывающее окно</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="209"/>
+        <location filename="Spy.py" line="222"/>
         <source>Auto-detect window</source>
         <translation>Автоидентификация окна</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="212"/>
+        <location filename="Spy.py" line="225"/>
         <source>Keyboard modifier</source>
         <translation>Клавиши-модификаторы</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="233"/>
+        <location filename="Spy.py" line="246"/>
         <source>Spy is running</source>
         <translation>Spy-сервис запущен</translation>
     </message>
     <message>
-        <location filename="Spy.py" line="243"/>
+        <location filename="Spy.py" line="256"/>
         <source>Spy is stopped</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
@@ -781,17 +786,17 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TextBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="436"/>
+        <location filename="TextBrowser.py" line="457"/>
         <source>&lt;em&gt;Empty&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пусто&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="437"/>
+        <location filename="TextBrowser.py" line="458"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="495"/>
+        <location filename="TextBrowser.py" line="516"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
