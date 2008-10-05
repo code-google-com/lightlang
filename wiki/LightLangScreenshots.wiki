@@ -1,4 +1,6 @@
 #labels LightLang,XSL,screenshots
+=Скриншоты LightLang=
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window1.png
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window2.png
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/find_in_sl_panel1.png
