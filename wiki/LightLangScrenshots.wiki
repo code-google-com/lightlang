@@ -1,4 +1,0 @@
-http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window1.png
-
-
-http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window2.png
