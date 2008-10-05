@@ -1,1 +1,7 @@
 #labels LightLang,XSL,screenshots
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window2.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/find_in_sl_panel1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/find_in_sl_panel2.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/google_translate_panel1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/history_panel1.png
