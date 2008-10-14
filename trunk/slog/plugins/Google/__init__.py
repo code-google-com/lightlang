@@ -36,6 +36,8 @@ def reload_targets(languages, model, targets):
 			
 class PrefDialog(object):
 
+    """ Диалог с настройками плагина Google Translate """
+
 	def __init__(self, window, conf, google, model):
 		gladefile = os.path.join(path, "google.glade")
 		wtree = gtk.glade.XML(gladefile, domain="slog")
@@ -141,6 +143,8 @@ class PrefDialog(object):
 class GoogleView(object):
 	def __init__(self):
 
+        """ Google View Widget """
+
 		self.callbacks = {}
 		self.conf = SlogConf()
 		proxy = Proxy(self.conf)
@@ -169,12 +173,18 @@ class GoogleView(object):
 		self.cmb_target.set_active(self.conf.google_target)
 
 	def __fire_translate_changed(self, translate):
+
+        """ Оповестить обработчики о том, что перевод изменился"""
+
 		callback = self.callbacks["translate_it"]
 		if callback is not None:
 			callback("Google", translate)
 
 	def __fire_status_changed(self, message, needClear=False):
-		callback = self.callbacks["changed"]
+
+        """ Оповестить обработчики о том, что статус изменился"""
+
+        callback = self.callbacks["changed"]
 		if callback is not None:
 			gobject.idle_add(callback, message)
 			if needClear:
@@ -192,13 +202,14 @@ class GoogleView(object):
 			self.__fire_translate_changed(translate)
 			self.__fire_status_changed("Done", True)
 		finally:
-                        self.wtree.get_widget("btn_translate").set_sensitive(True)
+            self.wtree.get_widget("btn_translate").set_sensitive(True)
 			ghlp.change_cursor(None)
 
 	def on_translate_clicked(self, widget, data=None):
-		""" Обработчик собития нажатия на кнопку Translate
-		"""
-		curr = self.cmb_target.get_active()
+
+        """ Обработчик собития нажатия на кнопку Translate	"""
+	
+        curr = self.cmb_target.get_active()
 		if curr == -1:
 			print "Warning: Target not selected"
 			return
@@ -217,7 +228,7 @@ class GoogleView(object):
 			return
 
 		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-                widget.set_sensitive(False)
+        widget.set_sensitive(False)
                 
 		self.__fire_status_changed("Send request...")
 
