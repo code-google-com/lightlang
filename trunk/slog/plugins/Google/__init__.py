@@ -13,7 +13,7 @@ from slog.proxy import Proxy
 import slog.gui_helper as ghlp
 
 plugin_name = "Google Translate"
-plugin_version = "0.1.2"
+plugin_version = "0.1.3"
 plugin_author = "Nasyrov Renat <renatn@gmail.com>"
 plugin_description = _("Client for Google Translate")
 
@@ -192,6 +192,7 @@ class GoogleView(object):
 			self.__fire_translate_changed(translate)
 			self.__fire_status_changed("Done", True)
 		finally:
+                        self.wtree.get_widget("btn_translate").set_sensitive(True)
 			ghlp.change_cursor(None)
 
 	def on_translate_clicked(self, widget, data=None):
@@ -216,6 +217,8 @@ class GoogleView(object):
 			return
 
 		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
+                widget.set_sensitive(False)
+                
 		self.__fire_status_changed("Send request...")
 
 		thread = threading.Thread(target = self.request_google, args = (src, dst, text))
