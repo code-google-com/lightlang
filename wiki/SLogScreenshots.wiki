@@ -3,5 +3,20 @@
 
 == Начальное окно ==
 
-http://code.google.com/p/lightlang/source/browse/trunk/art/screenshots/slog/start.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/slog/start.png
 
+== XSL ==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/slog/sl.png
+
+== Google Translate ==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/slog/google.png
+
+== Service Spy ==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/slog/spy.png
+
+== Plugins Dialog ==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/slog/plugins.png
