@@ -33,10 +33,10 @@ def reload_targets(languages, model, targets):
 		src, dst = t
 		title = target_to_str(languages[src], languages[dst])
 		model.append([title, src, dst])
-			
+
 class PrefDialog(object):
 
-    """ Диалог с настройками плагина Google Translate """
+	""" Диалог с настройками плагина Google Translate """
 
 	def __init__(self, window, conf, google, model):
 		gladefile = os.path.join(path, "google.glade")
@@ -64,7 +64,7 @@ class PrefDialog(object):
 		self.cmb_to = wtree.get_widget("combo_to")
 		self.__init_combobox(self.cmb_from, model)
 		self.__init_combobox(self.cmb_to, model)
-	
+
 		self.tv_targets = wtree.get_widget("tree_targets")
 		selection = self.tv_targets.get_selection()
 		selection.set_mode(gtk.SELECTION_MULTIPLE)
@@ -119,7 +119,7 @@ class PrefDialog(object):
 	def on_target_removed(self, widget, data=None):
 		selection = self.tv_targets.get_selection()
 		model, rows = selection.get_selected_rows()
-		
+
 		rowref_list = []
 		for path in rows:
 			rowref_list.append(gtk.TreeRowReference(model, path))
@@ -141,9 +141,10 @@ class PrefDialog(object):
 		self.dlg.destroy()
 
 class GoogleView(object):
+
 	def __init__(self):
 
-        """ Google View Widget """
+		""" Google View Widget """
 
 		self.callbacks = {}
 		self.conf = SlogConf()
@@ -168,13 +169,13 @@ class GoogleView(object):
 		self.cmb_target.add_attribute(cell, 'text', 0)
 		self.model = gtk.ListStore(str, str, str)
 		self.cmb_target.set_model(self.model)
-		
+
 		reload_targets(self.google.languages, self.model, self.conf.get_google_targets())
 		self.cmb_target.set_active(self.conf.google_target)
 
 	def __fire_translate_changed(self, translate):
 
-        """ Оповестить обработчики о том, что перевод изменился"""
+		""" Оповестить обработчики о том, что перевод изменился"""
 
 		callback = self.callbacks["translate_it"]
 		if callback is not None:
@@ -182,9 +183,9 @@ class GoogleView(object):
 
 	def __fire_status_changed(self, message, needClear=False):
 
-        """ Оповестить обработчики о том, что статус изменился"""
+		""" Оповестить обработчики о том, что статус изменился"""
 
-        callback = self.callbacks["changed"]
+		callback = self.callbacks["changed"]
 		if callback is not None:
 			gobject.idle_add(callback, message)
 			if needClear:
@@ -202,21 +203,21 @@ class GoogleView(object):
 			self.__fire_translate_changed(translate)
 			self.__fire_status_changed("Done", True)
 		finally:
-            self.wtree.get_widget("btn_translate").set_sensitive(True)
+			self.wtree.get_widget("btn_translate").set_sensitive(True)
 			ghlp.change_cursor(None)
 
 	def on_translate_clicked(self, widget, data=None):
 
-        """ Обработчик собития нажатия на кнопку Translate	"""
-	
-        curr = self.cmb_target.get_active()
+		""" Обработчик собития нажатия на кнопку Translate	"""
+
+		curr = self.cmb_target.get_active()
 		if curr == -1:
 			print "Warning: Target not selected"
 			return
 
 		src = self.model[curr][1]
 		dst = self.model[curr][2]
-		
+
 		textbuffer = self.textview.get_buffer()
 		start, end = textbuffer.get_bounds()
 		text = textbuffer.get_text(start, end)
@@ -228,8 +229,8 @@ class GoogleView(object):
 			return
 
 		ghlp.change_cursor(gtk.gdk.Cursor(gtk.gdk.WATCH))
-        widget.set_sensitive(False)
-                
+		widget.set_sensitive(False)
+
 		self.__fire_status_changed("Send request...")
 
 		thread = threading.Thread(target = self.request_google, args = (src, dst, text))
