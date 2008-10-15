@@ -1,0 +1,7 @@
+#summary Screnshots of SLog
+#labels SLog
+
+== Начальное окно ==
+
+http://code.google.com/p/lightlang/source/browse/trunk/art/screenshots/slog/start.png
+
