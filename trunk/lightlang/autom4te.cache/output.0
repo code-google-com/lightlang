@@ -1270,6 +1270,7 @@ Optional Packages:
                           available: normal, recommended, console
   --with-audio-player     set audio player, default: play
   --with-gui-flag         enable or disable GUI, default: yes
+  --with-python-xlib-flag enable or disable python-xlib, default: yes
 
 Some influential environment variables:
   CC          C compiler command
@@ -1723,17 +1724,21 @@ fi
 if [ "$DEFAULT_CONFIG" = "normal" ]; then
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 elif [ "$DEFAULT_CONFIG" = "recommended" ]; then
 	DEFAULT_AUDIO_PLAYER="mplayer"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 elif [ "$DEFAULT_CONFIG" = "console" ]; then
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="no"
+	DEFAULT_PYTHON_XLIB_FLAG="no"
 else
 	echo "bad argument: " $DEFAULT_CONFIG ": ignored"
 	DEFAULT_CONFIG="normal"
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 fi
 
 
@@ -1752,6 +1757,15 @@ if test "${with_gui_flag+set}" = set; then
   withval=$with_gui_flag; GUI_FLAG=$withval
 else
   GUI_FLAG=$DEFAULT_GUI_FLAG
+fi
+
+
+
+# Check whether --with-python_xlib_flag was given.
+if test "${with_python_xlib_flag+set}" = set; then
+  withval=$with_python_xlib_flag; PYTHON_XLIB_FLAG=$withval
+else
+  PYTHON_XLIB_FLAG=$DEFAULT_PYTHON_XLIB_FLAG
 fi
 
 
@@ -6636,17 +6650,21 @@ fi
 if [ "$GUI_FLAG" = "yes" ]; then
 
 	printf "python-test: importing \"Xlib\" module... "
-	$PYTHON_PROG -c "import Xlib, Xlib.display"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "| Python-xlib library is not installed in your system. Please install |"
-		echo "| it and try again.                                                   |"
-		echo "+---------------------------------------------------------------------+"
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+	if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
+		$PYTHON_PROG -c "import Xlib, Xlib.display"
+		if [ "$?" != "0" ]; then
+			echo "+---------------------------------------------------------------------+"
+			echo "| Python-xlib library is not installed in your system. Please install |"
+			echo "| it and try again.                                                   |"
+			echo "+---------------------------------------------------------------------+"
+			{ { echo "$as_me:$LINENO: error: Python modules error" >&5
 echo "$as_me: error: Python modules error" >&2;}
    { (exit 1); exit 1; }; }
+		else
+			echo "ok"
+		fi
 	else
-		echo "ok"
+		echo "pass"
 	fi
 
 	printf "python-test: importing \"Qt\" from \"PyQt4\" module... "
@@ -7795,8 +7813,10 @@ echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
 if [ "$GUI_FLAG" = "yes" ]; then
 echo "+---------------------------------------------------------------------+"
+if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
 	printf "  Xlib version   :  "
 	$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
+fi
 	printf "  Qt4 version    :  "
 	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"
 	printf "  PyQt4 version  :  "

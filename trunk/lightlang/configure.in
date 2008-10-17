@@ -22,17 +22,21 @@ available: normal, recommended, console])],
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 elif [[ "$DEFAULT_CONFIG" = "recommended" ]]; then
 	DEFAULT_AUDIO_PLAYER="mplayer"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 elif [[ "$DEFAULT_CONFIG" = "console" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="no"
+	DEFAULT_PYTHON_XLIB_FLAG="no"
 else
 	echo "bad argument: " $DEFAULT_CONFIG ": ignored"
 	DEFAULT_CONFIG="normal"
 	DEFAULT_AUDIO_PLAYER="play"
 	DEFAULT_GUI_FLAG="yes"
+	DEFAULT_PYTHON_XLIB_FLAG="yes"
 fi
 
 AC_ARG_WITH(audio_player,
@@ -43,6 +47,10 @@ AC_SUBST(GUI_FLAG)
 AC_ARG_WITH(gui_flag,
 	[AC_HELP_STRING([--with-gui-flag], [enable or disable GUI, default: yes])],
 	GUI_FLAG=$withval, GUI_FLAG=$DEFAULT_GUI_FLAG)
+
+AC_ARG_WITH(python_xlib_flag,
+	[AC_HELP_STRING([--with-python-xlib-flag], [enable or disable python-xlib, default: yes])],
+	PYTHON_XLIB_FLAG=$withval, PYTHON_XLIB_FLAG=$DEFAULT_PYTHON_XLIB_FLAG)
 
 dnl ################# Checkings #################
 
@@ -187,15 +195,19 @@ fi
 if [[ "$GUI_FLAG" = "yes" ]]; then
 
 	printf "python-test: importing \"Xlib\" module... "
-	$PYTHON_PROG -c "import Xlib, Xlib.display"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "| Python-xlib library is not installed in your system. Please install |"
-		echo "| it and try again.                                                   |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
+	if [[ "$PYTHON_XLIB_FLAG" = "yes" ]]; then
+		$PYTHON_PROG -c "import Xlib, Xlib.display"
+		if [[ "$?" != "0" ]]; then
+			echo "+---------------------------------------------------------------------+"
+			echo "| Python-xlib library is not installed in your system. Please install |"
+			echo "| it and try again.                                                   |"
+			echo "+---------------------------------------------------------------------+"
+			AC_MSG_ERROR([Python modules error])
+		else
+			echo "ok"
+		fi
 	else
-		echo "ok"
+		echo "pass"
 	fi
 
 	printf "python-test: importing \"Qt\" from \"PyQt4\" module... "
@@ -305,8 +317,10 @@ echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
 if [[ "$GUI_FLAG" = "yes" ]]; then
 echo "+---------------------------------------------------------------------+"
+if [[ "$PYTHON_XLIB_FLAG" = "yes" ]]; then
 	printf "  Xlib version   :  "
 	$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
+fi
 	printf "  Qt4 version    :  "
 	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"
 	printf "  PyQt4 version  :  "
