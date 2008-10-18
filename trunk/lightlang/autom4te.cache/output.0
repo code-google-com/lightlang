@@ -7812,11 +7812,11 @@ echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
 if [ "$GUI_FLAG" = "yes" ]; then
-echo "+---------------------------------------------------------------------+"
-if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
-	printf "  Xlib version   :  "
-	$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
-fi
+	echo "+---------------------------------------------------------------------+"
+	if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
+		printf "  Xlib version   :  "
+		$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
+	fi
 	printf "  Qt4 version    :  "
 	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"
 	printf "  PyQt4 version  :  "
