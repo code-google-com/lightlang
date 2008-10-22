@@ -28,6 +28,28 @@ import GoogleTranslate
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+class TextEdit(Qt.QTextEdit) :
+	def __init__(self, parent = None) :
+		Qt.QTextEdit.__init__(self, parent)
+
+
+	### Signals ###
+
+	def translateRequestSignal(self) :
+		self.emit(Qt.SIGNAL("translateRequest()"))
+
+
+	### Handlers ###
+
+	def keyPressEvent(self, event) :
+		if ( (event.key() == Qt.Qt.Key_Return or event.key() == Qt.Qt.Key_Enter) and
+			event.modifiers() == Qt.Qt.ControlModifier ) :
+			self.translateRequestSignal()
+		else :
+			Qt.QTextEdit.keyPressEvent(self, event)
+
+
+#####
 class GoogleTranslatePanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)
@@ -108,7 +130,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			self.tl_combobox.addItem(langs_list_item[0], langs_list_item[1])
 		self.langs_layout.addWidget(self.tl_combobox)
 
-		self.text_edit = Qt.QTextEdit()
+		self.text_edit = TextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
 
 		self.clear_text_edit_button = Qt.QToolButton()
@@ -144,6 +166,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.connect(self.invert_langs_button, Qt.SIGNAL("clicked()"), self.invertLangs)
 
 		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
+		self.connect(self.text_edit, Qt.SIGNAL("translateRequest()"), self.translate)
 
 		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
 
@@ -206,13 +229,15 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.tl_combobox.setCurrentIndex(sl_index)
 
 	def translate(self) :
+		text = self.text_edit.toPlainText()
+		if text.simplified().isEmpty() :
+			return
+
 		sl_index = self.sl_combobox.currentIndex()
 		sl = self.sl_combobox.itemData(sl_index).toString()
 
 		tl_index = self.tl_combobox.currentIndex()
 		tl = self.tl_combobox.itemData(tl_index).toString()
-
-		text = self.text_edit.toPlainText()
 
 		self.google_translate.translate(sl, tl, text)
 
@@ -240,7 +265,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.processFinishedSignal()
 
 	def setStatusFromTextEdit(self) :
-		if self.text_edit.toPlainText().isEmpty() :
+		if self.text_edit.toPlainText().simplified().isEmpty() :
 			self.clear_text_edit_button.setEnabled(False)
 			self.translate_button.setEnabled(False)
 		else :
