@@ -109,7 +109,7 @@ class Main :
 	### Private ###
 
 	def checkLockFile(self) :
-		lock_file_name = Qt.QDir.tempPath()+Qt.QString(Const.MyName).toLower()+".lock"
+		lock_file_name = Qt.QDir.tempPath()+"/"+Qt.QString(Const.MyName).toLower()+".lock"
 		lock_file = Qt.QFile(lock_file_name)
 		lock_file_stream = Qt.QTextStream(lock_file)
 
