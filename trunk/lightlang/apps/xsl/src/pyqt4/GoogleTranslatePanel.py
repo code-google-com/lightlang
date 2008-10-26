@@ -166,7 +166,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.connect(self.invert_langs_button, Qt.SIGNAL("clicked()"), self.invertLangs)
 
 		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
-		self.connect(self.text_edit, Qt.SIGNAL("translateRequest()"), self.translate)
+		self.connect(self.text_edit, Qt.SIGNAL("translateRequest()"), self.translate_button.animateClick)
 
 		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
 

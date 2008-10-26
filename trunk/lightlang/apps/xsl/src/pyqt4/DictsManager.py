@@ -610,7 +610,8 @@ class DictsManager(Qt.QDialog) :
 		self.control_buttons_layout.addStretch()
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("&OK"))
-		self.ok_button.setDefault(True)
+		self.ok_button.setAutoDefault(False)
+		self.ok_button.setDefault(False)
 		self.control_buttons_layout.addWidget(self.ok_button)
 
 		#####

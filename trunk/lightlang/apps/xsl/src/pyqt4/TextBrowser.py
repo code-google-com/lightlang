@@ -223,7 +223,7 @@ class FindInTextFrame(Qt.QFrame) :
 
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
 
-		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.findNextRequest)
+		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.next_button.animateClick)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatus)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
 
