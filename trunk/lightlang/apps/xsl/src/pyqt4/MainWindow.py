@@ -134,6 +134,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.printer = Qt.QPrinter()
 		self.print_dialog = Qt.QPrintDialog(self.printer)
+		self.print_dialog.setWindowTitle(self.tr("Print page"))
 
 		self.find_in_sl_panel = FindInSLPanel.FindInSLPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
