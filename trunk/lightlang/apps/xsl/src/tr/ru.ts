@@ -404,6 +404,11 @@ Press &quot;Yes&quot; to ignore</source>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
+    <message>
+        <location filename="GoogleTranslatePanel.py" line="147"/>
+        <source>Ctrl+Enter</source>
+        <translation>Ctrl+Enter</translation>
+    </message>
 </context>
 <context>
     <name>HelpBrowser</name>
