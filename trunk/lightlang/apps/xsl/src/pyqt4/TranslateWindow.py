@@ -229,7 +229,7 @@ class TranslateWindow(PopupWindow) :
 		PopupWindow.__init__(self, parent)
 
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setMargin(0)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
@@ -246,7 +246,7 @@ class TranslateWindow(PopupWindow) :
 		self.main_layout.addWidget(self.caption_frame)
 
 		self.caption_frame_layout = Qt.QHBoxLayout()
-		self.caption_frame_layout.setMargin(1)
+		self.caption_frame_layout.setContentsMargins(1, 1, 1, 1)
 		self.caption_frame_layout.setSpacing(1)
 		self.caption_frame.setLayout(self.caption_frame_layout)
 

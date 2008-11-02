@@ -169,7 +169,7 @@ class FindInTextFrame(Qt.QFrame) :
 		self.setFrameShape(Qt.QFrame.Box)
 
 		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setMargin(2)
+		self.main_layout.setContentsMargins(2, 2, 2, 2)
 		self.setLayout(self.main_layout)
 
 		#####
@@ -308,7 +308,7 @@ class TextBrowser(Qt.QWidget) :
 		Qt.QWidget.__init__(self, parent)
 
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setMargin(0)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 

@@ -229,7 +229,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 		Qt.QWidget.__init__(self, parent)
 
 		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setMargin(5)
+		self.main_layout.setContentsMargins(5, 5, 5, 5)
 		self.main_layout.setSpacing(3)
 		self.setLayout(self.main_layout)
 

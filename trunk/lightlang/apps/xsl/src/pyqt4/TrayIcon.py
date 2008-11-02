@@ -50,7 +50,7 @@ class TrayMenu(Qt.QMenu) :
 		fictive_action.setDefaultWidget(fictive_action_frame)
 
 		fictive_action_frame_layout = Qt.QHBoxLayout()
-		fictive_action_frame_layout.setMargin(1)
+		fictive_action_frame_layout.setContentsMargins(1, 1, 1, 1)
 		fictive_action_frame.setLayout(fictive_action_frame_layout)
 
 		fictive_action_icon_label = Qt.QLabel()
