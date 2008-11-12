@@ -89,23 +89,6 @@ const std::string bgl_language[] = {
 	"Tamazight",
 	"Armenian"};
 
-
-const std::string bgl_charsetname[] = {
-	"Default" ,
-	"Latin",
-	"Eastern European",
-	"Cyrillic",
-	"Japanese",
-	"Traditional Chinese",
-	"Simplified Chinese",
-	"Baltic",
-	"Greek",
-	"Korean",
-	"Turkish",
-	"Hebrew",
-	"Arabic",
-	"Thai" };
-
 const std::string bgl_charset[] = {
 	"ISO-8859-1", /*Default*/
 	"ISO-8859-1", /*Latin*/

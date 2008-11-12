@@ -19,12 +19,8 @@
  ***************************************************************************/
 
 #include "babylonreader.h"
-#include "dictdbuilder.h"
-#include "freedictreader.h"
 #include "plaintextdictbuilder.h"
 #include "sdictreader.h"
-#include "stardictreader.h"
-#include "stardictbuilder.h"
 
 #include <stdio.h>
 #include <string>
@@ -45,14 +41,10 @@ void usage( const char *program )
   printf( "\n" );
   printf( "INPUT_FILE can be:\n" );
   printf( "  Babylon Glossary (.bgl)\n" );
-  printf( "  Freedict dictionary (.tei)\n" );
   printf( "  Sdictionary dictionary (.dct)\n" );
-  printf( "  StarDict dictionary (.ifo)\n" );
   printf( "\n" );
   printf( "OUTPUT_FILE can be:\n" );
-  printf( "  DICT dictionary (.index)\n" );
   printf( "  PlainText dictionary (.dic)\n" );
-  printf( "  StarDict dictionary (.ifo)\n" );
   printf( "\n" );
 
   exit( 1 );
@@ -106,9 +98,7 @@ int main(int argc, char ** argv)
 
   // Builder
   DictBuilder *builder;
-  if( outfile.compare( outfile.length() - 6, 6, ".index") == 0 || outfile.compare( outfile.length() - 6, 6, ".INDEX") == 0 ) builder = new DictdBuilder( outfile );
-  else if( outfile.compare( outfile.length() - 4, 4, ".dic") == 0 || outfile.compare( outfile.length() - 4, 4, ".DIC") == 0 ) builder = new PlainTextDictBuilder( outfile );
-  else if( outfile.compare( outfile.length() - 4, 4, ".ifo") == 0 || outfile.compare( outfile.length() - 4, 4, ".IFO") == 0 ) builder = new StarDictBuilder( outfile );
+  if( outfile.compare( outfile.length() - 4, 4, ".dic") == 0 || outfile.compare( outfile.length() - 4, 4, ".DIC") == 0 ) builder = new PlainTextDictBuilder( outfile );
   else{
     printf( "You should specify a valid output file.\n" );
     exit( 1 );
@@ -117,9 +107,7 @@ int main(int argc, char ** argv)
   // Reader
   DictReader *reader;
   if( infile.compare( infile.length() - 4, 4, ".bgl" ) == 0 || infile.compare( infile.length() - 4, 4, ".BGL" ) == 0 ) reader = new BabylonReader( infile, builder, babylon_resEnabled + 1 );
-  else if( infile.compare( infile.length() - 4, 4, ".tei" ) == 0 || infile.compare( infile.length() - 4, 4, ".TEI" ) == 0 ) reader = new FreedictReader( infile, builder );
   else if( infile.compare( infile.length() - 4, 4, ".dct" ) == 0 || infile.compare( infile.length() - 4, 4, ".DCT" ) == 0 ) reader = new SdictReader( infile, builder );
-  else if( infile.compare( infile.length() - 4, 4, ".ifo" ) == 0 || infile.compare( infile.length() - 4, 4, ".IFO" ) == 0 ) reader = new StarDictReader( infile, builder );
   else{
     printf( "You should specify a valid input file.\n" );
     exit( 1 );

@@ -258,7 +258,9 @@ bgl_entry Babylon::readEntry(int resEnabled)
 
         headword.reserve( len );
         for(uint a=0;a<len;a++) headword += block.data[pos++];
-        convertToUtf8( headword, SOURCE_CHARSET );
+		if (m_sourceCharset != "ISO-8859-1"){
+			convertToUtf8( headword, SOURCE_CHARSET );
+		}
 
         // Definition
         len = 0;
@@ -277,7 +279,9 @@ bgl_entry Babylon::readEntry(int resEnabled)
               break;
           }else definition += block.data[pos++];
         }
-//         convertToUtf8( definition, TARGET_CHARSET );
+		if (m_targetCharset != "ISO-8859-1"){
+			convertToUtf8( definition, TARGET_CHARSET );
+		}
 
         // Alternate forms
         while( pos != block.length )
@@ -285,7 +289,9 @@ bgl_entry Babylon::readEntry(int resEnabled)
           len = (unsigned char)block.data[pos++];
           alternate.reserve( len );
           for(uint a=0;a<len;a++) alternate += block.data[pos++];
-//           convertToUtf8( alternate, SOURCE_CHARSET );
+			if (m_sourceCharset != "ISO-8859-1"){
+				convertToUtf8( alternate, SOURCE_CHARSET );
+			}
           alternates.push_back( alternate );
           alternate.clear();
         }

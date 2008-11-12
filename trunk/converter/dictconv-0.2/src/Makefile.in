@@ -95,7 +95,7 @@ am__include = @am__include@
 am__quote = @am__quote@
 install_sh = @install_sh@
 bin_PROGRAMS = dictconv
-dictconv_SOURCES = dictconv.cpp babylon.cpp babylonreader.cpp dictdbuilder.cpp freedictreader.cpp plaintextdictbuilder.cpp sdict.cpp sdictreader.cpp stardict.cpp stardictreader.cpp stardictbuilder.cpp
+dictconv_SOURCES = dictconv.cpp babylon.cpp babylonreader.cpp plaintextdictbuilder.cpp sdict.cpp sdictreader.cpp
 
 # set the include path found by configure
 INCLUDES = $(all_includes) @XML_CPPFLAGS@
@@ -110,11 +110,10 @@ bin_PROGRAMS = dictconv$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS)
 
 am_dictconv_OBJECTS = dictconv.$(OBJEXT) babylon.$(OBJEXT) \
-	babylonreader.$(OBJEXT) dictdbuilder.$(OBJEXT) \
-	freedictreader.$(OBJEXT) plaintextdictbuilder.$(OBJEXT) \
-	sdict.$(OBJEXT) sdictreader.$(OBJEXT) stardict.$(OBJEXT) \
-	stardictreader.$(OBJEXT) stardictbuilder.$(OBJEXT)
-dictconv_OBJECTS = $(am_dictconv_OBJECTS)
+	babylonreader.$(OBJEXT) \
+	plaintextdictbuilder.$(OBJEXT) \
+	sdict.$(OBJEXT) sdictreader.$(OBJEXT)
+	dictconv_OBJECTS = $(am_dictconv_OBJECTS)
 dictconv_LDADD = $(LDADD)
 dictconv_DEPENDENCIES =
 
@@ -127,13 +126,9 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/babylon.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/babylonreader.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/dictconv.Po ./$(DEPDIR)/dictdbuilder.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/freedictreader.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/dictconv.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/plaintextdictbuilder.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/sdict.Po ./$(DEPDIR)/sdictreader.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/stardict.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/stardictbuilder.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/stardictreader.Po
+@AMDEP_TRUE@	./$(DEPDIR)/sdict.Po ./$(DEPDIR)/sdictreader.Po
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -198,14 +193,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/babylon.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/babylonreader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dictconv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dictdbuilder.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/freedictreader.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/plaintextdictbuilder.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdict.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdictreader.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stardict.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stardictbuilder.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/stardictreader.Po@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

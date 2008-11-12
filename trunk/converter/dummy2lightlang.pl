@@ -2,6 +2,7 @@
 
 use HTML::Entities;
 use Encode;
+use Encode::Guess qw/iso-8859-1 utf-8/;
 
 use Pod::Usage;
 pod2usage("No file input specified.") if ((@ARGV == 0)&&(-t STDIN));
@@ -56,14 +57,11 @@ foreach (<FILE>){
 	if ($html){
 		s/<(br|p)>/\\n/ig;
 		s/<(b>|b [^>]*>)/\\[/ig;
-		s/<abr>/\\</ig;
-		s/<\/abr>/\\>/ig;
 		s/<\/b>/\\]/ig;
 		s/<i>/\\(/ig;
 		s/<\/i>/\\)/ig;
 		s/<k>/\\</ig;
 		s/<\/k>/\\>/ig;
-		s/<img[^<]*>/\\[[i•]\\]/ig;
 	}
 	push @dict_data, $_;
 	my $tags = ();
@@ -118,9 +116,18 @@ if ($html){
 if ($convert){
 	$line = 0;
 	foreach (@dict_data){
-		$_ = decode ('utf8', $_);
+		#$_ = decode ("Guess", $_);
+		my $decoder = Encode::Guess->guess($_);
+		if (ref($decoder)){
+			$_ = $decoder->decode($_);
+		} else{
+			$_ = decode('utf8', $_);
+		}
 		$_ = decode_entities($_);
 		$_ = encode ('utf8', $_);
+		if ($html){
+			s/<img[^<]*>/\\[[i•]\\]/ig;
+		}
 		if ($_ =~ /^key: /){
 			s/$/  /g;
 			s/^key: //g;
@@ -153,9 +160,17 @@ else{
 				$_ = $temp[0]."  \\s"."$tag_lang: $temp[0]\\s".$_;
 			}
 		}
-		$_ = decode ('utf8', $_);
+		my $decoder = Encode::Guess->guess($_);
+		if (ref($decoder)){
+			$_ = $decoder->decode($_);
+		} else{
+			$_ = decode('utf8', $_);
+		}
 		$_ = decode_entities($_);
 		$_ = encode ('utf8', $_);
+		if ($html){
+			s/<img[^<]*>/\\[[i•]\\]/ig;
+		}
 		print $_."\n";
 	}
 }
