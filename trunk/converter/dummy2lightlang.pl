@@ -57,6 +57,8 @@ foreach (<FILE>){
 	if ($html){
 		s/<(br|p)>/\\n/ig;
 		s/<(b>|b [^>]*>)/\\[/ig;
+		s/<abr>/\\</ig;
+		s/<\/abr>/\\>/ig;
 		s/<\/b>/\\]/ig;
 		s/<i>/\\(/ig;
 		s/<\/i>/\\)/ig;
