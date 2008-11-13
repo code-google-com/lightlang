@@ -1,4 +1,4 @@
-#labels LightLang,XSL,screenshots
+#labels LightLang,XSL,Screenshots,Featured
 =Скриншоты LightLang=
 
 
