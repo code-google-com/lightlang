@@ -144,5 +144,17 @@
     <item url="common_internet.html" uploadstatus="1" />
     <item url="sl_dictionary_format.html" uploadstatus="1" />
     <item url="xsl_command_line_options.html" uploadstatus="1" />
+    <item url="llrepo_configuring.html" uploadstatus="1" />
+    <item url="xsl_features.html" uploadstatus="1" />
+    <item url="xsl_find_in_sl_panel.html" uploadstatus="1" />
+    <item url="xsl_google_translate_panel.html" uploadstatus="1" />
+    <item url="xsl_history_panel.html" uploadstatus="1" />
+    <item url="xsl_text_browser.html" />
+    <item url="xsl_pages_menu.html" />
+    <item url="xsl_view_menu.html" />
+    <item url="xsl_spy_menu.html" />
+    <item url="xsl_tools_menu.html" />
+    <item url="xsl_help_menu.html" />
+    <item url="xsl_tray_icon.html" />
   </project>
 </webproject>
