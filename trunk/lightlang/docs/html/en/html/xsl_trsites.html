@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Расширение меню сайтов-переводчиков XSL</title>
+  <meta name="GENERATOR" content="Quanta Plus">
+  <meta name="AUTHOR" content="Devaev Maxim">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+
+<table border="0" width="100%"><tr><td bgcolor="#DFEDFF"><h2 align="center"><a href="index.html"><img src="lightlang.png" align="top" border="0"></a></h2></td></tr></table>
+<hr>
+<h2>Расширение меню сайтов-переводчиков XSL</h2>
+<hr>
+
+&nbsp;&nbsp;&nbsp;<strong>XSL</strong> для удобства содержит небольшое дополнительное подменю (<em><a href="xsl_tools_menu.html">Меню "Инструменты"</a> --&gt; Перевод в Интернете</em>), пункты которого представляют собой ссылки на сайты автоматического перевода текстов. Каждая ссылка описывается специальным <strong>XML</strong>-файлом, содержащи имя ссылки, краткое описание сайта, путь к его иконке и <strong>URL</strong>. Имеется возможность локализации для изменения языка описания приложения.<br>
+&nbsp;&nbsp;&nbsp;Ниже дан пример файла для <strong>Google Translate</strong>:<br>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;<font color="blue">&lt;?xml <font color="green">version=</font><font color="purple">"1.0"</font> <font color="green">encoding=</font><font color="purple">"UTF-8"</font>?&gt;</font><br>
+&nbsp;&nbsp;&nbsp;<font color="blue">&lt;site&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">&lt;title&gt;</font>Google Translate<font color="blue">&lt;/title&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">&lt;title <font color="green">lang=</font><font color="purple">"ru"</font>&gt;</font>Переводчик Google<font color="blue">&lt;/title&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">&lt;description&gt;</font>Universal multilanguage translator<font color="blue">&lt;/description&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">&lt;description <font color="green">lang=</font><font color="purple">"ru"</font>&gt;</font>Универсальный многоязычный переводчик<font color="blue">&lt;/description&gt;</font><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="blue">&lt;url&gt;</font>http://translate.google.com<font color="blue">&lt;/url&gt;</font><br>
+&nbsp;&nbsp;&nbsp;<font color="blue">&lt;/site&gt;</font></tt></td></tr></table><br>
+&nbsp;&nbsp;&nbsp;В данном описании содержатся теги, задающие имя метки (текст пункта меню) по умолчанию и для Русской локали, описание того же формата (отображается информацией в строке состояния в главном окне) и <strong>URL</strong> сайта.<br>
+
+<br>
+<table border=1>
+  <caption><h4><strong>XML</strong>-теги файлов описания сайтов-переводчиков</h4></caption>
+  <tbody>
+    <tr>
+      <td><em>title</em></td>
+      <td>Обозначает название сайта. Это текст, который будет отображаться как пункт меню. Возможен необязательный параметр <em>lang</em>, для установки языка названия. Приоритет имеет тег с данным параметром, переопределяющий значение из тега по умолчанию (без параметра).</td>
+    </tr>
+    <tr>
+      <td><em>description</em></td>
+      <td>Служит для описания сайта. Работает точно так же, как и тег <em>title</em>, но устанавливает свою информацию в строку статуса главного окна программы при наведении курсора на пункт меню сайта.</td>
+    </tr>
+    <tr>
+      <td><em>icon</em></td>
+      <td>Определяет полный путь к иконке сайта (предпологается, что это файл, находящийся на локальном компьютере). Отображается рядом с соответствующим пунктом меню.</td>
+    </tr>
+    <tr>
+      <td><em>url</em></td>
+      <td>Устанавливает <strong>URL</strong> сайта.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+&nbsp;&nbsp;&nbsp;Файлы имеют иметь расширение <em>.xml</em> или <em>.trsite</em> и находятся в каталоге <em>/usr/lib/xsl/trsites</em> (префикс <em>/usr</em> зависит соответствующего заданного при установке параметра). Если файл составлен корректно, то после перезапуска <strong>XSL</strong> вы получите пункт для нового сайта.
+
+
+<hr>
+
+</body>
+</html>
