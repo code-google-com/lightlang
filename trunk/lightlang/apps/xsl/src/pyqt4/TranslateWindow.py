@@ -246,7 +246,7 @@ class TranslateWindow(PopupWindow) :
 		self.main_layout.addWidget(self.caption_frame)
 
 		self.caption_frame_layout = Qt.QHBoxLayout()
-		self.caption_frame_layout.setContentsMargins(1, 1, 1, 1)
+		self.caption_frame_layout.setContentsMargins(1, 1, 22, 1)
 		self.caption_frame_layout.setSpacing(1)
 		self.caption_frame.setLayout(self.caption_frame_layout)
 
@@ -269,10 +269,6 @@ class TranslateWindow(PopupWindow) :
 		self.close_button.setCursor(Qt.Qt.ArrowCursor)
 		self.close_button.setAutoRaise(True)
 		self.caption_frame_layout.addWidget(self.close_button)
-
-		self.fictive_widget = Qt.QWidget()
-		self.fictive_widget.setFixedSize(22, 22)
-		self.caption_frame_layout.addWidget(self.fictive_widget)
 
 		self.text_browser = Qt.QTextBrowser()
 		self.text_browser.setOpenLinks(False)

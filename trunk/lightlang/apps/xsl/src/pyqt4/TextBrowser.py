@@ -36,9 +36,33 @@ class TranslateBrowser(Qt.QTextBrowser) :
 
 		#####
 
+		self.control_buttons_layout = Qt.QHBoxLayout()
+		self.control_buttons_layout.setAlignment(Qt.Qt.AlignRight|Qt.Qt.AlignTop)
+		self.control_buttons_layout.setContentsMargins(0, 0, 22, 0)
+		self.control_buttons_layout.setSpacing(0)
+		self.setLayout(self.control_buttons_layout)
+
+		###
+
 		self.clipboard = Qt.QApplication.clipboard()
 
 		self.find_sound = SLFind.FindSound()
+
+		###
+
+		self.undo_button = Qt.QToolButton()
+		self.undo_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
+		self.undo_button.setIconSize(Qt.QSize(16, 16))
+		self.undo_button.setCursor(Qt.Qt.ArrowCursor)
+		self.undo_button.setAutoRaise(True)
+		self.control_buttons_layout.addWidget(self.undo_button)
+
+		self.redo_button = Qt.QToolButton()
+		self.redo_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
+		self.redo_button.setIconSize(Qt.QSize(16, 16))
+		self.redo_button.setCursor(Qt.Qt.ArrowCursor)
+		self.redo_button.setAutoRaise(True)
+		self.control_buttons_layout.addWidget(self.redo_button)
 
 		#####
 
