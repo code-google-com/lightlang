@@ -1,0 +1,160 @@
+<!DOCTYPE webproject>
+<webproject>
+  <project type="Local" name="LightLang English Documentation" encoding="utf8" enableEvents="false" >
+    <upload/>
+    <defaultDTD>-//w3c//dtd html 4.01 transitional//en</defaultDTD>
+    <item url="common_introduction.html" uploadstatus="1" />
+    <item url="common_new_features.html" uploadstatus="1" />
+    <item url="dict_information_window.png" uploadstatus="1" />
+    <item url="dicts_manager1.png" uploadstatus="1" />
+    <item url="find_in_sl_panel1.png" uploadstatus="1" />
+    <item url="find_in_sl_panel2.png" uploadstatus="1" />
+    <item url="google_translate_panel1.png" uploadstatus="1" />
+    <item url="help_browser1.png" uploadstatus="1" />
+    <item url="help_menu1.png" uploadstatus="1" />
+    <item url="help_menu2.png" uploadstatus="1" />
+    <item url="history_panel1.png" uploadstatus="1" />
+    <item url="index.html" uploadstatus="1" />
+    <item url="lightlang.png" uploadstatus="1" />
+    <item url="main_window1.png" uploadstatus="1" />
+    <item url="main_window2.png" uploadstatus="1" />
+    <item url="pages_menu1.png" uploadstatus="1" />
+    <item url="slengine.png" uploadstatus="1" />
+    <item url="spy_menu1.png" uploadstatus="1" />
+    <item url="spy_menu2.png" uploadstatus="1" />
+    <item url="text_browser1.png" uploadstatus="1" />
+    <item url="text_browser2.png" uploadstatus="1" />
+    <item url="tools_menu1.png" uploadstatus="1" />
+    <item url="tools_menu2.png" uploadstatus="1" />
+    <item url="translate_window1.png" uploadstatus="1" />
+    <item url="tray_icon1.png" uploadstatus="1" />
+    <item url="tray_icon2.png" uploadstatus="1" />
+    <item url="view_menu1.png" uploadstatus="1" />
+    <item url="" uploadstatus="1" />
+    <templates>templates/</templates>
+    <toolbars>toolbars/</toolbars>
+    <annotations/>
+    <item url="toolbars/lightlang.toolbar.tgz" uploadstatus="1" />
+    <item url="toolbars/" uploadstatus="1" />
+    <author>Devaev Maxim</author>
+    <email>mdevaev@gmail.com</email>
+    <debuggerclient persistentWatches="0" persistentBreakpoints="0" >Без отладчика</debuggerclient>
+    <exclude cvsignore="false" />
+    <teamdata>
+      <taskleaders/>
+      <subprojectleaders/>
+      <mailinglist address="" />
+    </teamdata>
+    <events/>
+    <item url="common_installation_and_configuration.html" uploadstatus="1" />
+    <item url="sl_console_usage.html" uploadstatus="1" />
+    <item url="llrepo_usage.html" uploadstatus="1" />
+    <item url="xsl_ifa.html" uploadstatus="1" />
+    <item url=".svn/" uploadstatus="1" />
+    <item url=".svn/prop-base/" uploadstatus="1" />
+    <item url=".svn/prop-base/dict_information_window.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/dicts_manager1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/find_in_sl_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/find_in_sl_panel2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/google_translate_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/help_browser1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/help_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/help_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/history_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/main_window1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/main_window2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/pages_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/spy_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/spy_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/text_browser1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/text_browser2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/tools_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/tools_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/translate_window1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/tray_icon1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/tray_icon2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/prop-base/view_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/props/" uploadstatus="1" />
+    <item url=".svn/text-base/" uploadstatus="1" />
+    <item url=".svn/text-base/common_introduction.html.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/common_new_features.html.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/dict_information_window.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/dicts_manager1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/find_in_sl_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/find_in_sl_panel2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/google_translate_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/help_browser1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/help_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/help_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/history_panel1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/index.html.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/lightlang.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/ll_en_doc.session.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/ll_en_doc.webprj.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/main_window1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/main_window2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/pages_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/slengine.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/spy_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/spy_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/text_browser1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/text_browser2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/tools_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/tools_menu2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/translate_window1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/tray_icon1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/tray_icon2.png.svn-base" uploadstatus="1" />
+    <item url=".svn/text-base/view_menu1.png.svn-base" uploadstatus="1" />
+    <item url=".svn/tmp/" uploadstatus="1" />
+    <item url=".svn/tmp/prop-base/" uploadstatus="1" />
+    <item url=".svn/tmp/props/" uploadstatus="1" />
+    <item url=".svn/tmp/text-base/" uploadstatus="1" />
+    <item url=".svn/all-wcprops" uploadstatus="1" />
+    <item url=".svn/entries" uploadstatus="1" />
+    <item url=".svn/format" uploadstatus="1" />
+    <item url="templates/" uploadstatus="1" />
+    <item url="templates/.svn/" uploadstatus="1" />
+    <item url="templates/.svn/prop-base/" uploadstatus="1" />
+    <item url="templates/.svn/props/" uploadstatus="1" />
+    <item url="templates/.svn/text-base/" uploadstatus="1" />
+    <item url="templates/.svn/tmp/" uploadstatus="1" />
+    <item url="templates/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="templates/.svn/tmp/props/" uploadstatus="1" />
+    <item url="templates/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="templates/.svn/all-wcprops" uploadstatus="1" />
+    <item url="templates/.svn/entries" uploadstatus="1" />
+    <item url="templates/.svn/format" uploadstatus="1" />
+    <item url="toolbars/.svn/" uploadstatus="1" />
+    <item url="toolbars/.svn/prop-base/" uploadstatus="1" />
+    <item url="toolbars/.svn/props/" uploadstatus="1" />
+    <item url="toolbars/.svn/text-base/" uploadstatus="1" />
+    <item url="toolbars/.svn/tmp/" uploadstatus="1" />
+    <item url="toolbars/.svn/tmp/prop-base/" uploadstatus="1" />
+    <item url="toolbars/.svn/tmp/props/" uploadstatus="1" />
+    <item url="toolbars/.svn/tmp/text-base/" uploadstatus="1" />
+    <item url="toolbars/.svn/all-wcprops" uploadstatus="1" />
+    <item url="toolbars/.svn/entries" uploadstatus="1" />
+    <item url="toolbars/.svn/format" uploadstatus="1" />
+    <item url="ll_en_doc.session" uploadstatus="1" />
+    <item url="ll_en_doc.webprj" uploadstatus="1" />
+    <item url="xsl_trsites.html" uploadstatus="1" />
+    <item url="common_authors.html" uploadstatus="1" />
+    <item url="common_bugs.html" uploadstatus="1" />
+    <item url="common_license.html" uploadstatus="1" />
+    <item url="common_internet.html" uploadstatus="1" />
+    <item url="sl_dictionary_format.html" uploadstatus="1" />
+    <item url="xsl_command_line_options.html" uploadstatus="1" />
+    <item url="llrepo_configuring.html" uploadstatus="1" />
+    <item url="xsl_features.html" uploadstatus="1" />
+    <item url="xsl_find_in_sl_panel.html" uploadstatus="1" />
+    <item url="xsl_google_translate_panel.html" uploadstatus="1" />
+    <item url="xsl_history_panel.html" uploadstatus="1" />
+    <item url="xsl_text_browser.html" />
+    <item url="xsl_pages_menu.html" />
+    <item url="xsl_view_menu.html" />
+    <item url="xsl_spy_menu.html" />
+    <item url="xsl_tools_menu.html" />
+    <item url="xsl_help_menu.html" />
+    <item url="xsl_tray_icon.html" />
+  </project>
+</webproject>
