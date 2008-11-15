@@ -36,53 +36,9 @@ class TranslateBrowser(Qt.QTextBrowser) :
 
 		#####
 
-		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setAlignment(Qt.Qt.AlignCenter|Qt.Qt.AlignBottom)
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
-		self.main_layout.setSpacing(0)
-		self.setLayout(self.main_layout)
-
-		self.control_buttons_frame = Qt.QFrame()
-		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
-		self.control_buttons_frame.setFrameShadow(Qt.QFrame.Raised)
-		color = Qt.QApplication.palette().color(Qt.QPalette.Window)
-		r = color.red(); g = color.green(); b = color.blue()
-		try :
-			self.control_buttons_frame.setStyleSheet("QFrame {"
-					"border: 1px solid gray;"
-					"border-radius: 4px;"
-					"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", 180);"
-				"}")
-		except : pass
-		self.control_buttons_frame_layout = Qt.QHBoxLayout()
-		self.control_buttons_frame_layout.setContentsMargins(10, 0, 10, 0)
-		self.control_buttons_frame_layout.setSpacing(0)
-		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
-		self.main_layout.addWidget(self.control_buttons_frame)
-
-		###
-
 		self.clipboard = Qt.QApplication.clipboard()
 
 		self.find_sound = SLFind.FindSound()
-
-		###
-
-		self.undo_button = Qt.QToolButton()
-		self.undo_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
-		self.undo_button.setIconSize(Qt.QSize(16, 16))
-		self.undo_button.setCursor(Qt.Qt.ArrowCursor)
-		self.undo_button.setAutoRaise(True)
-		self.control_buttons_frame_layout.addWidget(self.undo_button)
-
-		self.redo_button = Qt.QToolButton()
-		self.redo_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
-		self.redo_button.setIconSize(Qt.QSize(16, 16))
-		self.redo_button.setCursor(Qt.Qt.ArrowCursor)
-		self.redo_button.setAutoRaise(True)
-		self.control_buttons_frame_layout.addWidget(self.redo_button)
-
-		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
 		#####
 
