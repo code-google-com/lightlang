@@ -56,7 +56,8 @@ class TranslateBrowser(Qt.QTextBrowser) :
 			if word.isEmpty() :
 				return
 			self.find_sound.find(word)
-		elif word.startsWith("http://", Qt.Qt.CaseInsensitive) :
+		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or 
+			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 			Qt.QDesktopServices.openUrl(url)
 
 	###
@@ -102,7 +103,8 @@ class TranslateBrowser(Qt.QTextBrowser) :
 					self.statusChangedSignal(self.tr("Sound is not full"))
 					return
 				count += 1
-		elif word.startsWith("http://", Qt.Qt.CaseInsensitive) :
+		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or
+			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 			self.statusChangedSignal(word)
 
 
