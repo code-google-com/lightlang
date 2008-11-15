@@ -36,11 +36,29 @@ class TranslateBrowser(Qt.QTextBrowser) :
 
 		#####
 
-		self.control_buttons_layout = Qt.QHBoxLayout()
-		self.control_buttons_layout.setAlignment(Qt.Qt.AlignRight|Qt.Qt.AlignTop)
-		self.control_buttons_layout.setContentsMargins(0, 0, 22, 0)
-		self.control_buttons_layout.setSpacing(0)
-		self.setLayout(self.control_buttons_layout)
+		self.main_layout = Qt.QHBoxLayout()
+		self.main_layout.setAlignment(Qt.Qt.AlignCenter|Qt.Qt.AlignBottom)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setSpacing(0)
+		self.setLayout(self.main_layout)
+
+		self.control_buttons_frame = Qt.QFrame()
+		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
+		self.control_buttons_frame.setFrameShadow(Qt.QFrame.Raised)
+		color = Qt.QApplication.palette().color(Qt.QPalette.Window)
+		r = color.red(); g = color.green(); b = color.blue()
+		try :
+			self.control_buttons_frame.setStyleSheet("QFrame {"
+					"border: 1px solid gray;"
+					"border-radius: 4px;"
+					"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", 180);"
+				"}")
+		except : pass
+		self.control_buttons_frame_layout = Qt.QHBoxLayout()
+		self.control_buttons_frame_layout.setContentsMargins(10, 0, 10, 0)
+		self.control_buttons_frame_layout.setSpacing(0)
+		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
+		self.main_layout.addWidget(self.control_buttons_frame)
 
 		###
 
@@ -55,14 +73,16 @@ class TranslateBrowser(Qt.QTextBrowser) :
 		self.undo_button.setIconSize(Qt.QSize(16, 16))
 		self.undo_button.setCursor(Qt.Qt.ArrowCursor)
 		self.undo_button.setAutoRaise(True)
-		self.control_buttons_layout.addWidget(self.undo_button)
+		self.control_buttons_frame_layout.addWidget(self.undo_button)
 
 		self.redo_button = Qt.QToolButton()
 		self.redo_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
 		self.redo_button.setIconSize(Qt.QSize(16, 16))
 		self.redo_button.setCursor(Qt.Qt.ArrowCursor)
 		self.redo_button.setAutoRaise(True)
-		self.control_buttons_layout.addWidget(self.redo_button)
+		self.control_buttons_frame_layout.addWidget(self.redo_button)
+
+		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
 		#####
 
@@ -402,16 +422,11 @@ class TextBrowser(Qt.QWidget) :
 		index = len(self.translate_browsers) -1
 		#
 		self.connect(self.translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
-		self.connect(self.translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"),
-			self.uFindRequestSignal)
-		self.connect(self.translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"),
-			self.cFindRequestSignal)
-		self.connect(self.translate_browsers[index], Qt.SIGNAL("showFindInTextFrameRequest()"),
-			self.showFindInTextFrame)
-		self.connect(self.translate_browsers[index], Qt.SIGNAL("hideFindInTextFrameRequest()"),
-			self.hideFindInTextFrame)
-		self.connect(self.translate_browsers[index], Qt.SIGNAL("statusChanged(const QString &)"),
-			self.statusChangedSignal)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("showFindInTextFrameRequest()"), self.showFindInTextFrame)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("hideFindInTextFrameRequest()"), self.hideFindInTextFrame)
+		self.connect(self.translate_browsers[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
 		#
 		self.translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.translate_browsers[index], self.tr("(Untitled)"))
@@ -580,7 +595,7 @@ class TextBrowser(Qt.QWidget) :
 		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
 
 	def cFindRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
 
 	def statusChangedSignal(self, str) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
