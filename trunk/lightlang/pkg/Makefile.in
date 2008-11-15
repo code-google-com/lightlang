@@ -15,8 +15,8 @@ INS_PKG_LIBS64_DIR=@INS_PKG_LIBS64_DIR@
 
 #####
 install :
-	$(MKDIR) -p $(INS_PKG_LIBS_DIR)
-	$(MKDIR) -p $(INS_PKG_LIBS64_DIR)
+	-$(MKDIR) -p $(INS_PKG_LIBS_DIR)
+	-$(MKDIR) -p $(INS_PKG_LIBS64_DIR)
 	-$(CP) $(PKG_LIBS_DIR)/lightlang.pc $(INS_PKG_LIBS_DIR)
 	-$(CP) $(PKG_LIBS_DIR)/lightlang.pc $(INS_PKG_LIBS64_DIR)
 
