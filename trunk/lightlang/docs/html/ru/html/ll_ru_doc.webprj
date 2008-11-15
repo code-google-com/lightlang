@@ -149,12 +149,12 @@
     <item url="xsl_find_in_sl_panel.html" uploadstatus="1" />
     <item url="xsl_google_translate_panel.html" uploadstatus="1" />
     <item url="xsl_history_panel.html" uploadstatus="1" />
-    <item url="xsl_text_browser.html" />
-    <item url="xsl_pages_menu.html" />
-    <item url="xsl_view_menu.html" />
-    <item url="xsl_spy_menu.html" />
-    <item url="xsl_tools_menu.html" />
-    <item url="xsl_help_menu.html" />
-    <item url="xsl_tray_icon.html" />
+    <item url="xsl_text_browser.html" uploadstatus="1" />
+    <item url="xsl_pages_menu.html" uploadstatus="1" />
+    <item url="xsl_view_menu.html" uploadstatus="1" />
+    <item url="xsl_spy_menu.html" uploadstatus="1" />
+    <item url="xsl_tools_menu.html" uploadstatus="1" />
+    <item url="xsl_help_menu.html" uploadstatus="1" />
+    <item url="xsl_tray_icon.html" uploadstatus="1" />
   </project>
 </webproject>
