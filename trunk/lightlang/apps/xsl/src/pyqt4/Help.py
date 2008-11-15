@@ -48,66 +48,78 @@ class HelpBrowser(Qt.QDialog) :
 
 		self.setWindowTitle(self.tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
-		self.resize(750, 550)
+		self.resize(800, 600)
 
 		self.main_layout = Qt.QVBoxLayout()
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
-		self.buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.buttons_layout)
-
 		#####
+
+		self.text_browser = Qt.QTextBrowser()
+		self.text_browser.setOpenExternalLinks(True)
+		self.text_browser_layout = Qt.QHBoxLayout()
+		self.text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
+		self.text_browser.setLayout(self.text_browser_layout)
+		self.main_layout.addWidget(self.text_browser)
+
+		self.control_buttons_frame = Qt.QFrame()
+		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
+		self.control_buttons_frame.setFrameShadow(Qt.QFrame.Raised)
+		color = Qt.QApplication.palette().color(Qt.QPalette.Window)
+		r = color.red(); g = color.green(); b = color.blue()
+		try :
+			self.control_buttons_frame.setStyleSheet("QFrame {"
+					"border: 1px solid gray;"
+					"border-radius: 4px;"
+					"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", 180);"
+				"}")
+		except : pass
+		self.control_buttons_frame_layout = Qt.QHBoxLayout()
+		self.control_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
+		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
+		self.text_browser_layout.addWidget(self.control_buttons_frame)
 
 		self.previous_button = Qt.QToolButton()
 		self.previous_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
 		self.previous_button.setIconSize(Qt.QSize(22, 22))
+		self.previous_button.setCursor(Qt.Qt.ArrowCursor)
+		self.previous_button.setAutoRaise(True)
 		self.previous_button.setEnabled(False)
-		self.buttons_layout.addWidget(self.previous_button)
+		self.control_buttons_frame_layout.addWidget(self.previous_button)
 
 		self.next_button = Qt.QToolButton()
 		self.next_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
 		self.next_button.setIconSize(Qt.QSize(22, 22))
+		self.next_button.setCursor(Qt.Qt.ArrowCursor)
+		self.next_button.setAutoRaise(True)
 		self.next_button.setEnabled(False)
-		self.buttons_layout.addWidget(self.next_button)
+		self.control_buttons_frame_layout.addWidget(self.next_button)
 
 		self.vertical_frame1 = Qt.QFrame()
 		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
-		self.buttons_layout.addWidget(self.vertical_frame1)
+		self.control_buttons_frame_layout.addWidget(self.vertical_frame1)
 
 		self.home_button = Qt.QToolButton()
 		self.home_button.setIcon(Qt.QIcon(IconsDir+"home_22.png"))
 		self.home_button.setIconSize(Qt.QSize(22, 22))
-		self.buttons_layout.addWidget(self.home_button)
+		self.home_button.setCursor(Qt.Qt.ArrowCursor)
+		self.home_button.setAutoRaise(True)
+		self.control_buttons_frame_layout.addWidget(self.home_button)
 
-		self.vertical_frame2 = Qt.QFrame()
-		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
-		self.buttons_layout.addWidget(self.vertical_frame2)
-
-		self.reload_button = Qt.QToolButton()
-		self.reload_button.setIcon(Qt.QIcon(IconsDir+"reload_22.png"))
-		self.reload_button.setIconSize(Qt.QSize(22, 22))
-		self.buttons_layout.addWidget(self.reload_button)
-
-		self.buttons_layout.addStretch()
-
-		self.link_label = Qt.QLabel()
-		self.buttons_layout.addWidget(self.link_label)
-
-		self.text_browser = Qt.QTextBrowser()
-		self.text_browser.setOpenExternalLinks(True)
-		self.main_layout.addWidget(self.text_browser)
+		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
 		#####
 
 		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.previous)
 		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.next)
 		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
-		self.connect(self.reload_button, Qt.SIGNAL("clicked()"), self.reload)
 
-		self.connect(self.text_browser, Qt.SIGNAL("highlighted(const QString &)"), self.updateLinkLabel)
+		self.connect(self.text_browser, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
 		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
-		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.checkPreviousButton)
-		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.checkNextButton)
+		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setPreviousButtonAvailable)
+		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setNextButtonAvailable)
 
 		#####
 
@@ -118,8 +130,6 @@ class HelpBrowser(Qt.QDialog) :
 
 	def home(self) :
 		self.text_browser.setSource(Qt.QUrl(IndexPage))
-		self.text_browser.clearHistory()
-		self.previous_button.setEnabled(False)
 		self.next_button.setEnabled(False)
 
 	def previous(self) :
@@ -128,14 +138,13 @@ class HelpBrowser(Qt.QDialog) :
 	def next(self) :
 		self.text_browser.forward()
 
-	def reload(self) :
-		self.text_browser.reload()
-
 	###
 
-	def updateLinkLabel(self, str) :
-		self.link_label.setText("<em><font color=\"#494949\">"
-			"&nbsp;&nbsp;&nbsp;"+str+"</font></em>")
+	def setCursorInfo(self, str) :
+		if not str.simplified().isEmpty() :
+			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
+				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
 
 	def updateTitle(self) :
 		self.setWindowTitle(self.tr("%1 Manual - %2").arg(Const.Organization)
@@ -143,17 +152,18 @@ class HelpBrowser(Qt.QDialog) :
 
 	###
 
-	def checkPreviousButton(self, available) :
+	def setPreviousButtonAvailable(self, available) :
 		if available :
 			self.previous_button.setEnabled(True)
 		else :
 			self.previous_button.setEnabled(False)
 
-	def checkNextButton(self, available) :
+	def setNextButtonAvailable(self, available) :
 		if available :
 			self.next_button.setEnabled(True)
 		else :
 			self.next_button.setEnabled(False)
+
 
 #####
 class About(Qt.QDialog) :
