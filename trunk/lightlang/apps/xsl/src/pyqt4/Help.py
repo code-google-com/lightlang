@@ -51,8 +51,8 @@ class HelpBrowser(Qt.QDialog) :
 		self.resize(800, 600)
 
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
-		self.main_layout.setSpacing(0)
+		self.main_layout.setContentsMargins(6, 6, 6, 6)
+		self.main_layout.setSpacing(3)
 		self.setLayout(self.main_layout)
 
 		#####
