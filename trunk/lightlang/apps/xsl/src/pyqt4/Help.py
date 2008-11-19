@@ -42,6 +42,27 @@ IconsDir = Config.Prefix+"/lib/xsl/icons/"
 IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+lang+"/index.html"
 
 #####
+class TextBrowser(Qt.QTextBrowser) :
+	def __init__(self, parent = None) :
+		Qt.QTextBrowser.__init__(self, parent)
+
+
+	### Signals ###
+
+	def previousRequestSignal(self) :
+		self.emit(Qt.SIGNAL("previousRequest()"))
+
+
+	### Handlers ###
+
+	def keyPressEvent(self, event) :
+		if event.key() == Qt.Qt.Key_Backspace :
+			self.previousRequestSignal()
+		else :
+			Qt.QTextBrowser.keyPressEvent(self, event)
+
+
+#####
 class HelpBrowser(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
@@ -57,7 +78,7 @@ class HelpBrowser(Qt.QDialog) :
 
 		#####
 
-		self.text_browser = Qt.QTextBrowser()
+		self.text_browser = TextBrowser()
 		self.text_browser.setOpenExternalLinks(True)
 		self.text_browser_layout = Qt.QHBoxLayout()
 		self.text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
@@ -111,6 +132,8 @@ class HelpBrowser(Qt.QDialog) :
 		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
 		#####
+
+		self.connect(self.text_browser, Qt.SIGNAL("previousRequest()"), self.previous_button.animateClick)
 
 		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.previous)
 		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.next)
