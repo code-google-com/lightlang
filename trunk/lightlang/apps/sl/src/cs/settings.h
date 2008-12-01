@@ -37,6 +37,7 @@
 # define USER_DICTS_SUBDIR		".sl"	// Podkatalog polzovatelya
 
 # define DEFAULT_MAX_TERMINAL_LINE_LEN	80	// Dlina stroki terminala
+# define DEFAULT_MAX_TRANSLATE_COUNT	50	// Kolichestvo perevodov
 
 /*********************************** Types *************************************/
 typedef enum {				// Tip formata vyvoda
@@ -49,6 +50,7 @@ typedef struct {			// Tip parametrov sistemy
 	char *user_dicts_dir;		// Polzovatelskiy podkatalog slovarey
 	char *locale_encoding;		// Kodirovka
 	int max_terminal_line_len;	// Dlina stroki terminala
+	int max_translate_count;
 	bool use_terminal_escapes_flag;
 	output_format_t output_format;	// Format vyvoda
 } settings_t;

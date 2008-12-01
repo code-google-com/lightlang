@@ -45,6 +45,7 @@
 # define OPT_DICT_PRINT_INDEX		"print-index"
 
 # define OPT_MISC_PERCENT		"percent"
+# define OPT_MISC_MAX_TRANSLATE_COUNT	"max-translate-count"
 # define OPT_MISC_SHOW_TIME		"show-time"
 
 # define OPT_SETTINGS_OUTPUT_FORMAT	"output-format"

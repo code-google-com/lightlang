@@ -124,7 +124,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				}
 				print_translate(str, translate_count);
 
-				if ( translate_count >= MAX_TRANSLATE_COUNT ) break;
+				if ( translate_count >= settings.max_translate_count ) break;
 			}
 		}
 
@@ -222,7 +222,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					}
 					print_translate(str, translate_count);
 
-					if ( translate_count >= MAX_TRANSLATE_COUNT )
+					if ( translate_count >= settings.max_translate_count )
 						goto external_loop_break_label;
 
 					break;
@@ -285,7 +285,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				}
 				print_list_item(str_wc, translate_count);
 
-				if ( translate_count >= MAX_TRANSLATE_COUNT ) break;
+				if ( translate_count >= settings.max_translate_count ) break;
 			}
 		}
 
@@ -326,7 +326,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				}
 				print_list_item(str_wc, translate_count);
 
-				if ( translate_count >= MAX_TRANSLATE_COUNT ) break;
+				if ( translate_count >= settings.max_translate_count ) break;
 			}
 		}
 

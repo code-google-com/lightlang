@@ -60,12 +60,13 @@ int init_settings(void)
 	//////////////////////////////////
 
 
-	if ( init_locale() != 0 )		return -1;
-	if ( init_user_dicts_dir() != 0 )	return -1;
-	if ( init_locale_encoding() != 0 )	{}
-	if ( init_max_terminal_line_len() != 0 ){}
-	if ( init_use_terminal_escapes_flag() != 0 ){}
+	if ( init_locale() != 0 ) return -1;
+	if ( init_user_dicts_dir() != 0 ) return -1;
+	if ( init_locale_encoding() != 0 ) {}
+	if ( init_max_terminal_line_len() != 0 ) {}
+	if ( init_use_terminal_escapes_flag() != 0 ) {}
 
+	settings.max_translate_count = DEFAULT_MAX_TRANSLATE_COUNT;
 	settings.output_format = text_output_format;
 
 	return 0;
@@ -214,6 +215,21 @@ static int init_use_terminal_escapes_flag(void)
 	//////////////////////////////////
 	extern settings_t settings;	// Nastroyki sistemy
 	//////////////////////////////////
+
+	/****************************************
+	*	  _,,,_   _,,,,,,,_   ___	*
+	*	.'     `.' _,,,,,,_`.'   `,	*
+	*	;        ,'  _    _`.     ;	*
+	*	;        ;  (D)  (D);     ;	*
+	*	t        ;      ^   ;     ;	*
+	*	 \        L_   `-' ,'     j	*
+	*	  `.    ,' J`"r==r' `.   /	*
+	*	    `--' ,'   t  |\   `-'	*
+	*	       ,' /7   \_/ \_		*
+	*	      (,,J/      |\,,)		*
+	*	          \____ _L		*
+	*	          (,,,,),,)		*
+	****************************************/
 
 	if ( isatty(1) ) settings.use_terminal_escapes_flag = true;
 	else settings.use_terminal_escapes_flag = false;

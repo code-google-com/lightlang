@@ -49,6 +49,7 @@
 
 /********************************** Functions **********************************/
 static int get_percent(const char *percent_str);
+static void set_max_translate_count(const char *str);
 static void set_output_format(const char *str);
 static void set_use_terminal_escapes_flag(const char *str);
 
@@ -87,6 +88,7 @@ int main(int argc, char **argv)
 		{OPT_DICT_USE_LIST,		required_argument,	NULL,	'5'}, // -
 		{OPT_DICT_PRINT_INDEX,		required_argument,	NULL,	'6'}, // -
 
+		{OPT_MISC_MAX_TRANSLATE_COUNT,	required_argument,	NULL,	'm'}, // +
 		{OPT_MISC_PERCENT,		required_argument,	NULL,	'p'}, // +
 		{OPT_MISC_SHOW_TIME,		no_argument,		NULL,	't'}, // +
 		{OPT_SETTINGS_OUTPUT_FORMAT,	required_argument,	NULL,	'7'}, // -
@@ -108,7 +110,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	while ( (ch = getopt_long(argc, argv, ":u:f:c:l:i:s:p:thvd", long_options, NULL)) != -1 )
+	while ( (ch = getopt_long(argc, argv, ":u:f:c:l:i:s:m:p:thvd", long_options, NULL)) != -1 )
 	{
 		switch (ch)
 		{
@@ -149,6 +151,9 @@ int main(int argc, char **argv)
 					use_default_function_flag = false;	break;
 
 			case '6' : ec += print_index(optarg);
+					use_default_function_flag = false;	break;
+
+			case 'm' : set_max_translate_count(optarg);
 					use_default_function_flag = false;	break;
 
 			case 'p' : ill_defined_percent = get_percent(optarg);
@@ -232,6 +237,27 @@ static int get_percent(const char *percent_str)
 	}
 
 	return percent;
+}
+
+/********************************************************************************
+*										*
+*	set_max_translate_count() - ustanavlivayet maximum perevodov		*
+*										*
+********************************************************************************/
+static void set_max_translate_count(const char *str)
+{
+	//////////////////////////////////
+	extern settings_t settings;	// Parametry sistemy
+	//////////////////////////////////
+
+	if ( !isdigit(str[0]) )
+	{
+		fprintf(stderr, "%s: bad argument \"%s\": ignored\n",
+			MYNAME, str);
+		return;
+	}
+
+	settings.max_translate_count = atoi(str);
 }
 
 /********************************************************************************

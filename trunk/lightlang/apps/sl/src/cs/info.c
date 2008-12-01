@@ -62,6 +62,7 @@ void help(void)
 	printf("\t--%s <list|of|dicts>\n", OPT_DICT_USE_LIST);
 	printf("\t--%s <file>\n", OPT_DICT_PRINT_INDEX);
 	printf("Misc options:\n");
+	printf("\t-m <count> | --%s=<count>\n", OPT_MISC_MAX_TRANSLATE_COUNT);
 	printf("\t-p <percent> | --%s=<percent>\n", OPT_MISC_PERCENT);
 	printf("\t-t | --%s\n", OPT_MISC_SHOW_TIME);
 	printf("Settings options:\n");

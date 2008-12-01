@@ -39,7 +39,6 @@
 # define AUDIO_POSTFIX		".ogg"
 
 # define MAX_WORD_SIZE		256
-# define MAX_TRANSLATE_COUNT	50
 /*********************************** Types *************************************/
 typedef enum {
 	usualy_regimen,
