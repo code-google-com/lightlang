@@ -5,7 +5,9 @@ import gtk, gobject
 import gtkhtml2
 
 def get_style_colors(widget):
-	""" Возвращает кортеж из двух строк
+	""" Возвращает кортеж из двух строк:
+		1. Цвет фона
+		2. Цвет текста
 	"""
 	style = widget.get_style()
 	bg = color_to_hex(style.bg[gtk.STATE_ACTIVE])
@@ -98,5 +100,4 @@ class TransView(gtk.ScrolledWindow):
 		self.label.set_text(_("Welcome"))
 		self.__clear_htmlview()
 		gobject.idle_add(self.__show_welcome)
-
 

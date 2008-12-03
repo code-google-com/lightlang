@@ -104,8 +104,8 @@ class Spy:
 
 		return True
 
-	def __on_url_click(self, view, url, type_):
-		dic, word = url.split("|")
+	def __on_url_click(self, document, link):
+		dic, word = link.split("|")
 
 		filename = self.conf.get_dic_path(dic)
 		lines = libsl.find_word(word, libsl.SL_FIND_MATCH, filename)
@@ -159,7 +159,8 @@ class SpyView(gtk.Window):
 		return (x+8), (y+2)
 
 	def set_url_callback(self, callback):
-		self.__tv.htmlview.connect("url-clicked", callback)
+		self.__tv.document.connect("link-clicked", callback)
+		pass
 
 	def set_translate(self, word, translate):
 		self.__tv.set_translate(word, translate)
