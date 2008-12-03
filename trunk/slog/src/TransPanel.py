@@ -2,7 +2,7 @@
 
 import re
 import gtk, gobject
-import htmltextview
+import gtkhtml2
 
 def get_style_colors(widget):
 	""" Возвращает кортеж из двух строк
@@ -39,16 +39,10 @@ class TransView(gtk.ScrolledWindow):
 		self.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 		self.set_shadow_type(gtk.SHADOW_IN)
 
-		self.htmlview = htmltextview.HtmlTextView()
-		self.htmlview.set_wrap_mode(gtk.WRAP_WORD)
-
-		self.htmlview.set_border_width(1)
-		self.htmlview.set_accepts_tab(True)
-		self.htmlview.set_editable(False)
-		self.htmlview.set_cursor_visible(False)
-		self.htmlview.set_wrap_mode(gtk.WRAP_WORD_CHAR)
-		self.htmlview.set_left_margin(2)
-		self.htmlview.set_right_margin(2)
+		self.document = gtkhtml2.Document()
+		
+		self.htmlview = gtkhtml2.View()
+		self.htmlview.set_document(self.document)
 
 		self.add(self.htmlview)
 		self.htmlview.show()
@@ -69,9 +63,14 @@ class TransView(gtk.ScrolledWindow):
 		return retval
 
 	def __clear_htmlview(self):
-		textbuffer = self.htmlview.get_buffer()
-		start, end = textbuffer.get_bounds()
-		textbuffer.delete(start, end)
+		self.document.clear()
+	
+	def __display_html(self, body):
+		self.document.open_stream("text/html")
+		self.document.write_stream("<html><head> \
+				<meta http-equiv='Content-Type' content='text/html; charset=utf-8' /> \
+				</head><body>%s</body></html>" % body)
+		self.document.close_stream()
 
 	def get_label():
 		return self.label
@@ -84,10 +83,8 @@ class TransView(gtk.ScrolledWindow):
 		self.label.set_text(word)
 		self.__clear_htmlview()
 
-		#doc = translate
 		doc = self.replace_colors(translate)
-
-		self.htmlview.display_html(doc)
+		self.__display_html(doc)
 
 	def __show_welcome(self):
 		h = """<body><br/>
@@ -95,7 +92,7 @@ class TransView(gtk.ScrolledWindow):
 			Welcome to the SLog - the part of LightLang, the system of electronic dictionaries</p>
 			</body>"""
 		r = self.replace_colors(h)
-		self.htmlview.display_html(r)
+		self.__display_html(r)
 
 	def clear(self):
 		self.label.set_text(_("Welcome"))
