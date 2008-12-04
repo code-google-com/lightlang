@@ -29,3 +29,40 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/google_trans
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/history_panel1.png
 
 ---
+
+==Текстовый браузер==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser2.png
+
+---
+
+==Меню программы==
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/pages_menu1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/view_menu1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/spy_menu2.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tools_menu2.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_menu2.png
+
+---
+
+===Браузер системы помощи===
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_browser1.png
+
+---
+
+===Иконка в трее===
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon2.png
+
+---
+
+===Управление словарями===
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dicts_manager1.png
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dict_information_window.png
+
+---
