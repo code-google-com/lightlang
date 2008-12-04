@@ -52,8 +52,6 @@ class PopupWindow(Qt.QFrame) :
 
 		####
 
-		self.default_size = Qt.QSize(550, 400)
-
 		self.resize_timer = Qt.QTimer()
 		self.resize_timer.setInterval(10)
 
@@ -71,9 +69,7 @@ class PopupWindow(Qt.QFrame) :
 	### Public ###
 
 	def show(self) :
-		if self.default_size != self.size() :
-			self.resize(self.default_size)
-
+		# TODO: add window position determination
 		cursor_position = Qt.QCursor.pos() + Qt.QPoint(15, 15)
 		if cursor_position.x() < 0 :
 			cursor_position.setX(0)
@@ -127,11 +123,11 @@ class PopupWindow(Qt.QFrame) :
 		elif self.resize_direction == ResizeDirectionBottomRight :
 			new_geometry.setBottomRight(Qt.QCursor.pos())
 
-		if new_geometry.width() < self.default_size.width() / 2 :
-			new_geometry.setWidth(self.default_size.width() / 2)
+		if new_geometry.width() < self.size().width() / 2 :
+			new_geometry.setWidth(self.size().width() / 2)
 			new_geometry.moveLeft(self.frameGeometry().left())
-		if new_geometry.height() < self.default_size.height() / 2 :
-			new_geometry.setHeight(self.default_size.height() / 2)
+		if new_geometry.height() < self.size().height() / 2 :
+			new_geometry.setHeight(self.size().height() / 2)
 			new_geometry.moveTop(self.frameGeometry().top())
 
 		if new_geometry != self.frameGeometry() :
@@ -228,6 +224,8 @@ class TranslateWindow(PopupWindow) :
 	def __init__(self, parent = None) :
 		PopupWindow.__init__(self, parent)
 
+		self.setObjectName("translate_window")
+
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setSpacing(0)
@@ -292,6 +290,16 @@ class TranslateWindow(PopupWindow) :
 
 	def clear(self) :
 		self.text_browser.clear()
+
+	###
+
+	def saveSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings.setValue("translate_window/size", Qt.QVariant(self.size()))
+
+	def loadSettings(self) :
+		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		self.resize(settings.value("translate_window/size", Qt.QVariant(Qt.QSize(550, 400))).toSize())
 
 
 	### Private ###

@@ -352,6 +352,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
 		self.spy_menu.saveSettings()
+		self.translate_window.saveSettings()
 
 	def load(self) :
 		self.loadSettings()
@@ -359,6 +360,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.spy_menu.loadSettings()
+		self.translate_window.loadSettings()
 
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
