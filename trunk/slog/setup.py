@@ -9,7 +9,7 @@ from distutils.command.install import install as _install
 from distutils.command.install_data import install_data as _install_data
 
 APP_NAME = "SLog"
-VERSION = "0.9.3"
+VERSION = "0.9.4"
 WEBSITE = "http://lightlang.org.ru"
 
 # Thanks to Iain Nicol for code to save the location for installed prefix

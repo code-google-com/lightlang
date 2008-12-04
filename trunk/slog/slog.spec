@@ -1,7 +1,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           slog
-Version:        0.9.3
+Version:        0.9.4
 Release:        1%{?dist}
 Summary:        PyGTK based GUI for the LightLang SL
 Group:          Applications/Desktops
