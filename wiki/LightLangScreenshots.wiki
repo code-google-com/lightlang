@@ -7,6 +7,7 @@
 ==Главное окно XSL==
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window2.png
 
 ----
@@ -14,6 +15,7 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/main_window2
 ==Панель поиска в SL==
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/find_in_sl_panel1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/find_in_sl_panel2.png
 
 ----
@@ -28,34 +30,40 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/google_trans
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/history_panel1.png
 
----
+----
 
 ==Текстовый браузер==
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser2.png
 
----
+----
 
 ==Меню программы==
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/pages_menu1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/view_menu1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/spy_menu2.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tools_menu2.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_menu2.png
 
----
+----
 
 ===Браузер системы помощи===
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_browser1.png
 
----
+----
 
 ===Иконка в трее===
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon2.png
 
 ---
