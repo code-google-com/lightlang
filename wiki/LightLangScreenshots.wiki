@@ -66,11 +66,12 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon1.p
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/tray_icon2.png
 
----
+----
 
 ===Управление словарями===
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dicts_manager1.png
+
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dict_information_window.png
 
----
+----
