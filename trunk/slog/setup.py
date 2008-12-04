@@ -101,7 +101,7 @@ setup(
 	requires=['gtk (>=2.10.0)', 'pynotify'],
 	scripts = ['bin/slog'],
 	packages = ['slog'],
-	py_modules = ['libsl', 'htmltextview'],
+	py_modules = ['libsl'],
 	package_dir = {"": "lib", "slog" : "src"},
 	data_files = data,
     cmdclass=cmdclass

@@ -243,8 +243,8 @@ msgstr "_Инструменты"
 #~ msgid "Remove"
 #~ msgstr "Удалить"
 
-#~ msgid "_File"
-#~ msgstr "_Файл"
+msgid "_File"
+msgstr "_Файл"
 
 #~ msgid "_Help"
 #~ msgstr "_Помощь"

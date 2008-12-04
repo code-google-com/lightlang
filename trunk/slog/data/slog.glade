@@ -15,7 +15,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Файл</property>
+                <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menuitem1_menu">
@@ -65,7 +65,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Правка</property>
+                <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menuitem2_menu">
@@ -120,7 +120,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuItemView">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Вид</property>
+                <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
               </widget>
             </child>
@@ -162,7 +162,7 @@
             <child>
               <widget class="GtkMenuItem" id="menuitem4">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Справка</property>
+                <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child>
                   <widget class="GtkMenu" id="menuitem4_menu">
@@ -498,7 +498,7 @@
                                 <property name="can_focus">True</property>
                                 <property name="max_length">64998</property>
                                 <property name="width_chars">5</property>
-                                <property name="adjustment">0 0 65000 1 100 10</property>
+                                <property name="adjustment">0 0 65000 1 0 0</property>
                                 <signal name="value_changed" handler="on_proxyport_changed"/>
                               </widget>
                               <packing>
@@ -557,7 +557,6 @@
                         <property name="height_request">200</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="headers_clickable">True</property>
                         <property name="rules_hint">True</property>
                       </widget>
                     </child>
@@ -731,7 +730,6 @@
                                 <property name="height_request">280</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
                                 <property name="rules_hint">True</property>
                               </widget>
                             </child>
@@ -916,7 +914,6 @@
                                 <property name="height_request">240</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="headers_clickable">True</property>
                                 <property name="reorderable">True</property>
                                 <property name="rules_hint">True</property>
                               </widget>
@@ -955,9 +952,6 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <placeholder/>
-            </child>
-            <child>
               <widget class="GtkButton" id="button1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -966,9 +960,6 @@
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>
               </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
           </widget>
           <packing>
