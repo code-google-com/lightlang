@@ -122,6 +122,34 @@
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuItemPrevPlugin">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Previous Plugin</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_prev_plugin_activate"/>
+                        <accelerator key="Page_Up" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="menuItemNextPlugin">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Next Plugin</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_next_plugin_activate"/>
+                        <accelerator key="Page_Down" modifiers="GDK_CONTROL_MASK" signal="activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem4">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
               </widget>
             </child>
             <child>

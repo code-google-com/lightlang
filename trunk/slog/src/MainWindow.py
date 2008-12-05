@@ -104,9 +104,9 @@ class MainWindow(object):
 			self.window.destroy(widget, data)
 
 		if self.conf.tray_info != 0:
-			n = self.__create_notify(APP_NAME, "Close in system tray")
+			n = self.__create_notify(APP_NAME, "Closed to system tray")
 			if not n.show():
-				print "Failed to send notification"
+				print "Warning: Failed to show notification"
 
 		self.window.hide()
 		return True
@@ -147,7 +147,7 @@ class MainWindow(object):
 		dialog.set_website(WEBSITE)
 		dialog.set_version(VERSION)
 		dialog.set_license(LICENSE)
-		dialog.connect ("response", lambda d, r: d.destroy())
+		dialog.connect("response", lambda d, r: d.destroy())
 		dialog.show()
 
 	def on_tray_clicked(self, args):

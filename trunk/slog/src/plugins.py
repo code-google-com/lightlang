@@ -103,6 +103,11 @@ class PluginView(object):
 		self.plugin_model.connect(self.on_plugins_changed)
 		self.radio_group = None
 
+		gui.signal_autoconnect({
+				"on_next_plugin_activate" : self.on_nextprev_plugin_activate,
+				"on_prev_plugin_activate" : self.on_nextprev_plugin_activate
+				})
+
 		self.notebook = gui.get_widget("noteBook")
 		self.notebook.remove_page(0)
 		self.new_translate_page()
@@ -110,7 +115,6 @@ class PluginView(object):
 
 		self.sidebar = gui.get_widget("sideBar")
 		self.plugins_menu = gui.get_widget("menuItemView")
-		self.plugins_menu.set_submenu(gtk.Menu())
 
 		self.accel_group = gtk.AccelGroup()
 		gui.get_widget("mainWindow").add_accel_group(self.accel_group)
@@ -156,8 +160,9 @@ class PluginView(object):
 		m.show()
 
 	def set_active(self, index):
+		""" Устанавливает плагин по номеру index текущим """
 		menu = self.plugins_menu.get_submenu()
-		menu_item = menu.get_children()[index]
+		menu_item = menu.get_children()[index+3]
 		menu_item.set_active(True)
 
 	def get_active(self):
@@ -208,6 +213,13 @@ class PluginView(object):
 			module.connect("translate_it", self.on_translate)
 			module.connect("changed", self.on_status_changed)
 
+	def on_nextprev_plugin_activate(self, widget, data=None):
+		group = self.radio_group.get_group()
+		for n, item in enumerate(group):
+			if item.get_active() == True:
+				self.set_active(n)
+				break
+				
 	def on_menuitem_cut_activate(self, widget, data=None):
 		number = self.get_active()
 		module = self.plugin_model.get_nth_plugin(number)
