@@ -69,7 +69,6 @@ class PopupWindow(Qt.QFrame) :
 	### Public ###
 
 	def show(self) :
-		# TODO: add window position determination
 		cursor_position = Qt.QCursor.pos() + Qt.QPoint(15, 15)
 		if cursor_position.x() < 0 :
 			cursor_position.setX(0)
@@ -77,11 +76,16 @@ class PopupWindow(Qt.QFrame) :
 			cursor_position.setY(0)
 
 		if cursor_position.x() + self.width() > Qt.QApplication.desktop().width() :
-			x_window_position = Qt.QApplication.desktop().width() - self.width() - 20
+			x_window_position = cursor_position.x() - self.width() - 20
+			if x_window_position < 0 :
+				x_window_position = Qt.QApplication.desktop().width() - self.width() - 20
 		else :
 			x_window_position = cursor_position.x()
+
 		if cursor_position.y() + self.height() > Qt.QApplication.desktop().height() :
-			y_window_position = Qt.QApplication.desktop().height() - self.height() - 20
+			y_window_position = cursor_position.y() - self.height() - 20
+			if y_window_position < 0 :
+				y_window_position = Qt.QApplication.desktop().height() - self.height() - 20
 		else :
 			y_window_position = cursor_position.y()
 
