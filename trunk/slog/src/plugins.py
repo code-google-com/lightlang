@@ -106,7 +106,7 @@ class PluginView(object):
 		gui.signal_autoconnect({
 				"on_next_plugin_activate" : self.on_nextprev_plugin_activate,
 				"on_prev_plugin_activate" : self.on_nextprev_plugin_activate
-				})
+		})
 
 		self.notebook = gui.get_widget("noteBook")
 		self.notebook.remove_page(0)
@@ -165,7 +165,7 @@ class PluginView(object):
 		menu_item = menu.get_children()[index+3]
 		menu_item.set_active(True)
 
-	def get_active(self):
+	def get_active_engine(self):
 		return self.sidebar.get_current_page()
 
 	def get_model(self):
@@ -221,7 +221,7 @@ class PluginView(object):
 				break
 				
 	def on_menuitem_cut_activate(self, widget, data=None):
-		number = self.get_active()
+		number = self.get_active_engine()
 		module = self.plugin_model.get_nth_plugin(number)
 		if module != None:
 			module.clear()

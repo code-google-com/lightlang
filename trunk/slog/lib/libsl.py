@@ -194,10 +194,10 @@ def find_word_fuzzy(utf8_word, filename):
 
 def find_word(word, mode, filename):
 
-	if word == "":
-		return []
-
 	utf8_word = word.lower().rstrip().strip(string.punctuation).decode("utf-8")
+
+	if utf8_word == "":
+		return []
 
 	if mode == SL_FIND_FUZZY:
 		return find_word_fuzzy(utf8_word, filename)

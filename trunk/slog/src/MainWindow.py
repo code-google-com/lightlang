@@ -117,7 +117,7 @@ class MainWindow(object):
 		self.conf.paned = self.wtree.get_widget("hPaned").get_position()
 		self.conf.set_size(width, height)
 		self.conf.set_pos(left, top)
-		self.conf.set_engine(self.plugin_view.get_active())
+		self.conf.set_engine(self.plugin_view.get_active_engine())
 		self.conf.save()
 		gtk.main_quit()
 
