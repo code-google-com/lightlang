@@ -75,3 +75,9 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dicts_manage
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/dict_information_window.png
 
 ----
+
+===Функция Spy===
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/translate_window1.png
+
+----
