@@ -21,6 +21,9 @@ import sys
 import os
 import ftplib
 
+sys.path.append("@prefix@/lib/llrepo")
+import repos
+
 #####
 MyName = "llrepo"
 Version = "2.1"
@@ -91,28 +94,18 @@ class LocalResource :
 		self.file_size = file_size
 
 
-#####################################################
-#####						#####
-#####		Repositories list		#####
-#####						#####
-#####################################################
-RepositoriesList = [
-	#FTPRepositoryServer("ftp.server", port, "user", "passwd", "path/to/root"),
-	#FTPRepositoryServer("ftp.lightlang.org.ru", 0, "", "", ""),
-	FTPRepositoryServer("ftp.etc.edu.ru", 0, "", "", "pub/soft/for_linux/lightlang")
-	]
-#####################################################
-#####################################################
-#####################################################
-
-
 #####
 def get_remote_resources_list(resources_type = "") :
 	if not resources_type in ResourcesTypes :
 		return []
 
+	repositories_list = []
+	for repos_item in repos.repos :
+		repositories_list.append(FTPRepositoryServer(repos_item["server"], int(repos_item["port"]),
+			repos_item["user"], repos_item["passwd"], repos_item["root"]))
+
 	remote_resources_list = []
-	for repositories_list_item in RepositoriesList :
+	for repositories_list_item in repositories_list :
 		ftp = ftplib.FTP()
 		print MyName+": processing remote repository "+repositories_list_item.server+"..."
 		try :
