@@ -455,9 +455,6 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	### Private ###
 
-	def invertDictState(self, index) :
-		self.cellWidget(index, 0).invertDictState()
-
 	def insertDictItem(self, item, index = -1) :
 		if index < 0 or index > self.rowCount() :
 			self.insertRow(self.rowCount())
@@ -515,6 +512,11 @@ class DictsListWidget(Qt.QTableWidget) :
 			self.downAvailableSignal(True)
 		else :
 			self.downAvailableSignal(False)
+
+	###
+
+	def invertDictState(self, index) :
+		self.cellWidget(index, 0).invertDictState()
 
 
 	### Signals ###
