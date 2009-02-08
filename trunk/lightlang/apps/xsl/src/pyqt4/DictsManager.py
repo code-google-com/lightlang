@@ -300,6 +300,14 @@ class DictsListWidgetItem(Qt.QWidget) :
 	def dictState(self) :
 		return self.enable_dict_checkbox.checkState()
 
+	###
+
+	def invertDictState(self) :
+		if self.enable_dict_checkbox.checkState() == Qt.Qt.Checked :
+			self.enable_dict_checkbox.setCheckState(Qt.Qt.Unchecked)
+		else :
+			self.enable_dict_checkbox.setCheckState(Qt.Qt.Checked)
+
 
 	### Signals ###
 
@@ -328,6 +336,7 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		#####
 
+		self.connect(self, Qt.SIGNAL("cellActivated(int, int)"), self.invertDictState)
 		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"),
 			self.currentRowChanged)
 
@@ -446,6 +455,9 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	### Private ###
 
+	def invertDictState(self, index) :
+		self.cellWidget(index, 0).invertDictState()
+
 	def insertDictItem(self, item, index = -1) :
 		if index < 0 or index > self.rowCount() :
 			self.insertRow(self.rowCount())
@@ -518,6 +530,18 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def downAvailableSignal(self, down_available_flag) :
 		self.emit(Qt.SIGNAL("downAvailable(bool)"), down_available_flag)
+
+
+	### Events ###
+
+	def keyPressEvent(self, event) :
+		if event.modifiers() == Qt.Qt.ShiftModifier :
+			if event.key() == Qt.Qt.Key_Up :
+				self.up()
+			elif event.key() == Qt.Qt.Key_Down :
+				self.down()
+		else :
+			Qt.QTableWidget.keyPressEvent(self, event)
 
 
 #####
