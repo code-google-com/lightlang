@@ -138,15 +138,6 @@ class DictInformationWindow(Qt.QWidget) :
 		self.update_information_button.blockSignals(False)
 
 	def show(self) :
-		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
-		if x_window_position < 0 :
-			x_window_position = 0
-		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
-		if y_window_position < 0 :
-			y_window_position = 0
-
-		self.move(Qt.QPoint(x_window_position, y_window_position))
-
 		Qt.QWidget.show(self)
 		self.raise_()
 		self.activateWindow()
@@ -530,9 +521,9 @@ class DictsListWidget(Qt.QTableWidget) :
 
 
 #####
-class DictsManager(Qt.QDialog) :
+class DictsManager(Qt.QWidget) :
 	def __init__(self, parent = None) :
-		Qt.QDialog.__init__(self, parent)
+		Qt.QWidget.__init__(self, parent)
 
 		self.setWindowTitle(self.tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -631,7 +622,7 @@ class DictsManager(Qt.QDialog) :
 
 		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
 
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
+		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
 
 		#####
 
@@ -680,6 +671,24 @@ class DictsManager(Qt.QDialog) :
 
 		self.update_dicts_button.setEnabled(True)
 		self.update_dicts_button.blockSignals(False)
+
+	###
+
+	def show(self) :
+		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
+		if x_window_position < 0 :
+			x_window_position = 0
+		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
+		if y_window_position < 0 :
+			y_window_position = 0
+
+		self.move(Qt.QPoint(x_window_position, y_window_position))
+
+		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
+
+		Qt.QWidget.show(self)
+		self.raise_()
+		self.activateWindow()
 
 
 	### Private ###
@@ -746,12 +755,6 @@ class DictsManager(Qt.QDialog) :
 	def clearLineEdit(self) :
 		self.line_edit.clear()
 		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
-
-	###
-
-	def show(self) :
-		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
-		Qt.QDialog.show(self)
 
 
 	### Signals ###

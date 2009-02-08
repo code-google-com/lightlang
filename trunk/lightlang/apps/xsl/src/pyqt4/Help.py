@@ -193,6 +193,8 @@ class About(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
 
+		self.setModal(True)
+
 		self.setWindowTitle(self.tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
