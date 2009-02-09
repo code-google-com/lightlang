@@ -32,7 +32,7 @@ class MainWindow(object):
 
 		# Create main window
 		self.window = self.wtree.get_widget("mainWindow")
-		self.window.set_icon_from_file(get_icon("slog.png"))
+		self.window.set_icon_from_file(get_icon("slog_logo.png"))
 		self.window.set_title("%s %s" % (APP_NAME, VERSION))
 		self.window.set_size_request(396, 256)
 
@@ -142,8 +142,8 @@ class MainWindow(object):
 	def on_about_activate(self, action):
 		dialog = gtk.AboutDialog()
 		dialog.set_name(APP_NAME)
-		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(get_icon("slog.png")))
-		dialog.set_copyright("\302\251 Copyright 2007,2008 Renat Nasyrov (renatn@gmail.com)")
+		dialog.set_logo(gtk.gdk.pixbuf_new_from_file(get_icon("slog_logo.png")))
+		dialog.set_copyright("\302\251 Copyright 2007-2009, Renat Nasyrov (renatn@gmail.com)")
 		dialog.set_website(WEBSITE)
 		dialog.set_version(VERSION)
 		dialog.set_license(LICENSE)

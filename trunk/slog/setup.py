@@ -10,7 +10,7 @@ from distutils.command.install_data import install_data as _install_data
 
 APP_NAME = "SLog"
 VERSION = "0.9.4"
-WEBSITE = "http://lightlang.org.ru"
+WEBSITE = "http://vialinx.org"
 
 # Thanks to Iain Nicol for code to save the location for installed prefix
 # At runtime, we need to know where we installed the data to.
@@ -77,7 +77,7 @@ cmdclass = {
 
 data = [
 		('share/applications', ['data/slog.desktop']),
-		('share/pixmaps', ['data/icons/slog.png', 'data/icons/slog_spy.png']),
+		('share/pixmaps', ['data/icons/slog.png', 'data/icons/slog_spy.png', 'data/icons/slog_logo.png']),
 		('share/slog', ['data/slog.glade']),
 		('share/locale/ru/LC_MESSAGES', ['po/slog.mo'])
 ]
