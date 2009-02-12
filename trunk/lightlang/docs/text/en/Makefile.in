@@ -14,9 +14,9 @@ INS_EN_TEXT_DOC_DIR=@prefix@/share/doc/lightlang/text/en
 
 #####
 install :
-	$(MKDIR) -p $(INS_EN_TEXT_DOC_DIR)
-	$(CP) -r $(EN_TEXT_DOC_DIR)/* $(INS_EN_TEXT_DOC_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_EN_TEXT_DOC_DIR)
+	$(CP) -r $(EN_TEXT_DOC_DIR)/* $(DESTDIR)$(INS_EN_TEXT_DOC_DIR)
 
 uninstall :
-	$(RM) -rf $(INS_DOC_DIR)
+	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)
 

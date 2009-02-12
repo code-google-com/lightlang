@@ -30,12 +30,12 @@ all :
 	$(RM) -f $(TMP_FILE)
 
 install :
-	$(MKDIR) -p $(INS_DICTS_DIR)
-	-$(CHMOD) 777 $(INS_DICTS_DIR)
-	-$(CP) -r $(DICTS_DIR)/* $(INS_DICTS_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_DICTS_DIR)
+	-$(CHMOD) 777 $(DESTDIR)$(INS_DICTS_DIR)
+	-$(CP) -r $(DICTS_DIR)/* $(DESTDIR)$(INS_DICTS_DIR)
 
 uninstall :
-	$(RM) -rf $(INS_DICTS_DIR)
+	$(RM) -rf $(DESTDIR)$(INS_DICTS_DIR)
 
 clean :
 	$(RM) -f $(DICTS_DIR)/*

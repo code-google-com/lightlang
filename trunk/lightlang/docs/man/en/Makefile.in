@@ -18,13 +18,13 @@ INS_EN_MAN_DOC_DIR=@prefix@/share/man/en
 
 #####
 install :
-	$(MKDIR) -p $(INS_EN_MAN_DOC_DIR)
-	$(CP) $(EN_MAN_DOC_DIR)/sl.1.gz $(INS_EN_MAN_DOC_DIR)/man1
-	$(CP) $(EN_MAN_DOC_DIR)/llrepo.1.gz $(INS_EN_MAN_DOC_DIR)/man1
-	-$(TEST) $(GUI_FLAG) = "yes" && $(CP) $(EN_MAN_DOC_DIR)/xsl.1.gz $(INS_EN_MAN_DOC_DIR)/man1
+	$(MKDIR) -p $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
+	$(CP) $(EN_MAN_DOC_DIR)/sl.1.gz $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
+	$(CP) $(EN_MAN_DOC_DIR)/llrepo.1.gz $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
+	-$(TEST) $(GUI_FLAG) = "yes" && $(CP) $(EN_MAN_DOC_DIR)/xsl.1.gz $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
 
 uninstall :
-	$(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/sl.1.gz
-	$(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/llrepo.1.gz
-	-$(TEST) $(GUI_FLAG) = "yes" && $(RM) -f $(INS_EN_MAN_DOC_DIR)/man1/xsl.1.gz
+	$(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/sl.1.gz
+	$(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/llrepo.1.gz
+	-$(TEST) $(GUI_FLAG) = "yes" && $(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/xsl.1.gz
 
