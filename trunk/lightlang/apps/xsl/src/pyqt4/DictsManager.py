@@ -185,7 +185,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 		if dict_file.open(Qt.QIODevice.ReadOnly) :
 			first_comment_flag = False
-			while not dict_file.atEnd() :
+			while not dict_file_stream.atEnd() :
 				Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 				str = dict_file_stream.readLine()
 				if str.isEmpty() :
