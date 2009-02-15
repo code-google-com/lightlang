@@ -20,9 +20,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4 import Qt
-#try : # FIXME: Rrrrr... :-(
-#	import TranslateSitesMenu
-#except : pass
 import Config
 import Const
 
@@ -87,12 +84,6 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.stop_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
 			self.tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
-		#try : # FIXME: Rrrrr... :-(
-		#	self.tray_menu.addSeparator()
-		#	self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
-		#	self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
-		#	self.tray_menu.addMenu(self.translate_sites_menu)
-		#except : pass
 		self.tray_menu.addSeparator()
 		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), self.tr("Quit"), self.exit)
 		self.setContextMenu(self.tray_menu)
@@ -111,8 +102,6 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.setIcon(Qt.QIcon(IconsDir+"xsl+spy_22.png"))
 
 		self.setToolTip(self.tr("XSL - graphical interface for SL\nSpy is running"))
-		#self.showMessage(Const.MyName, self.tr("Spy is running\t"),
-		#	Qt.QSystemTrayIcon.Information, 2000)
 
 	def spyStopped(self) :
 		self.start_spy_menu_action.setEnabled(True)
@@ -121,8 +110,6 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.setIcon(Qt.QIcon(IconsDir+"xsl_22.png"))
 
 		self.setToolTip(self.tr("XSL - graphical interface for SL\nSpy is stopped"))
-		#self.showMessage(Const.MyName, self.tr("Spy is stopped\t"),
-		#	Qt.QSystemTrayIcon.Information, 2000)
 
 
 	### Private ###

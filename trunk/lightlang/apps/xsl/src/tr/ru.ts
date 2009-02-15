@@ -841,34 +841,29 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="TrayIcon.py" line="86"/>
+        <location filename="TrayIcon.py" line="83"/>
         <source>Start Spy</source>
         <translation>Запустить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="88"/>
+        <location filename="TrayIcon.py" line="85"/>
         <source>Stop Spy</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="97"/>
+        <location filename="TrayIcon.py" line="88"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="92"/>
-        <source>Web translate</source>
-        <translation>Перевод в Интернете</translation>
-    </message>
-    <message>
-        <location filename="TrayIcon.py" line="123"/>
+        <location filename="TrayIcon.py" line="112"/>
         <source>XSL - graphical interface for SL
 Spy is stopped</source>
         <translation>XSL - графический интерфейс для SL
 Spy-сервис не запущен</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="113"/>
+        <location filename="TrayIcon.py" line="104"/>
         <source>XSL - graphical interface for SL
 Spy is running</source>
         <translation>XSL - графический интерфейс для SL
