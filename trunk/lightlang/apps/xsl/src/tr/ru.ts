@@ -3,17 +3,17 @@
 <context>
     <name>About</name>
     <message>
-        <location filename="Help.py" line="196"/>
+        <location filename="Help.py" line="198"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="Help.py" line="243"/>
+        <location filename="Help.py" line="245"/>
         <source>&amp;OK</source>
         <translation>&amp;ОК</translation>
     </message>
     <message>
-        <location filename="Help.py" line="239"/>
+        <location filename="Help.py" line="241"/>
         <source>&lt;center&gt;&lt;h3&gt;XSL - the graphical interface for SL&lt;/h3&gt;&lt;/center&gt;All the programs of the &lt;strong&gt;LightLang&lt;/strong&gt; package are distributable, according&lt;br&gt;to the license &lt;strong&gt;GPLv2&lt;/strong&gt;. For details visit &lt;em&gt;License agreement&lt;/em&gt; of the&lt;br&gt;&lt;strong&gt;LightLang&lt;/strong&gt; manual.&lt;br&gt;&lt;br&gt;Author of the &lt;strong&gt;LightLang&lt;/strong&gt; package:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Devaev Maxim&lt;/em&gt;&lt;br&gt;Thanks to:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Baburina Elisabeth&lt;/em&gt;&lt;br&gt;Valuable assistants:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Vladimir Fomkin&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Tihonov Sergey&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Renat Nasyrov&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Du Vinh&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Aleksey Yum&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Olga Polyakova&lt;/em&gt;&lt;br&gt;Translators:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Kirill Nebogin&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:mdevaev@gmail.com?subject=LightLang&quot;&gt;mdevaev@gmail.com&lt;/a&gt;)&lt;/em&gt;</source>
         <translation>&lt;center&gt;&lt;h3&gt;XSL - графический интерфейс для SL&lt;/h3&gt;&lt;/center&gt;Все программы пакета &lt;strong&gt;LightLang&lt;/strong&gt; распространяются по лицензии&lt;br&gt;&lt;strong&gt;GPLv2&lt;/strong&gt;. Подробнее смотрите в разделе &lt;em&gt;Лицензионное слоглашение&lt;/em&gt;&lt;br&gt; руководства &lt;strong&gt;LightLang&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Автор пакета &lt;strong&gt;LightLang&lt;/strong&gt;:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Деваев Максим&lt;/em&gt;&lt;br&gt;Спасибо:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Бабуриной Елизавете&lt;/em&gt;&lt;br&gt;Помогали:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Владимир Фомкин&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Тихонов Сергей&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ренат Насыров&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Доу Винх&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Алексей Юм&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ольга Полякова&lt;/em&gt;&lt;br&gt;Переводчики:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Кирилл Небогин&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:mdevaev@gmail.com?subject=LightLang&quot;&gt;mdevaev@gmail.com&lt;/a&gt;)&lt;/em&gt;</translation>
     </message>
@@ -56,7 +56,7 @@
         <translation>Описание:</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="217"/>
+        <location filename="DictsManager.py" line="208"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -79,24 +79,24 @@
 <context>
     <name>DictsManager</name>
     <message>
-        <location filename="DictsManager.py" line="537"/>
+        <location filename="DictsManager.py" line="554"/>
         <source>Dicts Manager</source>
         <translation>Менеджер словарей</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="563"/>
-        <source>Filter:</source>
-        <translation>Фильтр:</translation>
-    </message>
-    <message>
-        <location filename="DictsManager.py" line="606"/>
+        <location filename="DictsManager.py" line="624"/>
         <source>Please wait...</source>
         <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="612"/>
+        <location filename="DictsManager.py" line="630"/>
         <source>&amp;OK</source>
         <translation>&amp;ОК</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="580"/>
+        <source>&amp;Filter:</source>
+        <translation>&amp;Фильтр:</translation>
     </message>
 </context>
 <context>

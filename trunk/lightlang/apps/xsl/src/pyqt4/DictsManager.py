@@ -577,10 +577,11 @@ class DictsManager(Qt.QWidget) :
 
 		#####
 
-		self.filter_label = Qt.QLabel(self.tr("Filter:"))
+		self.filter_label = Qt.QLabel(self.tr("&Filter:"))
 		self.line_edit_layout.addWidget(self.filter_label)
 
 		self.line_edit = Qt.QLineEdit()
+		self.filter_label.setBuddy(self.line_edit)
 		self.line_edit_layout.addWidget(self.line_edit)
 
 		self.clear_line_edit_button = Qt.QToolButton()
