@@ -119,6 +119,9 @@ class MainWindow(Qt.QMainWindow) :
 		self.setCentralWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
+		try : # FIXME: negative values hack
+			self.main_layout.setContentsMargins(-1, -1, 0, -1)
+		except : pass
 		self.main_widget.setLayout(self.main_layout)
 
 		self.status_bar = StatusBar()
