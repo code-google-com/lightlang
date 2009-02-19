@@ -57,9 +57,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.setCentralWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
-		#try : # FIXME: negative values hack
-		#	self.main_layout.setContentsMargins(-1, -1, 0, -1)
-		#except : pass
 		self.main_widget.setLayout(self.main_layout)
 
 		self.status_bar = StatusBar.StatusBar()
@@ -71,9 +68,10 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.source_objects_list = []
 
-		#####
+		self.panels_list = []
+		self.panels_focus_flags_list = []
 
-		#self.panels_focus_flags = [True, False, False]
+		#####
 
 		self.printer = Qt.QPrinter()
 		self.print_dialog = Qt.QPrintDialog(self.printer)
@@ -82,15 +80,18 @@ class MainWindow(Qt.QMainWindow) :
 		self.find_in_sl_panel = FindInSLPanel.FindInSLPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
 		self.addSourceObject(self.find_in_sl_panel)
+		self.addPanel(self.find_in_sl_panel)
 
 		self.history_panel = HistoryPanel.HistoryPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.history_panel)
 		self.tabifyDockWidget(self.find_in_sl_panel, self.history_panel)
+		self.addPanel(self.history_panel)
 
 		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
 		self.addDockWidget(Qt.Qt.RightDockWidgetArea, self.google_translate_panel)
 		self.tabifyDockWidget(self.history_panel, self.google_translate_panel)
 		self.addSourceObject(self.google_translate_panel)
+		self.addPanel(self.google_translate_panel)
 
 		self.tabbed_translate_browser = TabbedTranslateBrowser.TabbedTranslateBrowser()
 		self.main_layout.addWidget(self.tabbed_translate_browser)
@@ -242,22 +243,26 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def save(self) :
-		self.saveSettings()
 		for source_object in self.source_objects_list :
 			source_object[0].saveSettings()
+
 		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
 
+		self.saveSettings()
+
 	def load(self) :
-		self.loadSettings()
 		for source_object in self.source_objects_list :
 			source_object[0].loadSettings()
+
 		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
+
+		self.loadSettings()
 
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
@@ -276,21 +281,19 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def focusChanged(self) :
-	#	new_panels_focus_flags = [self.find_in_sl_panel.hasInternalFocus(),
-	#		self.google_translate_panel.hasInternalFocus(),
-	#		self.history_panel.hasInternalFocus()]
-	#	if True in new_panels_focus_flags :
-	#		self.panels_focus_flags = new_panels_focus_flags
-		pass
+		new_panels_focus_flags_list = []
+		for panel in self.panels_list :
+			new_panels_focus_flags_list.append(panel.hasInternalFocus())
+		if True in new_panels_focus_flags_list :
+			self.panels_focus_flags_list = new_panels_focus_flags_list
+		print self.panels_focus_flags_list
 
 	def activateFocus(self) :
-	#	if self.panels_focus_flags[0] :
-	#		self.find_in_sl_panel.setFocus()
-	#	elif self.panels_focus_flags[1] :
-	#		self.google_translate_panel.setFocus()
-	#	elif self.panels_focus_flags[2] :
-	#		self.history_panel.setFocus()
-		pass
+		count = 0
+		while count < len(self.panels_list) :
+			if self.panels_focus_flags_list[count] :
+				self.panels_list[count].setFocus()
+			count += 1
 
 	###
 
@@ -300,6 +303,12 @@ class MainWindow(Qt.QMainWindow) :
 
 
 	### Private ###
+
+	def addPanel(self, panel) :
+		self.panels_list.append(panel)
+		self.panels_focus_flags_list.append(False)
+
+	###
 
 	def addSourceObject(self, source_object) :
 		self.source_objects_list.append([source_object, -1])
@@ -452,15 +461,15 @@ class MainWindow(Qt.QMainWindow) :
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
 
-	def showGoogleTranslatePanel(self) :
-		self.google_translate_panel.show()
-		self.google_translate_panel.setFocus()
-		self.google_translate_panel.raise_()
-
 	def showHistoryPanel(self) :
 		self.history_panel.show()
 		self.history_panel.setFocus()
 		self.history_panel.raise_()
+
+	def showGoogleTranslatePanel(self) :
+		self.google_translate_panel.show()
+		self.google_translate_panel.setFocus()
+		self.google_translate_panel.raise_()
 
 	def showDictsManager(self) :
 		self.dicts_manager.show()
