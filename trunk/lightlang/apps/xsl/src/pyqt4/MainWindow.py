@@ -286,7 +286,6 @@ class MainWindow(Qt.QMainWindow) :
 			new_panels_focus_flags_list.append(panel.hasInternalFocus())
 		if True in new_panels_focus_flags_list :
 			self.panels_focus_flags_list = new_panels_focus_flags_list
-		print self.panels_focus_flags_list
 
 	def activateFocus(self) :
 		count = 0
