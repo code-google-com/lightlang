@@ -226,7 +226,7 @@ Press &quot;Yes&quot; to exit</source>
     <message>
         <location filename="GoogleTranslate.py" line="67"/>
         <source>&lt;em&gt;Please wait...&lt;/em&gt;</source>
-        <translation>&lt;em&gt;Пожалуйста, подождите&lt;/em&gt;</translation>
+        <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="GoogleTranslate.py" line="83"/>
@@ -654,17 +654,17 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="394"/>
+        <location filename="MainWindow.py" line="393"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="403"/>
+        <location filename="MainWindow.py" line="402"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="416"/>
+        <location filename="MainWindow.py" line="415"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
@@ -679,7 +679,7 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="386"/>
+        <location filename="MainWindow.py" line="385"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
