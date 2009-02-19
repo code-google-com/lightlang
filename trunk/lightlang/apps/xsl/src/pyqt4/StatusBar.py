@@ -51,7 +51,7 @@ class StatusBar(Qt.QStatusBar) :
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_picture_movie_label = Qt.QLabel()
 		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie_label.hide()
 		self.addWidget(self.wait_picture_movie_label)
 
 		###
@@ -66,7 +66,7 @@ class StatusBar(Qt.QStatusBar) :
 			self.activation_semaphore += 1
 			return
 
-		self.wait_picture_movie_label.setVisible(True)
+		self.wait_picture_movie_label.show()
 		self.wait_picture_movie.start()
 
 	def stopWaitMovie(self) :
@@ -75,7 +75,7 @@ class StatusBar(Qt.QStatusBar) :
 		if self.activation_semaphore > 0 :
 			self.activation_semaphore -= 1
 
-		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie_label.hide()
 		self.wait_picture_movie.stop()
 		self.wait_picture_movie.jumpToFrame(0)
 

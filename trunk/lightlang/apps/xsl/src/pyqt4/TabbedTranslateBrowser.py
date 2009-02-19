@@ -137,7 +137,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.tab_widget.setCornerWidget(self.remove_tab_button, Qt.Qt.TopRightCorner)
 
 		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.setVisible(False)
+		self.find_in_text_frame.hide()
 		self.main_layout.addWidget(self.find_in_text_frame)
 
 		#####

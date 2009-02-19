@@ -103,11 +103,11 @@ class DictsManager(Qt.QWidget) :
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_picture_movie_label = Qt.QLabel()
 		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
 
 		self.wait_message_label = Qt.QLabel(self.tr("Please wait..."))
-		self.wait_message_label.setVisible(False)
+		self.wait_message_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_message_label)
 
 		self.control_buttons_layout.addStretch()
@@ -147,16 +147,16 @@ class DictsManager(Qt.QWidget) :
 		self.update_dicts_button.blockSignals(True)
 		self.update_dicts_button.setEnabled(False)
 
-		self.wait_picture_movie_label.setVisible(True)
+		self.wait_picture_movie_label.show()
 		self.wait_picture_movie.start()
-		self.wait_message_label.setVisible(True)
+		self.wait_message_label.show()
 
 		self.dicts_list.setList(self.syncLists(self.listOfAllDicts(), self.dicts_list.list()))
 
-		self.wait_picture_movie_label.setVisible(False)
+		self.wait_picture_movie_label.hide()
 		self.wait_picture_movie.stop()
 		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_message_label.setVisible(False)
+		self.wait_message_label.hide()
 
 		Qt.QCoreApplication.processEvents()
 

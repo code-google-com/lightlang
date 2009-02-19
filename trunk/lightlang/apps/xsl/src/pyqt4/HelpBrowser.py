@@ -155,7 +155,7 @@ class HelpBrowser(Qt.QWidget) :
 		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
 		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.setVisible(False)
+		self.find_in_text_frame.hide()
 		self.main_layout.addWidget(self.find_in_text_frame)
 
 		#####

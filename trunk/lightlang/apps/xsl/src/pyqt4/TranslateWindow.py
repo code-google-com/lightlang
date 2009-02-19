@@ -79,7 +79,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.main_layout.addWidget(self.translate_browser)
 
 		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.setVisible(False)
+		self.find_in_text_frame.hide()
 		self.main_layout.addWidget(self.find_in_text_frame)
 
 		#####
