@@ -54,3 +54,4 @@ class InternetLinksMenu(Qt.QMenu) :
 
 	def addLink(self, icon, title, link) :
 		self.addAction(icon, title, lambda : Qt.QDesktopServices.openUrl(Qt.QUrl(link)))
+

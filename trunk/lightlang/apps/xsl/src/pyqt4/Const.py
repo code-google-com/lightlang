@@ -29,3 +29,4 @@ OffersMail = "developers@lightlang.org.ru"
 BugtrackMail = "bugtrack@lightlang.org.ru"
 UserCountMail = "usercount@lightlang.org.ru"
 HomePageAddress = "http://lightlang.org.ru"
+

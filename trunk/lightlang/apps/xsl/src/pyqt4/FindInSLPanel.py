@@ -22,7 +22,7 @@
 from PyQt4 import Qt
 import Config
 import Const
-import SLFind
+import FindWordInSL
 
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
@@ -128,8 +128,8 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.delay_timer = Qt.QTimer()
 		self.delay_timer.setInterval(300)
 
-		self.internal_find = SLFind.FindWord()
-		self.external_find = SLFind.FindWord()
+		self.internal_find = FindWordInSL.FindWordInSL()
+		self.external_find = FindWordInSL.FindWordInSL()
 
 		#####
 
@@ -278,6 +278,14 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.external_find.cFind(word)
 		self.wordChangedSignal(word)
 
+	###
+
+	def saveSettings(self) :
+		pass
+
+	def loadSettings(self) :
+		pass
+
 
 	### Private ###
 
@@ -334,3 +342,4 @@ class FindInSLPanel(Qt.QDockWidget) :
 
 	def clearRequestSignal(self) :
 		self.emit(Qt.SIGNAL("clearRequest()"))
+

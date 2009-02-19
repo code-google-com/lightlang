@@ -22,110 +22,11 @@
 from PyQt4 import Qt
 import Config
 import Const
+import TranslateSiteSAXHandler
 
 #####
-TrSitesDir = Config.Prefix+"/lib/xsl/trsites/"
+TranslateSitesDir = Config.Prefix+"/lib/xsl/trsites/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
-
-#####
-class TrSiteSAXHandler(Qt.QXmlDefaultHandler) :
-	def __init__(self, new_site_handler) :
-		Qt.QXmlDefaultHandler.__init__(self)
-
-		self.new_site_handler = new_site_handler
-
-		#####
-
-		self.lang = Qt.QLocale().name()
-		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
-
-		#####
-
-		self.site_tag_flag = False
-		self.title_tag_flag = False
-		self.description_tag_flag = False
-		self.icon_tag_flag = False
-		self.url_tag_flag = False
-
-		self.site_title = Qt.QString()
-		self.site_title_lang = Qt.QString()
-		self.site_description = Qt.QString()
-		self.site_description_lang = Qt.QString()
-		self.site_icon_path = Qt.QString()
-		self.site_url = Qt.QString()
-
-
-	### Private ###
-	### Handlers ###
-
-	def startElement(self, namespace_uri, local_name, name, attributes) :
-		if name == "site" :
-			self.site_tag_flag = True
-			return True
-
-		if self.site_tag_flag :
-			if name == "title" :
-				self.site_title_lang = attributes.value("lang")
-				self.title_tag_flag = True
-			elif name == "description" :
-				self.site_description_lang = attributes.value("lang")
-				self.description_tag_flag = True
-			elif name == "icon" :
-				self.icon_tag_flag = True
-			elif name == "url" :
-				self.url_tag_flag = True
-		return True
-
-	def characters(self, str) :
-		if str.simplified().isEmpty() :
-			return True
-
-		if self.site_tag_flag :
-			if self.title_tag_flag :
-				if self.site_title_lang == self.lang :
-					self.site_title = str.simplified()
-				if self.site_title.simplified().isEmpty() and self.site_title_lang.simplified().isEmpty() :
-					self.site_title = str.simplified()
-				return True
-			elif self.description_tag_flag :
-				if self.site_description_lang == self.lang :
-					self.site_description = str.simplified()
-				if self.site_description.simplified().isEmpty() and self.site_description_lang.simplified().isEmpty() :
-					self.site_description = str.simplified()
-				return True
-			elif self.icon_tag_flag :
-				self.site_icon_path = str.simplified()
-				return True
-			elif self.url_tag_flag :
-				self.site_url = str.simplified()
-				return True
-		return True
-
-	def endElement(self, namespace_uri, local_name, name) :
-		if name == "site" :
-			self.new_site_handler(self.site_title, self.site_description, self.site_icon_path, self.site_url)
-
-			self.site_title.clear()
-			self.site_title_lang.clear()
-			self.site_description.clear()
-			self.site_description_lang.clear()
-			self.site_icon_path.clear()
-			self.site_url.clear()
-
-			self.site_tag_flag = False
-		elif name == "title" :
-			self.title_tag_flag = False
-		elif name == "description" :
-			self.description_tag_flag = False
-		elif name == "icon" :
-			self.icon_tag_flag = False
-		elif name == "url" :
-			self.url_tag_flag = False
-		return True
-
-	def fatalError(self, exception) :
-		return True
-
 
 #####
 class TranslateSitesMenu(Qt.QMenu) :
@@ -144,18 +45,18 @@ class TranslateSitesMenu(Qt.QMenu) :
 	### Private ###
 
 	def createActions(self) :
-		trsites_dir = Qt.QDir(TrSitesDir)
-		trsites_dir_name_filters = Qt.QStringList()
-		trsites_dir_name_filters << "*.trsite" << "*.xml"
-		trsites_dir.setNameFilters(trsites_dir_name_filters)
-		trsites_dir.setFilter(Qt.QDir.Files)
+		translate_sites_dir = Qt.QDir(TranslateSitesDir)
+		translate_sites_dir_name_filters = Qt.QStringList()
+		translate_sites_dir_name_filters << "*.trsite" << "*.xml"
+		translate_sites_dir.setNameFilters(translate_sites_dir_name_filters)
+		translate_sites_dir.setFilter(Qt.QDir.Files)
 
 		count = 0
-		while count < trsites_dir.count() :
-			trsite_file = Qt.QFile(TrSitesDir+trsites_dir[count])
+		while count < translate_sites_dir.count() :
+			trsite_file = Qt.QFile(TranslateSitesDir+translate_sites_dir[count])
 			xml_input_source = Qt.QXmlInputSource(trsite_file)
 			xml_reader = Qt.QXmlSimpleReader()
-			xml_handler = TrSiteSAXHandler(self.addSite)
+			xml_handler = TranslateSiteSAXHandler.TranslateSiteSAXHandler(self.addSite)
 			xml_reader.setContentHandler(xml_handler)
 			xml_reader.setErrorHandler(xml_handler)
 			xml_reader.parse(xml_input_source)
@@ -181,3 +82,4 @@ class TranslateSitesMenu(Qt.QMenu) :
 		index = action.data().toInt()[0]
 		site_url = self.actions_data_list[index]
 		Qt.QDesktopServices.openUrl(Qt.QUrl(site_url))
+

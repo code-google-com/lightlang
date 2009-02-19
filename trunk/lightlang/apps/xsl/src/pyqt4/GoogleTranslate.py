@@ -156,3 +156,4 @@ class GoogleTranslate(Qt.QObject) :
 
 	def statusChangedSignal(self, text) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), text)
+

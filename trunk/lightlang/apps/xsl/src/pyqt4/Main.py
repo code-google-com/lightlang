@@ -154,3 +154,4 @@ class Main :
 			return str
 		else :
 			return Qt.QString(text)
+

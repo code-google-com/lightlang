@@ -161,3 +161,4 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def wordChangedSignal(self, item) :
 		self.emit(Qt.SIGNAL("wordChanged(const QString &)"), item.text())
+

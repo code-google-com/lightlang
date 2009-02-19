@@ -20,7 +20,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 from PyQt4 import Qt
-import sys
 import Config
 import Const
 try : # optional requires python-xlib
@@ -30,184 +29,18 @@ try : # optional requires python-xlib
 except :
 	PythonXlibExistsFlag = False
 	print Const.MyName+": python-xlib is not found, please, install it"
+import MouseSelector
+import KeyboardModifierMenu
 
 #####
-SL = Config.Prefix+"/bin/sl"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
-
-LeftCtrlModifier = 133
-LeftAltModifier = 256
-LeftShiftModifier = 194
-LeftWinModifier = 451
-RightCtrlModifier = 421
-RightAltModifier = 449
-RightShiftModifier = 230
-RightWinModifier = 452
-NoModifier = -1
-
-#####
-class MouseSelector(Qt.QObject) :
-	def __init__(self, parent = None) :
-		Qt.QObject.__init__(self, parent)
-
-		self.clipboard = Qt.QApplication.clipboard()
-		self.old_selection = Qt.QString()
-
-		self.timer = Qt.QTimer()
-		self.timer.setInterval(300)
-
-		if PythonXlibExistsFlag :
-			self.display = Xlib.display.Display()
-
-		self.modifier = LeftCtrlModifier
-
-		#####
-
-		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.checkSelection)
-
-
-	### Public ###
-
-	def start(self) :
-		self.clipboard.setText(Qt.QString(""), Qt.QClipboard.Selection)
-		self.old_selection.clear()
-		self.timer.start()
-
-	def stop(self) :
-		self.timer.stop()
-
-	def setModifier(self, modifier) :
-		self.modifier = modifier
-
-
-	### Private ###
-
-	def checkSelection(self) :
-		word = self.clipboard.text(Qt.QClipboard.Selection)
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		word = word.toLower()
-
-		if word == self.old_selection :
-			return
-		self.old_selection = word
-
-		# TODO: add mouse-buttons checks
-		if not self.checkModifier() :
-			return
-
-		self.selectionChangedSignal(word)
-
-	def checkModifier(self) :
-		if not PythonXlibExistsFlag :
-			return True
-
-		if self.modifier == NoModifier :
-			return True
-
-		keymap = self.display.query_keymap()
-		keys = []
-
-		for count1 in range(0, len(keymap)) :
-			Qt.QCoreApplication.processEvents()
-			for count2 in range(0, 32) :
-				keys.append(int(keymap[count1] & (1 << count2)))
-
-		if keys[self.modifier] != 0 :
-			return True
-		else :
-			return False
-
-
-	### Signals ###
-
-	def selectionChangedSignal(self, word) :
-		self.emit(Qt.SIGNAL("selectionChanged(const QString &)"), word)
-
-
-#####
-class KeyboardModifierMenu(Qt.QMenu) :
-	def __init__(self, title, parent = None) :
-		Qt.QMenu.__init__(self, title, parent)
-
-		self.actions_list = []
-		self.actions_group = Qt.QActionGroup(self)
-
-		###
-
-		self.addModifier(self.tr("Left Ctrl"), LeftCtrlModifier)
-		self.addModifier(self.tr("Left Alt"), LeftAltModifier)
-		self.addModifier(self.tr("Left Shift"), LeftShiftModifier)
-		self.addModifier(self.tr("Left Win"), LeftWinModifier)
-		self.addSeparator()
-		self.addModifier(self.tr("Right Ctrl"), RightCtrlModifier)
-		self.addModifier(self.tr("Right Alt"), RightAltModifier)
-		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
-		self.addModifier(self.tr("Right Win"), RightWinModifier)
-		self.addSeparator()
-		self.addModifier(self.tr("No modifier"), NoModifier)
-
-		#####
-
-		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
-
-		#####
-
-		self.setIndex(0)
-
-		if not PythonXlibExistsFlag :
-			self.setTitle(self.tr("No modifiers available"))
-			self.setEnabled(False)
-
-
-	### Public ###
-
-	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		settings.setValue("modifier_menu/modifier_index", Qt.QVariant(self.index()))
-
-	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		self.setIndex(settings.value("modifier_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
-
-
-	### Private ###
-
-	def index(self) :
-		count = 0
-		while count < len(self.actions_list) :
-			if self.actions_list[count].isChecked() :
-				return count
-			count += 1
-
-	def setIndex(self, index) :
-		self.actions_list[index].setChecked(True)
-		self.modifierChangedSignal(self.actions_list[index])
-
-	def addModifier(self, title, modifier) :
-		action = Qt.QAction(title, self)
-		action.setCheckable(True)
-		action.setData(Qt.QVariant(modifier))
-
-		self.addAction(action)
-		self.actions_list.append(action)
-		self.actions_group.addAction(action)
-
-
-	### Signals ###
-
-	def modifierChangedSignal(self, action) :
-		modifier = action.data().toInt()[0]
-		self.emit(Qt.SIGNAL("modifierChanged(int)"), modifier)
-
 
 #####
 class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)
 
-		self.mouse_selector = MouseSelector()
+		self.mouse_selector = MouseSelector.MouseSelector()
 
 		#####
 
@@ -222,7 +55,7 @@ class SpyMenu(Qt.QMenu) :
 		self.auto_detect_window_menu_action = self.addAction(self.tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
 		self.addSeparator()
-		self.keyboard_modifier_menu = KeyboardModifierMenu(self.tr("Keyboard modifier"))
+		self.keyboard_modifier_menu = KeyboardModifierMenu.KeyboardModifierMenu(self.tr("Keyboard modifier"))
 		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
 		self.addMenu(self.keyboard_modifier_menu)
 
@@ -310,3 +143,4 @@ class SpyMenu(Qt.QMenu) :
 
 	def showTranslateWindowRequestSignal(self) :
 		self.emit(Qt.SIGNAL("showTranslateWindowRequest()"))
+

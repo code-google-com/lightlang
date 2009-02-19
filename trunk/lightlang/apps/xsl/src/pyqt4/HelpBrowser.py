@@ -22,6 +22,8 @@
 from PyQt4 import Qt
 import Config
 import Const
+import TextBrowser
+import FindInTextFrame
 
 #####
 lang = Qt.QLocale().name()
@@ -36,15 +38,37 @@ else :
 
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
-Emblem = Config.Prefix+"/lib/xsl/pictures/emblem.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+lang+"/index.html"
 
 #####
-class TextBrowser(Qt.QTextBrowser) :
+class HelpTextBrowser(TextBrowser.TextBrowser) :
 	def __init__(self, parent = None) :
-		Qt.QTextBrowser.__init__(self, parent)
+		TextBrowser.TextBrowser.__init__(self, parent)
+
+		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
+
+
+	### Public ###
+
+	def home(self) :
+		self.setSource(Qt.QUrl(IndexPage))
+
+	def previous(self) :
+		self.backward()
+
+	def next(self) :
+		self.forward()
+
+
+	### Private ###
+
+	def setCursorInfo(self, str) :
+		if not str.simplified().isEmpty() :
+			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
+				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
 
 
 	### Signals ###
@@ -59,13 +83,13 @@ class TextBrowser(Qt.QTextBrowser) :
 		if event.key() == Qt.Qt.Key_Backspace :
 			self.previousRequestSignal()
 		else :
-			Qt.QTextBrowser.keyPressEvent(self, event)
+			TextBrowser.TextBrowser.keyPressEvent(self, event)
 
 
 #####
-class HelpBrowser(Qt.QDialog) :
+class HelpBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
-		Qt.QDialog.__init__(self, parent)
+		Qt.QWidget.__init__(self, parent)
 
 		self.setWindowTitle(self.tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -78,12 +102,11 @@ class HelpBrowser(Qt.QDialog) :
 
 		#####
 
-		self.text_browser = TextBrowser()
-		self.text_browser.setOpenExternalLinks(True)
-		self.text_browser_layout = Qt.QHBoxLayout()
-		self.text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
-		self.text_browser.setLayout(self.text_browser_layout)
-		self.main_layout.addWidget(self.text_browser)
+		self.help_text_browser = HelpTextBrowser()
+		self.help_text_browser_layout = Qt.QHBoxLayout()
+		self.help_text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
+		self.help_text_browser.setLayout(self.help_text_browser_layout)
+		self.main_layout.addWidget(self.help_text_browser)
 
 		self.control_buttons_frame = Qt.QFrame()
 		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
@@ -100,7 +123,7 @@ class HelpBrowser(Qt.QDialog) :
 		self.control_buttons_frame_layout = Qt.QHBoxLayout()
 		self.control_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
 		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
-		self.text_browser_layout.addWidget(self.control_buttons_frame)
+		self.help_text_browser_layout.addWidget(self.control_buttons_frame)
 
 		self.previous_button = Qt.QToolButton()
 		self.previous_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
@@ -131,47 +154,61 @@ class HelpBrowser(Qt.QDialog) :
 
 		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
 
-		#####
-
-		self.connect(self.text_browser, Qt.SIGNAL("previousRequest()"), self.previous_button.animateClick)
-
-		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.previous)
-		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.next)
-		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
-
-		self.connect(self.text_browser, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
-		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
-		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setPreviousButtonAvailable)
-		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setNextButtonAvailable)
+		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
+		self.find_in_text_frame.setVisible(False)
+		self.main_layout.addWidget(self.find_in_text_frame)
 
 		#####
 
-		self.home()
+		self.connect(self.help_text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
+		self.connect(self.help_text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
+		self.connect(self.help_text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
+		self.connect(self.help_text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
+			self.find_in_text_frame.setLineEditRedAlertPalette)
+		self.connect(self.help_text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
+			self.find_in_text_frame.setLineEditDefaultPalette)
+
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.help_text_browser.findNext)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.help_text_browser.findPrevious)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.help_text_browser.instantSearch)
+
+		self.connect(self.help_text_browser, Qt.SIGNAL("previousRequest()"), self.previous_button.animateClick)
+
+		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.help_text_browser.previous)
+		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.help_text_browser.next)
+		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.help_text_browser.home)
+
+		self.connect(self.help_text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
+		self.connect(self.help_text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setPreviousButtonAvailable)
+		self.connect(self.help_text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setNextButtonAvailable)
+
+		#####
+
+		self.help_text_browser.home()
+
+
+	### Public ###
+
+	def show(self) :
+		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
+		if x_window_position < 0 :
+			x_window_position = 0
+		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
+		if y_window_position < 0 :
+			y_window_position = 0
+
+		self.move(Qt.QPoint(x_window_position, y_window_position))
+
+		Qt.QWidget.show(self)
+		self.raise_()
+		self.activateWindow()
 
 
 	### Private ###
 
-	def home(self) :
-		self.text_browser.setSource(Qt.QUrl(IndexPage))
-		self.next_button.setEnabled(False)
-
-	def previous(self) :
-		self.text_browser.backward()
-
-	def next(self) :
-		self.text_browser.forward()
-
-	###
-
-	def setCursorInfo(self, str) :
-		if not str.simplified().isEmpty() :
-			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
-				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
-				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
-
 	def updateTitle(self) :
 		self.setWindowTitle(self.tr("%1 Manual - %2").arg(Const.Organization)
-			.arg(self.text_browser.documentTitle()))
+			.arg(self.help_text_browser.documentTitle()))
 
 	###
 
@@ -188,63 +225,3 @@ class HelpBrowser(Qt.QDialog) :
 			self.next_button.setEnabled(False)
 
 
-#####
-class About(Qt.QDialog) :
-	def __init__(self, parent = None) :
-		Qt.QDialog.__init__(self, parent)
-
-		self.setModal(True)
-
-		self.setWindowTitle(self.tr("About %1").arg(Const.MyName))
-		self.setWindowIcon(Qt.QIcon(MyIcon))
-
-		self.main_layout = Qt.QVBoxLayout()
-		self.setLayout(self.main_layout)
-
-		self.icon_label_layout = Qt.QHBoxLayout()
-		self.icon_label_layout.setAlignment(Qt.Qt.AlignHCenter)
-		self.main_layout.addLayout(self.icon_label_layout)
-
-		self.text_label_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.text_label_layout)
-
-		self.ok_button_layout = Qt.QHBoxLayout()
-		self.ok_button_layout.setAlignment(Qt.Qt.AlignHCenter)
-		self.main_layout.addLayout(self.ok_button_layout)
-
-		###
-
-		self.icon_label = Qt.QLabel()
-		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_128.png"))
-		self.icon_label_layout.addWidget(self.icon_label)
-
-		self.text_label = Qt.QLabel(self.tr("<center><h3>XSL - the graphical interface for SL</h3></center>"
-			"All the programs of the <strong>LightLang</strong> package are distributable, according<br>"
-			"to the license <strong>GPLv2</strong>. For details visit <em>License agreement</em> of the<br>"
-			"<strong>LightLang</strong> manual.<br>"
-			"<br>"
-			"Author of the <strong>LightLang</strong> package:<br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Devaev Maxim</em><br>"
-			"Thanks to:<br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Baburina Elisabeth</em><br>"
-			"Valuable assistants:<br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Vladimir Fomkin</em><br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Tihonov Sergey</em><br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Renat Nasyrov</em><br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Du Vinh</em><br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Aleksey Yum</em><br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Olga Polyakova</em><br>"
-			"Translators:<br>"
-			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Kirill Nebogin</em><br>"
-			"<br>"
-			"<em>Copyright &copy; 2007-2016 Devaev Maxim"
-			" (<a href=\"mailto:mdevaev@gmail.com?subject=LightLang\">mdevaev@gmail.com</a>)</em>"))
-		self.text_label.setOpenExternalLinks(True)
-		self.text_label_layout.addWidget(self.text_label)
-
-		self.ok_button = Qt.QPushButton(self.tr("&OK"))
-		self.ok_button_layout.addWidget(self.ok_button)
-
-		###
-
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
