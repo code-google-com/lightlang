@@ -138,8 +138,6 @@ class TextBrowser(Qt.QTextBrowser) :
 	def keyPressEvent(self, event) :
 		if event.key() == Qt.Qt.Key_Escape :
 			self.hideFindInTextFrameRequestSignal()
-		elif event.key() == Qt.Qt.Key_Slash :
-			self.showFindInTextFrameRequestSignal()
 		elif (event.key() == Qt.Qt.Key_Slash or (event.key() == Qt.Qt.Key_F and
 			event.modifiers() == Qt.Qt.ControlModifier)) :
 			self.showFindInTextFrameRequestSignal()
