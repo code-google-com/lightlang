@@ -32,6 +32,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		#####
 
+		self.tmp_text_cursor = Qt.QTextCursor()
+
+		#####
+
 		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
 
 
@@ -135,6 +139,9 @@ class TextBrowser(Qt.QTextBrowser) :
 		if event.key() == Qt.Qt.Key_Escape :
 			self.hideFindInTextFrameRequestSignal()
 		elif event.key() == Qt.Qt.Key_Slash :
+			self.showFindInTextFrameRequestSignal()
+		elif (event.key() == Qt.Qt.Key_Slash or (event.key() == Qt.Qt.Key_F and
+			event.modifiers() == Qt.Qt.ControlModifier)) :
 			self.showFindInTextFrameRequestSignal()
 		elif event.key() == Qt.Qt.Key_Backspace :
 			self.backwardRequestSignal()
