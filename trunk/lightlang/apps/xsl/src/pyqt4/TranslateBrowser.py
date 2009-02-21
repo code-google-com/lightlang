@@ -37,6 +37,8 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 		self.find_sound = FindSoundInSL.FindSoundInSL()
 
+		self.clipboard = Qt.QApplication.clipboard()
+
 		#####
 
 		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
@@ -44,6 +46,30 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 
 	### Private ###
+
+	def uFind(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.uFindRequestSignal(word)
+
+	def uFindInNewTab(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.newTabRequestSignal()
+			self.uFindRequestSignal(word)
+
+	def cFind(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.cFindRequestSignal(word)
+
+	def cFindInNewTab(self) :
+		word = self.textCursor().selectedText().simplified()
+		if not word.isEmpty() :
+			self.newTabRequestSignal()
+			self.cFindRequestSignal(word)
+
+	###
 
 	def findFromAnchor(self, url) :
 		word = url.toString()
@@ -79,4 +105,42 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or
 			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 			self.statusChangedSignal(word)
+
+
+	### Signals ###
+
+	def newTabRequestSignal(self) :
+		self.emit(Qt.SIGNAL("newTabRequest()"))
+
+	def uFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+
+	def cFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
+
+
+	### Handlers ###
+
+	def mousePressEvent(self, event) :
+		if event.button() == Qt.Qt.MidButton :
+			word = self.textCursor().selectedText().simplified()
+			if word.isEmpty() :
+				word = self.clipboard.text(Qt.QClipboard.Selection).simplified()
+			if not word.isEmpty() :
+				self.newTabRequestSignal()
+				self.uFindRequestSignal(word)
+		else :
+			TextBrowser.TextBrowser.mousePressEvent(self, event)
+
+	def contextMenuEvent(self, event) :
+		context_menu = self.createStandardContextMenu()
+		text_cursor = self.textCursor()
+		if not text_cursor.selectedText().simplified().isEmpty() :
+			context_menu.addSeparator()
+			context_menu.addAction(self.tr("Search"), self.uFind)
+			context_menu.addAction(self.tr("Expanded search"), self.cFind)
+			context_menu.addSeparator()
+			context_menu.addAction(self.tr("Search (in new tab)"), self.uFindInNewTab)
+			context_menu.addAction(self.tr("Expanded search (in new tab)"), self.cFindInNewTab)
+		context_menu.exec_(event.globalPos())
 

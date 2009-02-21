@@ -120,6 +120,20 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.cFind)
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("statusChanged(const QString &)"), self.status_bar.showStatusMessage)
 
+		self.connect(self.translate_window, Qt.SIGNAL("newTabRequest()"), self.addTabbedTranslateBrowserTab)
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.cFind)
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"),
+			lambda : self.close() or self.show() or self.close() or self.show() or self.showNormal() or self.activateFocus())
+			#lambda : self.visibleChange() or self.visibleChange())
+			#lambda : self.showNormal() or self.raise_() or self.activateWindow() or self.activateFocus())
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"),
+			lambda : self.close() or self.show() or self.close() or self.show() or self.showNormal() or self.activateFocus())
+			#lambda : self.visibleChange() or self.visibleChange())
+			#lambda : self.showNormal() or self.raise_() or self.activateWindow() or self.activateFocus())
+
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.setDictsList)
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.lFind)
 		

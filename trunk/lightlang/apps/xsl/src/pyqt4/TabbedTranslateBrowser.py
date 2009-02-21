@@ -29,77 +29,6 @@ import FindInTextFrame
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
-class SingleTranslateBrowser(TranslateBrowser.TranslateBrowser) :
-	def __init__(self, parent = None) :
-		TranslateBrowser.TranslateBrowser.__init__(self, parent)
-
-		self.clipboard = Qt.QApplication.clipboard()
-
-
-	### Private ###
-
-	def uFind(self) :
-		word = self.textCursor().selectedText().simplified()
-		if not word.isEmpty() :
-			self.uFindRequestSignal(word)
-
-	def uFindInNewTab(self) :
-		word = self.textCursor().selectedText().simplified()
-		if not word.isEmpty() :
-			self.newTabRequestSignal()
-			self.uFindRequestSignal(word)
-
-	def cFind(self) :
-		word = self.textCursor().selectedText().simplified()
-		if not word.isEmpty() :
-			self.cFindRequestSignal(word)
-
-	def cFindInNewTab(self) :
-		word = self.textCursor().selectedText().simplified()
-		if not word.isEmpty() :
-			self.newTabRequestSignal()
-			self.cFindRequestSignal(word)
-
-
-	### Signals ###
-
-	def newTabRequestSignal(self) :
-		self.emit(Qt.SIGNAL("newTabRequest()"))
-
-	def uFindRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
-
-	def cFindRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
-
-
-	### Handlers ###
-
-	def mousePressEvent(self, event) :
-		if event.button() == Qt.Qt.MidButton :
-			word = self.textCursor().selectedText().simplified()
-			if word.isEmpty() :
-				word = self.clipboard.text(Qt.QClipboard.Selection).simplified()
-			if not word.isEmpty() :
-				self.newTabRequestSignal()
-				self.uFindRequestSignal(word)
-		else :
-			TranslateBrowser.TranslateBrowser.mousePressEvent(self, event)
-
-	def contextMenuEvent(self, event) :
-		context_menu = self.createStandardContextMenu()
-		text_cursor = self.textCursor()
-		if not text_cursor.selectedText().simplified().isEmpty() :
-			context_menu.addSeparator()
-			context_menu.addAction(self.tr("Search"), self.uFind)
-			context_menu.addAction(self.tr("Expanded search"), self.cFind)
-			context_menu.addSeparator()
-			context_menu.addAction(self.tr("Search (in new tab)"), self.uFindInNewTab)
-			context_menu.addAction(self.tr("Expanded search (in new tab)"), self.cFindInNewTab)
-		context_menu.exec_(event.globalPos())
-
-
-#####
 class TabbedTranslateBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
@@ -171,7 +100,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def addTab(self) :
-		self.single_translate_browsers.append(SingleTranslateBrowser())
+		self.single_translate_browsers.append(TranslateBrowser.TranslateBrowser())
 		index = len(self.single_translate_browsers) -1
 		#
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)

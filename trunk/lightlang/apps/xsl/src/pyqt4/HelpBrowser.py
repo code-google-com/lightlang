@@ -43,50 +43,6 @@ IconsDir = Config.Prefix+"/lib/xsl/icons/"
 IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+lang+"/index.html"
 
 #####
-class HelpTextBrowser(TextBrowser.TextBrowser) :
-	def __init__(self, parent = None) :
-		TextBrowser.TextBrowser.__init__(self, parent)
-
-		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
-
-
-	### Public ###
-
-	def home(self) :
-		self.setSource(Qt.QUrl(IndexPage))
-
-	def previous(self) :
-		self.backward()
-
-	def next(self) :
-		self.forward()
-
-
-	### Private ###
-
-	def setCursorInfo(self, str) :
-		if not str.simplified().isEmpty() :
-			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
-				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
-				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
-
-
-	### Signals ###
-
-	def previousRequestSignal(self) :
-		self.emit(Qt.SIGNAL("previousRequest()"))
-
-
-	### Handlers ###
-
-	def keyPressEvent(self, event) :
-		if event.key() == Qt.Qt.Key_Backspace :
-			self.previousRequestSignal()
-		else :
-			TextBrowser.TextBrowser.keyPressEvent(self, event)
-
-
-#####
 class HelpBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
@@ -102,11 +58,11 @@ class HelpBrowser(Qt.QWidget) :
 
 		#####
 
-		self.help_text_browser = HelpTextBrowser()
-		self.help_text_browser_layout = Qt.QHBoxLayout()
-		self.help_text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
-		self.help_text_browser.setLayout(self.help_text_browser_layout)
-		self.main_layout.addWidget(self.help_text_browser)
+		self.text_browser = TextBrowser.TextBrowser()
+		self.text_browser_layout = Qt.QHBoxLayout()
+		self.text_browser_layout.setAlignment(Qt.Qt.AlignLeft|Qt.Qt.AlignTop)
+		self.text_browser.setLayout(self.text_browser_layout)
+		self.main_layout.addWidget(self.text_browser)
 
 		self.control_buttons_frame = Qt.QFrame()
 		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
@@ -123,23 +79,23 @@ class HelpBrowser(Qt.QWidget) :
 		self.control_buttons_frame_layout = Qt.QHBoxLayout()
 		self.control_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
 		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
-		self.help_text_browser_layout.addWidget(self.control_buttons_frame)
+		self.text_browser_layout.addWidget(self.control_buttons_frame)
 
-		self.previous_button = Qt.QToolButton()
-		self.previous_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
-		self.previous_button.setIconSize(Qt.QSize(22, 22))
-		self.previous_button.setCursor(Qt.Qt.ArrowCursor)
-		self.previous_button.setAutoRaise(True)
-		self.previous_button.setEnabled(False)
-		self.control_buttons_frame_layout.addWidget(self.previous_button)
+		self.backward_button = Qt.QToolButton()
+		self.backward_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
+		self.backward_button.setIconSize(Qt.QSize(22, 22))
+		self.backward_button.setCursor(Qt.Qt.ArrowCursor)
+		self.backward_button.setAutoRaise(True)
+		self.backward_button.setEnabled(False)
+		self.control_buttons_frame_layout.addWidget(self.backward_button)
 
-		self.next_button = Qt.QToolButton()
-		self.next_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
-		self.next_button.setIconSize(Qt.QSize(22, 22))
-		self.next_button.setCursor(Qt.Qt.ArrowCursor)
-		self.next_button.setAutoRaise(True)
-		self.next_button.setEnabled(False)
-		self.control_buttons_frame_layout.addWidget(self.next_button)
+		self.forward_button = Qt.QToolButton()
+		self.forward_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
+		self.forward_button.setIconSize(Qt.QSize(22, 22))
+		self.forward_button.setCursor(Qt.Qt.ArrowCursor)
+		self.forward_button.setAutoRaise(True)
+		self.forward_button.setEnabled(False)
+		self.control_buttons_frame_layout.addWidget(self.forward_button)
 
 		self.vertical_frame1 = Qt.QFrame()
 		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
@@ -160,31 +116,31 @@ class HelpBrowser(Qt.QWidget) :
 
 		#####
 
-		self.connect(self.help_text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
-		self.connect(self.help_text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
-		self.connect(self.help_text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
-		self.connect(self.help_text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
+		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
+		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
+		self.connect(self.text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
+		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
 			self.find_in_text_frame.setLineEditRedAlertPalette)
-		self.connect(self.help_text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
+		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
 			self.find_in_text_frame.setLineEditDefaultPalette)
 
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.help_text_browser.findNext)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.help_text_browser.findPrevious)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.help_text_browser.instantSearch)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.text_browser.findNext)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.text_browser.findPrevious)
+		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.text_browser.instantSearch)
 
-		self.connect(self.help_text_browser, Qt.SIGNAL("previousRequest()"), self.previous_button.animateClick)
+		self.connect(self.text_browser, Qt.SIGNAL("backwardRequest()"), self.backward_button.animateClick)
 
-		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.help_text_browser.previous)
-		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.help_text_browser.next)
-		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.help_text_browser.home)
+		self.connect(self.backward_button, Qt.SIGNAL("clicked()"), self.text_browser.backward)
+		self.connect(self.forward_button, Qt.SIGNAL("clicked()"), self.text_browser.forward)
+		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
 
-		self.connect(self.help_text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
-		self.connect(self.help_text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setPreviousButtonAvailable)
-		self.connect(self.help_text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setNextButtonAvailable)
+		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
+		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setBackwardButtonAvailable)
+		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setForwardButtonAvailable)
 
 		#####
 
-		self.help_text_browser.home()
+		self.home()
 
 
 	### Public ###
@@ -206,22 +162,25 @@ class HelpBrowser(Qt.QWidget) :
 
 	### Private ###
 
+	def home(self) :
+		self.text_browser.setSource(Qt.QUrl(IndexPage))
+
 	def updateTitle(self) :
 		self.setWindowTitle(self.tr("%1 Manual - %2").arg(Const.Organization)
-			.arg(self.help_text_browser.documentTitle()))
+			.arg(self.text_browser.documentTitle()))
 
 	###
 
-	def setPreviousButtonAvailable(self, available) :
+	def setBackwardButtonAvailable(self, available) :
 		if available :
-			self.previous_button.setEnabled(True)
+			self.backward_button.setEnabled(True)
 		else :
-			self.previous_button.setEnabled(False)
+			self.backward_button.setEnabled(False)
 
-	def setNextButtonAvailable(self, available) :
+	def setForwardButtonAvailable(self, available) :
 		if available :
-			self.next_button.setEnabled(True)
+			self.forward_button.setEnabled(True)
 		else :
-			self.next_button.setEnabled(False)
+			self.forward_button.setEnabled(False)
 
 

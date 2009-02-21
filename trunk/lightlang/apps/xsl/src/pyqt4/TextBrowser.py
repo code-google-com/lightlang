@@ -30,6 +30,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self.setOpenExternalLinks(True)
 
+		#####
+
+		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
+
 
 	### Public ###
 
@@ -96,6 +100,14 @@ class TextBrowser(Qt.QTextBrowser) :
 
 
 	### Private ###
+
+	def setCursorInfo(self, str) :
+		if not str.simplified().isEmpty() :
+			 if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
+				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
+
+
 	### Signals ###
 
 	def showFindInTextFrameRequestSignal(self) :
@@ -113,6 +125,9 @@ class TextBrowser(Qt.QTextBrowser) :
 	def statusChangedSignal(self, str) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
 
+	def backwardRequestSignal(self) :
+		self.emit(Qt.SIGNAL("backwardRequest()"))
+
 
 	### Handlers ###
 
@@ -121,6 +136,9 @@ class TextBrowser(Qt.QTextBrowser) :
 			self.hideFindInTextFrameRequestSignal()
 		elif event.key() == Qt.Qt.Key_Slash :
 			self.showFindInTextFrameRequestSignal()
+		elif event.key() == Qt.Qt.Key_Backspace :
+			self.backwardRequestSignal()
+			return
 
 		Qt.QTextBrowser.keyPressEvent(self, event)
 

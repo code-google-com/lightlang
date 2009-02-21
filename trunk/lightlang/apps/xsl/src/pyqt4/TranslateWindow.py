@@ -93,6 +93,9 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 			self.find_in_text_frame.setLineEditRedAlertPalette)
 		self.connect(self.translate_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
 			self.find_in_text_frame.setLineEditDefaultPalette)
+		self.connect(self.translate_browser, Qt.SIGNAL("newTabRequest()"), self.newTabRequestSignal)
+		self.connect(self.translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
 
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.translate_browser.findNext)
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.translate_browser.findPrevious)
@@ -131,4 +134,18 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 	def show(self) :
 		self.find_in_text_frame.hide()
 		PopupWindow.PopupWindow.show(self)
+
+
+	### Private ###
+	### Signals ###
+
+	def newTabRequestSignal(self) :
+		self.emit(Qt.SIGNAL("newTabRequest()"))
+
+	def uFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+
+	def cFindRequestSignal(self, word) :
+		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
+
 

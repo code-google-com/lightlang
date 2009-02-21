@@ -23,31 +23,12 @@ from PyQt4 import Qt
 import Config
 import Const
 import GoogleTranslate
+import TextEdit
 
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
-class TextEdit(Qt.QTextEdit) :
-	def __init__(self, parent = None) :
-		Qt.QTextEdit.__init__(self, parent)
-
-
-	### Signals ###
-
-	def translateRequestSignal(self) :
-		self.emit(Qt.SIGNAL("translateRequest()"))
-
-
-	### Handlers ###
-
-	def keyPressEvent(self, event) :
-		if ( (event.key() == Qt.Qt.Key_Return or event.key() == Qt.Qt.Key_Enter) and
-			event.modifiers() == Qt.Qt.ControlModifier ) :
-			self.translateRequestSignal()
-		else :
-			Qt.QTextEdit.keyPressEvent(self, event)
-
 
 #####
 class GoogleTranslatePanel(Qt.QDockWidget) :
@@ -130,7 +111,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			self.tl_combobox.addItem(langs_list_item[0], langs_list_item[1])
 		self.langs_layout.addWidget(self.tl_combobox)
 
-		self.text_edit = TextEdit()
+		self.text_edit = TextEdit.TextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
 
 		self.clear_text_edit_button = Qt.QToolButton()
