@@ -809,7 +809,7 @@ If not, remove lock file &quot;%2&quot;</source>
 <context>
     <name>TextBrowser</name>
     <message>
-        <location filename="TextBrowser.py" line="69"/>
+        <location filename="TextBrowser.py" line="73"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
