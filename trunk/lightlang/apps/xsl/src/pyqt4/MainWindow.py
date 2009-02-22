@@ -125,14 +125,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
 		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
 		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.cFind)
-		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"),
-			lambda : self.close() or self.show() or self.close() or self.show() or self.showNormal() or self.activateFocus())
-			#lambda : self.visibleChange() or self.visibleChange())
-			#lambda : self.showNormal() or self.raise_() or self.activateWindow() or self.activateFocus())
-		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"),
-			lambda : self.close() or self.show() or self.close() or self.show() or self.showNormal() or self.activateFocus())
-			#lambda : self.visibleChange() or self.visibleChange())
-			#lambda : self.showNormal() or self.raise_() or self.activateWindow() or self.activateFocus())
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.showUp)
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.showUp)
 
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.setDictsList)
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.lFind)
@@ -305,6 +299,13 @@ class MainWindow(Qt.QMainWindow) :
 			if self.panels_focus_flags_list[count] :
 				self.panels_list[count].setFocus()
 			count += 1
+
+	###
+
+	def showUp(self) :
+		if self.isVisible() :
+			self.visibleChange()
+		self.visibleChange()
 
 	###
 
