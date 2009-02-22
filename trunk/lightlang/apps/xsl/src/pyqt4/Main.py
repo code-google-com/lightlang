@@ -35,7 +35,6 @@ MySplash = Config.Prefix+"/lib/xsl/pictures/xsl_splash.png"
 #####
 class Main :
 	def __init__(self, argv) :
-
 		self.argv = argv
 
 
