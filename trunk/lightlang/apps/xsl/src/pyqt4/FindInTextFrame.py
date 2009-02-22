@@ -27,6 +27,10 @@ import Const
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class FindInTextFrame(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)
@@ -49,7 +53,7 @@ class FindInTextFrame(Qt.QFrame) :
 		self.vertical_frame1.setMinimumSize(22, 22)
 		self.main_layout.addWidget(self.vertical_frame1)
 
-		self.line_edit_label = Qt.QLabel(self.tr("Search:"))
+		self.line_edit_label = Qt.QLabel(tr("Search:"))
 		self.main_layout.addWidget(self.line_edit_label)
 
 		self.line_edit = Qt.QLineEdit()

@@ -29,6 +29,10 @@ import FindInTextFrame
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TabbedTranslateBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
@@ -114,8 +118,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
 			self.find_in_text_frame.setLineEditDefaultPalette)
 		#
-		self.single_translate_browsers[index].setHtml(self.tr("<em>Empty</em>"))
-		self.tab_widget.addTab(self.single_translate_browsers[index], self.tr("(Untitled)"))
+		self.single_translate_browsers[index].setHtml(tr("<em>Empty</em>"))
+		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 		self.tabChangedSignal()
 
@@ -124,8 +128,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			return
 
 		if self.tab_widget.count() == 1 :
-			self.single_translate_browsers[0].setHtml(self.tr("<em>Empty</em>"))
-			self.tab_widget.setTabText(0, self.tr("(Untitled)"))
+			self.single_translate_browsers[0].setHtml(tr("<em>Empty</em>"))
+			self.tab_widget.setTabText(0, tr("(Untitled)"))
 		else :
 			if index == -1 :
 				index = self.tab_widget.currentIndex()
@@ -179,8 +183,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 		if index == -1 :
 			index = self.tab_widget.currentIndex()
-		self.single_translate_browsers[index].setText(self.tr("<em>Empty</em>"))
-		self.tab_widget.setTabText(index, self.tr("(Untitled)"))
+		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
+		self.tab_widget.setTabText(index, tr("(Untitled)"))
 
 	def clearAll(self) :
 		if self.shred_lock_flag :

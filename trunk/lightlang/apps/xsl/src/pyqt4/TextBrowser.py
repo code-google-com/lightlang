@@ -24,6 +24,10 @@ import Config
 import Const
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TextBrowser(Qt.QTextBrowser) :
 	def __init__(self, parent = None) :
 		Qt.QTextBrowser.__init__(self, parent)
@@ -65,12 +69,12 @@ class TextBrowser(Qt.QTextBrowser) :
 			new_text_cursor = self.document().find(word, text_cursor)
 			if new_text_cursor.isNull() :
 				new_text_cursor = text_cursor
-				self.statusChangedSignal(self.tr("Not found"))
+				self.statusChangedSignal(tr("Not found"))
 		else :
 			new_text_cursor = self.document().find(word, text_cursor, Qt.QTextDocument.FindBackward)
 			if new_text_cursor.isNull() :
 				new_text_cursor = text_cursor
-				self.statusChangedSignal(self.tr("Not found"))
+				self.statusChangedSignal(tr("Not found"))
 
 		self.setTextCursor(new_text_cursor)
 

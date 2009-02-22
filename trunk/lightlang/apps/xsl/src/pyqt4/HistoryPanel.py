@@ -27,13 +27,17 @@ import Const
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class HistoryPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)
 
 		self.setObjectName("history_panel")
 
-		self.setWindowTitle(self.tr("Search history"))
+		self.setWindowTitle(tr("Search history"))
 		self.setAllowedAreas(Qt.Qt.LeftDockWidgetArea|Qt.Qt.RightDockWidgetArea)
 
 		self.main_widget = Qt.QWidget()
@@ -60,7 +64,7 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.history_browser.setSortingEnabled(True)
 		self.main_layout.addWidget(self.history_browser)
 
-		self.clear_history_button = Qt.QPushButton(self.tr("Clear history"))
+		self.clear_history_button = Qt.QPushButton(tr("Clear history"))
 		self.clear_history_button.setEnabled(False)
 		self.main_layout.addWidget(self.clear_history_button)
 

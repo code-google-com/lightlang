@@ -29,6 +29,8 @@ import TextEdit
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
 
 #####
 class GoogleTranslatePanel(Qt.QDockWidget) :
@@ -37,7 +39,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.setObjectName("google_translate_panel")
 
-		self.setWindowTitle(self.tr("Google Translate"))
+		self.setWindowTitle(tr("Google Translate"))
 		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
 
 		self.main_widget = Qt.QWidget()
@@ -62,30 +64,30 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.google_translate = GoogleTranslate.GoogleTranslate()
 
 		self.langs_list = [
-			[ self.tr("English"),	Qt.QVariant("en") ],
-			[ self.tr("Arabic"),	Qt.QVariant("ar") ],
-			[ self.tr("Bulgarian"),	Qt.QVariant("bg") ],
-			[ self.tr("Dutch"),	Qt.QVariant("nl") ],
-			[ self.tr("Greek"),	Qt.QVariant("el") ],
-			[ self.tr("Danish"),	Qt.QVariant("da") ],
-			[ self.tr("Spanish"),	Qt.QVariant("es") ],
-			[ self.tr("Italian"),	Qt.QVariant("it") ],
-			[ self.tr("Chinese (T)"),Qt.QVariant("zh-TW") ],
-			[ self.tr("Chinese (S)"),Qt.QVariant("zh-CN") ],
-			[ self.tr("Korean"),	Qt.QVariant("ko") ],
-			[ self.tr("German"),	Qt.QVariant("de") ],
-			[ self.tr("Norwegian"),	Qt.QVariant("no") ],
-			[ self.tr("Polish"),	Qt.QVariant("pl") ],
-			[ self.tr("Portuguese"),Qt.QVariant("pt") ],
-			[ self.tr("Romanian"),	Qt.QVariant("ro") ],
-			[ self.tr("Russian"),	Qt.QVariant("ru") ],
-			[ self.tr("Finnish"),	Qt.QVariant("fi") ],
-			[ self.tr("French"),	Qt.QVariant("fr") ],
-			[ self.tr("Hindi"),	Qt.QVariant("hi") ],
-			[ self.tr("Croatian"),	Qt.QVariant("hr") ],
-			[ self.tr("Czech"),	Qt.QVariant("cs") ],
-			[ self.tr("Swedish"),	Qt.QVariant("sv") ],
-			[ self.tr("Japanese"),	Qt.QVariant("ja") ]
+			[ tr("English"),	Qt.QVariant("en") ],
+			[ tr("Arabic"),	Qt.QVariant("ar") ],
+			[ tr("Bulgarian"),	Qt.QVariant("bg") ],
+			[ tr("Dutch"),	Qt.QVariant("nl") ],
+			[ tr("Greek"),	Qt.QVariant("el") ],
+			[ tr("Danish"),	Qt.QVariant("da") ],
+			[ tr("Spanish"),	Qt.QVariant("es") ],
+			[ tr("Italian"),	Qt.QVariant("it") ],
+			[ tr("Chinese (T)"),Qt.QVariant("zh-TW") ],
+			[ tr("Chinese (S)"),Qt.QVariant("zh-CN") ],
+			[ tr("Korean"),	Qt.QVariant("ko") ],
+			[ tr("German"),	Qt.QVariant("de") ],
+			[ tr("Norwegian"),	Qt.QVariant("no") ],
+			[ tr("Polish"),	Qt.QVariant("pl") ],
+			[ tr("Portuguese"),Qt.QVariant("pt") ],
+			[ tr("Romanian"),	Qt.QVariant("ro") ],
+			[ tr("Russian"),	Qt.QVariant("ru") ],
+			[ tr("Finnish"),	Qt.QVariant("fi") ],
+			[ tr("French"),	Qt.QVariant("fr") ],
+			[ tr("Hindi"),	Qt.QVariant("hi") ],
+			[ tr("Croatian"),	Qt.QVariant("hr") ],
+			[ tr("Czech"),	Qt.QVariant("cs") ],
+			[ tr("Swedish"),	Qt.QVariant("sv") ],
+			[ tr("Japanese"),	Qt.QVariant("ja") ]
 			]
 
 		self.internalSortLangs(0, len(self.langs_list) -1)
@@ -123,9 +125,9 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.clear_text_edit_button.setEnabled(False)
 		self.text_edit_layout.addWidget(self.clear_text_edit_button)
 
-		self.translate_button = Qt.QPushButton(self.tr("T&ranslate"))
+		self.translate_button = Qt.QPushButton(tr("T&ranslate"))
 		self.translate_button.setEnabled(False)
-		self.translate_button.setToolTip(self.tr("Ctrl+Enter"))
+		self.translate_button.setToolTip(tr("Ctrl+Enter"))
 		self.control_buttons_layout.addWidget(self.translate_button)
 
 		self.abort_button = Qt.QToolButton()

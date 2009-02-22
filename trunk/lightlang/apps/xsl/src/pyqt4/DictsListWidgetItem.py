@@ -28,6 +28,10 @@ import DictInformationWindow
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class DictsListWidgetItem(Qt.QWidget) :
 	def __init__(self, dict_name, enable_dict_state = Qt.Qt.Unchecked, parent = None) :
 		Qt.QWidget.__init__(self, parent)

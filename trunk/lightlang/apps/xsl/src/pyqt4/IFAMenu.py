@@ -30,6 +30,10 @@ IFADir = Config.Prefix+"/lib/xsl/ifa/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class IFAMenu(Qt.QMenu) :
 	def __init__(self, title, parent=None) :
 		Qt.QMenu.__init__(self, title, parent)
@@ -103,8 +107,8 @@ class IFAMenu(Qt.QMenu) :
 		#####
 
 		if proc.state() == Qt.QProcess.Starting or proc.state() == Qt.QProcess.Running :
-			Qt.QMessageBox.information(None, self.tr("IFA"),
-				self.tr("This applications is already running"))
+			Qt.QMessageBox.information(None, tr("IFA"),
+				tr("This applications is already running"))
 			return
 
 		self.actions_data_list[index][5]()

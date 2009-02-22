@@ -36,6 +36,10 @@ import KeyboardModifierMenu
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)
@@ -45,17 +49,17 @@ class SpyMenu(Qt.QMenu) :
 		#####
 
 		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
-			self.tr("Start Spy"), self.startSpy)
+			tr("Start Spy"), self.startSpy)
 		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
-			self.tr("Stop Spy"), self.stopSpy)
+			tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
 		self.addSeparator()
-		self.show_translate_window_menu_action = self.addAction(self.tr("Show popup window"))
+		self.show_translate_window_menu_action = self.addAction(tr("Show popup window"))
 		self.show_translate_window_menu_action.setCheckable(True)
-		self.auto_detect_window_menu_action = self.addAction(self.tr("Auto-detect window"))
+		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
 		self.addSeparator()
-		self.keyboard_modifier_menu = KeyboardModifierMenu.KeyboardModifierMenu(self.tr("Keyboard modifier"))
+		self.keyboard_modifier_menu = KeyboardModifierMenu.KeyboardModifierMenu(tr("Keyboard modifier"))
 		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
 		self.addMenu(self.keyboard_modifier_menu)
 
@@ -76,7 +80,7 @@ class SpyMenu(Qt.QMenu) :
 		self.start_spy_menu_action.setEnabled(False)
 		self.stop_spy_menu_action.setEnabled(True)
 
-		self.statusChangedSignal(self.tr("Spy is running"))
+		self.statusChangedSignal(tr("Spy is running"))
 
 		self.spyStartedSignal()
 
@@ -86,7 +90,7 @@ class SpyMenu(Qt.QMenu) :
 		self.start_spy_menu_action.setEnabled(True)
 		self.stop_spy_menu_action.setEnabled(False)
 
-		self.statusChangedSignal(self.tr("Spy is stopped"))
+		self.statusChangedSignal(tr("Spy is stopped"))
 
 		self.spyStoppedSignal()
 

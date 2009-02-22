@@ -35,6 +35,10 @@ ResizeDirectionBottomLeft = 6
 ResizeDirectionBottomRight = 7
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class PopupWindow(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)

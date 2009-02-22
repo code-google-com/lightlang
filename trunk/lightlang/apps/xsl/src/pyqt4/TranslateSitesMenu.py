@@ -29,6 +29,10 @@ TranslateSitesDir = Config.Prefix+"/lib/xsl/trsites/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TranslateSitesMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

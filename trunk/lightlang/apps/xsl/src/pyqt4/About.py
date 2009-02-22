@@ -28,13 +28,17 @@ MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class About(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
 
 		self.setModal(True)
 
-		self.setWindowTitle(self.tr("About %1").arg(Const.MyName))
+		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
 		self.main_layout = Qt.QVBoxLayout()
@@ -57,7 +61,7 @@ class About(Qt.QDialog) :
 		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_128.png"))
 		self.icon_label_layout.addWidget(self.icon_label)
 
-		self.text_label = Qt.QLabel(self.tr("<center><h3>XSL - the graphical interface for SL</h3></center>"
+		self.text_label = Qt.QLabel(tr("<center><h3>XSL - the graphical interface for SL</h3></center>"
 			"All the programs of the <strong>LightLang</strong> package are distributable, according<br>"
 			"to the license <strong>GPLv2</strong>. For details visit <em>License agreement</em> of the<br>"
 			"<strong>LightLang</strong> manual.<br>"
@@ -81,7 +85,7 @@ class About(Qt.QDialog) :
 		self.text_label.setOpenExternalLinks(True)
 		self.text_label_layout.addWidget(self.text_label)
 
-		self.ok_button = Qt.QPushButton(self.tr("&OK"))
+		self.ok_button = Qt.QPushButton(tr("&OK"))
 		self.ok_button_layout.addWidget(self.ok_button)
 
 		###

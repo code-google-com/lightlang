@@ -43,11 +43,15 @@ IconsDir = Config.Prefix+"/lib/xsl/icons/"
 IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+lang+"/index.html"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class HelpBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
-		self.setWindowTitle(self.tr("%1 Manual").arg(Const.Organization))
+		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 		self.resize(800, 600)
 
@@ -166,7 +170,7 @@ class HelpBrowser(Qt.QWidget) :
 		self.text_browser.setSource(Qt.QUrl(IndexPage))
 
 	def updateTitle(self) :
-		self.setWindowTitle(self.tr("%1 Manual - %2").arg(Const.Organization)
+		self.setWindowTitle(tr("%1 Manual - %2").arg(Const.Organization)
 			.arg(self.text_browser.documentTitle()))
 
 	###

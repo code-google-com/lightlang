@@ -27,26 +27,30 @@ import Const
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class InternetLinksMenu(Qt.QMenu) :
 	def __init__(self, title, parent=None) :
 		Qt.QMenu.__init__(self, title, parent)
 
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), self.tr("Developer e-mail"),
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Developer e-mail"),
 			"mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), self.tr("Offers e-mail"),
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Offers e-mail"),
 			"mailto:"+Const.OffersMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), self.tr("Bugtrack e-mail"),
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Bugtrack e-mail"),
 			"mailto:"+Const.BugtrackMail+"?subject="+Const.Organization)
 
 		self.addSeparator()
 
-		self.addLink(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Home page"), Const.HomePageAddress)
+		self.addLink(Qt.QIcon(IconsDir+"web_16.png"), tr("Home page"), Const.HomePageAddress)
 
 		self.addSeparator()
 
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), self.tr("Register %1").arg(Const.Organization),
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Register %1").arg(Const.Organization),
 			Qt.QString("mailto:"+Const.UserCountMail+"?subject="+Const.Organization+"&body=")+
-			self.tr("Count me, please :-)\nRegistration date/time: %1\nPackage version: %2")
+			tr("Count me, please :-)\nRegistration date/time: %1\nPackage version: %2")
 			.arg(Qt.QDateTime().currentDateTime().toString()).arg(Const.PackageVersion))
 
 

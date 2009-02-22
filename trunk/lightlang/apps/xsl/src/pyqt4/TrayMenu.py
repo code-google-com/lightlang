@@ -24,6 +24,10 @@ import Config
 import Const
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TrayMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)

@@ -44,6 +44,10 @@ MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class MainWindow(Qt.QMainWindow) :
 	def __init__(self, parent = None) :
 		Qt.QMainWindow.__init__(self, parent)
@@ -75,7 +79,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.printer = Qt.QPrinter()
 		self.print_dialog = Qt.QPrintDialog(self.printer)
-		self.print_dialog.setWindowTitle(self.tr("Print page"))
+		self.print_dialog.setWindowTitle(tr("Print page"))
 
 		self.find_in_sl_panel = FindInSLPanel.FindInSLPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
@@ -140,81 +144,81 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Pages Menu
 
-		self.pages_menu = self.main_menu_bar.addMenu(self.tr("&Pages"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), self.tr("Save current page"),
+		self.pages_menu = self.main_menu_bar.addMenu(tr("&Pages"))
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), tr("Save current page"),
 			self.saveCurrentTabbedTranslateBrowserPage)
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), self.tr("Print current page"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), tr("Print current page"),
 			self.printCurrentTabbedTranslateBrowserPage, Qt.QKeySequence("Ctrl+P"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), self.tr("Clear current page"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear current page"),
 			self.clearTabbedTranslateBrowserPage, Qt.QKeySequence("Ctrl+E"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), self.tr("Clear all"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear all"),
 			self.clearAllTabbedTranslateBrowser, Qt.QKeySequence("Ctrl+K"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"find_16.png"), self.tr("Search in translations"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"find_16.png"), tr("Search in translations"),
 			self.tabbed_translate_browser.showFindInTextFrame, Qt.QKeySequence("Ctrl+F"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), self.tr("New tab"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), tr("New tab"),
 			self.addTabbedTranslateBrowserTab, Qt.QKeySequence("Ctrl+T"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"remove_16.png"), self.tr("Close tab"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"remove_16.png"), tr("Close tab"),
 			self.removeTabbedTranslateBrowserTab, Qt.QKeySequence("Ctrl+W"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), self.tr("Quit"),
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"),
 			self.exit, Qt.QKeySequence("Ctrl+Q"))
 
 		### View Menu
 
-		self.view_menu = self.main_menu_bar.addMenu(self.tr("&View"))
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), self.tr("Zoom in"),
+		self.view_menu = self.main_menu_bar.addMenu(tr("&View"))
+		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), tr("Zoom in"),
 			self.tabbed_translate_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), self.tr("Zoom out"),
+		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), tr("Zoom out"),
 			self.tabbed_translate_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
 		self.view_menu.addSeparator()
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), self.tr("Toggle to fullscreen"),
+		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Toggle to fullscreen"),
 			self.toggleFullScreen, Qt.QKeySequence("F11"))
 
 		### Spy Menu
 
-		self.spy_menu = SpyMenu.SpyMenu(self.tr("Sp&y"))
+		self.spy_menu = SpyMenu.SpyMenu(tr("Sp&y"))
 		self.main_menu_bar.addMenu(self.spy_menu)
 
 		### Tools Menu
 
-		self.tools_menu = self.main_menu_bar.addMenu(self.tr("&Tools"))
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), self.tr("SL search"),
+		self.tools_menu = self.main_menu_bar.addMenu(tr("&Tools"))
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("SL search"),
 			self.showFindInSLPanel, Qt.QKeySequence("Ctrl+S"))
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), self.tr("Search history"),
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), self.tr("Google-Translate client"),
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), tr("Google-Translate client"),
 			 self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addSeparator()
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), self.tr("Dicts management"),
+		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
 			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
 		try : # FIXME: Rrrrr... :-(
 			self.tools_menu.addSeparator()
-			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(self.tr("Web translate"))
+			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
 			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 			self.tools_menu.addMenu(self.translate_sites_menu)
 		except : pass
 		try : # FIXME: Rrrrr... :-(
 			self.tools_menu.addSeparator()
-			self.ifa_menu = IFAMenu.IFAMenu(self.tr("Applications"))
+			self.ifa_menu = IFAMenu.IFAMenu(tr("Applications"))
 			self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
 			self.tools_menu.addMenu(self.ifa_menu)
 		except : pass
 
 		### Help Menu
 
-		self.help_menu = self.main_menu_bar.addMenu(self.tr("&Help"))
+		self.help_menu = self.main_menu_bar.addMenu(tr("&Help"))
 		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"),
-			self.tr("%1 manual").arg(Const.Organization), self.showHelpBrowser, Qt.QKeySequence("F1"))
+			tr("%1 manual").arg(Const.Organization), self.showHelpBrowser, Qt.QKeySequence("F1"))
 		self.help_menu.addSeparator()
-		self.internet_links_menu = InternetLinksMenu.InternetLinksMenu(self.tr("Internet links"))
+		self.internet_links_menu = InternetLinksMenu.InternetLinksMenu(tr("Internet links"))
 		self.internet_links_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 		self.help_menu.addMenu(self.internet_links_menu)
 		self.help_menu.addSeparator()
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), self.tr("About %1").arg(Const.MyName), self.showAbout)
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), self.tr("About Qt4"), self.showAboutQt)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.showAbout)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), self.showAboutQt)
 
 		### Additional connections
 
@@ -230,8 +234,8 @@ class MainWindow(Qt.QMainWindow) :
 		##### Misc #####
 		################
 
-		self.tabbed_translate_browser.setCaption(0, self.tr("Welcome"))
-		self.tabbed_translate_browser.setText(0, self.tr("<br><br><hr>"
+		self.tabbed_translate_browser.setCaption(0, tr("Welcome"))
+		self.tabbed_translate_browser.setText(0, tr("<br><br><hr>"
 			"<table border=\"0\" width=\"100%\"><tr><td bgcolor=\"#DFEDFF\"><h2 align=\"center\"><em>"
 			"Welcome to the %1 - the system of electronic dictionaries</em></h2></td></tr></table>"
 			"<hr>").arg(Const.Organization))
@@ -273,7 +277,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
 
-		self.status_bar.showStatusMessage(self.tr("Ready"))
+		self.status_bar.showStatusMessage(tr("Ready"))
 
 	###
 
@@ -395,7 +399,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		index = self.tabbed_translate_browser.currentIndex()
 		file_name = Qt.QFileDialog.getSaveFileName(None,
-			self.tr("Save page \"%1\"").arg(self.tabbed_translate_browser.caption(index)),
+			tr("Save page \"%1\"").arg(self.tabbed_translate_browser.caption(index)),
 			Qt.QDir.homePath(), "*.html *.htm")
 		if file_name.simplified().isEmpty() :
 			return
@@ -403,7 +407,7 @@ class MainWindow(Qt.QMainWindow) :
 		file = Qt.QFile(file_name)
 		if not file.open(Qt.QIODevice.WriteOnly|Qt.QIODevice.Text) :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("This file cannot by open for saving"),
+				tr("This file cannot by open for saving"),
 				Qt.QMessageBox.Yes)
 			return
 
@@ -412,7 +416,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		file.close()
 
-		self.status_bar.showStatusMessage(self.tr("Saved"))
+		self.status_bar.showStatusMessage(tr("Saved"))
 
 	def printCurrentTabbedTranslateBrowserPage(self) :
 		if self.checkBusyStreams() :
@@ -425,7 +429,7 @@ class MainWindow(Qt.QMainWindow) :
 		text_document = self.tabbed_translate_browser.document(index)
 		text_document.print_(self.printer)
 
-		self.status_bar.showStatusMessage(self.tr("Printing..."))
+		self.status_bar.showStatusMessage(tr("Printing..."))
 
 	def clearAllTabbedTranslateBrowser(self) :
 		if self.checkBusyStreams() :

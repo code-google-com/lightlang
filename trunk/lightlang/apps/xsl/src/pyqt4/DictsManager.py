@@ -32,11 +32,15 @@ AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class DictsManager(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
-		self.setWindowTitle(self.tr("Dicts Manager"))
+		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
 		self.resize(400, 550)
@@ -62,7 +66,7 @@ class DictsManager(Qt.QWidget) :
 
 		#####
 
-		self.filter_label = Qt.QLabel(self.tr("&Filter:"))
+		self.filter_label = Qt.QLabel(tr("&Filter:"))
 		self.line_edit_layout.addWidget(self.filter_label)
 
 		self.line_edit = Qt.QLineEdit()
@@ -106,13 +110,13 @@ class DictsManager(Qt.QWidget) :
 		self.wait_picture_movie_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
 
-		self.wait_message_label = Qt.QLabel(self.tr("Please wait..."))
+		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
 		self.wait_message_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_message_label)
 
 		self.control_buttons_layout.addStretch()
 
-		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("&OK"))
+		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
 		self.ok_button.setAutoDefault(False)
 		self.ok_button.setDefault(False)
 		self.control_buttons_layout.addWidget(self.ok_button)

@@ -26,6 +26,10 @@ import TextBrowser
 import FindSoundInSL
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TranslateBrowser(TextBrowser.TextBrowser) :
 	def __init__(self, parent = None) :
 		TextBrowser.TextBrowser.__init__(self, parent)
@@ -99,7 +103,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 			count = 1
 			while count < words_list.count() :
 				if not self.find_sound.checkWord(words_list[0], words_list[count]) :
-					self.statusChangedSignal(self.tr("Sound is not full"))
+					self.statusChangedSignal(tr("Sound is not full"))
 					return
 				count += 1
 		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or
@@ -137,10 +141,10 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 		text_cursor = self.textCursor()
 		if not text_cursor.selectedText().simplified().isEmpty() :
 			context_menu.addSeparator()
-			context_menu.addAction(self.tr("Search"), self.uFind)
-			context_menu.addAction(self.tr("Expanded search"), self.cFind)
+			context_menu.addAction(tr("Search"), self.uFind)
+			context_menu.addAction(tr("Expanded search"), self.cFind)
 			context_menu.addSeparator()
-			context_menu.addAction(self.tr("Search (in new tab)"), self.uFindInNewTab)
-			context_menu.addAction(self.tr("Expanded search (in new tab)"), self.cFindInNewTab)
+			context_menu.addAction(tr("Search (in new tab)"), self.uFindInNewTab)
+			context_menu.addAction(tr("Expanded search (in new tab)"), self.cFindInNewTab)
 		context_menu.exec_(event.globalPos())
 

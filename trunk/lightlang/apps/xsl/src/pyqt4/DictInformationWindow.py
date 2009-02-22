@@ -31,11 +31,15 @@ AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class DictInformationWindow(Qt.QWidget) :
 	def __init__(self, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
-		self.setWindowTitle(self.tr("Dict Information"))
+		self.setWindowTitle(tr("Dict Information"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
 		self.setMinimumSize(550, 400)
@@ -72,16 +76,16 @@ class DictInformationWindow(Qt.QWidget) :
 		self.wait_picture_movie_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
 
-		self.wait_message_label = Qt.QLabel(self.tr("Please wait..."))
+		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
 		self.wait_message_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_message_label)
 
 		self.control_buttons_layout.addStretch()
 
-		self.update_information_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), self.tr("&Update"))
+		self.update_information_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
 		self.control_buttons_layout.addWidget(self.update_information_button)
 
-		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), self.tr("&OK"))
+		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
 		self.ok_button.setDefault(True)
 		self.control_buttons_layout.addWidget(self.ok_button)
 
@@ -108,21 +112,21 @@ class DictInformationWindow(Qt.QWidget) :
 
 		dict_information = Qt.QString()
 
-		dict_information.append(self.record(self.tr("Caption:"), self.dictCaption()))
+		dict_information.append(self.record(tr("Caption:"), self.dictCaption()))
 		self.dict_information_browser.setHtml(dict_information)
 
-		dict_information.append(self.record(self.tr("Direction:"), self.dictDirection()))
+		dict_information.append(self.record(tr("Direction:"), self.dictDirection()))
 		self.dict_information_browser.setHtml(dict_information)
 
-		dict_information.append(self.record(self.tr("File path:"), self.dictFilePath()))
+		dict_information.append(self.record(tr("File path:"), self.dictFilePath()))
 		self.dict_information_browser.setHtml(dict_information)
 
-		dict_information.append(self.record(self.tr("File size (KB):"), self.dictFileSize()))
+		dict_information.append(self.record(tr("File size (KB):"), self.dictFileSize()))
 		self.dict_information_browser.setHtml(dict_information)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_information.append(self.record(self.tr("Count of words:"), word_count))
-		dict_information.append(self.record(self.tr("Description:"), dict_description))
+		dict_information.append(self.record(tr("Count of words:"), word_count))
+		dict_information.append(self.record(tr("Description:"), dict_description))
 		self.dict_information_browser.setHtml(dict_information)
 
 		###
@@ -163,14 +167,14 @@ class DictInformationWindow(Qt.QWidget) :
 		if index >= 0 :
 			return self.dict_name.mid(index +1)
 		else :
-			return self.tr("Unavailable")
+			return tr("Unavailable")
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
 		if Qt.QFile.exists(dict_file_path) :
 			return dict_file_path
 		else :
-			return self.tr("Unavailable")
+			return tr("Unavailable")
 
 	def dictFileSize(self) :
 		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
@@ -203,7 +207,7 @@ class DictInformationWindow(Qt.QWidget) :
 			dict_description.prepend("<br>")
 
 		if dict_description.isEmpty() :
-			dict_description = self.tr("Unavailable")
+			dict_description = tr("Unavailable")
 
 		return dict_description, Qt.QString().setNum(word_count)
 

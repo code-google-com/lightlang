@@ -42,6 +42,10 @@ RightWinModifier = 452
 NoModifier = -1
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class KeyboardModifierMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
@@ -51,17 +55,17 @@ class KeyboardModifierMenu(Qt.QMenu) :
 
 		###
 
-		self.addModifier(self.tr("Left Ctrl"), LeftCtrlModifier)
-		self.addModifier(self.tr("Left Alt"), LeftAltModifier)
-		self.addModifier(self.tr("Left Shift"), LeftShiftModifier)
-		self.addModifier(self.tr("Left Win"), LeftWinModifier)
+		self.addModifier(tr("Left Ctrl"), LeftCtrlModifier)
+		self.addModifier(tr("Left Alt"), LeftAltModifier)
+		self.addModifier(tr("Left Shift"), LeftShiftModifier)
+		self.addModifier(tr("Left Win"), LeftWinModifier)
 		self.addSeparator()
-		self.addModifier(self.tr("Right Ctrl"), RightCtrlModifier)
-		self.addModifier(self.tr("Right Alt"), RightAltModifier)
-		self.addModifier(self.tr("Right Shift"), RightShiftModifier)
-		self.addModifier(self.tr("Right Win"), RightWinModifier)
+		self.addModifier(tr("Right Ctrl"), RightCtrlModifier)
+		self.addModifier(tr("Right Alt"), RightAltModifier)
+		self.addModifier(tr("Right Shift"), RightShiftModifier)
+		self.addModifier(tr("Right Win"), RightWinModifier)
 		self.addSeparator()
-		self.addModifier(self.tr("No modifier"), NoModifier)
+		self.addModifier(tr("No modifier"), NoModifier)
 
 		#####
 
@@ -72,7 +76,7 @@ class KeyboardModifierMenu(Qt.QMenu) :
 		self.setIndex(0)
 
 		if not PythonXlibExistsFlag :
-			self.setTitle(self.tr("No modifiers available"))
+			self.setTitle(tr("No modifiers available"))
 			self.setEnabled(False)
 
 

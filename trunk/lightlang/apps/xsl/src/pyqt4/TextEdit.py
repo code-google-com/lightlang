@@ -24,6 +24,10 @@ import Config
 import Const
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TextEdit(Qt.QTextEdit) :
 	def __init__(self, parent = None) :
 		Qt.QTextEdit.__init__(self, parent)

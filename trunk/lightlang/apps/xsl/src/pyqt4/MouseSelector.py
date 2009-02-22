@@ -42,6 +42,10 @@ RightWinModifier = 452
 NoModifier = -1
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class MouseSelector(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)

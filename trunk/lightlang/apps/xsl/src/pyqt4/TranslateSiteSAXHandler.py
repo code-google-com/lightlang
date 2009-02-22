@@ -24,6 +24,10 @@ import Config
 import Const
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TranslateSiteSAXHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_site_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)

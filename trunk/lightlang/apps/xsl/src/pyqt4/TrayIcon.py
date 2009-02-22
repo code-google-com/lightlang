@@ -29,24 +29,28 @@ MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class TrayIcon(Qt.QSystemTrayIcon) :
 	def __init__(self, parent = None) :
 		Qt.QSystemTrayIcon.__init__(self, parent)
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl_22.png"))
-		self.setToolTip(self.tr("XSL - graphical interface for SL\nSpy is stopped"))
+		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is stopped"))
 
 		#####
 
 		self.tray_menu = TrayMenu.TrayMenu(Qt.QIcon(MyIcon), Const.Organization+" "+Const.MyName)
 
 		self.start_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
-			self.tr("Start Spy"), self.startSpy)
+			tr("Start Spy"), self.startSpy)
 		self.stop_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
-			self.tr("Stop Spy"), self.stopSpy)
+			tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
 		self.tray_menu.addSeparator()
-		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), self.tr("Quit"), self.exit)
+		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"), self.exit)
 		self.setContextMenu(self.tray_menu)
 
 		#####
@@ -62,7 +66,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl+spy_22.png"))
 
-		self.setToolTip(self.tr("XSL - graphical interface for SL\nSpy is running"))
+		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is running"))
 
 	def spyStopped(self) :
 		self.start_spy_menu_action.setEnabled(True)
@@ -70,7 +74,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl_22.png"))
 
-		self.setToolTip(self.tr("XSL - graphical interface for SL\nSpy is stopped"))
+		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is stopped"))
 
 
 	### Private ###

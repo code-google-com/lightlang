@@ -27,6 +27,10 @@ import Config
 GoogleTranslateHost = "translate.google.com"
 
 #####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
+#####
 class GoogleTranslate(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
@@ -63,8 +67,8 @@ class GoogleTranslate(Qt.QObject) :
 		self.http.clearPendingRequests()
 		self.http_output.clear()
 
-		self.wordChangedSignal(self.tr("Google Translate"))
-		self.textChangedSignal(self.tr("<em>Please wait...</em>"))
+		self.wordChangedSignal(tr("Google Translate"))
+		self.textChangedSignal(tr("<em>Please wait...</em>"))
 
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
@@ -80,7 +84,7 @@ class GoogleTranslate(Qt.QObject) :
 
 	def abort(self) :
 		self.statusChangedSignal(Qt.QString())
-		self.textChangedSignal(self.tr("<em>Aborted</em>"))
+		self.textChangedSignal(tr("<em>Aborted</em>"))
 
 		self.http_abort_flag = True
 		self.http.abort()
@@ -93,17 +97,17 @@ class GoogleTranslate(Qt.QObject) :
 		if state == Qt.QHttp.Unconnected :
 			self.statusChangedSignal(Qt.QString())
 		elif state == Qt.QHttp.HostLookup :
-			self.statusChangedSignal(self.tr("Looking up host..."))
+			self.statusChangedSignal(tr("Looking up host..."))
 		elif state == Qt.QHttp.Connecting :
-			self.statusChangedSignal(self.tr("Connecting..."))
+			self.statusChangedSignal(tr("Connecting..."))
 		elif state == Qt.QHttp.Sending :
-			self.statusChangedSignal(self.tr("Sending request..."))
+			self.statusChangedSignal(tr("Sending request..."))
 		elif state == Qt.QHttp.Reading :
-			self.statusChangedSignal(self.tr("Reading data..."))
+			self.statusChangedSignal(tr("Reading data..."))
 		elif state == Qt.QHttp.Connected :
-			self.statusChangedSignal(self.tr("Connected"))
+			self.statusChangedSignal(tr("Connected"))
 		elif state == Qt.QHttp.Closing :
-			self.statusChangedSignal(self.tr("Closing connection..."))
+			self.statusChangedSignal(tr("Closing connection..."))
 
 	def setText(self) :
 		self.http_output.append(self.http.readAll())
@@ -114,7 +118,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		if error_flag and not self.http_abort_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("HTTP error: %1\nPress \"Yes\" to ignore")
+				tr("HTTP error: %1\nPress \"Yes\" to ignore")
 					.arg(self.http.errorString()),
 				Qt.QMessageBox.Yes)
 
