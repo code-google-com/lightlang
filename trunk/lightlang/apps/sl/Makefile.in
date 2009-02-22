@@ -28,11 +28,8 @@ SL_OBJ=src/cs/main.o \
 	src/cs/info.o
 SL_CONFIG=src/cs/config.h
 SL_PROG=sl
-SL_ICONS_DIR=src/icons
 
 INS_SL_PROG_DIR=@prefix@/bin
-INS_SL_LIBS_DIR=@prefix@/lib/sl
-INS_SL_ICONS_DIR=@prefix@/lib/sl/icons
 INS_SL_SHARES_DIR=@prefix@/share/sl
 INS_SL_DICTS_DIR=@prefix@/share/sl/dicts
 INS_SL_SOUNDS_DIR=@prefix@/share/sl/sounds
@@ -50,18 +47,15 @@ all : $(SL_OBJ)
 
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_SL_PROG_DIR)
-	$(MKDIR) -p $(DESTDIR)$(INS_SL_ICONS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_SL_DICTS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_SL_SOUNDS_DIR)
 	-$(CHMOD) 777 $(DESTDIR)$(INS_SL_DICTS_DIR)
 	-$(CHMOD) 777 $(DESTDIR)$(INS_SL_SOUNDS_DIR)
 	$(INS) $(SL_PROG) $(DESTDIR)$(INS_SL_PROG_DIR)
-	$(CP) -r $(SL_ICONS_DIR)/*.png $(DESTDIR)$(INS_SL_ICONS_DIR)
 
 uninstall :
 	$(RM) -f $(DESTDIR)$(INS_SL_PROG_DIR)/$(SL_PROG)
 	$(RM) -rf $(DESTDIR)$(INS_SL_SHARES_DIR)
-	$(RM) -rf $(DESTDIR)$(INS_SL_LIBS_DIR)
 
 clean :
 	$(RM) -f $(SL_PROG) $(SL_OBJ) $(SL_CONFIG)

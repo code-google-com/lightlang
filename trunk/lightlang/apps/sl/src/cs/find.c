@@ -692,11 +692,10 @@ static void print_translate(const char *str, const int word_number)
 						else { printf("</font></u>"); word_link_text_flag = false; } break;
 
 					case 's' : if ( !sound_link_text_flag )
-						{ printf("&nbsp;<a href=\"#s%ld_", link_count);
+						{ printf("&nbsp;[&nbsp;<a href=\"#s%ld_", link_count);
 						++link_count; sound_link_text_flag = true; }
-						else { printf("\"><img src=\"%s/play_16.png\" "
-							"align=\"absmiddle\" alt=\"[&gt;]\"></a>&nbsp;",
-						ICONS_DIR); sound_link_text_flag = false; } break;
+						else { printf("\"><font size=\"+1\">\u266B</font></a>&nbsp;]&nbsp;");
+						sound_link_text_flag = false; } break;
 
 					case '\\' : putchar('\\'); break;
 

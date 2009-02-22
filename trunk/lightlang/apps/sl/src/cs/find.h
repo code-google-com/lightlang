@@ -34,7 +34,6 @@
 
 /*********************************** Macro *************************************/
 # define ALL_SOUNDS_DIR		__PREFIX "/share/sl/sounds"
-# define ICONS_DIR		__PREFIX "/lib/sl/icons"
 
 # define AUDIO_POSTFIX		".ogg"
 
