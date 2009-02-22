@@ -257,10 +257,9 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def save(self) :
-		for source_object in self.source_objects_list :
-			source_object[0].saveSettings()
+		for panel in self.panels_list :
+			panel.saveSettings()
 
-		self.history_panel.saveSettings()
 		self.dicts_manager.saveSettings()
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
@@ -268,10 +267,9 @@ class MainWindow(Qt.QMainWindow) :
 		self.saveSettings()
 
 	def load(self) :
-		for source_object in self.source_objects_list :
-			source_object[0].loadSettings()
+		for panel in self.panels_list :
+			panel.loadSettings()
 
-		self.history_panel.loadSettings()
 		self.dicts_manager.loadSettings()
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
