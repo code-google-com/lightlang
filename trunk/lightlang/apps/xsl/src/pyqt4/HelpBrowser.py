@@ -24,6 +24,7 @@ import Config
 import Const
 import TextBrowser
 import FindInTextFrame
+import TransparentFrame
 
 #####
 lang = Qt.QLocale().name()
@@ -68,18 +69,7 @@ class HelpBrowser(Qt.QWidget) :
 		self.text_browser.setLayout(self.text_browser_layout)
 		self.main_layout.addWidget(self.text_browser)
 
-		self.control_buttons_frame = Qt.QFrame()
-		self.control_buttons_frame.setFrameShape(Qt.QFrame.Box)
-		self.control_buttons_frame.setFrameShadow(Qt.QFrame.Raised)
-		color = Qt.QApplication.palette().color(Qt.QPalette.Window)
-		r = color.red(); g = color.green(); b = color.blue()
-		try :
-			self.control_buttons_frame.setStyleSheet("QFrame {"
-					"border: 1px solid gray;"
-					"border-radius: 4px;"
-					"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", 180);"
-				"}")
-		except : pass
+		self.control_buttons_frame = TransparentFrame.TransparentFrame()
 		self.control_buttons_frame_layout = Qt.QHBoxLayout()
 		self.control_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
 		self.control_buttons_frame.setLayout(self.control_buttons_frame_layout)
