@@ -55,8 +55,6 @@ class TransparentFrame(Qt.QFrame) :
 		g = self.color.green()
 		b = self.color.blue()
 
-		# FIXME: don't aplly style sheets for child widgets
-
 		try :
 			self.setStyleSheet("QFrame {"
 					"border: 1px solid gray;"
