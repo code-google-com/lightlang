@@ -11,16 +11,21 @@ LN=@LN_PROG@
 RM=@RM_PROG@
 PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
+LS=@LS_PROG@
+PYTHON=@PYTHON_PROG@
 
 LLREPO_PROG=llrepo
 LLREPO_MAIN=src/llrepo.py
 LLREPO_LIBS_DIR=src
 
-INS_LLREPO_PROG_DIR=@prefix@/bin/
-INS_LLREPO_LIBS_DIR=@prefix@/lib/llrepo/
+INS_LLREPO_PROG_DIR=@prefix@/bin
+INS_LLREPO_LIBS_DIR=@prefix@/lib/llrepo
 
 #####
 all : $(LLREPO_MAIN)
+	-for file in `$(LS) $(LLREPO_LIBS_DIR)/*.py`; do \
+		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
+	done
 	$(CP) $(LLREPO_MAIN) $(LLREPO_PROG)
 	$(CHMOD) +x $(LLREPO_PROG)
 	-$(LN) -s `$(PWD)`/$(LLREPO_PROG) ../../$(LLREPO_PROG)
@@ -30,6 +35,9 @@ install :
 	$(MKDIR) -p $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
 	$(INS) $(LLREPO_PROG) $(DESTDIR)$(INS_LLREPO_PROG_DIR)
 	$(CP) $(LLREPO_LIBS_DIR)/*.py $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
+	-for file in `$(LS) $(INS_LLREPO_LIBS_DIR)/*.py`; do \
+		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
+	done
 
 uninstall :
 	$(RM) -f $(DESTDIR)$(INS_LLREPO_PROG_DIR)/$(LLREPO_PROG)
