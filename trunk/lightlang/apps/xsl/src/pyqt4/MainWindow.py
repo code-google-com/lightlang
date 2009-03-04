@@ -436,8 +436,8 @@ class MainWindow(Qt.QMainWindow) :
 		if self.checkBusyStreams() :
 			return
 
-		for source_object in self.source_objects_list :
-			source_object[0].clear()
+		for panel in self.panels_list :
+			panel.clear()
 
 		self.tabbed_translate_browser.clearAll()
 
