@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -280,12 +281,12 @@ Press &quot;Yes&quot; to exit</source>
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="150"/>
+        <location filename="GoogleTranslatePanel.py" line="151"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="152"/>
+        <location filename="GoogleTranslatePanel.py" line="153"/>
         <source>Ctrl+Enter</source>
         <translation>Ctrl+Enter</translation>
     </message>
@@ -788,6 +789,11 @@ Spy-сервис работает</translation>
         <location filename="GoogleTranslatePanel.py" line="108"/>
         <source>Vietnamese</source>
         <translation>Вьетнамский</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslatePanel.py" line="121"/>
+        <source>I don&apos;t know...</source>
+        <translation>Я не знаю...</translation>
     </message>
 </context>
 <context>
