@@ -338,7 +338,7 @@ docs/man/ru/Makefile \
 \
 download.py \
 \
-apps/sl/src/cs/config.h \
+apps/sl/src/config.h \
 apps/xsl/src/pyqt4/Config.py \
 apps/xsl/src/pyqt4/xsl.py \
 apps/llrepo/src/llrepo.py \

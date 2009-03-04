@@ -6735,7 +6735,7 @@ echo "$as_me: error: Python modules error" >&2;}
 fi # GUI_FLAG
 
 
-ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/cs/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
+ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7325,7 +7325,7 @@ do
     "docs/man/en/Makefile") CONFIG_FILES="$CONFIG_FILES docs/man/en/Makefile" ;;
     "docs/man/ru/Makefile") CONFIG_FILES="$CONFIG_FILES docs/man/ru/Makefile" ;;
     "download.py") CONFIG_FILES="$CONFIG_FILES download.py" ;;
-    "apps/sl/src/cs/config.h") CONFIG_FILES="$CONFIG_FILES apps/sl/src/cs/config.h" ;;
+    "apps/sl/src/config.h") CONFIG_FILES="$CONFIG_FILES apps/sl/src/config.h" ;;
     "apps/xsl/src/pyqt4/Config.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/Config.py" ;;
     "apps/xsl/src/pyqt4/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/xsl.py" ;;
     "apps/llrepo/src/llrepo.py") CONFIG_FILES="$CONFIG_FILES apps/llrepo/src/llrepo.py" ;;

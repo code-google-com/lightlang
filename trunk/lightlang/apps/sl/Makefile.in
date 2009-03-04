@@ -14,19 +14,19 @@ RM=@RM_PROG@
 PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
 
-SL_SRC=src/cs/main.c \
-	src/cs/manager.c \
-	src/cs/mstring.c \
-	src/cs/settings.c \
-	src/cs/find.c \
-	src/cs/info.c
-SL_OBJ=src/cs/main.o \
-	src/cs/manager.o \
-	src/cs/mstring.o \
-	src/cs/settings.o \
-	src/cs/find.o \
-	src/cs/info.o
-SL_CONFIG=src/cs/config.h
+SL_SRC=src/main.c \
+	src/manager.c \
+	src/mstring.c \
+	src/settings.c \
+	src/find.c \
+	src/info.c
+SL_OBJ=src/main.o \
+	src/manager.o \
+	src/mstring.o \
+	src/settings.o \
+	src/find.o \
+	src/info.o
+SL_CONFIG=src/config.h
 SL_PROG=sl
 
 INS_SL_PROG_DIR=@prefix@/bin
