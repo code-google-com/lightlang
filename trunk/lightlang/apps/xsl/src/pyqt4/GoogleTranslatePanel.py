@@ -64,30 +64,48 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.google_translate = GoogleTranslate.GoogleTranslate()
 
 		self.langs_list = [
-			[ tr("English"),	Qt.QVariant("en") ],
-			[ tr("Arabic"),		Qt.QVariant("ar") ],
-			[ tr("Bulgarian"),	Qt.QVariant("bg") ],
-			[ tr("Dutch"),		Qt.QVariant("nl") ],
-			[ tr("Greek"),		Qt.QVariant("el") ],
-			[ tr("Danish"),		Qt.QVariant("da") ],
-			[ tr("Spanish"),	Qt.QVariant("es") ],
-			[ tr("Italian"),	Qt.QVariant("it") ],
-			[ tr("Chinese (T)"),	Qt.QVariant("zh-TW") ],
-			[ tr("Chinese (S)"),	Qt.QVariant("zh-CN") ],
-			[ tr("Korean"),		Qt.QVariant("ko") ],
-			[ tr("German"),		Qt.QVariant("de") ],
-			[ tr("Norwegian"),	Qt.QVariant("no") ],
-			[ tr("Polish"),		Qt.QVariant("pl") ],
-			[ tr("Portuguese"),	Qt.QVariant("pt") ],
-			[ tr("Romanian"),	Qt.QVariant("ro") ],
-			[ tr("Russian"),	Qt.QVariant("ru") ],
-			[ tr("Finnish"),	Qt.QVariant("fi") ],
-			[ tr("French"),		Qt.QVariant("fr") ],
-			[ tr("Hindi"),		Qt.QVariant("hi") ],
-			[ tr("Croatian"),	Qt.QVariant("hr") ],
-			[ tr("Czech"),		Qt.QVariant("cs") ],
-			[ tr("Swedish"),	Qt.QVariant("sv") ],
-			[ tr("Japanese"),	Qt.QVariant("ja") ]
+			[ tr("Albanian"),		Qt.QVariant("sq") ],
+			[ tr("Arabic"),			Qt.QVariant("ar") ],
+			[ tr("Bulgarian"),		Qt.QVariant("bg") ],
+			[ tr("Catalan"),		Qt.QVariant("ca") ],
+			[ tr("Chinese (Simplified)"),	Qt.QVariant("zh-CN") ],
+			[ tr("Chinese (Traditional)"),	Qt.QVariant("zh-TW") ],
+			[ tr("Croatian"),		Qt.QVariant("hr") ],
+			[ tr("Czech"),			Qt.QVariant("cs") ],
+			[ tr("Danish"),			Qt.QVariant("da") ],
+			[ tr("Dutch"),			Qt.QVariant("nl") ],
+			[ tr("English"),		Qt.QVariant("en") ],
+			[ tr("Estonian"),		Qt.QVariant("et") ],
+			[ tr("Filipino"),		Qt.QVariant("tl") ],
+			[ tr("Finnish"),		Qt.QVariant("fi") ],
+			[ tr("French"),			Qt.QVariant("fr") ],
+			[ tr("Galician"),		Qt.QVariant("gl") ],
+			[ tr("German"),			Qt.QVariant("de") ],
+			[ tr("Greek"),			Qt.QVariant("el") ],
+			[ tr("Hebrew"),			Qt.QVariant("iw") ],
+			[ tr("Hindi"),			Qt.QVariant("hi") ],
+			[ tr("Hungarian"),		Qt.QVariant("hu") ],
+			[ tr("Indonesian"),		Qt.QVariant("id") ],
+			[ tr("Italian"),		Qt.QVariant("it") ],
+			[ tr("Japanese"),		Qt.QVariant("ja") ],
+			[ tr("Korean"),			Qt.QVariant("ko") ],
+			[ tr("Latvian"),		Qt.QVariant("lv") ],
+			[ tr("Lithuanian"),		Qt.QVariant("lt") ],
+			[ tr("Maltese"),		Qt.QVariant("mt") ],
+			[ tr("Norwegian"),		Qt.QVariant("no") ],
+			[ tr("Polish"),			Qt.QVariant("pl") ],
+			[ tr("Portuguese"),		Qt.QVariant("pt") ],
+			[ tr("Romanian"),		Qt.QVariant("ro") ],
+			[ tr("Russian"),		Qt.QVariant("ru") ],
+			[ tr("Serbian"),		Qt.QVariant("sr") ],
+			[ tr("Slovak"),			Qt.QVariant("sk") ],
+			[ tr("Slovenian"),		Qt.QVariant("sl") ],
+			[ tr("Spanish"),		Qt.QVariant("es") ],
+			[ tr("Swedish"),		Qt.QVariant("sv") ],
+			[ tr("Thai"),			Qt.QVariant("th") ],
+			[ tr("Turkish"),		Qt.QVariant("tr") ],
+			[ tr("Ukrainian"),		Qt.QVariant("uk") ],
+			[ tr("Vietnamese"),		Qt.QVariant("vi") ],
 			]
 
 		self.internalSortLangs(0, len(self.langs_list) -1)
@@ -96,6 +114,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.sl_combobox = Qt.QComboBox()
 		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
+		self.sl_combobox.setMaxVisibleItems(15)
 		for langs_list_item in self.langs_list :
 			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
@@ -110,6 +129,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.tl_combobox = Qt.QComboBox()
 		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
+		self.tl_combobox.setMaxVisibleItems(15)
 		for langs_list_item in self.langs_list :
 			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
