@@ -118,6 +118,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		for langs_list_item in self.langs_list :
 			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
+		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("I don't know..."), Qt.QVariant("auto"))
 		self.langs_layout.addWidget(self.sl_combobox)
 
 		self.invert_langs_button = Qt.QToolButton()
