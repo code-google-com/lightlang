@@ -258,6 +258,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 	def processStarted(self) :
 		self.abort_button.setEnabled(True)
 
+		self.text_edit.setEnabled(False)
+
 		self.clear_text_edit_button.setEnabled(False)
 		self.translate_button.setEnabled(False)
 
@@ -265,6 +267,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def processFinished(self) :
 		self.abort_button.setEnabled(False)
+
+		self.text_edit.setEnabled(True)
 
 		self.clear_text_edit_button.setEnabled(True)
 		self.translate_button.setEnabled(True)
