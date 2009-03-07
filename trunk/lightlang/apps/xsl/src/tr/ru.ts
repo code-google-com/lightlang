@@ -296,42 +296,42 @@ Press &quot;Yes&quot; to exit</source>
         <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="91"/>
+        <location filename="GoogleTranslate.py" line="106"/>
         <source>&lt;em&gt;Aborted&lt;/em&gt;</source>
         <translation>&lt;em&gt;Прервано&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="104"/>
+        <location filename="GoogleTranslate.py" line="119"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="106"/>
+        <location filename="GoogleTranslate.py" line="121"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="108"/>
+        <location filename="GoogleTranslate.py" line="123"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="110"/>
+        <location filename="GoogleTranslate.py" line="125"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="112"/>
+        <location filename="GoogleTranslate.py" line="127"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="114"/>
+        <location filename="GoogleTranslate.py" line="129"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="126"/>
+        <location filename="GoogleTranslate.py" line="141"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -794,6 +794,11 @@ Spy-сервис работает</translation>
         <location filename="GoogleTranslatePanel.py" line="121"/>
         <source>I don&apos;t know...</source>
         <translation>Я не знаю...</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslate.py" line="82"/>
+        <source>&lt;em&gt;Link &lt;strong&gt;%1&lt;/strong&gt; translation was opened in your browser&lt;/em&gt;</source>
+        <translation>&lt;em&gt;Ссылка &lt;strong&gt;%1&lt;/strong&gt; открыта в окне вашего браузера&lt;/em&gt;</translation>
     </message>
 </context>
 <context>
