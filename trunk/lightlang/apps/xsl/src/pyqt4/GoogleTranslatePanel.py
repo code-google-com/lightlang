@@ -273,6 +273,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.clear_text_edit_button.setEnabled(True)
 		self.translate_button.setEnabled(True)
 
+		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
+
 		self.processFinishedSignal()
 
 	def setStatusFromTextEdit(self) :
