@@ -70,6 +70,21 @@ class GoogleTranslate(Qt.QObject) :
 		self.wordChangedSignal(tr("Google Translate"))
 		self.textChangedSignal(tr("<em>Please wait...</em>"))
 
+		text = text.trimmed()
+
+		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
+			lang = Qt.QLocale().name(); lang.remove(lang.indexOf("_"), lang.length())
+			url = Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
+				.arg(GoogleTranslateHost).arg(lang).arg(sl).arg(tl).arg(text))
+
+			Qt.QDesktopServices.openUrl(url)
+
+			self.textChangedSignal(tr("<em>Link <strong>%1</strong> translation was opened in your browser</em>").arg(text))
+
+			self.processFinishedSignal()
+
+			return
+
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
 		http_request_header = Qt.QHttpRequestHeader("POST", "/translate_t?client=t&sl="+sl+"&tl="+tl, 1, 1)
