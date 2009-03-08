@@ -73,7 +73,11 @@ class GoogleTranslate(Qt.QObject) :
 		text = text.trimmed()
 
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
-			lang = Qt.QLocale().name(); lang.remove(lang.indexOf("_"), lang.length())
+			lang = Qt.QLocale().name()
+			lang.remove(lang.indexOf("_"), lang.length())
+			if lang.isEmpty() :
+				lang = "en"
+
 			url = Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
 				.arg(GoogleTranslateHost).arg(lang).arg(sl).arg(tl).arg(text))
 
