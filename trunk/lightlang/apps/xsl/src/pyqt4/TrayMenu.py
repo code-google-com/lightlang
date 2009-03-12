@@ -40,7 +40,6 @@ class TrayMenu(Qt.QMenu) :
 
 	def addCaption(self, icon, text, before_action = None) :
 		fictive_action = Qt.QWidgetAction(self)
-		fictive_action.setEnabled(False)
 
 		fictive_action_frame = Qt.QFrame()
 		fictive_action_frame.setFrameShape(Qt.QFrame.Box) # Qt.QFrame.StyledPanel
