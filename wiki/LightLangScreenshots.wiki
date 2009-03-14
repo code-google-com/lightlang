@@ -38,6 +38,8 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser2.png
 
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/text_browser3.png
+
 ----
 
 ==Меню программы==
@@ -57,6 +59,8 @@ http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_menu2.p
 ===Браузер системы помощи===
 
 http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_browser1.png
+
+http://lightlang.googlecode.com/svn/trunk/art/screenshots/lightlang/help_browser2.png
 
 ----
 
