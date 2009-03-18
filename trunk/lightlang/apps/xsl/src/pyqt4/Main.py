@@ -63,18 +63,10 @@ class Main :
 
 		self.app.processEvents()
 
-		self.splash.showMessage(self.tr("Creating the main window..."),
-			Qt.Qt.AlignTop, Qt.Qt.white)
 		self.main_window = MainWindow.MainWindow()
-
-		self.splash.showMessage(self.tr("Creating an icon in the tray..."),
-			Qt.Qt.AlignTop, Qt.Qt.white)
 		self.tray_icon = TrayIcon.TrayIcon()
 
 		#####
-
-		self.splash.showMessage(self.tr("Establishing main connections..."),
-			Qt.Qt.AlignTop, Qt.Qt.white)
 
 		Qt.QObject.connect(self.app, Qt.SIGNAL("commitDataRequest(QSessionManager &)"), self.commitData)
 		Qt.QObject.connect(self.app, Qt.SIGNAL("focusChanged(QWidget *, QWidget*)"), self.main_window.focusChanged)
@@ -89,8 +81,6 @@ class Main :
 
 		#####
 
-		self.splash.showMessage(self.tr("Loading settings..."),
-			Qt.Qt.AlignTop, Qt.Qt.white)
 		self.main_window.load()
 		self.tray_icon.show()
 

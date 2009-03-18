@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru_RU">
-<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -296,42 +295,42 @@ Press &quot;Yes&quot; to exit</source>
         <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="106"/>
+        <location filename="GoogleTranslate.py" line="110"/>
         <source>&lt;em&gt;Aborted&lt;/em&gt;</source>
         <translation>&lt;em&gt;Прервано&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="119"/>
+        <location filename="GoogleTranslate.py" line="123"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="121"/>
+        <location filename="GoogleTranslate.py" line="125"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="123"/>
+        <location filename="GoogleTranslate.py" line="127"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="125"/>
+        <location filename="GoogleTranslate.py" line="129"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="127"/>
+        <location filename="GoogleTranslate.py" line="131"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="129"/>
+        <location filename="GoogleTranslate.py" line="133"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="141"/>
+        <location filename="GoogleTranslate.py" line="145"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -796,7 +795,7 @@ Spy-сервис работает</translation>
         <translation>Я не знаю...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="82"/>
+        <location filename="GoogleTranslate.py" line="86"/>
         <source>&lt;em&gt;Link &lt;strong&gt;%1&lt;/strong&gt; translation was opened in your browser&lt;/em&gt;</source>
         <translation>&lt;em&gt;Ссылка &lt;strong&gt;%1&lt;/strong&gt; открыта в окне вашего браузера&lt;/em&gt;</translation>
     </message>
@@ -804,31 +803,11 @@ Spy-сервис работает</translation>
 <context>
     <name>Main</name>
     <message>
-        <location filename="Main.py" line="70"/>
-        <source>Creating an icon in the tray...</source>
-        <translation>Создание иконки в трее...</translation>
-    </message>
-    <message>
-        <location filename="Main.py" line="66"/>
-        <source>Creating the main window...</source>
-        <translation>Создание главного окна...</translation>
-    </message>
-    <message>
-        <location filename="Main.py" line="92"/>
-        <source>Loading settings...</source>
-        <translation>Загрузка параметров...</translation>
-    </message>
-    <message>
-        <location filename="Main.py" line="129"/>
+        <location filename="Main.py" line="119"/>
         <source>%1 process is already running, kill old process and try again.
 If not, remove lock file &quot;%2&quot;</source>
         <translation>Процесс %1 уже был запущен, завершите старый процесс и попробуйте снова.
 Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="Main.py" line="76"/>
-        <source>Establishing main connections...</source>
-        <translation>Установка основных связей...</translation>
     </message>
 </context>
 </TS>
