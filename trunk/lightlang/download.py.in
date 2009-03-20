@@ -101,6 +101,21 @@ RepositoriesList = [
 #####################################################
 #####################################################
 
+#####
+def sort_resources_list(resources_list, left, right) :
+	if left >= right :
+		return
+
+	i = j = left
+	while j <= right :
+		if resources_list[j].resource_name <= resources_list[right].resource_name :
+			resources_list[i], resources_list[j] = resources_list[j], resources_list[i]
+			i += 1
+		j += 1
+
+	sort_resources_list(resources_list, left, i - 2)
+	sort_resources_list(resources_list, i, right)
+
 
 #####
 def get_remote_resources_list(resources_type = "") :
@@ -143,6 +158,8 @@ def get_remote_resources_list(resources_type = "") :
 
 		except :
 			print >> sys.stderr, MyName+": error while processing repository"
+
+	sort_resources_list(remote_resources_list, 0, len(remote_resources_list) -1)
 
 	return remote_resources_list
 
@@ -192,6 +209,8 @@ def get_local_resources_list(resources_type = "") :
 
 			local_resources_list.append(LocalResource(resource_name, resources_type,
 				files_list_item, file_size))
+
+		sort_resources_list(local_resources_list, 0, len(local_resources_list) -1)
 
 	except :
 		print >> sys.stderr, MyName+": error while processing repository"
