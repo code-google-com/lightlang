@@ -41,8 +41,19 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.http_output = Qt.QByteArray()
 
+		self.translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
+		self.translate_regexp.setMinimal(True)
+
+		self.direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
+		self.direction_regexp.setMinimal(True)
+
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(30000)
+
+		self.lang = Qt.QLocale().name()
+		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
+		if self.lang.isEmpty() :
+			self.lang = "en"
 
 		#####
 
@@ -73,13 +84,8 @@ class GoogleTranslate(Qt.QObject) :
 		text = text.trimmed()
 
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
-			lang = Qt.QLocale().name()
-			lang.remove(lang.indexOf("_"), lang.length())
-			if lang.isEmpty() :
-				lang = "en"
-
 			url = Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
-				.arg(GoogleTranslateHost).arg(lang).arg(sl).arg(tl).arg(text))
+				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text))
 
 			Qt.QDesktopServices.openUrl(url)
 
@@ -91,7 +97,8 @@ class GoogleTranslate(Qt.QObject) :
 
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
-		http_request_header = Qt.QHttpRequestHeader("POST", "/translate_t?client=t&sl="+sl+"&tl="+tl, 1, 1)
+		http_request_header = Qt.QHttpRequestHeader("POST", (Qt.QString("/translate_t?client=t&hl=%1&sl=%2&tl=%3")
+			.arg(self.lang).arg(sl).arg(tl)), 1, 1)
 		http_request_header.setValue("Host", GoogleTranslateHost)
 		http_request_header.setValue("User-Agent", "Mozilla/5.0")
 		http_request_header.setContentLength(text.length())
@@ -150,14 +157,21 @@ class GoogleTranslate(Qt.QObject) :
 		codec = Qt.QTextCodec.codecForName("UTF-8")
 		text = codec.toUnicode(self.http_output.data())
 
-		index = text.indexOf("<div id=result_box dir=")
-		if index != -1 :
-			text = text.mid(index)
+		###
 
-		index = text.indexOf("</div>")
-		if index != -1 :
-			# FIXME: string hack
-			text = text[29:index]
+		if self.direction_regexp.indexIn(text) > -1 :
+			direction = self.direction_regexp.cap(1)
+		else :
+			direction = Qt.QString()
+
+		if self.translate_regexp.indexIn(text) > -1 :
+			translate = self.translate_regexp.cap(1)
+		else :
+			translate = text
+
+		text = Qt.QString("<font color=\"#494949\">%1</font><hr>%2").arg(direction).arg(translate)
+
+		###
 
 		self.textChangedSignal(text)
 
