@@ -24,6 +24,7 @@ import sys
 import os
 import Config
 import Const
+import Locale
 import TrayIcon
 import MainWindow
 import Global
@@ -44,9 +45,7 @@ class Main :
 		self.app = Qt.QApplication(self.argv)
 		self.app.setQuitOnLastWindowClosed(False)
 
-		self.locale = Qt.QLocale()
-		self.lang = Qt.QLocale().name()
-		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
+		self.lang = Locale.mainLang()
 
 		self.translator = Qt.QTranslator()
 		self.translator.load(TrDir+self.lang)

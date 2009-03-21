@@ -22,6 +22,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import Locale
 
 #####
 def tr(str) :
@@ -36,8 +37,7 @@ class TranslateSiteSAXHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.lang = Qt.QLocale().name()
-		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
+		self.lang = Locale.mainLang()
 
 		#####
 

@@ -22,6 +22,7 @@
 from PyQt4 import Qt
 import Const
 import Config
+import Locale
 
 #####
 GoogleTranslateHost = "translate.google.com"
@@ -50,10 +51,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(30000)
 
-		self.lang = Qt.QLocale().name()
-		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
-		if self.lang.isEmpty() :
-			self.lang = "en"
+		self.lang = Locale.mainLang()
 
 		#####
 

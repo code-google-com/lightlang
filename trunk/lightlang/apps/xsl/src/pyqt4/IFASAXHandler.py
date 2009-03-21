@@ -23,6 +23,7 @@ from PyQt4 import Qt
 import sys
 import Config
 import Const
+import Locale
 
 #####
 def tr(str) :
@@ -37,8 +38,7 @@ class IFASAXHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.lang = Qt.QLocale().name()
-		self.lang.remove(self.lang.indexOf("_"), self.lang.length())
+		self.lang = Locale.mainLang()
 
 		#####
 
