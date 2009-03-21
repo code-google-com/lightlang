@@ -22,6 +22,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import Locale
 import GoogleTranslate
 import TextEdit
 
@@ -110,6 +111,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.internalSortLangs(0, len(self.langs_list) -1)
 
+		self.lang = Locale.mainLang()
+
 		#####
 
 		self.sl_combobox = Qt.QComboBox()
@@ -134,6 +137,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		for langs_list_item in self.langs_list :
 			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
+		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+self.lang+".png"), tr("Your language"), Qt.QVariant(self.lang))
 		self.langs_layout.addWidget(self.tl_combobox)
 
 		self.text_edit = TextEdit.TextEdit()

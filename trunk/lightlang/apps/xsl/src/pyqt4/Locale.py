@@ -36,7 +36,7 @@ def mainLang() :
 	if lang.simplified().isEmpty() :
 		lang = "en"
 
-	return lang
+	return Qt.QString(lang)
 
 
 #####
@@ -51,5 +51,5 @@ def docsLang() :
 	else :
 		lang = "en"
 
-	return lang
+	return Qt.QString(lang)
 

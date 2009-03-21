@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -165,184 +166,184 @@ Press &quot;Yes&quot; to exit</source>
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="70"/>
+        <location filename="GoogleTranslate.py" line="79"/>
         <source>Google Translate</source>
         <translation>Переводчик Google</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="77"/>
+        <location filename="GoogleTranslatePanel.py" line="78"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="68"/>
+        <location filename="GoogleTranslatePanel.py" line="69"/>
         <source>Arabic</source>
         <translation>Арабский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="69"/>
+        <location filename="GoogleTranslatePanel.py" line="70"/>
         <source>Bulgarian</source>
         <translation>Болгарский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="76"/>
+        <location filename="GoogleTranslatePanel.py" line="77"/>
         <source>Dutch</source>
         <translation>Голландский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="84"/>
+        <location filename="GoogleTranslatePanel.py" line="85"/>
         <source>Greek</source>
         <translation>Греческий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="75"/>
+        <location filename="GoogleTranslatePanel.py" line="76"/>
         <source>Danish</source>
         <translation>Датский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="103"/>
+        <location filename="GoogleTranslatePanel.py" line="104"/>
         <source>Spanish</source>
         <translation>Испанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="89"/>
+        <location filename="GoogleTranslatePanel.py" line="90"/>
         <source>Italian</source>
         <translation>Итальянский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="91"/>
+        <location filename="GoogleTranslatePanel.py" line="92"/>
         <source>Korean</source>
         <translation>Корейский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="83"/>
+        <location filename="GoogleTranslatePanel.py" line="84"/>
         <source>German</source>
         <translation>Немецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="95"/>
+        <location filename="GoogleTranslatePanel.py" line="96"/>
         <source>Norwegian</source>
         <translation>Норвежский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="96"/>
+        <location filename="GoogleTranslatePanel.py" line="97"/>
         <source>Polish</source>
         <translation>Польский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="97"/>
+        <location filename="GoogleTranslatePanel.py" line="98"/>
         <source>Portuguese</source>
         <translation>Португальский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="98"/>
+        <location filename="GoogleTranslatePanel.py" line="99"/>
         <source>Romanian</source>
         <translation>Румынский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="99"/>
+        <location filename="GoogleTranslatePanel.py" line="100"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="80"/>
+        <location filename="GoogleTranslatePanel.py" line="81"/>
         <source>Finnish</source>
         <translation>Финский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="81"/>
+        <location filename="GoogleTranslatePanel.py" line="82"/>
         <source>French</source>
         <translation>Французский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="86"/>
+        <location filename="GoogleTranslatePanel.py" line="87"/>
         <source>Hindi</source>
         <translation>Хинди</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="73"/>
+        <location filename="GoogleTranslatePanel.py" line="74"/>
         <source>Croatian</source>
         <translation>Хорватский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="74"/>
+        <location filename="GoogleTranslatePanel.py" line="75"/>
         <source>Czech</source>
         <translation>Чешский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="104"/>
+        <location filename="GoogleTranslatePanel.py" line="105"/>
         <source>Swedish</source>
         <translation>Шведский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="90"/>
+        <location filename="GoogleTranslatePanel.py" line="91"/>
         <source>Japanese</source>
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="151"/>
+        <location filename="GoogleTranslatePanel.py" line="155"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="153"/>
+        <location filename="GoogleTranslatePanel.py" line="157"/>
         <source>Ctrl+Enter</source>
         <translation>Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="71"/>
+        <location filename="GoogleTranslate.py" line="80"/>
         <source>&lt;em&gt;Please wait...&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="110"/>
+        <location filename="GoogleTranslate.py" line="115"/>
         <source>&lt;em&gt;Aborted&lt;/em&gt;</source>
         <translation>&lt;em&gt;Прервано&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="123"/>
+        <location filename="GoogleTranslate.py" line="128"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="125"/>
+        <location filename="GoogleTranslate.py" line="130"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="127"/>
+        <location filename="GoogleTranslate.py" line="132"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="129"/>
+        <location filename="GoogleTranslate.py" line="134"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="131"/>
+        <location filename="GoogleTranslate.py" line="136"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="133"/>
+        <location filename="GoogleTranslate.py" line="138"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="145"/>
+        <location filename="GoogleTranslate.py" line="150"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
 Проигнорируйте и нажмите &quot;Yes&quot;</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="55"/>
+        <location filename="HelpBrowser.py" line="45"/>
         <source>%1 Manual</source>
         <translation>Руководство %1</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="163"/>
+        <location filename="HelpBrowser.py" line="153"/>
         <source>%1 Manual - %2</source>
         <translation>Руководство %1 - %2</translation>
     </message>
@@ -690,120 +691,125 @@ Spy is running</source>
 Spy-сервис работает</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="67"/>
+        <location filename="GoogleTranslatePanel.py" line="68"/>
         <source>Albanian</source>
         <translation>Албанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="70"/>
+        <location filename="GoogleTranslatePanel.py" line="71"/>
         <source>Catalan</source>
         <translation>Каталанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="71"/>
+        <location filename="GoogleTranslatePanel.py" line="72"/>
         <source>Chinese (Simplified)</source>
         <translation>Китайский (Упрощенный)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="72"/>
+        <location filename="GoogleTranslatePanel.py" line="73"/>
         <source>Chinese (Traditional)</source>
         <translation>Китайский (Традиционный)</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="78"/>
+        <location filename="GoogleTranslatePanel.py" line="79"/>
         <source>Estonian</source>
         <translation>Эстонский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="79"/>
+        <location filename="GoogleTranslatePanel.py" line="80"/>
         <source>Filipino</source>
         <translation>Филиппинский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="82"/>
+        <location filename="GoogleTranslatePanel.py" line="83"/>
         <source>Galician</source>
         <translation>Галицийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="85"/>
+        <location filename="GoogleTranslatePanel.py" line="86"/>
         <source>Hebrew</source>
         <translation>Иврит</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="87"/>
+        <location filename="GoogleTranslatePanel.py" line="88"/>
         <source>Hungarian</source>
         <translation>Венгерский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="88"/>
+        <location filename="GoogleTranslatePanel.py" line="89"/>
         <source>Indonesian</source>
         <translation>Индонезийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="92"/>
+        <location filename="GoogleTranslatePanel.py" line="93"/>
         <source>Latvian</source>
         <translation>Латвийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="93"/>
+        <location filename="GoogleTranslatePanel.py" line="94"/>
         <source>Lithuanian</source>
         <translation>Литовский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="94"/>
+        <location filename="GoogleTranslatePanel.py" line="95"/>
         <source>Maltese</source>
         <translation>Мальтийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="100"/>
+        <location filename="GoogleTranslatePanel.py" line="101"/>
         <source>Serbian</source>
         <translation>Сербский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="101"/>
+        <location filename="GoogleTranslatePanel.py" line="102"/>
         <source>Slovak</source>
         <translation>Словацкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="102"/>
+        <location filename="GoogleTranslatePanel.py" line="103"/>
         <source>Slovenian</source>
         <translation>Словенский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="105"/>
+        <location filename="GoogleTranslatePanel.py" line="106"/>
         <source>Thai</source>
         <translation>Тайский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="106"/>
+        <location filename="GoogleTranslatePanel.py" line="107"/>
         <source>Turkish</source>
         <translation>Турецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="107"/>
+        <location filename="GoogleTranslatePanel.py" line="108"/>
         <source>Ukrainian</source>
         <translation>Украинский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="108"/>
+        <location filename="GoogleTranslatePanel.py" line="109"/>
         <source>Vietnamese</source>
         <translation>Вьетнамский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="121"/>
+        <location filename="GoogleTranslatePanel.py" line="124"/>
         <source>I don&apos;t know...</source>
         <translation>Я не знаю...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="86"/>
+        <location filename="GoogleTranslate.py" line="90"/>
         <source>&lt;em&gt;Link &lt;strong&gt;%1&lt;/strong&gt; translation was opened in your browser&lt;/em&gt;</source>
         <translation>&lt;em&gt;Ссылка &lt;strong&gt;%1&lt;/strong&gt; открыта в окне вашего браузера&lt;/em&gt;</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslatePanel.py" line="140"/>
+        <source>Your language</source>
+        <translation>Ваш язык</translation>
     </message>
 </context>
 <context>
     <name>Main</name>
     <message>
-        <location filename="Main.py" line="119"/>
+        <location filename="Main.py" line="118"/>
         <source>%1 process is already running, kill old process and try again.
 If not, remove lock file &quot;%2&quot;</source>
         <translation>Процесс %1 уже был запущен, завершите старый процесс и попробуйте снова.
