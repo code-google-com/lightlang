@@ -28,9 +28,9 @@ import FindInSLPanel
 import GoogleTranslatePanel
 import HistoryPanel
 import TabbedTranslateBrowser
+import StatusBar
 import DictsManager
 import TranslateWindow
-import StatusBar
 import SpyMenu
 try : # FIXME: Rrrrr... :-(
 	import IFAMenu
