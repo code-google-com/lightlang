@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
@@ -32,17 +33,22 @@ except :
 import MouseSelector
 import KeyboardModifierMenu
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)
+
+		#####
 
 		self.mouse_selector = MouseSelector.MouseSelector()
 

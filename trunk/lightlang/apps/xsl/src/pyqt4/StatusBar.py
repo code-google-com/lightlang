@@ -19,32 +19,36 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
 import Const
 
+
 #####
 WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class StatusBar(Qt.QStatusBar) :
 	def __init__(self, parent = None) :
 		Qt.QStatusBar.__init__(self, parent)
 
-		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-
-		###
+		#####
 
 		self.activation_semaphore = 0
 
 		self.timer = Qt.QTimer()
 
-		###
+		#####
+
+		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 
 		self.message_label = Qt.QLabel()
 		self.message_label.setMaximumHeight(label_height)
@@ -58,7 +62,7 @@ class StatusBar(Qt.QStatusBar) :
 		self.wait_picture_movie_label.hide()
 		self.addWidget(self.wait_picture_movie_label)
 
-		###
+		#####
 
 		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.clearStatusMessage)
 

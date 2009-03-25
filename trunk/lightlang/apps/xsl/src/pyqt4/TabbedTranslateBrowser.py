@@ -19,23 +19,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import TranslateBrowser
 import FindInTextFrame
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class TabbedTranslateBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
+
+		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -50,7 +56,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 		self.tmp_text_cursor = Qt.QTextCursor()
 
-		###
+		#####
 
 		self.tab_widget = Qt.QTabWidget()
 		self.main_layout.addWidget(self.tab_widget)
@@ -106,7 +112,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	def addTab(self) :
 		self.single_translate_browsers.append(TranslateBrowser.TranslateBrowser())
 		index = len(self.single_translate_browsers) -1
-		#
+
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
@@ -117,7 +123,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			self.find_in_text_frame.setLineEditRedAlertPalette)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
 			self.find_in_text_frame.setLineEditDefaultPalette)
-		#
+
 		self.single_translate_browsers[index].setHtml(tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)

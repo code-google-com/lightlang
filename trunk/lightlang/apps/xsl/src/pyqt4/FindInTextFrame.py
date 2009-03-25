@@ -19,16 +19,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class FindInTextFrame(Qt.QFrame) :
@@ -36,6 +40,8 @@ class FindInTextFrame(Qt.QFrame) :
 		Qt.QFrame.__init__(self, parent)
 
 		self.setFrameShape(Qt.QFrame.Box)
+
+		#####
 
 		self.main_layout = Qt.QHBoxLayout()
 		self.main_layout.setContentsMargins(2, 2, 2, 2)
@@ -84,7 +90,7 @@ class FindInTextFrame(Qt.QFrame) :
 
 		#####
 
-		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette()) # construct new palette :-)
+		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette())
 		self.line_edit_red_alert_palette = Qt.QPalette()
 		self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, Qt.QColor(255, 110, 110, 255))
 

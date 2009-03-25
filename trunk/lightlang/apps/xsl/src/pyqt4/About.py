@@ -19,17 +19,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
+
 
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class About(Qt.QDialog) :
@@ -40,6 +44,8 @@ class About(Qt.QDialog) :
 
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
+
+		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.setLayout(self.main_layout)
@@ -55,7 +61,7 @@ class About(Qt.QDialog) :
 		self.ok_button_layout.setAlignment(Qt.Qt.AlignHCenter)
 		self.main_layout.addLayout(self.ok_button_layout)
 
-		###
+		#####
 
 		self.icon_label = Qt.QLabel()
 		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_128.png"))
@@ -88,7 +94,7 @@ class About(Qt.QDialog) :
 		self.ok_button = Qt.QPushButton(tr("&OK"))
 		self.ok_button_layout.addWidget(self.ok_button)
 
-		###
+		#####
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 

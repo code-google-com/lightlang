@@ -19,27 +19,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
 import Const
 import IFASAXHandler
 
+
 #####
 IFADir = Config.Prefix+"/lib/xsl/ifa/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class IFAMenu(Qt.QMenu) :
 	def __init__(self, title, parent=None) :
 		Qt.QMenu.__init__(self, title, parent)
 
-		self.actions_data_list = []
+		#####
 
+		self.actions_data_list = []
 		self.createActions()
 
 		#####
@@ -93,7 +98,7 @@ class IFAMenu(Qt.QMenu) :
 		if not Qt.QFile.exists(app_prog_path) :
 			action.setEnabled(False)
 
-		#####
+		###
 
 		self.connect(self.actions_data_list[index][2], Qt.SIGNAL("finished(int, QProcess::ExitStatus)"),
 			self.actions_data_list[index][6])
@@ -103,8 +108,6 @@ class IFAMenu(Qt.QMenu) :
 		app_prog_path = self.actions_data_list[index][0]
 		app_prog_options = self.actions_data_list[index][1]
 		proc = self.actions_data_list[index][2]
-
-		#####
 
 		if proc.state() == Qt.QProcess.Starting or proc.state() == Qt.QProcess.Running :
 			Qt.QMessageBox.information(None, tr("IFA"),
@@ -116,7 +119,7 @@ class IFAMenu(Qt.QMenu) :
 		proc.start(app_prog_path+" "+app_prog_options)
 
 	def execPrecode(self, index) :
-		from Global import main
+		from Global import Main
 		instructions = self.actions_data_list[index][3].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :
@@ -129,7 +132,7 @@ class IFAMenu(Qt.QMenu) :
 			count += 1
 
 	def execPostcode(self, index) :
-		from Global import main
+		from Global import Main
 		instructions = self.actions_data_list[index][4].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :

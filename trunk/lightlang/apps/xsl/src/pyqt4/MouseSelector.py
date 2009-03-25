@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
@@ -29,6 +30,7 @@ try : # optional requires python-xlib
 except :
 	PythonXlibExistsFlag = False
 	print Const.MyName+": python-xlib is not found, please, install it"
+
 
 #####
 LeftCtrlModifier = 133
@@ -41,14 +43,18 @@ RightShiftModifier = 230
 RightWinModifier = 452
 NoModifier = -1
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class MouseSelector(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
+
+		#####
 
 		self.clipboard = Qt.QApplication.clipboard()
 		self.old_selection = Qt.QString()

@@ -19,9 +19,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
+
 
 #####
 ResizeDirectionNone = 0
@@ -34,9 +36,11 @@ ResizeDirectionTopRight = 5
 ResizeDirectionBottomLeft = 6
 ResizeDirectionBottomRight = 7
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class PopupWindow(Qt.QFrame) :
@@ -44,10 +48,12 @@ class PopupWindow(Qt.QFrame) :
 		Qt.QFrame.__init__(self, parent)
 
 		self.setWindowFlags(Qt.Qt.Popup)
+
 		self.setMouseTracking(True)
 
 		self.setFrameStyle(Qt.QFrame.Box)
 		self.setFrameShadow(Qt.QFrame.Raised)
+
 		self.setLineWidth(1)
 		self.setMidLineWidth(2)
 

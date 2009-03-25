@@ -19,22 +19,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Const
 import Config
 import Locale
 
+
 #####
 GoogleTranslateHost = "translate.google.com"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class GoogleTranslate(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
+
+		#####
 
 		self.http = Qt.QHttp()
 		self.http_request_id = -1

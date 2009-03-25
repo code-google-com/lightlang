@@ -19,23 +19,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
 import Const
 
+
 #####
 SL = Config.Prefix+"/bin/sl"
 AllDictsDir = Config.Prefix+"/share/sl/dicts/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class FindWordInSL(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
+
+		#####
 
 		self.proc = Qt.QProcess()
 		self.proc.setReadChannelMode(Qt.QProcess.MergedChannels)
@@ -103,8 +109,7 @@ class FindWordInSL(Qt.QObject) :
 		self.proc_kill_flag = False
 		self.proc.start(SL, self.proc_args)
 
-
-	### Private ###
+	###
 
 	def processError(self, error_code) :
 		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :

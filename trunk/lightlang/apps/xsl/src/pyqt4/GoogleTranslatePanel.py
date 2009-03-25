@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
@@ -26,12 +27,15 @@ import Locale
 import GoogleTranslate
 import TextEdit
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class GoogleTranslatePanel(Qt.QDockWidget) :
@@ -41,15 +45,16 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.setObjectName("google_translate_panel")
 
 		self.setWindowTitle(tr("Google Translate"))
+
 		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
+
+		#####
 
 		self.main_widget = Qt.QWidget()
 		self.setWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_widget.setLayout(self.main_layout)
-
-		#####
 
 		self.langs_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.langs_layout)
@@ -108,7 +113,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			[ tr("Ukrainian"),		Qt.QVariant("uk") ],
 			[ tr("Vietnamese"),		Qt.QVariant("vi") ],
 			]
-
 		self.internalSortLangs(0, len(self.langs_list) -1)
 
 		self.lang = Locale.mainLang()

@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
@@ -39,13 +40,16 @@ import InternetLinksMenu
 import HelpBrowser
 import About
 
+
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class MainWindow(Qt.QMainWindow) :
@@ -57,14 +61,13 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
 
+		#####
+
 		self.main_widget = Qt.QWidget()
 		self.setCentralWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_widget.setLayout(self.main_layout)
-
-		self.status_bar = StatusBar.StatusBar()
-		self.setStatusBar(self.status_bar)
 
 		##############################
 		##### Creating Resources #####
@@ -99,6 +102,9 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.tabbed_translate_browser = TabbedTranslateBrowser.TabbedTranslateBrowser()
 		self.main_layout.addWidget(self.tabbed_translate_browser)
+
+		self.status_bar = StatusBar.StatusBar()
+		self.setStatusBar(self.status_bar)
 
 		self.translate_window = TranslateWindow.TranslateWindow()
 

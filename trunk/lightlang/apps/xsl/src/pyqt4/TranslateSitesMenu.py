@@ -19,26 +19,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import TranslateSiteSAXHandler
 
+
 #####
 TranslateSitesDir = Config.Prefix+"/lib/xsl/trsites/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class TranslateSitesMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
 
-		self.actions_data_list = []
+		#####
 
+		self.actions_data_list = []
 		self.createActions()
 
 		#####

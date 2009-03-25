@@ -19,24 +19,30 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
 import Const
+
 
 #####
 SL = Config.Prefix+"/bin/sl"
 AllSoundsDir = Config.Prefix+"/share/sl/sounds/"
 AudioPostfix = ".ogg"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class FindSoundInSL(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
+
+		#####
 
 		self.proc = Qt.QProcess()
 
@@ -81,6 +87,7 @@ class FindSoundInSL(Qt.QObject) :
 		word = word.toLower()
 
 		return Qt.QFile.exists(AllSoundsDir+lang+"/"+word[0]+"/"+word+AudioPostfix)
+
 
 	### Private ###
 

@@ -19,16 +19,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
-try : # optional requires python-xlib
+try : # Optional requires python-xlib
 	import Xlib
 	import Xlib.display
 	PythonXlibExistsFlag = True
 except :
 	PythonXlibExistsFlag = False
 	print Const.MyName+": python-xlib is not found, please, install it"
+
 
 #####
 LeftCtrlModifier = 133
@@ -41,19 +43,23 @@ RightShiftModifier = 230
 RightWinModifier = 452
 NoModifier = -1
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class KeyboardModifierMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
 
+		#####
+
 		self.actions_list = []
 		self.actions_group = Qt.QActionGroup(self)
 
-		###
+		#####
 
 		self.addModifier(tr("Left Ctrl"), LeftCtrlModifier)
 		self.addModifier(tr("Left Alt"), LeftAltModifier)

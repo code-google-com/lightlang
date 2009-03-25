@@ -19,21 +19,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class InternetLinksMenu(Qt.QMenu) :
 	def __init__(self, title, parent=None) :
 		Qt.QMenu.__init__(self, title, parent)
+
+		#####
 
 		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Developer e-mail"),
 			"mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)

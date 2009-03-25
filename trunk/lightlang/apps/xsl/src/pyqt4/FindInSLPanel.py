@@ -19,17 +19,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import FindWordInSL
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class ListBrowser(Qt.QTextBrowser) :
@@ -40,9 +44,11 @@ class ListBrowser(Qt.QTextBrowser) :
 
 		self.setFocusPolicy(Qt.Qt.NoFocus)
 
+		#####
+
 		self.last_anchor = Qt.QString()
 
-		###
+		#####
 
 		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.uFind)
 
@@ -106,8 +112,11 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.setObjectName("find_in_sl_panel")
 
 		self.setWindowTitle(tr("SL Search"))
+
 		self.setFeatures(Qt.QDockWidget.DockWidgetFloatable|Qt.QDockWidget.DockWidgetMovable)
 		self.setAllowedAreas(Qt.Qt.LeftDockWidgetArea|Qt.Qt.RightDockWidgetArea)
+
+		#####
 
 		self.main_widget = Qt.QWidget()
 		self.setWidget(self.main_widget)

@@ -19,20 +19,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import Config
 import Const
 import Locale
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class IFASAXHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_app_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)
+
+		#####
 
 		self.new_app_handler = new_app_handler
 

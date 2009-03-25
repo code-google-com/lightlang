@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
@@ -26,12 +27,15 @@ import PopupWindow
 import FindInTextFrame
 import TranslateBrowser
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class TranslateWindow(PopupWindow.PopupWindow) :
@@ -39,6 +43,8 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		PopupWindow.PopupWindow.__init__(self, parent)
 
 		self.setObjectName("translate_window")
+
+		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_layout.setContentsMargins(0, 0, 0, 0)

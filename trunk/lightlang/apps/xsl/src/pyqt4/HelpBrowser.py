@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
@@ -27,15 +28,18 @@ import TextBrowser
 import FindInTextFrame
 import TransparentFrame
 
+
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+Locale.docsLang()+"/index.html"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class HelpBrowser(Qt.QWidget) :
@@ -44,7 +48,10 @@ class HelpBrowser(Qt.QWidget) :
 
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
+
 		self.resize(800, 600)
+
+		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -93,6 +100,8 @@ class HelpBrowser(Qt.QWidget) :
 		self.control_buttons_frame_layout.addWidget(self.home_button)
 
 		self.control_buttons_frame.setFixedSize(self.control_buttons_frame_layout.minimumSize())
+
+		###
 
 		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
 		self.find_in_text_frame.hide()

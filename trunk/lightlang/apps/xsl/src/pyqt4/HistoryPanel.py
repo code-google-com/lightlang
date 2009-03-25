@@ -19,16 +19,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class HistoryPanel(Qt.QDockWidget) :
@@ -38,7 +42,10 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.setObjectName("history_panel")
 
 		self.setWindowTitle(tr("Search history"))
+
 		self.setAllowedAreas(Qt.Qt.LeftDockWidgetArea|Qt.Qt.RightDockWidgetArea)
+
+		#####
 
 		self.main_widget = Qt.QWidget()
 		self.setWidget(self.main_widget)

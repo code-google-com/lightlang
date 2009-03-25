@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import sys
 import os
@@ -29,9 +30,16 @@ import TrayIcon
 import MainWindow
 import Global
 
+
 #####
 TrDir = Config.Prefix+"/lib/xsl/tr/"
 MySplash = Config.Prefix+"/lib/xsl/pictures/xsl_splash.png"
+
+
+#####
+def tr(str) :
+	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class Main :
@@ -87,7 +95,7 @@ class Main :
 
 		#####
 
-		Global.main = self # Global main-object
+		Global.Main = self # Global main-object
 
 		#####
 
@@ -114,7 +122,7 @@ class Main :
 		old_pid = Qt.QString(lock_file_stream.readLine())
 		if old_pid.length() and Qt.QDir("/proc/"+old_pid).exists() and not self.app.isSessionRestored() :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				self.tr("%1 process is already running, kill old process and try again.\n"
+				tr("%1 process is already running, kill old process and try again.\n"
 					"If not, remove lock file \"%2\"").arg(Const.MyName).arg(lock_file_name))
 			lock_file.close()
 			sys.exit(1)
@@ -133,13 +141,4 @@ class Main :
 			session_manager.setRestartHint(Qt.QSessionManager.RestartIfRunning)
 		else :
 			print >> sys.stderr, Const.MyName+": cannot save session: ignored"
-
-	###
-
-	def tr(self, text) :
-		str = self.translator.translate("Main", text)
-		if not str.simplified().isEmpty() :
-			return str
-		else :
-			return Qt.QString(text)
 
