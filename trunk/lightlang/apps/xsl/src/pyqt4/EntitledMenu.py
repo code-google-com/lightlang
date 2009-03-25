@@ -31,7 +31,7 @@ def tr(str) :
 
 
 #####
-class TrayMenu(Qt.QMenu) :
+class EntitledMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)
 

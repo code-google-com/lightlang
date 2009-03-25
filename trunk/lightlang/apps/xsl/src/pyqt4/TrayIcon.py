@@ -23,7 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
-import TrayMenu
+import EntitledMenu
 
 
 #####
@@ -46,7 +46,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 
 		#####
 
-		self.tray_menu = TrayMenu.TrayMenu(Qt.QIcon(MyIcon), Const.Organization+" "+Const.MyName)
+		self.tray_menu = EntitledMenu.EntitledMenu(Qt.QIcon(MyIcon), Const.Organization+" "+Const.MyName)
 
 		self.start_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
 			tr("Start Spy"), self.startSpy)
