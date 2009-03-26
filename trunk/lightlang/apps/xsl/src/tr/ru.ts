@@ -18,7 +18,7 @@
         <translation>&amp;ОК</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="42"/>
+        <location filename="DictInformationWindow.py" line="47"/>
         <source>Dict Information</source>
         <translation>Информация о словаре</translation>
     </message>
@@ -28,42 +28,12 @@
         <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="85"/>
+        <location filename="DictInformationWindow.py" line="90"/>
         <source>&amp;Update</source>
         <translation>Об&amp;новить</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="115"/>
-        <source>Caption:</source>
-        <translation>Заголовок:</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="118"/>
-        <source>Direction:</source>
-        <translation>Направление:</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="121"/>
-        <source>File path:</source>
-        <translation>Путь к файлу:</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="124"/>
-        <source>File size (KB):</source>
-        <translation>Размер файла (КБ):</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="128"/>
-        <source>Count of words:</source>
-        <translation>Количество слов:</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="129"/>
-        <source>Description:</source>
-        <translation>Описание:</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="212"/>
+        <location filename="DictInformationWindow.py" line="224"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -810,6 +780,36 @@ Spy-сервис работает</translation>
 If not, remove lock file &quot;%2&quot;</source>
         <translation>Процесс %1 уже был запущен, завершите старый процесс и попробуйте снова.
 Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="120"/>
+        <source>Caption</source>
+        <translation>Заголовок</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="122"/>
+        <source>Direction</source>
+        <translation>Направление</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="124"/>
+        <source>File path</source>
+        <translation>Путь к файлу</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="126"/>
+        <source>File size (KB)</source>
+        <translation>Размер файла (КБ)</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="131"/>
+        <source>Count of words</source>
+        <translation>Количество слов</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="133"/>
+        <source>Description</source>
+        <translation>Описание</translation>
     </message>
 </context>
 </TS>

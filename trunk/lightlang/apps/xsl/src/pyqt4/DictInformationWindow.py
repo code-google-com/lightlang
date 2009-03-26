@@ -19,9 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
+import TextBrowser
+
 
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
@@ -30,9 +33,11 @@ WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
 AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class DictInformationWindow(Qt.QWidget) :
@@ -64,7 +69,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 		#####
 
-		self.dict_information_browser = Qt.QTextBrowser()
+		self.dict_information_browser = TextBrowser.TextBrowser()
 		self.dict_information_browser_layout.addWidget(self.dict_information_browser)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
@@ -112,21 +117,20 @@ class DictInformationWindow(Qt.QWidget) :
 
 		dict_information = Qt.QString()
 
-		dict_information.append(self.record(tr("Caption:"), self.dictCaption()))
-		self.dict_information_browser.setHtml(dict_information)
-
-		dict_information.append(self.record(tr("Direction:"), self.dictDirection()))
-		self.dict_information_browser.setHtml(dict_information)
-
-		dict_information.append(self.record(tr("File path:"), self.dictFilePath()))
-		self.dict_information_browser.setHtml(dict_information)
-
-		dict_information.append(self.record(tr("File size (KB):"), self.dictFileSize()))
+		dict_information.append(self.record(tr("Caption"), self.dictCaption()))
+		dict_information.append("<hr>")
+		dict_information.append(self.record(tr("Direction"), self.dictDirection()))
+		dict_information.append("<hr>")
+		dict_information.append(self.record(tr("File path"), self.dictFilePath()))
+		dict_information.append("<hr>")
+		dict_information.append(self.record(tr("File size (KB)"), self.dictFileSize()))
+		dict_information.append("<hr>")
 		self.dict_information_browser.setHtml(dict_information)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_information.append(self.record(tr("Count of words:"), word_count))
-		dict_information.append(self.record(tr("Description:"), dict_description))
+		dict_information.append(self.record(tr("Count of words"), word_count))
+		dict_information.append("<hr>")
+		dict_information.append(self.record(tr("Description"), dict_description))
 		self.dict_information_browser.setHtml(dict_information)
 
 		###
@@ -147,11 +151,17 @@ class DictInformationWindow(Qt.QWidget) :
 		self.activateWindow()
 
 		if not self.is_loaded_flag :
-			self.is_loaded_flag = True
 			self.updateInformation()
+			self.is_loaded_flag = True
 
 
 	### Private ###
+
+	def record(self, label, text) :
+		return Qt.QString("<em><strong><font color=\"#494949\">%1"
+			"</font></strong>: %2</em>").arg(label).arg(text)
+
+	###
 
 	def dictCaption(self) :
 		index = self.dict_name.lastIndexOf(".")
@@ -159,7 +169,9 @@ class DictInformationWindow(Qt.QWidget) :
 			dict_caption = self.dict_name.left(index)
 		else :
 			dict_caption = Qt.QString(self.dict_name)
+
 		dict_caption.replace("_", " ")
+
 		return dict_caption
 
 	def dictDirection(self) :
@@ -171,6 +183,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
+
 		if Qt.QFile.exists(dict_file_path) :
 			return dict_file_path
 		else :
@@ -204,16 +217,9 @@ class DictInformationWindow(Qt.QWidget) :
 					word_count += 1
 			dict_file.close()
 			dict_description.trimmed()
-			dict_description.prepend("<br>")
 
 		if dict_description.isEmpty() :
 			dict_description = tr("Unavailable")
 
 		return dict_description, Qt.QString().setNum(word_count)
-
-	###
-
-	def record(self, label, text) :
-		return Qt.QString("<em><strong><font color=\"#494949\">%1"
-			"</font></strong> %2</em><br>").arg(label).arg(text)
 
