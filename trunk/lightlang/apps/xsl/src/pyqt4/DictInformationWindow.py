@@ -158,8 +158,7 @@ class DictInformationWindow(Qt.QWidget) :
 	### Private ###
 
 	def record(self, label, text) :
-		return Qt.QString("<em><strong><font color=\"#494949\">%1"
-			"</font></strong>: %2</em>").arg(label).arg(text)
+		return Qt.QString("<strong><font color=\"#494949\">%1</font></strong>: %2").arg(label).arg(text)
 
 	###
 
