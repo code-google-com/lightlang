@@ -19,10 +19,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import DictsListWidget
+
 
 #####
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
@@ -31,9 +33,11 @@ WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
 AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class DictsManager(Qt.QWidget) :
@@ -43,7 +47,7 @@ class DictsManager(Qt.QWidget) :
 		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
-		self.resize(400, 550)
+		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.setLayout(self.main_layout)
@@ -63,6 +67,10 @@ class DictsManager(Qt.QWidget) :
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.control_buttons_layout)
+
+		#####
+
+		self.item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
 
 		#####
 
@@ -129,8 +137,7 @@ class DictsManager(Qt.QWidget) :
 
 		self.connect(self.dicts_list, Qt.SIGNAL("upAvailable(bool)"), self.up_button.setEnabled)
 		self.connect(self.dicts_list, Qt.SIGNAL("downAvailable(bool)"), self.down_button.setEnabled)
-		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"),
-			self.dictsListChangedSignal)
+		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
 
 		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.dicts_list.up)
 
@@ -155,7 +162,11 @@ class DictsManager(Qt.QWidget) :
 		self.wait_picture_movie.start()
 		self.wait_message_label.show()
 
+		###
+
 		self.dicts_list.setList(self.syncLists(self.listOfAllDicts(), self.dicts_list.list()))
+
+		###
 
 		self.wait_picture_movie_label.hide()
 		self.wait_picture_movie.stop()
@@ -167,21 +178,28 @@ class DictsManager(Qt.QWidget) :
 		self.update_dicts_button.setEnabled(True)
 		self.update_dicts_button.blockSignals(False)
 
+	###
+
 	def saveSettings(self) :
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings.setValue("dicts_manager/size", Qt.QVariant(self.size()))
 		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
 	def loadSettings(self) :
 		self.update_dicts_button.blockSignals(True)
 		self.update_dicts_button.setEnabled(False)
 
+		###
+
 		settings = Qt.QSettings(Const.Organization, Const.MyName)
 
-		all_dicts_list = self.listOfAllDicts()
-		local_dicts_list = settings.value("dicts_manager/dicts_list",
-			Qt.QVariant(Qt.QStringList())).toStringList()
+		self.resize(settings.value("dicts_manager/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 
+		all_dicts_list = self.listOfAllDicts()
+		local_dicts_list = settings.value("dicts_manager/dicts_list", Qt.QVariant(Qt.QStringList())).toStringList()
 		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
+
+		###
 
 		Qt.QCoreApplication.processEvents()
 
@@ -218,18 +236,16 @@ class DictsManager(Qt.QWidget) :
 	def syncLists(self, all_dicts_list, local_dicts_list) :
 		local_dicts_list = Qt.QStringList(local_dicts_list)
 
-		item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
-
 		count = 0
 		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
+			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
 
-			if not all_dicts_list.contains(item_code_regexp.cap(1)) :
+			if not all_dicts_list.contains(self.item_code_regexp.cap(1)) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
@@ -241,11 +257,11 @@ class DictsManager(Qt.QWidget) :
 		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
+			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
 				count += 1
 				continue
 
-			tmp_list << item_code_regexp.cap(1)
+			tmp_list << self.item_code_regexp.cap(1)
 
 			count += 1
 
@@ -263,7 +279,7 @@ class DictsManager(Qt.QWidget) :
 	###
 
 	def setStatusFromLineEdit(self, word) :
-		if word.simplified().isEmpty() :
+		if word.isEmpty() : # Not simplified
 			self.clear_line_edit_button.setEnabled(False)
 		else :
 			self.clear_line_edit_button.setEnabled(True)
