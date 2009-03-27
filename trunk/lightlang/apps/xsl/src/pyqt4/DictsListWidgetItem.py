@@ -19,27 +19,26 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import DictInformationWindow
 
+
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
+
 #####
 class DictsListWidgetItem(Qt.QWidget) :
-	def __init__(self, dict_name, enable_dict_state = Qt.Qt.Unchecked, parent = None) :
+	def __init__(self, dict_name, enable_dict_state, parent = None) :
 		Qt.QWidget.__init__(self, parent)
-
-		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setContentsMargins(5, 5, 5, 5)
-		self.main_layout.setSpacing(3)
-		self.setLayout(self.main_layout)
 
 		if self.font().pixelSize() > 0 :
 			self.setFixedHeight((self.font().pixelSize() + 5) * 2)
@@ -50,9 +49,14 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		#####
 
-		self.dict_name = Qt.QString(dict_name)
+		self.main_layout = Qt.QHBoxLayout()
+		self.main_layout.setContentsMargins(5, 5, 5, 5)
+		self.main_layout.setSpacing(3)
+		self.setLayout(self.main_layout)
 
 		#####
+
+		self.dict_name = Qt.QString(dict_name)
 
 		self.dict_information_window = DictInformationWindow.DictInformationWindow(dict_name)
 
@@ -99,8 +103,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.connect(self.enable_dict_checkbox, Qt.SIGNAL("stateChanged(int)"), self.stateChangedSignal)
 
-		self.connect(self.show_information_button, Qt.SIGNAL("clicked()"),
-			self.dict_information_window.show)
+		self.connect(self.show_information_button, Qt.SIGNAL("clicked()"), self.dict_information_window.show)
 
 
 	### Public ###
