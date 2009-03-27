@@ -19,14 +19,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 from PyQt4 import Qt
 import Config
 import Const
 import DictsListWidgetItem
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
+
 
 #####
 class DictsListWidget(Qt.QTableWidget) :
@@ -49,9 +52,12 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		#####
 
+		self.item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
+
+		#####
+
 		self.connect(self, Qt.SIGNAL("cellActivated(int, int)"), self.invertDictState)
-		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"),
-			self.currentRowChanged)
+		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"), self.currentRowChanged)
 
 		self.connect(self.verticalHeader(), Qt.SIGNAL("sectionClicked(int)"), self.setCurrentRow)
 
@@ -59,20 +65,19 @@ class DictsListWidget(Qt.QTableWidget) :
 	### Public ###
 
 	def setList(self, list) :
-		item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
-
 		self.setRowCount(0)
+
 		count = 0
 		while count < list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not item_code_regexp.exactMatch(list[count]) :
+			if not self.item_code_regexp.exactMatch(list[count]) :
 				count += 1
 				continue
 
-			dict_name = item_code_regexp.cap(1)
+			dict_name = self.item_code_regexp.cap(1)
 
-			if item_code_regexp.cap(2).toInt()[0] > 0 :
+			if self.item_code_regexp.cap(2).toInt()[0] > 0 :
 				enable_dict_state = Qt.Qt.Checked
 			else :
 				enable_dict_state = Qt.Qt.Unchecked
@@ -89,14 +94,12 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def list(self) :
 		list = Qt.QStringList()
+
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			item = self.cellWidget(count, 0)
-			if item == None :
-				count += 1
-				continue
 
 			dict_name = item.dictName()
 
@@ -108,25 +111,25 @@ class DictsListWidget(Qt.QTableWidget) :
 			list << Qt.QString("{%1}{%2}").arg(dict_name).arg(enable_dict_flag)
 
 			count += 1
+
 		return list
 
 	###
 
 	def dictsList(self) :
 		list = Qt.QStringList()
+
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			item = self.cellWidget(count, 0)
-			if item == None :
-				count += 1
-				continue
 
 			if item.dictState() == Qt.Qt.Checked :
 				list << item.dictName()
 
 			count += 1
+
 		return list
 
 	###
@@ -153,9 +156,6 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < self.rowCount() :
 			item = self.cellWidget(count, 0)
-			if item == None :
-				count += 1
-				continue
 
 			dict = Qt.QString("%1.%2").arg(item.dictCaption()).arg(item.dictDirection())
 			if not dict.contains(str, Qt.Qt.CaseInsensitive) :
@@ -250,7 +250,7 @@ class DictsListWidget(Qt.QTableWidget) :
 	### Events ###
 
 	def keyPressEvent(self, event) :
-		if event.modifiers() == Qt.Qt.ShiftModifier :
+		if event.modifiers() == Qt.Qt.ControlModifier :
 			if event.key() == Qt.Qt.Key_Up :
 				self.up()
 			elif event.key() == Qt.Qt.Key_Down :
