@@ -117,20 +117,22 @@ class DictInformationWindow(Qt.QWidget) :
 
 		dict_information = Qt.QString()
 
-		dict_information.append(self.record(tr("Caption"), self.dictCaption()))
+		html_form = Qt.QString("<strong><font color=\"#494949\">%1</font></strong>: %2")
+
+		dict_information.append(html_form.arg(tr("Caption")).arg(self.dictCaption()))
 		dict_information.append("<hr>")
-		dict_information.append(self.record(tr("Direction"), self.dictDirection()))
+		dict_information.append(html_form.arg(tr("Direction")).arg(self.dictDirection()))
 		dict_information.append("<hr>")
-		dict_information.append(self.record(tr("File path"), self.dictFilePath()))
+		dict_information.append(html_form.arg(tr("File path")).arg(self.dictFilePath()))
 		dict_information.append("<hr>")
-		dict_information.append(self.record(tr("File size (KB)"), self.dictFileSize()))
+		dict_information.append(html_form.arg(tr("File size (KB)")).arg(self.dictFileSize()))
 		dict_information.append("<hr>")
 		self.dict_information_browser.setHtml(dict_information)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_information.append(self.record(tr("Count of words"), word_count))
+		dict_information.append(html_form.arg(tr("Count of words")).arg(word_count))
 		dict_information.append("<hr>")
-		dict_information.append(self.record(tr("Description"), dict_description))
+		dict_information.append(html_form.arg(tr("Description")).arg(dict_description))
 		self.dict_information_browser.setHtml(dict_information)
 
 		###
@@ -157,15 +159,11 @@ class DictInformationWindow(Qt.QWidget) :
 
 	### Private ###
 
-	def record(self, label, text) :
-		return Qt.QString("<strong><font color=\"#494949\">%1</font></strong>: %2").arg(label).arg(text)
-
-	###
-
 	def dictCaption(self) :
-		index = self.dict_name.lastIndexOf(".")
-		if index >= 0 :
-			dict_caption = self.dict_name.left(index)
+		dict_caption_regexp = Qt.QRegExp("([^\\.]+)\\...-..")
+
+		if dict_caption_regexp.exactMatch(self.dict_name) :
+			dict_caption = dict_caption_regexp.cap(1)
 		else :
 			dict_caption = Qt.QString(self.dict_name)
 
@@ -174,15 +172,15 @@ class DictInformationWindow(Qt.QWidget) :
 		return dict_caption
 
 	def dictDirection(self) :
-		index = self.dict_name.lastIndexOf(".")
-		if index >= 0 :
-			return self.dict_name.mid(index +1)
+		dict_direction_regexp = Qt.QRegExp("[^\\.]+\\.(..-..)")
+
+		if dict_direction_regexp.exactMatch(self.dict_name) :
+			return dict_direction_regexp.cap(1)
 		else :
 			return tr("Unavailable")
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
-
 		if Qt.QFile.exists(dict_file_path) :
 			return dict_file_path
 		else :
