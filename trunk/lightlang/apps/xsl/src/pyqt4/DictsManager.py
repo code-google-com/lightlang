@@ -55,11 +55,11 @@ class DictsManager(Qt.QWidget) :
 		self.line_edit_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.line_edit_layout)
 
-		self.dicts_list_layout = Qt.QVBoxLayout()
-		self.main_layout.addLayout(self.dicts_list_layout)
+		self.stacked_widget = Qt.QStackedWidget()
+		self.main_layout.addWidget(self.stacked_widget)
 
-		self.dicts_list_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.dicts_list_buttons_layout)
+		self.stacked_widget_buttons_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.stacked_widget_buttons_layout)
 
 		self.horizontal_frame = Qt.QFrame()
 		self.horizontal_frame.setFrameStyle(Qt.QFrame.HLine|Qt.QFrame.Sunken)
@@ -67,10 +67,6 @@ class DictsManager(Qt.QWidget) :
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.control_buttons_layout)
-
-		#####
-
-		self.item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
 
 		#####
 
@@ -88,35 +84,34 @@ class DictsManager(Qt.QWidget) :
 		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
 		self.dicts_list = DictsListWidget.DictsListWidget()
-		self.dicts_list_layout.addWidget(self.dicts_list)
+		self.stacked_widget.addWidget(self.dicts_list)
+
+		self.wait_picture_movie = Qt.QMovie(WaitPicture)
+		self.wait_picture_movie.setScaledSize(Qt.QSize(32, 32))
+		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_picture_movie_label = Qt.QLabel()
+		self.wait_picture_movie_label.setAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
+		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
+		self.stacked_widget.addWidget(self.wait_picture_movie_label)
 
 		self.up_button = Qt.QToolButton()
 		self.up_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
 		self.up_button.setIconSize(Qt.QSize(22, 22))
 		self.up_button.setEnabled(False)
-		self.dicts_list_buttons_layout.addWidget(self.up_button)
+		self.stacked_widget_buttons_layout.addWidget(self.up_button)
 
 		self.down_button = Qt.QToolButton()
 		self.down_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
 		self.down_button.setIconSize(Qt.QSize(22, 22))
 		self.down_button.setEnabled(False)
-		self.dicts_list_buttons_layout.addWidget(self.down_button)
+		self.stacked_widget_buttons_layout.addWidget(self.down_button)
 
-		self.dicts_list_buttons_layout.addStretch()
+		self.stacked_widget_buttons_layout.addStretch()
 
 		self.update_dicts_button = Qt.QToolButton()
 		self.update_dicts_button.setIcon(Qt.QIcon(IconsDir+"update_22.png"))
 		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
-		self.dicts_list_buttons_layout.addWidget(self.update_dicts_button)
-
-		self.wait_picture_movie = Qt.QMovie(WaitPicture)
-		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-		self.wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_picture_movie_label = Qt.QLabel()
-		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.wait_picture_movie_label.hide()
-		self.control_buttons_layout.addWidget(self.wait_picture_movie_label)
+		self.stacked_widget_buttons_layout.addWidget(self.update_dicts_button)
 
 		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
 		self.wait_message_label.hide()
@@ -140,9 +135,7 @@ class DictsManager(Qt.QWidget) :
 		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
 
 		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.dicts_list.up)
-
 		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.dicts_list.down)
-
 		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
@@ -158,25 +151,34 @@ class DictsManager(Qt.QWidget) :
 		self.update_dicts_button.blockSignals(True)
 		self.update_dicts_button.setEnabled(False)
 
-		self.wait_picture_movie_label.show()
-		self.wait_picture_movie.start()
+		self.line_edit.clear()
+		self.line_edit.setEnabled(False)
+
 		self.wait_message_label.show()
+		self.stacked_widget.setCurrentIndex(1)
+		self.wait_picture_movie.start()
 
 		###
 
-		self.dicts_list.setList(self.syncLists(self.listOfAllDicts(), self.dicts_list.list()))
+		self.dicts_list.setList(self.allAndLocalDicts(self.dicts_list.list()))
 
 		###
-
-		self.wait_picture_movie_label.hide()
-		self.wait_picture_movie.stop()
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_message_label.hide()
 
 		Qt.QCoreApplication.processEvents()
 
+		self.wait_message_label.hide()
+		self.stacked_widget.setCurrentIndex(0)
+		self.wait_picture_movie.stop()
+		self.wait_picture_movie.jumpToFrame(0)
+
+		self.line_edit.setEnabled(True)
+
 		self.update_dicts_button.setEnabled(True)
 		self.update_dicts_button.blockSignals(False)
+
+		#####
+
+		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
 
 	###
 
@@ -195,9 +197,8 @@ class DictsManager(Qt.QWidget) :
 
 		self.resize(settings.value("dicts_manager/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 
-		all_dicts_list = self.listOfAllDicts()
 		local_dicts_list = settings.value("dicts_manager/dicts_list", Qt.QVariant(Qt.QStringList())).toStringList()
-		self.dicts_list.setList(self.syncLists(all_dicts_list, local_dicts_list))
+		self.dicts_list.setList(self.allAndLocalDicts(local_dicts_list))
 
 		###
 
@@ -227,50 +228,49 @@ class DictsManager(Qt.QWidget) :
 
 	### Private ###
 
-	def listOfAllDicts(self) :
+	def allAndLocalDicts(self, local_dicts_list) :
 		all_dicts_dir = Qt.QDir(AllDictsDir)
 		all_dicts_dir.setFilter(Qt.QDir.Files)
 		all_dicts_dir.setSorting(Qt.QDir.Name)
-		return all_dicts_dir.entryList()
+		all_dicts_dir_entry_list = all_dicts_dir.entryList()
 
-	def syncLists(self, all_dicts_list, local_dicts_list) :
 		local_dicts_list = Qt.QStringList(local_dicts_list)
 
+		###
+
+		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
+
+		###
+
 		count = 0
 		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
+			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
 
-			if not all_dicts_list.contains(self.item_code_regexp.cap(1)) :
+			if not all_dicts_dir_entry_list.contains(item_code_regexp.cap(2)) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
 
 			count += 1
 
-		tmp_list = Qt.QStringList()
-		count = 0
-		while count < local_dicts_list.count() :
-			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
+		###
 
-			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
-				count += 1
-				continue
+		tmp_list = Qt.QStringList(local_dicts_list)
+		tmp_list.replaceInStrings(item_code_regexp, "\\2")
 
-			tmp_list << self.item_code_regexp.cap(1)
-
-			count += 1
+		###
 
 		count = 0
-		while count < all_dicts_list.count() :
+		while count < all_dicts_dir_entry_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not tmp_list.contains(all_dicts_list[count]) :
-				local_dicts_list << Qt.QString("{%1}{0}").arg(all_dicts_list[count])
+			if not tmp_list.contains(all_dicts_dir_entry_list[count]) :
+				local_dicts_list << Qt.QString("{0}{%1}").arg(all_dicts_dir_entry_list[count])
 
 			count += 1
 

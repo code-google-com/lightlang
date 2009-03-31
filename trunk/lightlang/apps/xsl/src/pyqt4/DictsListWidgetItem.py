@@ -37,7 +37,7 @@ def tr(str) :
 
 #####
 class DictsListWidgetItem(Qt.QWidget) :
-	def __init__(self, dict_name, enable_dict_state, parent = None) :
+	def __init__(self, dict_state, dict_name, dict_caption, dict_direction, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
@@ -63,29 +63,19 @@ class DictsListWidgetItem(Qt.QWidget) :
 		#####
 
 		self.enable_dict_checkbox = Qt.QCheckBox()
-		self.enable_dict_checkbox.setCheckState(enable_dict_state)
+		self.enable_dict_checkbox.setCheckState(dict_state)
 		self.main_layout.addWidget(self.enable_dict_checkbox)
 
 		self.vertical_frame1 = Qt.QFrame()
 		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self.main_layout.addWidget(self.vertical_frame1)
 
-		self.dict_caption_label = Qt.QLabel()
-		index = dict_name.lastIndexOf(".")
-		if index >= 0 :
-			dict_caption = dict_name.left(index)
-		else :
-			dict_caption = Qt.QString(dict_name)
-		dict_caption.replace("_", " ")
-		self.dict_caption_label.setText(dict_caption)
+		self.dict_caption_label = Qt.QLabel(dict_caption)
 		self.main_layout.addWidget(self.dict_caption_label)
 
 		self.main_layout.addStretch()
 
-		self.dict_direction_label = Qt.QLabel()
-		index = dict_name.lastIndexOf(".")
-		if index >= 0 :
-			self.dict_direction_label.setText(dict_name.mid(index +1))
+		self.dict_direction_label = Qt.QLabel(dict_direction)
 		self.main_layout.addWidget(self.dict_direction_label)
 
 		self.vertical_frame2 = Qt.QFrame()
@@ -108,6 +98,9 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 	### Public ###
 
+	def dictState(self) :
+		return self.enable_dict_checkbox.checkState()
+
 	def dictName(self) :
 		return Qt.QString(self.dict_name)
 
@@ -116,9 +109,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 	def dictDirection(self) :
 		return self.dict_direction_label.text()
-
-	def dictState(self) :
-		return self.enable_dict_checkbox.checkState()
 
 	###
 

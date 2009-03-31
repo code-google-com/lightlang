@@ -137,12 +137,12 @@ class DictInformationWindow(Qt.QWidget) :
 
 		###
 
+		Qt.QCoreApplication.processEvents()
+
 		self.wait_picture_movie_label.hide()
 		self.wait_picture_movie.stop()
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_message_label.hide()
-
-		Qt.QCoreApplication.processEvents()
 
 		self.update_information_button.setEnabled(True)
 		self.update_information_button.blockSignals(False)

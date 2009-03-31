@@ -52,10 +52,6 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		#####
 
-		self.item_code_regexp = Qt.QRegExp("\\{(.+)\\}\\{(\\d)\\}")
-
-		#####
-
 		self.connect(self, Qt.SIGNAL("cellActivated(int, int)"), self.invertDictState)
 		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"), self.currentRowChanged)
 
@@ -67,22 +63,30 @@ class DictsListWidget(Qt.QTableWidget) :
 	def setList(self, list) :
 		self.setRowCount(0)
 
+		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{((.+)\\.(..-..))\\}")
+
 		count = 0
 		while count < list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not self.item_code_regexp.exactMatch(list[count]) :
+			if not item_code_regexp.exactMatch(list[count]) :
 				count += 1
 				continue
 
-			dict_name = self.item_code_regexp.cap(1)
-
-			if self.item_code_regexp.cap(2).toInt()[0] > 0 :
-				enable_dict_state = Qt.Qt.Checked
+			if item_code_regexp.cap(1).toInt()[0] > 0 :
+				dict_state = Qt.Qt.Checked
 			else :
-				enable_dict_state = Qt.Qt.Unchecked
+				dict_state = Qt.Qt.Unchecked
 
-			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_name, enable_dict_state))
+			dict_name = item_code_regexp.cap(2)
+
+			dict_caption = item_code_regexp.cap(3)
+			dict_caption.replace("_", " ")
+
+			dict_direction = item_code_regexp.cap(4)
+
+			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state,
+				dict_name, dict_caption, dict_direction))
 
 			count += 1
 
@@ -101,14 +105,14 @@ class DictsListWidget(Qt.QTableWidget) :
 
 			item = self.cellWidget(count, 0)
 
-			dict_name = item.dictName()
-
 			if item.dictState() == Qt.Qt.Checked :
 				enable_dict_flag = 1
 			else :
 				enable_dict_flag = 0
 
-			list << Qt.QString("{%1}{%2}").arg(dict_name).arg(enable_dict_flag)
+			dict_name = item.dictName()
+
+			list << Qt.QString("{%1}{%2}").arg(enable_dict_flag).arg(dict_name)
 
 			count += 1
 
@@ -137,16 +141,14 @@ class DictsListWidget(Qt.QTableWidget) :
 	def up(self) :
 		index = self.currentRow()
 		if self.isUpAvailable(index) :
-			item = self.takeDictItem(index)
-			self.insertDictItem(item, index -1)
+			self.insertDictItem(self.takeDictItem(index), index -1)
 			self.setCurrentCell(index -1, 0)
 			self.dictsListChangedSignal()
 
 	def down(self) :
 		index = self.currentRow()
 		if self.isDownAvailable(index) :
-			item = self.takeDictItem(index)
-			self.insertDictItem(item, index +1)
+			self.insertDictItem(self.takeDictItem(index), index +1)
 			self.setCurrentCell(index +1, 0)
 			self.dictsListChangedSignal()
 
@@ -157,8 +159,10 @@ class DictsListWidget(Qt.QTableWidget) :
 		while count < self.rowCount() :
 			item = self.cellWidget(count, 0)
 
-			dict = Qt.QString("%1.%2").arg(item.dictCaption()).arg(item.dictDirection())
-			if not dict.contains(str, Qt.Qt.CaseInsensitive) :
+			dict_name = item.dictName()
+			dict_name.replace("_", " ")
+
+			if not dict_name.contains(str, Qt.Qt.CaseInsensitive) :
 				self.hideRow(count)
 			else :
 				self.showRow(count)
@@ -185,7 +189,9 @@ class DictsListWidget(Qt.QTableWidget) :
 			return None
 
 		internal_widget = self.cellWidget(index, 0)
-		external_widget = DictsListWidgetItem.DictsListWidgetItem(internal_widget.dictName(), internal_widget.dictState())
+
+		external_widget = DictsListWidgetItem.DictsListWidgetItem(internal_widget.dictState(),
+			internal_widget.dictName(), internal_widget.dictCaption(), internal_widget.dictDirection())
 
 		self.removeRow(index)
 
@@ -216,15 +222,8 @@ class DictsListWidget(Qt.QTableWidget) :
 		self.setCurrentCell(index, 0)
 		self.currentRowChangedSignal(index)
 
-		if self.isUpAvailable(index) :
-			self.upAvailableSignal(True)
-		else :
-			self.upAvailableSignal(False)
-
-		if self.isDownAvailable(index) :
-			self.downAvailableSignal(True)
-		else :
-			self.downAvailableSignal(False)
+		self.upAvailableSignal(self.isUpAvailable(index))
+		self.downAvailableSignal(self.isDownAvailable(index))
 
 	###
 
