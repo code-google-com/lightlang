@@ -92,6 +92,7 @@ class About(Qt.QDialog) :
 		self.text_label_layout.addWidget(self.text_label)
 
 		self.ok_button = Qt.QPushButton(tr("&OK"))
+		self.ok_button.setDefault(True)
 		self.ok_button_layout.addWidget(self.ok_button)
 
 		#####
