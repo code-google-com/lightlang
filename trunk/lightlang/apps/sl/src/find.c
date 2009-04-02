@@ -600,17 +600,12 @@ static void print_header(const char *dict_name)
 static void print_list_item(const wchar_t *word_wc, const int word_number)
 {
 	//////////////////////////////////////////
-	static long	link_count = 0l;	// Schetchik ssylok
 	extern settings_t settings;		// Parametry sistemy
 	//////////////////////////////////////////
 
 
 	if ( settings.output_format == html_output_format )
-	{
-		printf("\t(<em>%d</em>) <a name=\"z_%ls\"></a><a href=\"#z_%ls\">%ls</a><br>\n",
-			word_number, word_wc, word_wc, word_wc);
-		++link_count;
-	}
+		printf("\t(<em>%d</em>) <a href=\"#i_%ls\">%ls</a><br>\n", word_number, word_wc, word_wc);
 	else if ( settings.output_format == text_output_format )
 	{
 		if ( settings.use_terminal_escapes_flag )
@@ -639,7 +634,6 @@ static void print_translate(const char *str, const int word_number)
 	bool	word_link_text_flag = false;	// Flag ssylki-teksta
 	bool	sound_link_text_flag = false;	// Flas ssyli-zvuka
 	bool	shiel_flag = false;		// Flag ekranirovaniya
-	static long		link_count = 0l;// Shetchik ssylok
 	extern settings_t	settings;	// Parametry sistemy
 	//////////////////////////////////////////
 
@@ -692,8 +686,7 @@ static void print_translate(const char *str, const int word_number)
 						else { printf("</font></u>"); word_link_text_flag = false; } break;
 
 					case 's' : if ( !sound_link_text_flag )
-						{ printf("&nbsp;[&nbsp;<a href=\"#s%ld_", link_count);
-						++link_count; sound_link_text_flag = true; }
+						{ printf("&nbsp;[&nbsp;<a href=\"#s_"); sound_link_text_flag = true; }
 						else { printf("\"><font size=\"+1\">\u266B</font></a>&nbsp;]&nbsp;");
 						sound_link_text_flag = false; } break;
 
