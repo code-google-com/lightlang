@@ -127,20 +127,22 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.single_translate_browsers[index].setHtml(tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
+
 		self.tabChangedSignal()
 
 	def removeTab(self, index = -1) :
 		if self.shred_lock_flag :
 			return
 
-		if self.tab_widget.count() == 1 :
-			self.single_translate_browsers[0].setHtml(tr("<em>Empty</em>"))
-			self.tab_widget.setTabText(0, tr("(Untitled)"))
-		else :
-			if index == -1 :
-				index = self.tab_widget.currentIndex()
-			self.tab_widget.removeTab(index)
-			self.single_translate_browsers.pop(index)
+		if index < 0 :
+			index = self.tab_widget.currentIndex()
+
+		self.tab_widget.removeTab(index)
+		self.single_translate_browsers.pop(index)
+
+		if self.tab_widget.count() == 0 :
+			self.addTab()
+
 		self.tabChangedSignal()
 
 	###
@@ -162,22 +164,22 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def text(self, index = -1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		return self.single_translate_browsers[index].text()
 
 	def caption(self, index = -1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		return self.tab_widget.tabText(index)
 
 	def browser(self, index = -1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		return self.single_translate_browsers[index]
 
 	def document(self, index = -1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		return self.single_translate_browsers[index].document()
 
@@ -187,7 +189,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		if self.shred_lock_flag :
 			return
 
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
 		self.tab_widget.setTabText(index, tr("(Untitled)"))
@@ -196,15 +198,16 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		if self.shred_lock_flag :
 			return
 
-		while self.count() != 1 :
+		count = self.count()
+		while count > 0 :
 			self.removeTab(0)
-		self.clearPage(0)
+			count -= 1
 
 	def clear(self, index = -1) :
 		if self.shred_lock_flag :
 			return
 
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		self.single_translate_browsers[index].clear()
 		self.tab_widget.setTabText(index, Qt.QString())
@@ -212,12 +215,12 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def zoomIn(self, index = -1, range = 1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		self.single_translate_browsers[index].zoomIn(range)
 
 	def zoomOut(self, index = -1, range = 1) :
-		if index == -1 :
+		if index < 0 :
 			index = self.tab_widget.currentIndex()
 		self.single_translate_browsers[index].zoomOut(range)
 
