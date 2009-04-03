@@ -83,8 +83,7 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
-		self.connect(self.history_browser, Qt.SIGNAL("itemActivated(QListWidgetItem *)"),
-			self.wordChangedSignal)
+		self.connect(self.history_browser, Qt.SIGNAL("itemActivated(QListWidgetItem *)"), self.wordChangedSignal)
 		self.connect(self.clear_history_button, Qt.SIGNAL("clicked()"), self.clearHistory)
 
 
