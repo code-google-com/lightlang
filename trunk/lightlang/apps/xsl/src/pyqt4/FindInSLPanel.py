@@ -24,6 +24,7 @@ from PyQt4 import Qt
 import Config
 import Const
 import FindWordInSL
+import ListBrowser
 
 
 #####
@@ -33,75 +34,6 @@ IconsDir = Config.Prefix+"/lib/xsl/icons/"
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
-
-
-#####
-class ListBrowser(Qt.QTextBrowser) :
-	def __init__(self, parent = None) :
-		Qt.QTextBrowser.__init__(self, parent)
-
-		self.setOpenLinks(False)
-
-		self.setFocusPolicy(Qt.Qt.NoFocus)
-
-		#####
-
-		self.last_anchor = Qt.QString()
-
-		#####
-
-		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.uFind)
-
-
-	### Private ###
-
-	def uFind(self, url) :
-		word = url.toString()
-		word.remove(0, word.indexOf("_")+1)
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		self.uFindRequestSignal(word)
-
-	def uFindInNewTab(self) :
-		self.last_anchor.remove(0, self.last_anchor.indexOf("_")+1)
-		self.last_anchor = self.last_anchor.simplified()
-		if self.last_anchor.isEmpty() :
-			return
-		self.uFindInNewTabRequestSignal(self.last_anchor)
-
-	def cFindInNewTab(self) :
-		self.last_anchor.remove(0, self.last_anchor.indexOf("_")+1)
-		self.last_anchor = self.last_anchor.simplified()
-		if self.last_anchor.isEmpty() :
-			return
-		self.cFindInNewTabRequestSignal(self.last_anchor)
-
-
-	### Signals ###
-
-	def uFindRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
-
-	def uFindInNewTabRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("uFindInNewTabRequest(const QString &)"), word)
-
-	def cFindInNewTabRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("cFindInNewTabRequest(const QString &)"), word)
-
-
-	### Handlers ###
-
-	def contextMenuEvent(self, event) :
-		self.last_anchor = self.anchorAt(event.pos())
-		if self.last_anchor.isEmpty() :
-			context_menu = self.createStandardContextMenu()
-			context_menu.exec_(event.globalPos())
-		else :
-			context_menu = Qt.QMenu()
-			context_menu.addAction(tr("Search (in new tab)"), self.uFindInNewTab)
-			context_menu.addAction(tr("Expanded search (in new tab)"), self.cFindInNewTab)
-			context_menu.exec_(event.globalPos())
 
 
 #####
@@ -164,8 +96,8 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.c_find_button.setEnabled(False)
 		self.top_find_buttons_layout.addWidget(self.c_find_button)
 
-		self.list_browser = ListBrowser()
-		self.list_browser.setHtml(tr("<em>Enter the word, please</em>"))
+		self.list_browser = ListBrowser.ListBrowser()
+		self.list_browser.setText(tr("Enter the word, please"))
 		self.list_browser_layout.addWidget(self.list_browser)
 
 		self.l_find_button = Qt.QPushButton(tr("Word &list"))
@@ -183,7 +115,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.connect(self.delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
 
 		self.connect(self.internal_find, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
-		self.connect(self.internal_find, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setHtml)
+		self.connect(self.internal_find, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setText)
 
 		self.connect(self.external_find, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
 		self.connect(self.external_find, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
@@ -257,7 +189,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		word = self.line_edit.text()
 		word = word.simplified()
 		if word.isEmpty() :
-			self.list_browser.setHtml(tr("<em>Enter the word, please</em>"))
+			self.list_browser.setText(tr("Enter the word, please"))
 			return
 		self.internal_find.lFind(word)
 
@@ -267,7 +199,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		word = self.line_edit.text()
 		word = word.simplified()
 		if word.isEmpty() :
-			self.list_browser.setHtml(tr("<em>Enter the word, please</em>"))
+			self.list_browser.setText(tr("Enter the word, please"))
 			return
 		self.internal_find.iFind(word)
 
