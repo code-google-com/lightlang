@@ -59,8 +59,8 @@ class FindWordInSL(Qt.QObject) :
 		#####
 
 		self.replaces_list = [
-			["This word is not found", tr("This word is not found")],
-			["No dict is connected", tr("No dict is connected")]
+			["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
+			["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
 			]
 
 		#####
@@ -175,8 +175,8 @@ class FindWordInSL(Qt.QObject) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
-		for replaces_list_item in self.replaces_list :
-			text.replace(replaces_list_item[0], replaces_list_item[1])
+		#for replaces_list_item in self.replaces_list :
+		#	text.replace(replaces_list_item[0], replaces_list_item[1])
 
 		self.textChangedSignal(text)
 

@@ -813,13 +813,13 @@ If not, remove lock file &quot;%2&quot;</source>
     </message>
     <message>
         <location filename="FindWordInSL.py" line="62"/>
-        <source>This word is not found</source>
-        <translation>Такого слова не найдено</translation>
+        <source>&lt;em&gt;This word is not found&lt;/em&gt;</source>
+        <translation>&lt;em&gt;Такого слова не найдено&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="FindWordInSL.py" line="68"/>
-        <source>No dict is connected</source>
-        <translation>Нет подключенных словарей</translation>
+        <source>&lt;em&gt;No dict is connected&lt;/em&gt;</source>
+        <translation>&lt;em&gt;Нет подключенных словарей&lt;/em&gt;</translation>
     </message>
 </context>
 </TS>
