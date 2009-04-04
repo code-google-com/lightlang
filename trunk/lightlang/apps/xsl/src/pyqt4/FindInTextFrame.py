@@ -115,11 +115,18 @@ class FindInTextFrame(Qt.QFrame) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
 
+	###
+
 	def setLineEditRedAlertPalette(self) :
 		self.line_edit.setPalette(self.line_edit_red_alert_palette)
 
 	def setLineEditDefaultPalette(self) :
 		self.line_edit.setPalette(self.line_edit_default_palette)
+
+	###
+
+	def clear(self) :
+		self.line_edit.clear()
 
 
 	### Private ###
@@ -138,6 +145,8 @@ class FindInTextFrame(Qt.QFrame) :
 
 	def instantSearchRequest(self, word) :
 		self.instantSearchRequestSignal(word)
+
+	###
 
 	def setStatus(self) :
 		if self.line_edit.text().simplified().isEmpty() :

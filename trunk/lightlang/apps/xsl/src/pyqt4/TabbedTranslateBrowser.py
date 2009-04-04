@@ -203,6 +203,9 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			self.removeTab(0)
 			count -= 1
 
+		self.find_in_text_frame.hide()
+		self.find_in_text_frame.clear()
+
 	def clear(self, index = -1) :
 		if self.shred_lock_flag :
 			return
