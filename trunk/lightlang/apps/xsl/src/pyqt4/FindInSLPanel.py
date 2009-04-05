@@ -123,7 +123,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.connect(self.external_find, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 
 		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.u_find_button.animateClick)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatus)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.delay_timer.start)
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
@@ -240,7 +240,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 
 	###
 
-	def setStatus(self, word) :
+	def setStatusFromLineEdit(self, word) :
 		if word.simplified().isEmpty() :
 			self.clear_line_edit_button.setEnabled(False)
 

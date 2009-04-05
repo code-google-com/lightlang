@@ -99,7 +99,7 @@ class FindInTextFrame(Qt.QFrame) :
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
 
 		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.next_button.animateClick)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatus)
+		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
 
 		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
@@ -148,7 +148,7 @@ class FindInTextFrame(Qt.QFrame) :
 
 	###
 
-	def setStatus(self) :
+	def setStatusFromLineEdit(self) :
 		if self.line_edit.text().simplified().isEmpty() :
 			self.clear_line_edit_button.setEnabled(False)
 
