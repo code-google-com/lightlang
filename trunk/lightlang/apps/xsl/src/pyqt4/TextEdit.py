@@ -35,6 +35,8 @@ class TextEdit(Qt.QTextEdit) :
 	def __init__(self, parent = None) :
 		Qt.QTextEdit.__init__(self, parent)
 
+		self.setAcceptRichText(False)
+
 
 	### Signals ###
 
