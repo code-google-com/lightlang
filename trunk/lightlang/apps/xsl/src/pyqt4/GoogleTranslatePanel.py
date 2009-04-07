@@ -257,8 +257,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.google_translate.translate(sl, tl, text)
 
-		self.abort_button.setEnabled(True)
-
 	def abort(self) :
 		self.google_translate.abort()
 

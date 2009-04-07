@@ -48,12 +48,6 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.http_output = Qt.QByteArray()
 
-		self.translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
-		self.translate_regexp.setMinimal(True)
-
-		self.direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
-		self.direction_regexp.setMinimal(True)
-
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(30000)
 
@@ -87,17 +81,16 @@ class GoogleTranslate(Qt.QObject) :
 
 		text = text.trimmed()
 
+		###
+
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
-			url = Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
-				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text))
-
-			Qt.QDesktopServices.openUrl(url)
-
+			Qt.QDesktopServices.openUrl(Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
+				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text)))
 			self.textChangedSignal(tr("<em>Link <strong>%1</strong> translation was opened in your browser</em>").arg(text))
-
 			self.processFinishedSignal()
-
 			return
+
+		###
 
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
@@ -117,12 +110,12 @@ class GoogleTranslate(Qt.QObject) :
 		self.timer.start()
 
 	def abort(self) :
-		self.statusChangedSignal(Qt.QString())
-		self.textChangedSignal(tr("<em>Aborted</em>"))
-
 		self.http_abort_flag = True
 		self.http.abort()
 		self.http_abort_flag = False
+
+		self.statusChangedSignal(Qt.QString())
+		self.textChangedSignal(tr("<em>Aborted</em>"))
 
 
 	### Private ###
@@ -163,17 +156,19 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		if self.direction_regexp.indexIn(text) > -1 :
-			direction = self.direction_regexp.cap(1)
-		else :
-			direction = Qt.QString()
+		direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
+		direction_regexp.setMinimal(True)
 
-		if self.translate_regexp.indexIn(text) > -1 :
-			translate = self.translate_regexp.cap(1)
-		else :
-			translate = text
+		translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
+		translate_regexp.setMinimal(True)
 
-		text = Qt.QString("<font color=\"#494949\">%1</font><hr>%2").arg(direction).arg(translate)
+		direction_index = direction_regexp.indexIn(text)
+		translate_index = translate_regexp.indexIn(text)
+		if direction_index > -1 and translate_index > -1 :
+			text = (Qt.QString("<font color=\"#494949\">%1</font><hr>%2")
+				.arg(direction_regexp.cap(1)).arg(translate_regexp.cap(1)))
+		elif translate_index > -1 :
+			text = translate_regexp.cap(1)
 
 		###
 
