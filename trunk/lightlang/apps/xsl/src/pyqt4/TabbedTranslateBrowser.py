@@ -227,6 +227,11 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			index = self.tab_widget.currentIndex()
 		self.single_translate_browsers[index].zoomOut(range)
 
+	def zoomNormal(self, index = -1) :
+		if index < 0 :
+			index = self.tab_widget.currentIndex()
+		self.single_translate_browsers[index].zoomNormal()
+
 
 	### Private ###
 

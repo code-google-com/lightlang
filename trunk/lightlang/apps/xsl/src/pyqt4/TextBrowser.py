@@ -39,6 +39,8 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		#####
 
+		self.zoom_count = 0
+
 		self.tmp_text_cursor = Qt.QTextCursor()
 
 		#####
@@ -53,6 +55,24 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	def text(self) :
 		return self.toHtml()
+
+	###
+
+	def zoomIn(self, range = 1) :
+		if -5 <= self.zoom_count + range <= 5 :
+			Qt.QTextBrowser.zoomIn(self, range)
+			self.zoom_count += range
+
+	def zoomOut(self, range = 1) :
+		if -5 <= self.zoom_count - range <= 5 :
+			Qt.QTextBrowser.zoomOut(self, range)
+			self.zoom_count -= range
+
+	def zoomNormal(self) :
+		if self.zoom_count > 0 :
+			self.zoomOut(self.zoom_count)
+		elif self.zoom_count < 0 :
+			self.zoomIn(-self.zoom_count)
 
 	###
 

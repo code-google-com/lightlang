@@ -179,6 +179,8 @@ class MainWindow(Qt.QMainWindow) :
 			self.tabbed_translate_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), tr("Zoom out"),
 			self.tabbed_translate_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
+		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_normal_16.png"), tr("Zoom normal"),
+			self.tabbed_translate_browser.zoomNormal, Qt.QKeySequence("Ctrl+0"))
 		self.view_menu.addSeparator()
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Toggle to fullscreen"),
 			self.toggleFullScreen, Qt.QKeySequence("F11"))

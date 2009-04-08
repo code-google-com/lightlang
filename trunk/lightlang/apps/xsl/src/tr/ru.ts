@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
-        <location filename="MainWindow.py" line="226"/>
+        <location filename="MainWindow.py" line="228"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
@@ -130,7 +131,7 @@ Press &quot;Yes&quot; to exit</source>
 Нажмите &quot;Yes&quot; для выхода</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="85"/>
+        <location filename="GoogleTranslate.py" line="79"/>
         <source>Google Translate</source>
         <translation>Переводчик Google</translation>
     </message>
@@ -255,47 +256,47 @@ Press &quot;Yes&quot; to exit</source>
         <translation>Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="86"/>
+        <location filename="GoogleTranslate.py" line="80"/>
         <source>&lt;em&gt;Please wait...&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="121"/>
+        <location filename="GoogleTranslate.py" line="118"/>
         <source>&lt;em&gt;Aborted&lt;/em&gt;</source>
         <translation>&lt;em&gt;Прервано&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="134"/>
+        <location filename="GoogleTranslate.py" line="127"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="136"/>
+        <location filename="GoogleTranslate.py" line="129"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="138"/>
+        <location filename="GoogleTranslate.py" line="131"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="140"/>
+        <location filename="GoogleTranslate.py" line="133"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="142"/>
+        <location filename="GoogleTranslate.py" line="135"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="144"/>
+        <location filename="GoogleTranslate.py" line="137"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="156"/>
+        <location filename="GoogleTranslate.py" line="149"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -312,7 +313,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Руководство %1 - %2</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="196"/>
+        <location filename="MainWindow.py" line="198"/>
         <source>Search history</source>
         <translation>История поиска</translation>
     </message>
@@ -481,97 +482,97 @@ Package version: %2</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="183"/>
+        <location filename="MainWindow.py" line="185"/>
         <source>Toggle to fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="188"/>
+        <location filename="MainWindow.py" line="190"/>
         <source>Sp&amp;y</source>
         <translation>Sp&amp;y</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="193"/>
+        <location filename="MainWindow.py" line="195"/>
         <source>&amp;Tools</source>
         <translation>Инс&amp;трументы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="194"/>
+        <location filename="MainWindow.py" line="196"/>
         <source>SL search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="198"/>
+        <location filename="MainWindow.py" line="200"/>
         <source>Google-Translate client</source>
         <translation>Клиент переводчика Google</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="201"/>
+        <location filename="MainWindow.py" line="203"/>
         <source>Dicts management</source>
         <translation>Управление словарями</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="205"/>
+        <location filename="MainWindow.py" line="207"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="211"/>
+        <location filename="MainWindow.py" line="213"/>
         <source>Applications</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="218"/>
+        <location filename="MainWindow.py" line="220"/>
         <source>&amp;Help</source>
         <translation>По&amp;мощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="220"/>
+        <location filename="MainWindow.py" line="222"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="222"/>
+        <location filename="MainWindow.py" line="224"/>
         <source>Internet links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="227"/>
+        <location filename="MainWindow.py" line="229"/>
         <source>About Qt4</source>
         <translation>О библиотеке Qt4</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="243"/>
+        <location filename="MainWindow.py" line="245"/>
         <source>Welcome</source>
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="247"/>
+        <location filename="MainWindow.py" line="249"/>
         <source>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Welcome to the %1 - the system of electronic dictionaries&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</source>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Добро пожаловать в систему электронных словарей %1&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="286"/>
+        <location filename="MainWindow.py" line="288"/>
         <source>Ready</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="409"/>
+        <location filename="MainWindow.py" line="411"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="417"/>
+        <location filename="MainWindow.py" line="419"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="426"/>
+        <location filename="MainWindow.py" line="428"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="439"/>
+        <location filename="MainWindow.py" line="441"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
@@ -611,17 +612,17 @@ Package version: %2</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="193"/>
+        <location filename="TabbedTranslateBrowser.py" line="195"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="192"/>
+        <location filename="TabbedTranslateBrowser.py" line="194"/>
         <source>&lt;em&gt;Empty&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пусто&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="80"/>
+        <location filename="TextBrowser.py" line="100"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
@@ -760,7 +761,7 @@ Spy-сервис работает</translation>
         <translation>Я не знаю...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="96"/>
+        <location filename="GoogleTranslate.py" line="89"/>
         <source>&lt;em&gt;Link &lt;strong&gt;%1&lt;/strong&gt; translation was opened in your browser&lt;/em&gt;</source>
         <translation>&lt;em&gt;Ссылка &lt;strong&gt;%1&lt;/strong&gt; открыта в окне вашего браузера&lt;/em&gt;</translation>
     </message>
@@ -820,6 +821,11 @@ If not, remove lock file &quot;%2&quot;</source>
         <location filename="FindWordInSL.py" line="68"/>
         <source>&lt;em&gt;No dict is connected&lt;/em&gt;</source>
         <translation>&lt;em&gt;Нет подключенных словарей&lt;/em&gt;</translation>
+    </message>
+    <message>
+        <location filename="MainWindow.py" line="182"/>
+        <source>Zoom normal</source>
+        <translation>Нормальный размер</translation>
     </message>
 </context>
 </TS>
