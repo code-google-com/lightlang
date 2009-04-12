@@ -64,6 +64,9 @@ AllCommands = [RemoteListCommand, InstallCommand,
 	LocalListCommand, UninstallCommand,
 	HelpCommand, VersionCommand]
 
+###
+AllCommandModifier = "all"
+
 
 #####
 class FTPRepositoryServer :
@@ -307,7 +310,7 @@ def install_resources(resources_type = "", resources_list = []) :
 		return -1
 
 	for remote_resources_list_item in remote_resources_list :
-		if remote_resources_list_item.resource_name in resources_list :
+		if remote_resources_list_item.resource_name in resources_list or AllCommandModifier in resources_list :
 			if resources_type == DictsResources :
 				print "-"*80
 
