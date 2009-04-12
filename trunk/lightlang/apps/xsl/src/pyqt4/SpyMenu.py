@@ -23,6 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 try : # optional requires python-xlib
 	import Xlib
 	import Xlib.display
@@ -103,7 +104,7 @@ class SpyMenu(Qt.QMenu) :
 	### 
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		settings.setValue("spy_menu/show_translate_window_flag",
 			Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/auto_detect_window_flag",
@@ -115,7 +116,7 @@ class SpyMenu(Qt.QMenu) :
 
 
 	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag",
 			Qt.QVariant(True)).toBool())
 		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag",

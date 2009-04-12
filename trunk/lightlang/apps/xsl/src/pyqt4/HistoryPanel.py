@@ -23,6 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 
 
 #####
@@ -102,11 +103,11 @@ class HistoryPanel(Qt.QDockWidget) :
 	###
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		settings.setValue("history_panel/list", Qt.QVariant(self.list()))
 
 	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		self.setList(settings.value("history_panel/list", Qt.QVariant(Qt.QStringList())).toStringList())
 
 	###

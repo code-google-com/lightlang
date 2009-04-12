@@ -23,6 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 import DictsListWidget
 
 
@@ -183,7 +184,7 @@ class DictsManager(Qt.QWidget) :
 	###
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		settings.setValue("dicts_manager/size", Qt.QVariant(self.size()))
 		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
@@ -193,7 +194,7 @@ class DictsManager(Qt.QWidget) :
 
 		###
 
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 
 		self.resize(settings.value("dicts_manager/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 

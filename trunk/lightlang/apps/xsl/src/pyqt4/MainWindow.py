@@ -24,6 +24,7 @@ from PyQt4 import Qt
 import sys
 import Config
 import Const
+import User
 import FindInSLPanel
 import GoogleTranslatePanel
 import HistoryPanel
@@ -461,14 +462,14 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		settings.setValue("main_window/size", Qt.QVariant(self.size()))
 		settings.setValue("main_window/position", Qt.QVariant(self.pos()))
 		settings.setValue("main_window/is_visible_flag", Qt.QVariant(self.isVisible()))
 		settings.setValue("main_window/state", Qt.QVariant(self.saveState()))
 
 	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		self.resize(settings.value("main_window/size", Qt.QVariant(Qt.QSize(800, 500))).toSize())
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())

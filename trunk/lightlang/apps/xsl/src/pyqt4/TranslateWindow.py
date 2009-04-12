@@ -23,6 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 import PopupWindow
 import FindInTextFrame
 import TranslateBrowser
@@ -129,11 +130,11 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 	###
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		settings.setValue("translate_window/size", Qt.QVariant(self.size()))
 
 	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
+		settings = User.settings()
 		self.resize(settings.value("translate_window/size", Qt.QVariant(Qt.QSize(550, 400))).toSize())
 
 	###

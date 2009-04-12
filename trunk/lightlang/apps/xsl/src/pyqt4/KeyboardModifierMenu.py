@@ -23,6 +23,7 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 try : # Optional requires python-xlib
 	import Xlib
 	import Xlib.display
@@ -89,12 +90,12 @@ class KeyboardModifierMenu(Qt.QMenu) :
 	### Public ###
 
 	def saveSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		settings.setValue("modifier_menu/modifier_index", Qt.QVariant(self.index()))
+		settings = User.settings()
+		settings.setValue("keyboard_modifier_menu/modifier_index", Qt.QVariant(self.index()))
 
 	def loadSettings(self) :
-		settings = Qt.QSettings(Const.Organization, Const.MyName)
-		self.setIndex(settings.value("modifier_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
+		settings = User.settings()
+		self.setIndex(settings.value("keyboard_modifier_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
 
 
 	### Private ###
