@@ -17,14 +17,15 @@ elseif exists("b:current_syntax")
 endif
 
 
-syn region	sl_dict_bold_region		start=+[uU]\=\\\[+ end=+\\\]+ contains=sl_dict_escapes
-syn region	sl_dict_italic_region		start=+[uU]\=\\(+ end=+\\)+ contains=sl_dict_escapes
-syn region	sl_dict_official_region		start=+[uU]\=\\<+ end=+\\>+ contains=sl_dict_escapes
-syn region	sl_dict_underlined_region	start=+[uU]\=\\_+ end=+\\_+ contains=sl_dict_escapes
-syn region	sl_dict_sound_region		start=+[uU]\=\\s+ end=+\\s+ contains=sl_dict_escapes
+syn region	bold		start=+[uU]\=\\\[+ end=+\\\]+ contains=escapes,bold,italic,official,underlined
+syn region	italic		start=+[uU]\=\\(+ end=+\\)+ contains=escapes,bold,italic,official,underlined
+syn region	official	start=+[uU]\=\\<+ end=+\\>+ contains=escapes,bold,italic,official,underlined
+syn region	underlined	start=+[uU]\=\\_+ end=+\\_+ contains=escapes,bold,italic,official
+syn region	sound		start=+[uU]\=\\s+ end=+\\s+
 
-syn match	sl_dict_comment			"#.*$"
-syn match	sl_dict_escapes			+\\[nt\\]+
+syn match	word		"^\([^ ]\|\s[^ ]\)*  "
+syn match	comment		"#.*$"
+syn match	escapes		+\\[nt\\]+
 
 if version >= 508 || !exists("did_sldict_syn_inits")
   if version <= 508
@@ -34,13 +35,15 @@ if version >= 508 || !exists("did_sldict_syn_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
-  HiLink sl_dict_bold_region		Statement
-  HiLink sl_dict_italic_region		Constant
-  HiLink sl_dict_official_region	Type
-  HiLink sl_dict_underlined_region	Underlined
-  HiLink sl_dict_sound_region		Identifier
-  HiLink sl_dict_comment		Comment
-  HiLink sl_dict_escapes		Special
+  HiLink bold		Statement
+  HiLink italic		Constant
+  HiLink official	Type
+  HiLink underlined	Underlined
+  HiLink sound		Identifier
+
+  HiLink word		PreProc
+  HiLink comment	Comment
+  HiLink escapes	Special
 endif
 
 
