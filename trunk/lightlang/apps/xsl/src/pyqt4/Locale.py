@@ -41,7 +41,6 @@ def mainLang() :
 	return Qt.QString(lang)
 
 
-#####
 def docsLang() :
 	lang = Qt.QLocale().name()
 	lang.remove(lang.indexOf("_"), lang.length())
