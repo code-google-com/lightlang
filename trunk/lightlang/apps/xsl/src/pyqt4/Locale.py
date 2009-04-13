@@ -30,7 +30,7 @@ def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
 
-#####
+##### Public #####
 def mainLang() :
 	lang = Qt.QLocale().name()
 	lang.remove(lang.indexOf("_"), lang.length())
