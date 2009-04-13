@@ -45,11 +45,19 @@ class IFAMenu(Qt.QMenu) :
 		#####
 
 		self.actions_data_list = []
-		self.createActions()
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("triggered(QAction *)"), self.launchApp)
+
+
+	### Public ###
+
+	def saveSettings(self) :
+		pass
+
+	def loadSettings(self) :
+		self.createActions()
 
 
 	### Private ###
@@ -128,7 +136,7 @@ class IFAMenu(Qt.QMenu) :
 				try :
 					exec str(instruction)
 				except :
-					print >> sys.stderr, Const.MyName+": [exec] IFA exception: ignored"
+					print >> sys.stderr, Const.MyName+": IFA exception [exec]: "+str(instruction)+": ignored"
 			count += 1
 
 	def execPostcode(self, index) :
@@ -141,6 +149,6 @@ class IFAMenu(Qt.QMenu) :
 				try :
 					exec str(instruction)
 				except :
-					print >> sys.stderr, Const.MyName+": [exec] IFA exception: ignored"
+					print >> sys.stderr, Const.MyName+": IFA exception [exec]: "+str(instruction)+": ignored"
 			count += 1
 

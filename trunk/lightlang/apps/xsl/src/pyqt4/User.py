@@ -26,18 +26,26 @@ import Const
 
 
 #####
+Settings = None
+
+
+#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
 
-#####
+##### Public #####
 def settings() :
-	return Qt.QSettings(Const.Organization, Const.MyName)
+	if Settings == None :
+		initSettings()
+	return Settings
 
 
-#####
 def settingsPath() :
-	user_settings_file_name = Qt.QSettings(Const.Organization, Const.MyName).fileName()
+	if Settings == None :
+		initSettings()
+
+	user_settings_file_name = Settings.fileName()
 
 	index = user_settings_file_name.lastIndexOf("/")
 	if index >= 0 :
@@ -46,4 +54,10 @@ def settingsPath() :
 		user_settings_path = Qt.QString()
 
 	return user_settings_path
+
+
+##### Private #####
+def initSettings() :
+	global Settings
+	Settings = Qt.QSettings(Const.Organization, Const.MyName)
 

@@ -271,6 +271,11 @@ class MainWindow(Qt.QMainWindow) :
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
 
+		try : # FIXME: Rrrrr... :-(
+			self.translate_sites_menu.saveSettings()
+			self.ifa_menu.saveSettings()
+		except : pass
+
 		self.saveSettings()
 
 	def load(self) :
@@ -280,6 +285,11 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager.loadSettings()
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
+
+		try : # FIXME: Rrrrr... :-(
+			self.translate_sites_menu.loadSettings()
+			self.ifa_menu.loadSettings()
+		except : pass
 
 		self.loadSettings()
 

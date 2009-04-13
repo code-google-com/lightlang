@@ -44,11 +44,19 @@ class TranslateSitesMenu(Qt.QMenu) :
 		#####
 
 		self.actions_data_list = []
-		self.createActions()
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("triggered(QAction *)"), self.openSite)
+
+
+	### Public ###
+
+	def saveSettings(self) :
+		pass
+
+	def loadSettings(self) :
+		self.createActions()
 
 
 	### Private ###
