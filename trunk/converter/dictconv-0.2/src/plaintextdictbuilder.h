@@ -74,7 +74,7 @@ public:
 protected:
 
   typedef unsigned int uint32;
-  typedef std::map<std::string, std::string> dictionary;
+  typedef std::multimap<std::string, std::string> dictionary;
 
   std::ofstream file;
   std::string m_filename;

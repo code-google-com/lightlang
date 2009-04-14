@@ -122,6 +122,7 @@ const std::string partOfSpeech[] = {
 typedef struct {
 	unsigned type;
 	unsigned length;
+	unsigned temp;
 	char * data;
 } bgl_block;
 

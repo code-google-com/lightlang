@@ -97,6 +97,7 @@ bool Babylon::readBlock( bgl_block &block )
   block.type = block.length & 0xf;
   if( block.type == 4 ) return false; // end of file marker
   block.length >>= 4;
+  block.temp = block.length;
   block.length = block.length < 4 ? bgl_readnum( block.length + 1 ) : block.length - 4 ;
   if( block.length )
   {
@@ -152,6 +153,7 @@ bool Babylon::read()
         break;
       case 1:
       case 10:
+      case 11:
         // Only count entries
         m_numEntries++;
         break;
@@ -246,6 +248,9 @@ bgl_entry Babylon::readEntry(int resEnabled)
     {
       case 1:
       case 10:
+      case 11:
+        if ((block.temp == 1) && (block.type == 11))
+		break; //headword's too long
         alternate.clear();
         headword.clear();
         definition.clear();
@@ -254,7 +259,18 @@ bgl_entry Babylon::readEntry(int resEnabled)
 
         // Headword
         len = 0;
-        len = (unsigned char)block.data[pos++];
+	if (block.type == 11){
+/*		while (block.data[pos++] == 0){
+			if (block.data[pos] > 0){
+				break;
+			}
+		}*/
+		pos += 3;
+		len = (unsigned char)block.data[pos++] << 8;
+		len |= (unsigned char)block.data[pos++];
+	} else{
+		len = (unsigned char)block.data[pos++];
+	}
 
         headword.reserve( len );
         for(uint a=0;a<len;a++) headword += block.data[pos++];
@@ -264,8 +280,20 @@ bgl_entry Babylon::readEntry(int resEnabled)
 
         // Definition
         len = 0;
-        len = (unsigned char)block.data[pos++] << 8;
-        len |= (unsigned char)block.data[pos++];
+	if (block.type == 11){
+		pos += 3;
+		uint alter_num = (unsigned char)block.data[pos];
+		for (uint a = 0; a < alter_num; a++){
+			pos = pos + 4 + ((unsigned char)block.data[pos + 3] << 8) + (unsigned char)block.data[pos + 4];
+		}
+		pos += 2;
+		for (uint a = 0; a < block.temp+1; a++){
+			len = (len << 8) | (unsigned char)block.data[pos++];
+		}
+	} else {
+		len = (unsigned char)block.data[pos++] << 8;
+		len |= (unsigned char)block.data[pos++];
+	}
         definition.reserve( len );
         for(uint a=0;a<len;a++)
         {
@@ -302,7 +330,7 @@ bgl_entry Babylon::readEntry(int resEnabled)
         return entry;
 	break;
 
-	  case 2:
+      case 2:
 		if (resEnabled == 2){
 			headword.clear();
 			pos = 0;
