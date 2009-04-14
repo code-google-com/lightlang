@@ -26,6 +26,10 @@ import Const
 
 
 #####
+SettingsPostfix = ".conf"
+
+
+#####
 Settings = None
 
 
@@ -49,15 +53,22 @@ def settingsPath() :
 
 	index = user_settings_file_name.lastIndexOf("/")
 	if index >= 0 :
-		user_settings_path = user_settings_file_name.left(index +1)
+		user_settings_dir_path = user_settings_file_name.left(index)
 	else :
-		user_settings_path = Qt.QString()
+		user_settings_dir_path = Qt.QString()
 
-	return user_settings_path
+	return user_settings_dir_path
 
 
 ##### Private #####
 def initSettings() :
 	global Settings
-	Settings = Qt.QSettings(Const.Organization, Const.MyName)
+
+	myname = Qt.QString(Const.MyName).toLower()
+
+	user_settings_dir = Qt.QDir(Qt.QDir.homePath()+"/."+myname)
+	if not user_settings_dir.exists() :
+		Qt.QDir.home().mkdir("."+myname)
+
+	Settings = Qt.QSettings(Qt.QDir.homePath()+"/."+myname+"/"+myname+SettingsPostfix, Qt.QSettings.IniFormat)
 
