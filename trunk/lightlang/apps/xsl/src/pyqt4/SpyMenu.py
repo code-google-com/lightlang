@@ -32,7 +32,7 @@ except :
 	PythonXlibExistsFlag = False
 	print Const.MyName+": python-xlib is not found, please, install it"
 import MouseSelector
-import KeyboardModifierMenu
+import KeyboardModifiersMenu
 
 
 #####
@@ -66,16 +66,16 @@ class SpyMenu(Qt.QMenu) :
 		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
 		self.addSeparator()
-		self.keyboard_modifier_menu = KeyboardModifierMenu.KeyboardModifierMenu(tr("Keyboard modifier"))
-		self.keyboard_modifier_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
-		self.addMenu(self.keyboard_modifier_menu)
+		self.keyboard_modifiers_menu = KeyboardModifiersMenu.KeyboardModifiersMenu(tr("Keyboard modifiers"))
+		self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+		self.addMenu(self.keyboard_modifiers_menu)
 
 		#####
 
 		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
-		self.connect(self.keyboard_modifier_menu, Qt.SIGNAL("modifierChanged(int)"),
+		self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"),
 			self.mouse_selector.setModifier)
 
 
@@ -112,7 +112,7 @@ class SpyMenu(Qt.QMenu) :
 		settings.setValue("spy_menu/spy_is_running_flag",
 			Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
 
-		self.keyboard_modifier_menu.saveSettings()
+		self.keyboard_modifiers_menu.saveSettings()
 
 
 	def loadSettings(self) :
@@ -124,7 +124,7 @@ class SpyMenu(Qt.QMenu) :
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
 			self.startSpy()
 
-		self.keyboard_modifier_menu.loadSettings()
+		self.keyboard_modifiers_menu.loadSettings()
 
 
 	### Private ###

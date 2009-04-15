@@ -51,7 +51,7 @@ def tr(str) :
 
 
 #####
-class KeyboardModifierMenu(Qt.QMenu) :
+class KeyboardModifiersMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
 
@@ -91,11 +91,11 @@ class KeyboardModifierMenu(Qt.QMenu) :
 
 	def saveSettings(self) :
 		settings = User.settings()
-		settings.setValue("keyboard_modifier_menu/modifier_index", Qt.QVariant(self.index()))
+		settings.setValue("keyboard_modifiers_menu/modifier_index", Qt.QVariant(self.index()))
 
 	def loadSettings(self) :
 		settings = User.settings()
-		self.setIndex(settings.value("keyboard_modifier_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
+		self.setIndex(settings.value("keyboard_modifiers_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
 
 
 	### Private ###
