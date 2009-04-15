@@ -348,6 +348,11 @@ def install_resources(resources_type = "", resources_list = []) :
 				if os.system(CATProg+" \""+out_file_path+"\" 1>> \""+resource_path+"\"") != 0 :
 					continue
 
+				try :
+					os.remove(out_file_path)
+					os.remove(tmp_file_path)
+				except : pass
+
 			elif resources_type == SoundsResources :
 				print "-"*80
 
