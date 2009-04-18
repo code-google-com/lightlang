@@ -24,11 +24,13 @@ from PyQt4 import Qt
 import sys
 import Config
 import Const
+import User
 import IFASAXHandler
 
 
 #####
-IFADir = Config.Prefix+"/lib/xsl/ifa/"
+IFASubdir = "ifa/"
+IFASystemDir = Config.Prefix+"/lib/xsl/"+IFASubdir
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 
@@ -63,16 +65,29 @@ class IFAMenu(Qt.QMenu) :
 	### Private ###
 
 	def createActions(self) :
-		ifa_dir = Qt.QDir(IFADir)
-		ifa_dir_name_filters = Qt.QStringList()
-		ifa_dir_name_filters << "*.ifa" << "*.xml"
-		ifa_dir.setNameFilters(ifa_dir_name_filters)
-		ifa_dir.setFilter(Qt.QDir.Files)
+		ifa_file_name_filtes = Qt.QStringList()
+		ifa_file_name_filtes << "*.ifa" << "*.xml"
+
+		ifa_system_dir = Qt.QDir(IFASystemDir)
+		ifa_system_dir.setSorting(Qt.QDir.Name)
+		ifa_system_dir.setNameFilters(ifa_file_name_filtes)
+		ifa_system_dir.setFilter(Qt.QDir.Files)
+		ifa_system_dir_entry_list = ifa_system_dir.entryList()
+		ifa_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), IFASystemDir+"\\1")
+
+		ifa_user_dir = Qt.QDir(User.settingsPath()+"/"+IFASubdir)
+		ifa_user_dir.setSorting(Qt.QDir.Name)
+		ifa_user_dir.setNameFilters(ifa_file_name_filtes)
+		ifa_user_dir.setFilter(Qt.QDir.Files)
+		ifa_user_dir_entry_list = ifa_user_dir.entryList()
+		ifa_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+IFASubdir+"\\1")
+
+		ifa_files_list = Qt.QStringList()
+		ifa_files_list << ifa_system_dir_entry_list << ifa_user_dir_entry_list
 
 		count = 0
-		while count < ifa_dir.count() :
-			ifa_file = Qt.QFile(IFADir+ifa_dir[count])
-			xml_input_source = Qt.QXmlInputSource(ifa_file)
+		while count < ifa_files_list.count() :
+			xml_input_source = Qt.QXmlInputSource(Qt.QFile(ifa_files_list[count]))
 			xml_reader = Qt.QXmlSimpleReader()
 			xml_handler = IFASAXHandler.IFASAXHandler(self.addApp)
 			xml_reader.setContentHandler(xml_handler)

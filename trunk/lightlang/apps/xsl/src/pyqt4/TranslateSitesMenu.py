@@ -23,11 +23,13 @@
 from PyQt4 import Qt
 import Config
 import Const
+import User
 import TranslateSiteSAXHandler
 
 
 #####
-TranslateSitesDir = Config.Prefix+"/lib/xsl/trsites/"
+TranslateSitesSubdir = "trsites/"
+TranslateSitesSystemDir = Config.Prefix+"/lib/xsl/"+TranslateSitesSubdir
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 
@@ -62,16 +64,29 @@ class TranslateSitesMenu(Qt.QMenu) :
 	### Private ###
 
 	def createActions(self) :
-		translate_sites_dir = Qt.QDir(TranslateSitesDir)
-		translate_sites_dir_name_filters = Qt.QStringList()
-		translate_sites_dir_name_filters << "*.trsite" << "*.xml"
-		translate_sites_dir.setNameFilters(translate_sites_dir_name_filters)
-		translate_sites_dir.setFilter(Qt.QDir.Files)
+		translate_sites_file_name_filtes = Qt.QStringList()
+		translate_sites_file_name_filtes << "*.trsite" << "*.xml"
+
+		translate_sites_system_dir = Qt.QDir(TranslateSitesSystemDir)
+		translate_sites_system_dir.setSorting(Qt.QDir.Name)
+		translate_sites_system_dir.setNameFilters(translate_sites_file_name_filtes)
+		translate_sites_system_dir.setFilter(Qt.QDir.Files)
+		translate_sites_system_dir_entry_list = translate_sites_system_dir.entryList()
+		translate_sites_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), TranslateSitesSystemDir+"\\1")
+
+		translate_sites_user_dir = Qt.QDir(User.settingsPath()+"/"+TranslateSitesSubdir)
+		translate_sites_user_dir.setSorting(Qt.QDir.Name)
+		translate_sites_user_dir.setNameFilters(translate_sites_file_name_filtes)
+		translate_sites_user_dir.setFilter(Qt.QDir.Files)
+		translate_sites_user_dir_entry_list = translate_sites_user_dir.entryList()
+		translate_sites_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+TranslateSitesSubdir+"\\1")
+
+		translate_sites_files_list = Qt.QStringList()
+		translate_sites_files_list << translate_sites_system_dir_entry_list << translate_sites_user_dir_entry_list
 
 		count = 0
-		while count < translate_sites_dir.count() :
-			trsite_file = Qt.QFile(TranslateSitesDir+translate_sites_dir[count])
-			xml_input_source = Qt.QXmlInputSource(trsite_file)
+		while count < translate_sites_files_list.count() :
+			xml_input_source = Qt.QXmlInputSource(Qt.QFile(translate_sites_files_list[count]))
 			xml_reader = Qt.QXmlSimpleReader()
 			xml_handler = TranslateSiteSAXHandler.TranslateSiteSAXHandler(self.addSite)
 			xml_reader.setContentHandler(xml_handler)
