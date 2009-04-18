@@ -86,7 +86,8 @@ class TranslateSitesMenu(Qt.QMenu) :
 
 		count = 0
 		while count < translate_sites_files_list.count() :
-			xml_input_source = Qt.QXmlInputSource(Qt.QFile(translate_sites_files_list[count]))
+			translate_site_file = Qt.QFile(translate_sites_files_list[count])
+			xml_input_source = Qt.QXmlInputSource(translate_site_file)
 			xml_reader = Qt.QXmlSimpleReader()
 			xml_handler = TranslateSiteSAXHandler.TranslateSiteSAXHandler(self.addSite)
 			xml_reader.setContentHandler(xml_handler)

@@ -87,7 +87,8 @@ class IFAMenu(Qt.QMenu) :
 
 		count = 0
 		while count < ifa_files_list.count() :
-			xml_input_source = Qt.QXmlInputSource(Qt.QFile(ifa_files_list[count]))
+			ifa_file = Qt.QFile(ifa_files_list[count])
+			xml_input_source = Qt.QXmlInputSource(ifa_file)
 			xml_reader = Qt.QXmlSimpleReader()
 			xml_handler = IFASAXHandler.IFASAXHandler(self.addApp)
 			xml_reader.setContentHandler(xml_handler)
