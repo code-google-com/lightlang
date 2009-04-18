@@ -66,8 +66,7 @@ def initSettings() :
 
 	myname = Qt.QString(Const.MyName).toLower()
 
-	user_settings_dir = Qt.QDir(Qt.QDir.homePath()+"/."+myname)
-	if not user_settings_dir.exists() :
+	if not Qt.QDir(Qt.QDir.homePath()+"/."+myname).exists() :
 		Qt.QDir.home().mkdir("."+myname)
 
 	Settings = Qt.QSettings(Qt.QDir.homePath()+"/."+myname+"/"+myname+SettingsPostfix, Qt.QSettings.IniFormat)
