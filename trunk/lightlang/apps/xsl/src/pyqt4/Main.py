@@ -28,12 +28,15 @@ import Const
 import Locale
 import TrayIcon
 import MainWindow
-import Global
 
 
 #####
 TrDir = Config.Prefix+"/lib/xsl/tr/"
 MySplash = Config.Prefix+"/lib/xsl/pictures/xsl_splash.png"
+
+
+#####
+MainObject = None
 
 
 #####
@@ -95,7 +98,8 @@ class Main :
 
 		#####
 
-		Global.Main = self # Global main-object
+		global MainObject
+		MainObject = self
 
 		#####
 
