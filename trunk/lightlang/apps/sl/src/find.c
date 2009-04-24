@@ -72,7 +72,8 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 	if ( strlen(word) < 1 ) return 0;
 	if ( strnlowcpy_wc(word_wc, word, MAX_WORD_SIZE -1) == NULL )
 	{
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME);
+		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n",
+			MYNAME, strerror(errno) );
 		return -1;
 	}
 
@@ -623,19 +624,22 @@ static void print_list_item(const wchar_t *word_wc, const int word_number)
 ********************************************************************************/
 static void print_translate(const char *str, const int word_number)
 {
-	//////////////////////////////////////////
-	int	strong_font_count = 0;		// Schetchik jirnogo teksta
-	int	italic_font_count = 0;		// Schetchik kursivnogo teksta
-	int	green_font_count = 0;		// Schetchik zelenogo teksta
-	int	blocks_count = 0;		// Schetchik blokov
-	int	char_count = 0;			// Schetchik simvolov
-	int	count = 0;			// Schetchik dlya blokov
-	bool	underline_text_flag = false;	// Flag podcherknutogo teksta
-	bool	word_link_text_flag = false;	// Flag ssylki-teksta
-	bool	sound_link_text_flag = false;	// Flas ssyli-zvuka
-	bool	shiel_flag = false;		// Flag ekranirovaniya
-	extern settings_t	settings;	// Parametry sistemy
-	//////////////////////////////////////////
+	//////////////////////////////////////////////////
+	wchar_t		*str_wc;			// Rasshirennaya stroka
+	wchar_t		*ptr_str_wc;			// Ukazatel na rasshirennuyu stroku
+	size_t		str_wc_len = 0;			// Dlina onoy
+	int		strong_font_count = 0;		// Schetchik jirnogo teksta
+	int		italic_font_count = 0;		// Schetchik kursivnogo teksta
+	int		green_font_count = 0;		// Schetchik zelenogo teksta
+	int		blocks_count = 0;		// Schetchik blokov
+	int		char_count = 0;			// Schetchik simvolov
+	int		count = 0;			// Schetchik
+	bool		underline_text_flag = false;	// Flag podcherknutogo teksta
+	bool		word_link_text_flag = false;	// Flag ssylki-teksta
+	bool		sound_link_text_flag = false;	// Flag ssylki-zvuka
+	bool		shiel_flag = false;		// Flag ekranirovaniya
+	extern settings_t	settings;		// Parametry sistemy
+	//////////////////////////////////////////////////
 
 
 	if ( word_number == 1 ) print_separator();
@@ -725,26 +729,44 @@ static void print_translate(const char *str, const int word_number)
 			printf("   \033[1m(%d)\033[0m ", word_number);
 		else printf("   (%d) ", word_number);
 
-		for (; (*str); str++)
+		str_wc_len = (strlen(str) + 16) * sizeof(wchar_t);
+
+		if ( ( str_wc = (wchar_t *) malloc(str_wc_len) ) == NULL )
 		{
-			if ( (*str) == '\n' )
+			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
+				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			return;
+		}
+
+		if ( strncpy_wc(str_wc, str, str_wc_len -1) == NULL )
+		{
+			fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n",
+				MYNAME, strerror(errno) );
+
+			free(str_wc);
+			return;
+		}
+
+		for (ptr_str_wc = str_wc; (*ptr_str_wc); ptr_str_wc++)
+		{
+			if ( (*ptr_str_wc) == L'\n' )
 			{
 				shiel_flag = false; // fignya ;-)
 				continue;
 			}
 
-			if ( ((*str) == '\\') && !shiel_flag )
+			if ( ((*ptr_str_wc) == L'\\') && !shiel_flag )
 			{
 				shiel_flag = true;
 				continue;
 			}
 			if ( shiel_flag )
 			{
-				switch (*str)
+				switch (*ptr_str_wc)
 				{
-					case '[' : if ( settings.use_terminal_escapes_flag )
+					case L'[' : if ( settings.use_terminal_escapes_flag )
 						{ printf("\033[1m"); strong_font_count = 1; } break;
-					case ']' : if ( settings.use_terminal_escapes_flag )
+					case L']' : if ( settings.use_terminal_escapes_flag )
 						{
 							printf("\033[0m");
 							if ( green_font_count ) printf("\033[32m");
@@ -752,9 +774,9 @@ static void print_translate(const char *str, const int word_number)
 							strong_font_count = 0;
 						} break;
 
-					case '<' : if ( settings.use_terminal_escapes_flag )
+					case L'<' : if ( settings.use_terminal_escapes_flag )
 						{ printf("\033[32m"); green_font_count = 1; } break;
-					case '>' : if ( settings.use_terminal_escapes_flag )
+					case L'>' : if ( settings.use_terminal_escapes_flag )
 						{
 							printf("\033[0m");
 							if ( strong_font_count ) printf("\033[1m");
@@ -762,41 +784,41 @@ static void print_translate(const char *str, const int word_number)
 							green_font_count = 0;
 						} break;
 
-					case '{' : blocks_count += 3; char_count = blocks_count;
+					case L'{' : blocks_count += 3; char_count = blocks_count;
 						putchar('\n');
 						for (count = 0; count < blocks_count; count++) putchar(' ');
 						break;
-					case '}' : blocks_count -= 3;
+					case L'}' : blocks_count -= 3;
 						if ( blocks_count < 0 ) blocks_count = 0;
 						char_count = blocks_count;
 						break;
 
-					case '_' : if ( settings.use_terminal_escapes_flag )
+					case L'_' : if ( settings.use_terminal_escapes_flag )
 						{
 							if ( !underline_text_flag )
 							{ printf("\033[4m"); underline_text_flag = true; }
 							else { printf("\033[24m"); underline_text_flag = false; }
 						} break;
 
-					case '@' : if ( settings.use_terminal_escapes_flag )
+					case L'@' : if ( settings.use_terminal_escapes_flag )
 						{
 							if ( !word_link_text_flag )
 							{ printf("\033[4m"); word_link_text_flag = true; }
 							else { printf("\033[24m"); word_link_text_flag = false; }
 						} break;
 
-					case 's' : if ( settings.use_terminal_escapes_flag )
+					case L's' : if ( settings.use_terminal_escapes_flag )
 						{
 							if ( !sound_link_text_flag )
 							{ printf("[\033[4msnd:\""); sound_link_text_flag = true; }
 							else { printf("\"\033[24m]"); sound_link_text_flag = false; }
 						} break;
 
-					case '\\' : putchar('\\'); break;
+					case L'\\' : putchar('\\'); break;
 
-					case 'n' : putchar('\n'); break;
+					case L'n' : putchar('\n'); break;
 
-					case 't' : putchar('\t'); break;
+					case L't' : putchar('\t'); break;
 
 					default : break;
 				}
@@ -806,13 +828,13 @@ static void print_translate(const char *str, const int word_number)
 			}
 
 			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) &&
-				((*str) == ' ') && !isdigit(*(str +1)) )
+				((*ptr_str_wc) == L' ') && !iswdigit(*(ptr_str_wc +1)) )
 				{
 					putchar('\n');
 					for (count = 0; count < blocks_count +3; count++) putchar(' ');
 					char_count = blocks_count +3;
 				}
-			putchar(*str);
+			printf("%lc", *ptr_str_wc); // putwchar() - DON'T WORK!
 			++char_count;
 		}
 
@@ -822,6 +844,8 @@ static void print_translate(const char *str, const int word_number)
 		// zakrytym, to eta posledovatelnost pribet vse modifikacii i
 		// sostoyanie konsoli budet vosstanovleno do ishodnogo.
 		// Za podrobnostyami - smotri stranicu "man 4 console_codes".
+
+		free(str_wc);
 	}
 	else if ( settings.output_format == native_output_format )
 		for (; (*str) && (*str) != '\n'; str++)
