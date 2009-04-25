@@ -23,25 +23,9 @@
 from PyQt4 import Qt
 import Config
 import Const
-try : # optional requires python-xlib
-	import Xlib
-	import Xlib.display
-	PythonXlibExistsFlag = True
-except :
-	PythonXlibExistsFlag = False
-	print Const.MyName+": python-xlib is not found, please, install it"
-
-
-#####
-LeftCtrlModifier = 133
-LeftAltModifier = 256
-LeftShiftModifier = 194
-LeftWinModifier = 451
-RightCtrlModifier = 421
-RightAltModifier = 449
-RightShiftModifier = 230
-RightWinModifier = 452
-NoModifier = -1
+try : # Optional python-xlib requires
+	import KeyboardModifiers
+except : pass
 
 
 #####
@@ -62,10 +46,9 @@ class MouseSelector(Qt.QObject) :
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(300)
 
-		if PythonXlibExistsFlag :
-			self.display = Xlib.display.Display()
-
-		self.modifier = LeftCtrlModifier
+		try :
+			self.modifier = KeyboardModifiers.LeftCtrlModifier
+		except : pass
 
 		#####
 
@@ -100,30 +83,13 @@ class MouseSelector(Qt.QObject) :
 		self.old_selection = word
 
 		# TODO: add mouse-buttons checks
-		if not self.checkModifier() :
-			return
+
+		try :
+			if not KeyboardModifiers.checkModifier(self.modifier) :
+				return
+		except : pass
 
 		self.selectionChangedSignal(word)
-
-	def checkModifier(self) :
-		if not PythonXlibExistsFlag :
-			return True
-
-		if self.modifier == NoModifier :
-			return True
-
-		keymap = self.display.query_keymap()
-		keys = []
-
-		for count1 in range(0, len(keymap)) :
-			Qt.QCoreApplication.processEvents()
-			for count2 in range(0, 32) :
-				keys.append(int(keymap[count1] & (1 << count2)))
-
-		if keys[self.modifier] != 0 :
-			return True
-		else :
-			return False
 
 
 	### Signals ###

@@ -24,15 +24,10 @@ from PyQt4 import Qt
 import Config
 import Const
 import User
-try : # optional requires python-xlib
-	import Xlib
-	import Xlib.display
-	PythonXlibExistsFlag = True
-except :
-	PythonXlibExistsFlag = False
-	print Const.MyName+": python-xlib is not found, please, install it"
 import MouseSelector
-import KeyboardModifiersMenu
+try :
+	import KeyboardModifiersMenu
+except : pass
 
 
 #####
@@ -65,18 +60,22 @@ class SpyMenu(Qt.QMenu) :
 		self.show_translate_window_menu_action.setCheckable(True)
 		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
-		self.addSeparator()
-		self.keyboard_modifiers_menu = KeyboardModifiersMenu.KeyboardModifiersMenu(tr("Keyboard modifiers"))
-		self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
-		self.addMenu(self.keyboard_modifiers_menu)
+		try :
+			self.addSeparator()
+			self.keyboard_modifiers_menu = KeyboardModifiersMenu.KeyboardModifiersMenu(tr("Keyboard modifiers"))
+			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+			self.addMenu(self.keyboard_modifiers_menu)
+		except : pass
 
 		#####
 
 		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
-		self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"),
-			self.mouse_selector.setModifier)
+		try :
+			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"),
+				self.mouse_selector.setModifier)
+		except : pass
 
 
 	### Public ###
@@ -112,7 +111,9 @@ class SpyMenu(Qt.QMenu) :
 		settings.setValue("spy_menu/spy_is_running_flag",
 			Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
 
-		self.keyboard_modifiers_menu.saveSettings()
+		try :
+			self.keyboard_modifiers_menu.saveSettings()
+		except : pass
 
 
 	def loadSettings(self) :
@@ -124,7 +125,9 @@ class SpyMenu(Qt.QMenu) :
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
 			self.startSpy()
 
-		self.keyboard_modifiers_menu.loadSettings()
+		try :
+			self.keyboard_modifiers_menu.loadSettings()
+		except : pass
 
 
 	### Private ###

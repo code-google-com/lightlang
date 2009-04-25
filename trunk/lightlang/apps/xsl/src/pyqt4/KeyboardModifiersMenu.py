@@ -24,25 +24,7 @@ from PyQt4 import Qt
 import Config
 import Const
 import User
-try : # Optional requires python-xlib
-	import Xlib
-	import Xlib.display
-	PythonXlibExistsFlag = True
-except :
-	PythonXlibExistsFlag = False
-	print Const.MyName+": python-xlib is not found, please, install it"
-
-
-#####
-LeftCtrlModifier = 133
-LeftAltModifier = 256
-LeftShiftModifier = 194
-LeftWinModifier = 451
-RightCtrlModifier = 421
-RightAltModifier = 449
-RightShiftModifier = 230
-RightWinModifier = 452
-NoModifier = -1
+import KeyboardModifiers
 
 
 #####
@@ -62,17 +44,17 @@ class KeyboardModifiersMenu(Qt.QMenu) :
 
 		#####
 
-		self.addModifier(tr("Left Ctrl"), LeftCtrlModifier)
-		self.addModifier(tr("Left Alt"), LeftAltModifier)
-		self.addModifier(tr("Left Shift"), LeftShiftModifier)
-		self.addModifier(tr("Left Win"), LeftWinModifier)
+		self.addModifier(tr("Left Ctrl"), KeyboardModifiers.LeftCtrlModifier)
+		self.addModifier(tr("Left Alt"), KeyboardModifiers.LeftAltModifier)
+		self.addModifier(tr("Left Shift"), KeyboardModifiers.LeftShiftModifier)
+		self.addModifier(tr("Left Win"), KeyboardModifiers.LeftWinModifier)
 		self.addSeparator()
-		self.addModifier(tr("Right Ctrl"), RightCtrlModifier)
-		self.addModifier(tr("Right Alt"), RightAltModifier)
-		self.addModifier(tr("Right Shift"), RightShiftModifier)
-		self.addModifier(tr("Right Win"), RightWinModifier)
+		self.addModifier(tr("Right Ctrl"), KeyboardModifiers.RightCtrlModifier)
+		self.addModifier(tr("Right Alt"), KeyboardModifiers.RightAltModifier)
+		self.addModifier(tr("Right Shift"), KeyboardModifiers.RightShiftModifier)
+		self.addModifier(tr("Right Win"), KeyboardModifiers.RightWinModifier)
 		self.addSeparator()
-		self.addModifier(tr("No modifier"), NoModifier)
+		self.addModifier(tr("No modifier"), KeyboardModifiers.NoModifier)
 
 		#####
 
@@ -81,10 +63,6 @@ class KeyboardModifiersMenu(Qt.QMenu) :
 		#####
 
 		self.setIndex(0)
-
-		if not PythonXlibExistsFlag :
-			self.setTitle(tr("No modifiers available"))
-			self.setEnabled(False)
 
 
 	### Public ###
