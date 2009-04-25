@@ -89,34 +89,6 @@ wchar_t get_first_low_wc(const char *str)
 
 /********************************************************************************
 *										*
-*	strncpy_wc() - konvertiruet <str> v <str_wc>				*
-*										*
-********************************************************************************/
-wchar_t *strncpy_wc(wchar_t *str_wc, const char *str, size_t count)
-{
-	//////////////////////////////////////////
-	wchar_t 	*ptr_str_wc = str_wc;	// Ukazatel na rasshirennuyu stroku
-	size_t		str_offset = 0;		// Smeshenie ukazatelya
-	mbstate_t	mbstate;		// Status sdviga
-	//////////////////////////////////////////
-
-
-	memset(&mbstate, 0, sizeof(mbstate));
-
-	for (; ((str_offset = mbrtowc(ptr_str_wc, str, sizeof(wchar_t), &mbstate)) > 0) && count;
-		++ptr_str_wc, str += str_offset, --count);
-
-	(*ptr_str_wc) = L'\0';
-	if ( (str_offset == (size_t)(-1)) || (str_offset == (size_t)(-2)) )
-	{
-		str_wc[0] = L'\0';
-		return NULL;
-	}
-	else return str_wc;
-}
-
-/********************************************************************************
-*										*
 *	strnlowcpy_wc() - konvertiruet <str> v <str_wc>, opuskaya pri etom	*
 *		v nijniy registr.						*
 *										*
@@ -144,6 +116,7 @@ wchar_t *strnlowcpy_wc(wchar_t *str_wc, const char *str, size_t count)
 	}
 	else return str_wc;
 }
+
 /********************************************************************************
 *										*
 *	strnlowcpy_filter_wc() - filtruet <count> simvolov stroki <str>,	*

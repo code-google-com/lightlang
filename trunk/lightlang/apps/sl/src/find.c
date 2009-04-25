@@ -625,9 +625,9 @@ static void print_list_item(const wchar_t *word_wc, const int word_number)
 static void print_translate(const char *str, const int word_number)
 {
 	//////////////////////////////////////////////////
-	wchar_t		*str_wc;			// Rasshirennaya stroka
-	wchar_t		*ptr_str_wc;			// Ukazatel na rasshirennuyu stroku
-	size_t		str_wc_len = 0;			// Dlina onoy
+	wchar_t		ch_wc;				// Rasshirennyy simvol
+	size_t		str_offset = 0;			// Smeshenie
+	mbstate_t	mbstate;			// Status
 	int		strong_font_count = 0;		// Schetchik jirnogo teksta
 	int		italic_font_count = 0;		// Schetchik kursivnogo teksta
 	int		green_font_count = 0;		// Schetchik zelenogo teksta
@@ -729,40 +729,24 @@ static void print_translate(const char *str, const int word_number)
 			printf("   \033[1m(%d)\033[0m ", word_number);
 		else printf("   (%d) ", word_number);
 
-		str_wc_len = (strlen(str) + 16) * sizeof(wchar_t);
+		memset(&mbstate, 0, sizeof(mbstate));
 
-		if ( ( str_wc = (wchar_t *) malloc(str_wc_len) ) == NULL )
+		for (; (str_offset = mbrtowc(&ch_wc, str, sizeof(wchar_t), &mbstate)) > 0; str += str_offset)
 		{
-			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
-			return;
-		}
-
-		if ( strncpy_wc(str_wc, str, str_wc_len -1) == NULL )
-		{
-			fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n",
-				MYNAME, strerror(errno) );
-
-			free(str_wc);
-			return;
-		}
-
-		for (ptr_str_wc = str_wc; (*ptr_str_wc); ptr_str_wc++)
-		{
-			if ( (*ptr_str_wc) == L'\n' )
+			if ( ch_wc == L'\n' )
 			{
 				shiel_flag = false; // fignya ;-)
 				continue;
 			}
 
-			if ( ((*ptr_str_wc) == L'\\') && !shiel_flag )
+			if ( (ch_wc == L'\\') && !shiel_flag )
 			{
 				shiel_flag = true;
 				continue;
 			}
 			if ( shiel_flag )
 			{
-				switch (*ptr_str_wc)
+				switch (ch_wc)
 				{
 					case L'[' : if ( settings.use_terminal_escapes_flag )
 						{ printf("\033[1m"); strong_font_count = 1; } break;
@@ -828,13 +812,13 @@ static void print_translate(const char *str, const int word_number)
 			}
 
 			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) &&
-				((*ptr_str_wc) == L' ') && !iswdigit(*(ptr_str_wc +1)) )
+				(ch_wc == L' ') && !isdigit(*(str + str_offset +1)) )
 				{
 					putchar('\n');
 					for (count = 0; count < blocks_count +3; count++) putchar(' ');
 					char_count = blocks_count +3;
 				}
-			printf("%lc", *ptr_str_wc); // putwchar() - DON'T WORK!
+			printf("%lc", ch_wc); // putwchar() - DON'T WORK!
 			++char_count;
 		}
 
@@ -844,8 +828,6 @@ static void print_translate(const char *str, const int word_number)
 		// zakrytym, to eta posledovatelnost pribet vse modifikacii i
 		// sostoyanie konsoli budet vosstanovleno do ishodnogo.
 		// Za podrobnostyami - smotri stranicu "man 4 console_codes".
-
-		free(str_wc);
 	}
 	else if ( settings.output_format == native_output_format )
 		for (; (*str) && (*str) != '\n'; str++)

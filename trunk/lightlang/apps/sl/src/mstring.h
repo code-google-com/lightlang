@@ -38,7 +38,6 @@ void del_nl(char *str);				// Udalenie simvola novoy stroki
 void lowstr_wc(wchar_t *str_wc);		// Opuskanie stroki v nijniy registr
 
 wchar_t get_first_low_wc(const char *str);	// Poluchenie pervogo resshirennogo simvola
-wchar_t *strncpy_wc(wchar_t *str_wc, const char *str, size_t count);
 wchar_t *strnlowcpy_wc(wchar_t *str_wc, const char *str, size_t count);
 wchar_t *strnlowcpy_filter_wc(wchar_t *str_wc, const char *str, size_t count);
 
