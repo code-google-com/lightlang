@@ -812,13 +812,15 @@ static void print_translate(const char *str, const int word_number)
 			}
 
 			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) &&
-				(ch_wc == L' ') && !isdigit(*(str + str_offset +1)) )
+				(ch_wc == L' ') && !isdigit(*(str +1)) )
 				{
 					putchar('\n');
 					for (count = 0; count < blocks_count +3; count++) putchar(' ');
 					char_count = blocks_count +3;
 				}
+
 			printf("%lc", ch_wc); // putwchar() - DON'T WORK!
+
 			++char_count;
 		}
 
