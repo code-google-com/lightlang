@@ -49,7 +49,6 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 		#####
 
 		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
-		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.checkLink)
 
 
 	### Private ###
@@ -90,29 +89,6 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 			Qt.QDesktopServices.openUrl(url)
 
-	###
-
-	def checkLink(self, word) :
-		if word.startsWith("#s") :
-                        word.remove(0, word.indexOf("_")+1)
-                        word = word.simplified()
-                        if word.isEmpty() :
-                                return
-
-			words_list = word.split(Qt.QRegExp("\\W+"), Qt.QString.SkipEmptyParts)
-			if words_list.count() <= 1 :
-				return
-
-			count = 1
-			while count < words_list.count() :
-				if not self.find_sound.checkWord(words_list[0], words_list[count]) :
-					self.statusChangedSignal(tr("Sound is not full"))
-					return
-				count += 1
-		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or
-			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
-			self.statusChangedSignal(word)
-
 
 	### Signals ###
 
@@ -127,6 +103,30 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 
 	### Handlers ###
+
+	def setCursorInfo(self, str) :
+		if not str.simplified().isEmpty() :
+			if str.startsWith("#s") :
+				str.remove(0, str.indexOf("_") +1)
+				str = str.simplified()
+				if str.isEmpty() :
+					return
+
+				words_list = str.split(Qt.QRegExp("\\W+"), Qt.QString.SkipEmptyParts)
+				if words_list.count() <= 1 :
+					return
+
+				count = 1
+				while count < words_list.count() :
+					if not self.find_sound.checkWord(words_list[0], words_list[count]) :
+						Qt.QToolTip.showText(Qt.QCursor.pos(), tr("Sound is not full"))
+						return
+					count += 1
+			elif (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
+				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
+
+	###
 
 	def mousePressEvent(self, event) :
 		if event.button() == Qt.Qt.MidButton :
