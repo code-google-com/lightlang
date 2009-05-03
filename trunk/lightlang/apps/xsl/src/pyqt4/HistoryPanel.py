@@ -29,6 +29,7 @@ import User
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
+MaxHistorySize = 100
 
 #####
 def tr(str) :
@@ -69,7 +70,6 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
 		self.history_browser = Qt.QListWidget()
-		self.history_browser.setSortingEnabled(True)
 		self.main_layout.addWidget(self.history_browser)
 
 		self.clear_history_button = Qt.QPushButton(tr("Clear history"))
@@ -91,14 +91,21 @@ class HistoryPanel(Qt.QDockWidget) :
 	### Public ###
 
 	def addWord(self, word) :
-		if not self.list().contains(word) :
-			count = self.history_browser.count()
-			while count >= 100 : # 100 - default value
-				self.history_browser.takeItem(count -1)
-				count = self.history_browser.count()
-			self.history_browser.addItem(word)
+		self.history_browser.insertItem(0, word)
 
-			self.clear_history_button.setEnabled(True)
+		count = 1
+		while count < self.history_browser.count() and count < MaxHistorySize :
+			if self.history_browser.item(count).text() == word :
+				self.history_browser.takeItem(count)
+				break
+			count += 1
+
+		count = self.history_browser.count()
+		while count > MaxHistorySize :
+			self.history_browser.takeItem(count -1)
+			count -= 1
+
+		self.clear_history_button.setEnabled(True)
 
 	###
 
