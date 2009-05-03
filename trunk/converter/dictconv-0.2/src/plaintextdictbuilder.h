@@ -26,6 +26,7 @@
 #include <fstream>
 #include <map>
 
+#include <sys/types.h>
 
 /**
 @author Raul Fernandes

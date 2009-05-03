@@ -23,6 +23,7 @@
 
 #include<stdlib.h>
 #include<stdio.h>
+#include<cstring>
 
 #include <iconv.h>
 
