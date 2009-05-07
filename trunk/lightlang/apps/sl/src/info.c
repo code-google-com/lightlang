@@ -105,6 +105,19 @@ void debug(void)
 
 	printf("Program name\t\t:\t%s\n", MYNAME);
 	printf("Program version\t\t:\t%s\n", VERSION);
+	printf("Package version\t\t:\t%s\n", PACKAGE_VERSION);
+	printf("Revision number\t\t:\t%s\n", REVISION_NUMBER);
+	printf("Revision date\t\t:\t%s\n", REVISION_DATE);
+
+#ifdef __DATE__
+	printf("Date of compilation\t:\t%s\n", __DATE__);
+#endif
+
+#ifdef __TIME__
+	printf("Time of compilation\t:\t%s\n", __TIME__);
+#endif
+
+	puts("------------------------------------------------------------------------");
 
 #ifdef __VERSION__
 	printf("GCC version\t\t:\t%s\n", __VERSION__);
@@ -156,25 +169,8 @@ void debug(void)
 #endif
 
 	puts("------------------------------------------------------------------------");
-
-#ifdef __DATE__
-	printf("Date of compilation\t:\t%s\n", __DATE__);
-#endif
-
-#ifdef __TIME__
-	printf("Time of compilation\t:\t%s\n", __TIME__);
-#endif
-
-	puts("------------------------------------------------------------------------");
-
-#ifdef AUDIO_PLAYER_PROG
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-#endif
-
-#ifdef __PREFIX
 	printf("Prefix\t\t\t:\t%s\n", __PREFIX);
-#endif
-
 	puts("------------------------------------------------------------------------");
 }
 
