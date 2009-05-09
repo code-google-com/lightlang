@@ -6695,21 +6695,6 @@ echo "$as_me: error: Python modules error" >&2;}
 	if [ "$?" != "0" ]; then
 		echo "+---------------------------------------------------------------------+"
 		echo "|   Missing QtCore module.                                            |"
-		echo "|   You have an old version of PyQt4. Please update it up to 4.2.2+   |"
-		echo "+---------------------------------------------------------------------+"
-		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
-echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
-
-	printf "python-test: importing \"QtXml\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtXml"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtXml module.                                             |"
-		echo "|   You have an old version of PyQt4. Please update it up to 4.2.2+   |"
 		echo "+---------------------------------------------------------------------+"
 		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
 echo "$as_me: error: Python modules error" >&2;}
@@ -6723,7 +6708,32 @@ echo "$as_me: error: Python modules error" >&2;}
 	if [ "$?" != "0" ]; then
 		echo "+---------------------------------------------------------------------+"
 		echo "|   Missing QtGui module.                                             |"
-		echo "|   You have an old version of PyQt4. Please update it up to 4.2.2+   |"
+		echo "+---------------------------------------------------------------------+"
+		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+	else
+		echo "ok"
+	fi
+
+	printf "python-test: importing \"QtXml\" from \"PyQt4\" module... "
+	$PYTHON_PROG -c "from PyQt4 import QtXml"
+	if [ "$?" != "0" ]; then
+		echo "+---------------------------------------------------------------------+"
+		echo "|   Missing QtXml module.                                             |"
+		echo "+---------------------------------------------------------------------+"
+		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
+echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+	else
+		echo "ok"
+	fi
+
+	printf "python-test: importing \"QtNetwork\" from \"PyQt4\" module... "
+	$PYTHON_PROG -c "from PyQt4 import QtNetwork"
+	if [ "$?" != "0" ]; then
+		echo "+---------------------------------------------------------------------+"
+		echo "|   Missing QtNetwork module.                                         |"
 		echo "+---------------------------------------------------------------------+"
 		{ { echo "$as_me:$LINENO: error: Python modules error" >&5
 echo "$as_me: error: Python modules error" >&2;}
