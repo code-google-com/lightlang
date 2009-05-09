@@ -20,37 +20,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
-import Config
-import Const
-
-
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-##### Public #####
-def mainLang() :
-	lang = Qt.QLocale().name()
-	lang.remove(lang.indexOf("_"), lang.length())
-
-	if lang.simplified().isEmpty() :
-		lang = "en"
-
-	return Qt.QString(lang)
-
-
-def docsLang() :
-	lang = Qt.QLocale().name()
-	lang.remove(lang.indexOf("_"), lang.length())
-
-	if not lang.simplified().isEmpty() :
-		help_dir = Qt.QDir(Config.Prefix+"/share/doc/lightlang/html/"+lang)
-		if not help_dir.exists() :
-			lang = "en"
-	else :
-		lang = "en"
-
-	return Qt.QString(lang)
+#from PyQt4.QtAssistant import *
+from PyQt4.QtCore import *
+#from PyQt4.QtDesigner import *
+from PyQt4.QtGui import *
+#from PyQt4.QtHelp import *
+from PyQt4.QtNetwork import *
+#from PyQt4.QtOpenGL import *
+#from PyQt4.QtScript import *
+#from PyQt4.QtSql import *
+#from PyQt4.QtSvg import *
+#from PyQt4.QtTest import *
+#from PyQt4.QtWebKit import *
+#from PyQt4.QtXmlPatterns import *
+from PyQt4.QtXml import *
 
