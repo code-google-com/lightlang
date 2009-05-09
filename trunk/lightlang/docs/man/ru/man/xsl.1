@@ -1,0 +1,103 @@
+.TH XSL 1 "20 Сентября, 2007 год" "LightLang 0.8.5" "ПОЛЬЗОВАТЕЛЬСКИЕ КОМАНДЫ"
+
+.SH ИМЯ
+.B XSL
+\- графический интерфейс для SL
+
+.SH ОБЗОР
+.B xsl
+.B [\-\-enable\-psyco]
+.B [\-\-libs\-dir=каталог]
+.B [\-h|\-\-help]
+
+.SH ОПИСАНИЕ
+.B XSL
+\- графический интерфейс для поискового движка SL пакета LightLang.
+
+.SH ОПЦИИ PYTHON
+.TP
+.B \-\-enable\-psyco
+Включает JIT-компиляцию для XSL. Реализуется посредством модуля Psyco. Реализована как
+экспериментальная, поскольку включение приводит к приросту производительности не во
+всех случаях.
+.TP
+.B \-\-libs\-dir=каталог
+Указывает каталог, содержащий импортируемые модули XSL. Опция используется при разработке.
+
+.SH ОПЦИИ СПРАВКИ
+.TP
+.B \-h|\-\-help
+Печатает краткую справку по опциям программы.
+
+.SH ЗАМЕЧАНИЕ
+Все эти опции предназначены только для разработчиков, не используйте их, если точно не
+знаете, что делаете. Например JIT-компиляция включается в основном для настройки
+производительности, и не факт, что производительность повысится. Опция существует потому,
+что если вдруг Psyco доведут до ума, можно было пользоваться уже установленной программой,
+а не ждать следующего релиза LightLang, где по умолчанию JIT-компиляция Python будет
+включена. Опция же установки каталога с библиотеками используется при отладке программы,
+чтобы указать, что используются локальные, а не общесистемные файлы. Если вы укажете
+неправильный путь, то программа не сможет загрузитсья, поскольку не найдет модуль Main.
+
+.SH БАГИ
+Нет :-)
+.br
+Если вы обнаружите ошибку в программе, пожалуйста, сообщите о ней на почтовый ящик
+.IR bugtrack@lightlang.org.ru.
+В сообщении точно опишите ошибку, условия ее возникновения и все данные, которые вводились
+в программу.
+
+.SH АВТОРЫ И БЛАГОДАРНОСТИ
+Автор этой программы и всех других из базового пакета LightLang \- Деваев Максим.
+.br
+Спасибо моей любимой Лизавете, если бы она не вдохновляла меня, я бы никогда не закончил
+эту программу.
+.TP
+Помогали:
+Владимир Фомкин
+.br
+Тихонов Сергей
+.br
+Ренат Насыров
+.br
+Доу Винх
+.br
+Алексей Юм
+.br
+Ольга Полякова
+.TP
+Переводчики:
+Кирилл Небогин
+
+.SH АДРЕСА В ИНТЕРНЕТЕ
+.IR mdevaev@gmail.com
+\- Разработчик, только для личных писем.
+.br
+.IR developers@lightlang.org.ru
+\- Для предложений.
+.br
+.IR bugtrack@lightlang.org.ru
+\- Для сообщений об ошибках.
+.br
+.IR http://lightlang.org.ru
+\- Домашняя страница.
+.br
+
+.SH УСЛОВИЯ РАСПРОСТРАНЕНИЯ
+XSL \- graphical interface for SL
+.br
+Copyright (C) 2007-2016 Devaev Maxim
+.PP
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.

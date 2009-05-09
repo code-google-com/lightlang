@@ -1,0 +1,92 @@
+.TH XSL 1 "20 September, 2007" "LightLang 0.8.5" "USER COMMANDS"
+
+.SH NAME
+.B XSL
+\- graphical interface for SL
+
+.SH SYNOPSIS
+.B xsl
+.B [\-\-enable\-psyco]
+.B [\-\-libs\-dir=directory]
+.B [\-h|\-\-help]
+
+.SH DESCRIPTION
+.B XSL
+\- graphical interface for the SL search engine of the LightLang package.
+
+.SH PYTHON OPTIONS
+.TP
+.B \-\-enable\-psyco
+Enables JIT-compilation for XSL. Is realized using Psycho module. Is realized as experimental, for enabling this option not always rises the performance of the program.
+.TP
+.B \-\-libs\-dir=directory
+Indicates the directory, which contains the imported XSL modules. This option is used for developing.
+
+.SH HELP OPTIONS
+.TP
+.B \-h|\-\-help
+Displays short help.
+
+.SH REMARK
+All these options are for developers only, do not use them if you are not sure what you are doing. For example, JIT-compilation usually is enabled for performance adjusting, and it is not certain, that your performance will rise. Option is enabled for the case, if Psycho suddenly will be written well, you can use the already installed program and won't have to wait for another LightLang release, with JIT-compilation turned on by default. Option for indicating directory with libraries is used while debugging the program to show, that local (not system) files are used. If you specify wrong path the program won't be able to start, for the Main module won't be found.
+
+.SH BUGS
+There aren't any :-)
+.br
+If you'll find a bug, please, inform us about it using our feedback e-mail
+.IR bugtrack@lightlang.org.ru.
+Describe your bug clearly, adding the description of conditions when the bug appeared and your actions.
+
+.SH ACKNOWLEDGMENTS
+The author of this program and of all the rest in the LightLang package \- Devaev Maxim.
+.br
+Thanks to my loved Elisabeth! I wouldn't have finished this program if she doesn't inspire me.
+.TP
+Assistants:
+Vladimir Fomkin
+.br
+Tihonov Sergey
+.br
+Renat Nasyrov
+.br
+Du Vinh
+.br
+Aleksey Yum
+.br
+Olga Polyakova
+.TP
+Translator:
+Kirill Nebogin
+
+.SH INTERNET ADDRESSES
+.IR mdevaev@lightlang.org.ru
+\- The Developer (only for private letters).
+.br
+.IR developers@lightlang.org.ru
+\- For offers.
+.br
+.IR bugtrack@lightlang.org.ru
+\- For bug reports.
+.br
+.IR http://lightlang.org.ru
+\- Project's homepage.
+.br
+
+.SH TERMS OF DISTRIBUTION
+XSL \- graphical interface for SL
+.br
+Copyright (C) 2007-2016 Devaev Maxim
+.PP
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+.PP
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+.PP
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.

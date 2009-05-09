@@ -66,9 +66,9 @@ clean :
 	$(RM) -f $(DOWNLOAD_PY)
 
 _release :
-	cd apps/xsl && make _create_ru_qm
-	cd docs/text && make _create_en_texts
-	cd docs/text && make _create_ru_texts
-	cd docs/man && make _pack_en_mans
-	cd docs/man && make _pack_ru_mans
+	cd apps/xsl && make -f Makefile.in _create_ru_qm
+	cd docs/text && make -f Makefile.in _create_en_texts
+	cd docs/text && make -f Makefile.in _create_ru_texts
+	cd docs/man && make -f Makefile.in _pack_en_mans
+	cd docs/man && make -f Makefile.in _pack_ru_mans
 
