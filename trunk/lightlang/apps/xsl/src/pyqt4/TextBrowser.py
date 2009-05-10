@@ -134,7 +134,7 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	def setCursorInfo(self, str) :
 		if not str.simplified().isEmpty() :
-			 if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
+			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
 				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
 

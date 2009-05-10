@@ -68,7 +68,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.setCentralWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setContentsMargins(-1, 3, -1, -1)
+		self.main_layout.setContentsMargins(-1, 0, -1, -1) # 3
 		self.main_widget.setLayout(self.main_layout)
 
 		##############################
@@ -142,7 +142,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.setDictsList)
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.lFind)
-		
+
 		#########################
 		##### Creating Menu #####
 		#########################
@@ -200,7 +200,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), tr("Google-Translate client"),
-			 self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
+			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
 			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
@@ -371,7 +371,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("textChanged(const QString &)"), set_tabbed_translate_browser_text)
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("newTabRequest()"), add_tabbed_translate_browser_tab)
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("statusChanged(const QString &)"), status_bar_show_status_message)
-		
+
 
 	###
 

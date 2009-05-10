@@ -113,7 +113,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.translate_browser.instantSearch)
 
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
-		
+
 
 	### Public ###
 

@@ -96,7 +96,7 @@ wchar_t get_first_low_wc(const char *str)
 wchar_t *strnlowcpy_wc(wchar_t *str_wc, const char *str, size_t count)
 {
 	//////////////////////////////////////////
-	wchar_t 	*ptr_str_wc = str_wc;	// Ukazatel na rasshirennuyu stroku
+	wchar_t		*ptr_str_wc = str_wc;	// Ukazatel na rasshirennuyu stroku
 	size_t		str_offset = 0;		// Smeshenie ukazatelya
 	mbstate_t	mbstate;		// Status sdviga
 	//////////////////////////////////////////

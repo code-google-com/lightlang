@@ -54,7 +54,7 @@ void help(void)
 	printf("\t-i <word> | --%s <word>\n", OPT_FIND_ILL_DEFINED);
 	printf("\t-s <package:word> | --%s <package:word>\n", OPT_FIND_SOUND);
 	printf("Dict Management options:\n");
-	printf("\t--%s <dict>\n", OPT_DICT_CONNECT);		
+	printf("\t--%s <dict>\n", OPT_DICT_CONNECT);
 	printf("\t--%s <dict>\n", OPT_DICT_DISCONNECT);
 	printf("\t--%s\n", OPT_DICT_PRINT_INFO);
 	printf("\t--%s <file>\n", OPT_DICT_INSTALL);
