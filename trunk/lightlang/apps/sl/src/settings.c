@@ -35,6 +35,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <locale.h>
 #include <langinfo.h>
 #include <errno.h>
@@ -182,24 +183,26 @@ static int init_locale_encoding(void)
 ********************************************************************************/
 static int init_max_terminal_line_len(void)
 {
-	//////////////////////////////////////////
-	char	*max_terminal_line_len_str;	// Strokovaya velichina dliny
-	extern settings_t settings;		// Nastroyki sistemy
-	//////////////////////////////////////////
+	//////////////////////////////////////////////////
+	char		*max_terminal_line_len_str;	// Strokovaya velichina dliny
+	struct winsize	win_size;			// Parametry terminala
+	extern settings_t settings;			// Nastroyki sistemy
+	//////////////////////////////////////////////////
 
 
 	// Bez kommentariev :)
-	if ( (max_terminal_line_len_str = getenv("COLUMNS")) == NULL )
+
+	if ( (max_terminal_line_len_str = getenv("COLUMNS")) != NULL )
+		if ( (settings.max_terminal_line_len = atoi(max_terminal_line_len_str)) != 0 )
+			return 0;
+
+	if ( ioctl(1, TIOCGWINSZ, &win_size) == 0 )
 	{
-		settings.max_terminal_line_len = DEFAULT_MAX_TERMINAL_LINE_LEN;
+		settings.max_terminal_line_len = win_size.ws_col;
 		return 0;
 	}
 
-	if ( (settings.max_terminal_line_len = atoi(max_terminal_line_len_str)) == 0 )
-	{
-		settings.max_terminal_line_len = DEFAULT_MAX_TERMINAL_LINE_LEN;
-		return 0;
-	}
+	settings.max_terminal_line_len = DEFAULT_MAX_TERMINAL_LINE_LEN;
 
 	return 0;
 }
