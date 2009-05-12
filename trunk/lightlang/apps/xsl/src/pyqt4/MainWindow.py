@@ -33,10 +33,8 @@ import StatusBar
 import DictsManager
 import TranslateWindow
 import SpyMenu
-try : # FIXME: Rrrrr... :-(
-	import IFAMenu
-	import TranslateSitesMenu
-except : pass
+import IFAMenu
+import TranslateSitesMenu
 import InternetLinksMenu
 import HelpBrowser
 import About
@@ -57,7 +55,7 @@ class MainWindow(Qt.QMainWindow) :
 	def __init__(self, parent = None) :
 		Qt.QMainWindow.__init__(self, parent)
 
-		self.setWindowTitle(Const.Organization+" "+Const.MyName+" "+Const.Version)
+		self.setWindowTitle(Const.Organization+" "+Const.MyName)
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
 		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
@@ -204,18 +202,14 @@ class MainWindow(Qt.QMainWindow) :
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
 			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
-		try : # FIXME: Rrrrr... :-(
-			self.tools_menu.addSeparator()
-			self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
-			self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
-			self.tools_menu.addMenu(self.translate_sites_menu)
-		except : pass
-		try : # FIXME: Rrrrr... :-(
-			self.tools_menu.addSeparator()
-			self.ifa_menu = IFAMenu.IFAMenu(tr("Applications"))
-			self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
-			self.tools_menu.addMenu(self.ifa_menu)
-		except : pass
+		self.tools_menu.addSeparator()
+		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
+		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
+		self.tools_menu.addMenu(self.translate_sites_menu)
+		self.tools_menu.addSeparator()
+		self.ifa_menu = IFAMenu.IFAMenu(tr("Applications"))
+		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
+		self.tools_menu.addMenu(self.ifa_menu)
 
 		### Help Menu
 
@@ -272,10 +266,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
 
-		try : # FIXME: Rrrrr... :-(
-			self.translate_sites_menu.saveSettings()
-			self.ifa_menu.saveSettings()
-		except : pass
+		self.translate_sites_menu.saveSettings()
+		self.ifa_menu.saveSettings()
 
 		self.saveSettings()
 
@@ -287,10 +279,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
 
-		try : # FIXME: Rrrrr... :-(
-			self.translate_sites_menu.loadSettings()
-			self.ifa_menu.loadSettings()
-		except : pass
+		self.translate_sites_menu.loadSettings()
+		self.ifa_menu.loadSettings()
 
 		self.loadSettings()
 

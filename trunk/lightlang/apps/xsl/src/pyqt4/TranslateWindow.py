@@ -56,12 +56,10 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.caption_frame.setMouseTracking(True)
 		self.caption_frame.setFrameShape(Qt.QFrame.Box)
 		self.caption_frame.setFrameShadow(Qt.QFrame.Raised)
-		try :
-			self.caption_frame.setStyleSheet("QFrame {"
-					"border: 2px solid gray;"
-					"border-radius: 8px;"
-				"}")
-		except : pass
+		self.caption_frame.setStyleSheet("QFrame {"
+				"border: 2px solid gray;"
+				"border-radius: 8px;"
+			"}")
 
 		self.main_layout.addWidget(self.caption_frame)
 
