@@ -32,8 +32,6 @@
 # define MYNAME			"sl"
 # define VERSION		"6.6"
 # define PACKAGE_VERSION	"0.8.6"
-# define REVISION_NUMBER	"$Revision$"
-# define REVISION_DATE		"$Date$"
 
 # define DEVELOPER_MAIL		"mdevaev@gmail.com"
 # define OFFERS_MAIL		"developers@lightlang.org.ru"

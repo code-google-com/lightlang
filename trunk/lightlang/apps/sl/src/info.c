@@ -106,8 +106,6 @@ void debug(void)
 	printf("Program name\t\t:\t%s\n", MYNAME);
 	printf("Program version\t\t:\t%s\n", VERSION);
 	printf("Package version\t\t:\t%s\n", PACKAGE_VERSION);
-	printf("Revision number\t\t:\t%s\n", REVISION_NUMBER);
-	printf("Revision date\t\t:\t%s\n", REVISION_DATE);
 
 #ifdef __DATE__
 	printf("Date of compilation\t:\t%s\n", __DATE__);
