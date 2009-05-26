@@ -423,7 +423,7 @@ class MainWindow(Qt.QMainWindow) :
 			return
 
 		file_stream = Qt.QTextStream(file)
-		file_stream << self.tabbed_translate_browser.text(index)
+		file_stream << self.tabbed_translate_browser.document(index).toHtml("utf-8")
 
 		file.close()
 
