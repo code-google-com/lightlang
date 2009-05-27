@@ -85,12 +85,13 @@
 &nbsp;&nbsp;&nbsp;Опция --print-index индексирует указанный файл:<br>
 <table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sl --print-index "file"</tt></td></tr></table>
 &nbsp;&nbsp;&nbsp;Программа выводит на стандартный вывод (экран) определенного вида списко - это индекс указанного словаря. О его формате написано в главе <a href="sl_dictionary_format.html">Формат словарей SL</a>. После записи индекса нужно еще раз проиндексировать словарь, поскольку после записи первого индекса относительное смещение внутри файла изменится. Новый индекс нужно записать поверх старого.<br>
-&nbsp;&nbsp;&nbsp;Типичный алгоритм индексации словаря выглядит следующим образом:<br>
+&nbsp;&nbsp;&nbsp;Типичный алгоритм индексации и установки словаря выглядит следующим образом:<br>
 <table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sl --print-index dict &gt; /tmp/dict1<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cat dict &gt;&gt; /tmp/dict1<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sl --print-index /tmp/dict1 &gt; /tmp/dict2<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cat dict &gt;&gt; /tmp/dict2<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mv /tmp/dict2 dict</tt></td></tr></table>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mv /tmp/dict2 dict<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sl --install dict</tt></td></tr></table>
 &nbsp;&nbsp;&nbsp;Алгоритм, возможно, покажется вам сложным, он вызван техническими особенностями реализации системы. Однако, если вы устанавливаете словарь из Интернета, используя <a href="llrepo_usage.html">LLRepo</a>, все эти операции выполняются в автоматическом режиме.<br>
 &nbsp;&nbsp;&nbsp;Если вы не хотите использовать индексацию, в начале файла пропишите тег <em>[noindex]</em>.<br>
 <br>
