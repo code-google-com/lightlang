@@ -1,3 +1,13 @@
+Dictconv-cx (compact and expanded)
+----------
+
+Dictconv-cx is a stripped down and expanded version of dictconv.
+
+* Remove support for DICT dictionary, stardict. Other software such as makedict does very well on these.
+* Support UTF-8 encoding.
+* Support definitions longer than 255 characters.
+* Some minor bug fixes and changes.
+
 Dictconv
 ----------
 
