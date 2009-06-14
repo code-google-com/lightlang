@@ -95,12 +95,12 @@ const std::string bgl_charset[] = {
 	"ISO-8859-2", /*Eastern European*/
 	//"ISO-8859-5", /*Cyrillic*/
 	"CP1251", /*Cyrillic*/
-	"ISO-8859-14", /*Japanese*/
-	"ISO-8859-14", /*Traditional Chinese*/
-	"ISO-8859-15", /*Simplified Chinese*/
+	"SHIFT_JISX0213", /*Japanese*/
+	"BIG5", /*Traditional Chinese*/
+	"GBK", /*Simplified Chinese*/
 	"CP1257", /*Baltic*/
 	"CP1253", /*Greek*/
-	"ISO-8859-15",  /*Korean*/
+	"EUC-KR",  /*Korean*/
 	"ISO-8859-9", /*Turkish*/
 	"ISO-8859-9", /*Hebrew*/
 	"CP1256", /*Arabic*/

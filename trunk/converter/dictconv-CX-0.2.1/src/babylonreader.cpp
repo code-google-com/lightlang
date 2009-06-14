@@ -54,7 +54,6 @@ bool BabylonReader::convert()
   {
     m_builder->addHeadword( entry.headword.c_str(), entry.definition.c_str(), entry.alternates );
     entry = m_babylon->readEntry(resEnabled);
-    printf( "." );
   }
   printf( "\n" );
 

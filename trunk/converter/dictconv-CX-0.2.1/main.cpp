@@ -18,9 +18,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.          *
  ***************************************************************************/
 
-#include "babylonreader.h"
-#include "plaintextdictbuilder.h"
-#include "sdictreader.h"
+#include "src/babylonreader.h"
+#include "src/plaintextdictbuilder.h"
+#include "src/sdictreader.h"
 
 #include <stdio.h>
 #include <string>
@@ -53,8 +53,9 @@ void usage( const char *program )
 
 void version()
 {
-  printf( "Dictconv 0.2\n" );
+  printf( "Dictconv-CX 0.2.1\n" );
   printf( "Copyright (C) 2007 Raul Fernandes <rgfbr@yahoo.com.br>.\n" );
+  printf( "Modified by Lightlang Project\n" );
   printf( "This is free software. You may redistribute copies of it under the terms of\n" );
   printf( "the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.\n" );
   printf( "There is NO WARRANTY; not even for MERCHANTABILITY or FITNESS FOR A\n" );
@@ -69,7 +70,6 @@ int main(int argc, char ** argv)
   // Options
   std::string infile;
   std::string outfile;
-  bool quiet = false;
 
   int c;
   int babylon_resEnabled = 0;

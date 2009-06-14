@@ -28,6 +28,9 @@
 
 #include <iconv.h>
 
+#include <QString>
+#include <QTextCodec>
+
 Babylon::Babylon( std::string filename )
 {
 	m_filename = filename;
@@ -389,14 +392,26 @@ void Babylon::convertToUtf8( std::string &s, uint type )
 	outbuf = (char*)malloc( outbufbytes + 1 );
 	memset( outbuf, '\0', outbufbytes + 1 );
 	defbuf = outbuf;
+	size_t test;
 	while (inbufbytes) {
-		if (iconv(cd, &inbuf, &inbufbytes, &outbuf, &outbufbytes) == -1) {
-			printf( "%s\n", outbuf );
-			printf( "Error in iconv conversion\n" );
-			exit(1);
+		test = iconv(cd, &inbuf, &inbufbytes, &outbuf, &outbufbytes);
+		if ( test == size_t(-1)) {
+			/*inbuf++;
+			inbufbytes--;*/
+			if ((charset == "SHIFT_JISX0213") && (inbuf[0] == char(0x81))){
+				inbuf[1] = 0x45;
+			} else{
+				break;
+			}
 		}
 	}
-	s = std::string( defbuf );
+	if (test == size_t(-1)){
+		QTextCodec *codec = (charset == "SHIFT_JISX0213") ? QTextCodec::codecForName("SHIFT_JIS") : QTextCodec::codecForName(charset.c_str());
+		QString decodedString = (codec->toUnicode(s.c_str())).toUtf8();
+		s = decodedString.toStdString();
+	} else{
+		s = std::string( defbuf );
+	}
 
 	free( defbuf );
 	iconv_close( cd );
