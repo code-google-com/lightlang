@@ -1,1 +1,1 @@
-../docs/text/ru/text/VERSION
+../../../../../../mnt/liksys/projects/lightlang/lightlang/docs/text/ru/text/VERSION
