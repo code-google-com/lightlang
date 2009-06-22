@@ -1,1 +1,1 @@
-../../../../../../mnt/liksys/projects/lightlang/lightlang/docs/text/ru/text/INSTALL
+../docs/text/ru/text/INSTALL

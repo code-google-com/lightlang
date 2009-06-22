@@ -1,1 +1,1 @@
-../../../../../../mnt/liksys/projects/lightlang/lightlang/docs/text/ru/text/README
+../docs/text/ru/text/README
