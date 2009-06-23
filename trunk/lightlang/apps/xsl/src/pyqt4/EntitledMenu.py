@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import EventSniffer
 
 
 #####
@@ -35,6 +36,8 @@ class EntitledMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)
 
+		self.event_sniffer = EventSniffer.EventSniffer()
+
 		if icon != None and text != None :
 			self.addCaption(icon, text)
 
@@ -42,27 +45,21 @@ class EntitledMenu(Qt.QMenu) :
 	### Public ###
 
 	def addCaption(self, icon, text, before_action = None) :
+		button_action = Qt.QAction(self)
+		button_action_font = button_action.font()
+		button_action_font.setBold(True)
+		button_action.setFont(button_action_font)
+		button_action.setIcon(icon)
+		button_action.setText(text)
+
 		fictive_action = Qt.QWidgetAction(self)
-
-		fictive_action_frame = Qt.QFrame()
-		fictive_action_frame.setFrameShape(Qt.QFrame.Box) # Qt.QFrame.StyledPanel
-		fictive_action.setDefaultWidget(fictive_action_frame)
-
-		fictive_action_frame_layout = Qt.QHBoxLayout()
-		fictive_action_frame_layout.setContentsMargins(1, 1, 50, 1)
-		fictive_action_frame.setLayout(fictive_action_frame_layout)
-
-		fictive_action_icon_label = Qt.QLabel()
-		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-		fictive_action_icon_label.setPixmap(icon.pixmap(Qt.QSize(icon_width, icon_height)))
-		fictive_action_frame_layout.insertWidget(-1, fictive_action_icon_label, 0)
-
-		fictive_action_caption_label = Qt.QLabel(text)
-		fictive_action_frame_layout.insertWidget(-1, fictive_action_caption_label, 20)
-
-		font = fictive_action_caption_label.font()
-		font.setBold(True)
-		fictive_action_caption_label.setFont(font)
+		caption_button = Qt.QToolButton(self)
+		caption_button.installEventFilter(self.event_sniffer)
+		caption_button.setDefaultAction(button_action)
+		caption_button.setDown(True)
+		caption_button.setToolButtonStyle(Qt.Qt.ToolButtonTextBesideIcon)
+		caption_button.click()
+		fictive_action.setDefaultWidget(caption_button)
 
 		self.insertAction(before_action, fictive_action)
 
