@@ -31,4 +31,4 @@ Comment[ru]=Система электронных словарей на осно
 Exec=xsl
 Icon=xsl.png
 Terminal=false
-Categories=Utility;Dictionary;
+Categories=Office;Utility;Dictionary;
