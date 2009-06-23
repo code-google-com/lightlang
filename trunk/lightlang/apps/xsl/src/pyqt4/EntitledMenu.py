@@ -53,7 +53,7 @@ class EntitledMenu(Qt.QMenu) :
 		button_action.setText(text)
 
 		fictive_action = Qt.QWidgetAction(self)
-		caption_button = Qt.QToolButton(self)
+		caption_button = Qt.QToolButton()
 		caption_button.installEventFilter(self.event_sniffer)
 		caption_button.setDefaultAction(button_action)
 		caption_button.setDown(True)
