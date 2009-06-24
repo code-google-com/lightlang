@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
-        <location filename="MainWindow.py" line="229"/>
+        <location filename="MainWindow.py" line="224"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
@@ -312,7 +313,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Руководство %1 - %2</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="199"/>
+        <location filename="MainWindow.py" line="198"/>
         <source>Search history</source>
         <translation>История поиска</translation>
     </message>
@@ -322,12 +323,12 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Очистить историю</translation>
     </message>
     <message>
-        <location filename="IFAMenu.py" line="121"/>
+        <location filename="IFAMenu.py" line="137"/>
         <source>IFA</source>
         <translation>IFA</translation>
     </message>
     <message>
-        <location filename="IFAMenu.py" line="122"/>
+        <location filename="IFAMenu.py" line="138"/>
         <source>This applications is already running</source>
         <translation>Это приложение уже было запущено</translation>
     </message>
@@ -366,212 +367,207 @@ Package version: %2</source>
 Версия пакета: %2</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="65"/>
+        <location filename="KeyboardModifiersMenu.py" line="47"/>
         <source>Left Ctrl</source>
         <translation>Ctrl слева</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="66"/>
+        <location filename="KeyboardModifiersMenu.py" line="48"/>
         <source>Left Alt</source>
         <translation>Alt слева</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="67"/>
+        <location filename="KeyboardModifiersMenu.py" line="49"/>
         <source>Left Shift</source>
         <translation>Shift слева</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="68"/>
+        <location filename="KeyboardModifiersMenu.py" line="50"/>
         <source>Left Win</source>
         <translation>Win слева</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="70"/>
+        <location filename="KeyboardModifiersMenu.py" line="52"/>
         <source>Right Ctrl</source>
         <translation>Ctrl справа</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="71"/>
+        <location filename="KeyboardModifiersMenu.py" line="53"/>
         <source>Right Alt</source>
         <translation>Alt справа</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="72"/>
+        <location filename="KeyboardModifiersMenu.py" line="54"/>
         <source>Right Shift</source>
         <translation>Shift справа</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="73"/>
+        <location filename="KeyboardModifiersMenu.py" line="55"/>
         <source>Right Win</source>
         <translation>Win справа</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="75"/>
+        <location filename="KeyboardModifiersMenu.py" line="57"/>
         <source>No modifier</source>
         <translation>Без модификатора</translation>
     </message>
     <message>
-        <location filename="KeyboardModifiersMenu.py" line="86"/>
-        <source>No modifiers available</source>
-        <translation>Нет доступных модификаторов</translation>
-    </message>
-    <message>
-        <location filename="MainWindow.py" line="86"/>
+        <location filename="MainWindow.py" line="85"/>
         <source>Print page</source>
         <translation>Печать страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="154"/>
+        <location filename="MainWindow.py" line="153"/>
         <source>&amp;Pages</source>
         <translation>&amp;Страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="155"/>
+        <location filename="MainWindow.py" line="154"/>
         <source>Save current page</source>
         <translation>Сохранить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="157"/>
+        <location filename="MainWindow.py" line="156"/>
         <source>Print current page</source>
         <translation>Распечатать текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="160"/>
+        <location filename="MainWindow.py" line="159"/>
         <source>Clear current page</source>
         <translation>Очистить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="162"/>
+        <location filename="MainWindow.py" line="161"/>
         <source>Clear all</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="165"/>
+        <location filename="MainWindow.py" line="164"/>
         <source>Search in translations</source>
         <translation>Искать в переводе</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="168"/>
+        <location filename="MainWindow.py" line="167"/>
         <source>New tab</source>
         <translation>Новая вкладка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="170"/>
+        <location filename="MainWindow.py" line="169"/>
         <source>Close tab</source>
         <translation>Закрыть вкладку</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="57"/>
+        <location filename="TrayIcon.py" line="59"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="178"/>
+        <location filename="MainWindow.py" line="177"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="179"/>
+        <location filename="MainWindow.py" line="178"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="181"/>
+        <location filename="MainWindow.py" line="180"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="186"/>
+        <location filename="MainWindow.py" line="185"/>
         <source>Toggle to fullscreen</source>
         <translation>Полноэкранный режим</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="191"/>
+        <location filename="MainWindow.py" line="190"/>
         <source>Sp&amp;y</source>
         <translation>Sp&amp;y</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="196"/>
+        <location filename="MainWindow.py" line="195"/>
         <source>&amp;Tools</source>
         <translation>Инс&amp;трументы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="197"/>
+        <location filename="MainWindow.py" line="196"/>
         <source>SL search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="201"/>
+        <location filename="MainWindow.py" line="200"/>
         <source>Google-Translate client</source>
         <translation>Клиент переводчика Google</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="204"/>
+        <location filename="MainWindow.py" line="203"/>
         <source>Dicts management</source>
         <translation>Управление словарями</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="208"/>
+        <location filename="MainWindow.py" line="206"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="214"/>
+        <location filename="MainWindow.py" line="210"/>
         <source>Applications</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="221"/>
+        <location filename="MainWindow.py" line="216"/>
         <source>&amp;Help</source>
         <translation>По&amp;мощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="223"/>
+        <location filename="MainWindow.py" line="218"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="225"/>
+        <location filename="MainWindow.py" line="220"/>
         <source>Internet links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="230"/>
+        <location filename="MainWindow.py" line="225"/>
         <source>About Qt4</source>
         <translation>О библиотеке Qt4</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="246"/>
+        <location filename="MainWindow.py" line="241"/>
         <source>Welcome</source>
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="250"/>
+        <location filename="MainWindow.py" line="245"/>
         <source>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Welcome to the %1 - the system of electronic dictionaries&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</source>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td bgcolor=&quot;#DFEDFF&quot;&gt;&lt;h2 align=&quot;center&quot;&gt;&lt;em&gt;Добро пожаловать в систему электронных словарей %1&lt;/em&gt;&lt;/h2&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="299"/>
+        <location filename="MainWindow.py" line="290"/>
         <source>Ready</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="422"/>
+        <location filename="MainWindow.py" line="413"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="430"/>
+        <location filename="MainWindow.py" line="421"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="439"/>
+        <location filename="MainWindow.py" line="430"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="452"/>
+        <location filename="MainWindow.py" line="443"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
@@ -586,22 +582,22 @@ Package version: %2</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="64"/>
+        <location filename="SpyMenu.py" line="59"/>
         <source>Show popup window</source>
         <translation>Показывать всплывающее окно</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="66"/>
+        <location filename="SpyMenu.py" line="61"/>
         <source>Auto-detect window</source>
         <translation>Автоидентификация окна</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="90"/>
+        <location filename="SpyMenu.py" line="89"/>
         <source>Spy is running</source>
         <translation>Spy-сервис запущен</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="100"/>
+        <location filename="SpyMenu.py" line="99"/>
         <source>Spy is stopped</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
@@ -621,7 +617,7 @@ Package version: %2</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="TranslateBrowser.py" line="109"/>
+        <location filename="TranslateBrowser.py" line="122"/>
         <source>Sound is not full</source>
         <translation>Звук не полон</translation>
     </message>
@@ -636,14 +632,14 @@ Package version: %2</source>
         <translation>Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="81"/>
+        <location filename="TrayIcon.py" line="83"/>
         <source>XSL - graphical interface for SL
 Spy is stopped</source>
         <translation>XSL - графический интерфейс для SL
 Spy-сервис не запущен</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="73"/>
+        <location filename="TrayIcon.py" line="75"/>
         <source>XSL - graphical interface for SL
 Spy is running</source>
         <translation>XSL - графический интерфейс для SL
@@ -765,7 +761,7 @@ Spy-сервис работает</translation>
         <translation>Ваш язык</translation>
     </message>
     <message>
-        <location filename="Main.py" line="127"/>
+        <location filename="Main.py" line="130"/>
         <source>%1 process is already running, kill old process and try again.
 If not, remove lock file &quot;%2&quot;</source>
         <translation>Процесс %1 уже был запущен, завершите старый процесс и попробуйте снова.
@@ -817,14 +813,19 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>&lt;em&gt;Нет подключенных словарей&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="183"/>
+        <location filename="MainWindow.py" line="182"/>
         <source>Zoom normal</source>
         <translation>Нормальный размер</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="69"/>
+        <location filename="SpyMenu.py" line="65"/>
         <source>Keyboard modifiers</source>
         <translation>Клавиши-модификаторы</translation>
+    </message>
+    <message>
+        <location filename="TrayIcon.py" line="57"/>
+        <source>Dictionary window</source>
+        <translation>Окно словаря</translation>
     </message>
 </context>
 </TS>

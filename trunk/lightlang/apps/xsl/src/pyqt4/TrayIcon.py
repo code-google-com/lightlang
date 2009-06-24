@@ -54,6 +54,8 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 			tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
 		self.tray_menu.addSeparator()
+		self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"), self.visibleChangeRequestSignal)
+		self.tray_menu.addSeparator()
 		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"), self.exit)
 		self.setContextMenu(self.tray_menu)
 
