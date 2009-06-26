@@ -27,6 +27,7 @@ import Xlib.display
 import Xlib.XK
 import Xlib.X
 
+
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
@@ -47,25 +48,20 @@ class KeysGrabber(Qt.QThread) :
 
 		#####
 
-		self.connect(Qt.qApp, Qt.SIGNAL("aboutToQuit()"), lambda : self.exit(0))
+		self.connect(Qt.qApp, Qt.SIGNAL("aboutToQuit()"), self.stop)
 
 
 	### Public ###
 
-	def addFunction(self, keysym, modifier_mask, function) :
+	def addFunction(self, key, modifier, function) :
 		self.exit(0)
 
-		keycode = self.display.keysym_to_keycode(getattr(Xlib.XK, keysym))
-
-		if modifier_mask == None :
-			modifier_mask = -1
-		else :
-			modifier_mask = getattr(Xlib.X, modifier_mask)
+		keycode = self.display.keysym_to_keycode(getattr(Xlib.XK, key))
+		modifier_mask = getattr(Xlib.X, modifier)
 
 		self.functions_list.append([keycode, modifier_mask, function])
 
-		self.root.grab_key(self.functions_list[len(self.functions_list) -1][0], Xlib.X.AnyModifier,
-			True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
+		self.root.grab_key(keycode, modifier_mask, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
 
 		self.start()
 
@@ -82,13 +78,20 @@ class KeysGrabber(Qt.QThread) :
 				has_right_function_flag = False
 
 				for function in self.functions_list :
-					if event.detail == function[0] and (event.state & function[1]) == function[1] and function[1] != -1 :
+					if ( event.detail == function[0] and (event.state & function[1]) == function[1] and
+						function[1] != Xlib.X.AnyModifier ) :
 						has_right_function_flag = True
 						function[2]()
 
 				if not has_right_function_flag :
 					for function in self.functions_list :
-						if event.detail == function[0] and function[1] == -1 :
+						if event.detail == function[0] and function[1] == Xlib.X.AnyModifier :
 							function[2]()
 			except : pass
+
+	def stop(self) :
+		self.exit(0)
+
+		for function in self.functions_list :
+			self.root.ungrab_key(function[0], function[1])
 
