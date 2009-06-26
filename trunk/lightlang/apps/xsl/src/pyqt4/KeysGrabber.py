@@ -48,7 +48,7 @@ class KeysGrabber(Qt.QThread) :
 
 		#####
 
-		self.connect(Qt.qApp, Qt.SIGNAL("aboutToQuit()"), self.stop)
+		self.connect(Qt.QApplication.instance(), Qt.SIGNAL("aboutToQuit()"), self.stop)
 
 
 	### Public ###
