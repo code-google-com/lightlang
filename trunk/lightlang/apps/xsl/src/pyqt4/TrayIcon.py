@@ -24,6 +24,9 @@ import Qt
 import Config
 import Const
 import EntitledMenu
+try :
+	import KeysGrabber
+except : pass
 
 
 #####
@@ -45,6 +48,11 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is stopped"))
 
 		#####
+
+		try :
+			self.keys_grabber = KeysGrabber.KeysGrabber()
+			self.keys_grabber.addFunction("XK_F3", None, self.visibleChangeRequestSignal)
+		except : pass
 
 		self.tray_menu = EntitledMenu.EntitledMenu(Qt.QIcon(MyIcon), Const.Organization+" "+Const.MyName)
 
