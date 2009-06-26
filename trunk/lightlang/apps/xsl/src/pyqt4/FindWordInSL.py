@@ -21,7 +21,6 @@
 
 
 import Qt
-import sys
 import Config
 import Const
 
@@ -121,48 +120,34 @@ class FindWordInSL(Qt.QObject) :
 	def processError(self, error_code) :
 		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("An error occured when creating the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("An error occured when creating the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		elif error_code == Qt.QProcess.Crashed and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error of the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Error of the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		elif error_code == Qt.QProcess.Timedout and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Connection lost with search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Connection lost with search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		elif error_code == Qt.QProcess.WriteError and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error while writing data into the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Error while writing data into the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		elif error_code == Qt.QProcess.ReadError and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error while reading data from the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Error while reading data from the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		elif not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Unknown error occured while executing the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Unknown error occured while executing the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 
 	def processFinished(self, exit_code) :
 		if exit_code and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error of the search process.\n"
-					"Press \"Yes\" to exit"),
+				tr("Error of the search process.\n"),
 				Qt.QMessageBox.Yes)
-			sys.exit(1)
 		self.processFinishedSignal()
 
 	def processStateChenged(self, state) :

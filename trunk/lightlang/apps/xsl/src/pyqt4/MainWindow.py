@@ -21,7 +21,6 @@
 
 
 import Qt
-import sys
 import Config
 import Const
 import User
@@ -326,7 +325,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	def exit(self) :
 		self.save()
-		sys.exit(0)
+		Qt.qApp.exit(0)
 
 
 	### Private ###
