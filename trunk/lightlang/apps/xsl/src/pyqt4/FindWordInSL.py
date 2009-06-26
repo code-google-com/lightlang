@@ -120,33 +120,33 @@ class FindWordInSL(Qt.QObject) :
 	def processError(self, error_code) :
 		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("An error occured when creating the search process.\n"),
+				tr("An error occured when creating the search process"),
 				Qt.QMessageBox.Yes)
 		elif error_code == Qt.QProcess.Crashed and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error of the search process.\n"),
+				tr("Error of the search process"),
 				Qt.QMessageBox.Yes)
 		elif error_code == Qt.QProcess.Timedout and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Connection lost with search process.\n"),
+				tr("Connection lost with search process"),
 				Qt.QMessageBox.Yes)
 		elif error_code == Qt.QProcess.WriteError and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error while writing data into the search process.\n"),
+				tr("Error while writing data into the search process"),
 				Qt.QMessageBox.Yes)
 		elif error_code == Qt.QProcess.ReadError and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error while reading data from the search process.\n"),
+				tr("Error while reading data from the search process"),
 				Qt.QMessageBox.Yes)
 		elif not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Unknown error occured while executing the search process.\n"),
+				tr("Unknown error occured while executing the search process"),
 				Qt.QMessageBox.Yes)
 
 	def processFinished(self, exit_code) :
 		if exit_code and not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("Error of the search process.\n"),
+				tr("Error of the search process"),
 				Qt.QMessageBox.Yes)
 		self.processFinishedSignal()
 
