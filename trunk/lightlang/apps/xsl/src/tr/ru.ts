@@ -414,7 +414,7 @@ Package version: %2</source>
         <translation>Закрыть вкладку</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="67"/>
+        <location filename="TrayIcon.py" line="72"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
@@ -529,12 +529,12 @@ Package version: %2</source>
         <translation>Печатаем...</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="60"/>
+        <location filename="TrayIcon.py" line="59"/>
         <source>Start Spy</source>
         <translation>Запустить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="62"/>
+        <location filename="TrayIcon.py" line="61"/>
         <source>Stop Spy</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
@@ -589,14 +589,14 @@ Package version: %2</source>
         <translation>Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="91"/>
+        <location filename="TrayIcon.py" line="96"/>
         <source>XSL - graphical interface for SL
 Spy is stopped</source>
         <translation>XSL - графический интерфейс для SL
 Spy-сервис не запущен</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="83"/>
+        <location filename="TrayIcon.py" line="88"/>
         <source>XSL - graphical interface for SL
 Spy is running</source>
         <translation>XSL - графический интерфейс для SL
@@ -780,7 +780,7 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Клавиши-модификаторы</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="65"/>
+        <location filename="TrayIcon.py" line="69"/>
         <source>Dictionary window</source>
         <translation>Окно словаря</translation>
     </message>
