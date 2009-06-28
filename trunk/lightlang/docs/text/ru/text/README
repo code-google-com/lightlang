@@ -98,7 +98,7 @@ SLog, полностью графической версии словаря, н�
 репозиориях современных дистрибутивов. Чаще всего отсутствует PyQt4, жизнено
 важный для LightLang XSL компонент. И так, по следующим ссылкам вы можете
 скачать исходные тексты Qt4, SIP, PyQt4 и python-xlib*:
-    * http://trolltech.com/developer/downloads/qt/x11
+    * http://www.qtsoftware.com/downloads/
     * http://www.riverbankcomputing.co.uk/sip/download.php
     * http://www.riverbankcomputing.co.uk/pyqt/download.php
     * http://python-xlib.sourceforge.net
