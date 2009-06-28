@@ -9,9 +9,7 @@ CFLAGS=@CFLAGS@
 MKDIR=@MKDIR_PROG@
 CP=@CP_PROG@
 INS=@INSTALL@
-LN=@LN_PROG@
 RM=@RM_PROG@
-PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
 
 SL_SRC=src/main.c \
@@ -43,7 +41,6 @@ INS_SL_SOUNDS_DIR=@prefix@/share/sl/sounds
 #####
 all : $(SL_OBJ)
 	$(CC) $(LDFLAGS) -o $(SL_PROG) $(SL_OBJ)
-	-$(LN) -s `$(PWD)`/$(SL_PROG) ../../$(SL_PROG)
 
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_SL_PROG_DIR)
@@ -59,5 +56,4 @@ uninstall :
 
 clean :
 	$(RM) -f $(SL_PROG) $(SL_OBJ) $(SL_CONFIG)
-	-$(RM) -f ../../$(SL_PROG)
 

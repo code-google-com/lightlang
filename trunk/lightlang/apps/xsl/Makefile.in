@@ -9,7 +9,6 @@ INS=@INSTALL@
 CP=@CP_PROG@
 LN=@LN_PROG@
 RM=@RM_PROG@
-PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
 LS=@LS_PROG@
 PYTHON=@PYTHON_PROG@
@@ -46,7 +45,6 @@ all :
 	done
 	$(CP) $(XSL_MAIN) $(XSL_PROG)
 	$(CHMOD) +x $(XSL_PROG)
-	-$(LN) -s `$(PWD)`/$(XSL_PROG) ../../$(XSL_PROG)
 
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PROG_DIR)
@@ -86,7 +84,6 @@ uninstall :
 clean :
 	$(RM) -f $(XSL_PROG) $(XSL_MAIN) $(XSL_CONFIG)
 	$(RM) -f $(XSL_PYQT4_DIR)/*.pyc
-	$(RM) -f ../../$(XSL_PROG)
 
 _update_ru_ts :
 	pylupdate4 -verbose $(XSL_PYQT4_DIR)/*.py -ts $(XSL_TR_DIR)/ru.ts

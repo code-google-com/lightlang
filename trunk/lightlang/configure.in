@@ -105,7 +105,6 @@ AC_PATH_PROG(MV_PROG, mv, mv, $PATH)
 AC_PATH_PROG(RM_PROG, rm, rm, $PATH)
 AC_PATH_PROG(CAT_PROG, cat, cat, $PATH)
 AC_PATH_PROG(LS_PROG, ls, ls, $PATH)
-AC_PATH_PROG(PWD_PROG, pwd, pwd, $PATH)
 AC_PATH_PROG(CD_PROG, cd, cd, $PATH)
 
 AC_PATH_PROG(FIND_PROG, find, no, $PATH)
@@ -211,8 +210,8 @@ if [[ "$GUI_FLAG" = "yes" ]]; then
 		echo "pass"
 	fi
 
-	printf "python-test: importing \"Qt\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import Qt"
+	printf "python-test: importing \"PyQt4\" package... "
+	$PYTHON_PROG -c "import PyQt4"
 	if [[ "$?" != "0" ]]; then
 		echo "+---------------------------------------------------------------------+"
 		echo "| In your system not install library PyQt4. You can get it's latest   |"
@@ -220,7 +219,7 @@ if [[ "$GUI_FLAG" = "yes" ]]; then
 		echo "|    http://www.riverbankcomputing.co.uk/pyqt/                        |"
 		echo "| For installing PyQt4 requiring library Qt4 and SIP, which you can   |"
 		echo "| get from:                                                           |"
-		echo "|    http://www.trolltech.com                                         |"
+		echo "|    http://www.qtsoftware.com/                                       |"
 		echo "|    http://www.riverbankcomputing.co.uk/sip/                         |"
 		echo "| Install it, following instructions applied to them. If these        |"
 		echo "| libraries haves in the repositories, you can istall them from       |"

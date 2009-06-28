@@ -7,9 +7,7 @@
 MKDIR=@MKDIR_PROG@
 CP=@CP_PROG@
 INS=@INSTALL@
-LN=@LN_PROG@
 RM=@RM_PROG@
-PWD=@PWD_PROG@
 CHMOD=@CHMOD_PROG@
 LS=@LS_PROG@
 PYTHON=@PYTHON_PROG@
@@ -28,7 +26,6 @@ all : $(LLREPO_MAIN)
 	done
 	$(CP) $(LLREPO_MAIN) $(LLREPO_PROG)
 	$(CHMOD) +x $(LLREPO_PROG)
-	-$(LN) -s `$(PWD)`/$(LLREPO_PROG) ../../$(LLREPO_PROG)
 
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_LLREPO_PROG_DIR)
@@ -45,6 +42,5 @@ uninstall :
 
 clean :
 	$(RM) -f $(LLREPO_PROG) $(LLREPO_MAIN)
-	$(RM) -f ../../$(LLREPO_PROG)
 	$(RM) -f src/*.pyc
 

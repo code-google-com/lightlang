@@ -10,7 +10,7 @@ RM=@RM_PROG@
 CAT=@CAT_PROG@
 LS=@LS_PROG@
 CHMOD=@CHMOD_PROG@
-SL=../../sl
+SL=../../apps/sl/sl
 
 TMP_FILE=tmpdict
 
