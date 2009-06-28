@@ -12,7 +12,7 @@ LS=@LS_PROG@
 CHMOD=@CHMOD_PROG@
 SL=../../apps/sl/sl
 
-TMP_FILE=tmpdict
+TMP_FILE=/tmp/tmpdict
 
 DICTS_SRC_DIR=src
 DICTS_DIR=dicts

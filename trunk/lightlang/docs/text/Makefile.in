@@ -40,7 +40,7 @@ _create_en_texts :
 			iconv -f koi8-r -t utf-8 >> en/text/README; \
 		echo >> en/text/README; \
 	done
-	iconv -f utf-8 -t koi8-r ../html/en/html/common_new_features.html \
+	iconv -f utf-8 -t koi8-r ../html/en/html/common_installation_and_configuration.html \
 		| html2text -nobs | iconv -f koi8-r -t utf-8 > en/text/INSTALL
 	iconv -f utf-8 -t koi8-r ../html/en/html/common_new_features.html \
 		| html2text -nobs | iconv -f koi8-r -t utf-8 1> en/text/VERSION
