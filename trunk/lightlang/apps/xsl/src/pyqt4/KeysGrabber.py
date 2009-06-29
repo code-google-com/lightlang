@@ -21,11 +21,11 @@
 
 
 import Qt
-import Config
-import Const
 import Xlib.display
 import Xlib.XK
 import Xlib.X
+import Config
+import Const
 
 
 #####
