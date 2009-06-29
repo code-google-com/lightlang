@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import EventSniffer
+import FictiveButtonEventFilter
 
 
 #####
@@ -36,7 +36,7 @@ class EntitledMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)
 
-		self.event_sniffer = EventSniffer.EventSniffer()
+		self.fictive_button_event_filter = FictiveButtonEventFilter.FictiveButtonEventFilter()
 
 		if icon != None and text != None :
 			self.addCaption(icon, text)
@@ -53,13 +53,13 @@ class EntitledMenu(Qt.QMenu) :
 		button_action.setText(text)
 
 		fictive_action = Qt.QWidgetAction(self)
-		caption_button = Qt.QToolButton()
-		caption_button.installEventFilter(self.event_sniffer)
-		caption_button.setDefaultAction(button_action)
-		caption_button.setDown(True)
-		caption_button.setToolButtonStyle(Qt.Qt.ToolButtonTextBesideIcon)
-		caption_button.click()
-		fictive_action.setDefaultWidget(caption_button)
+		fictive_button = Qt.QToolButton()
+		fictive_button.installEventFilter(self.fictive_button_event_filter)
+		fictive_button.setDefaultAction(button_action)
+		fictive_button.setDown(True)
+		fictive_button.setToolButtonStyle(Qt.Qt.ToolButtonTextBesideIcon)
+		fictive_button.click()
+		fictive_action.setDefaultWidget(fictive_button)
 
 		self.insertAction(before_action, fictive_action)
 

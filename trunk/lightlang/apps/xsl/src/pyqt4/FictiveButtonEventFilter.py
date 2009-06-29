@@ -31,7 +31,7 @@ def tr(str) :
 
 
 #####
-class EventSniffer(Qt.QObject) :
+class FictiveButtonEventFilter(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 
