@@ -26,6 +26,7 @@ import Xlib.XK
 import Xlib.X
 import Config
 import Const
+import KeysGrabberThread
 
 
 #####
@@ -34,64 +35,11 @@ def tr(str) :
 
 
 #####
-class KeysGrabber(Qt.QThread) :
-	def __init__(self) :
-		Qt.QThread.__init__(self)
+class KeysGrabber(KeysGrabberThread.KeysGrabberThread) :
+	keys_grabber_thread_object = None
 
-		#####
-
-		self.functions_list = []
-
-		self.display = Xlib.display.Display()
-		self.root = self.display.screen().root
-		self.root.change_attributes(event_mask=Xlib.X.PropertyChangeMask|Xlib.X.KeyPressMask)
-
-		#####
-
-		self.connect(Qt.QApplication.instance(), Qt.SIGNAL("aboutToQuit()"), self.stop)
-
-
-	### Public ###
-
-	def addFunction(self, key, modifier, function) :
-		self.exit(0)
-
-		keycode = self.display.keysym_to_keycode(getattr(Xlib.XK, key))
-		modifier_mask = getattr(Xlib.X, modifier)
-
-		self.functions_list.append([keycode, modifier_mask, function])
-
-		self.root.grab_key(keycode, modifier_mask, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
-
-		self.start()
-
-
-	### Private ###
-
-	def run(self) :
-		while True :
-			try :
-				event = self.root.display.next_event()
-				if event.type != Xlib.X.KeyRelease :
-					continue
-
-				has_right_function_flag = False
-
-				for function in self.functions_list :
-					if ( event.detail == function[0] and (event.state & function[1]) == function[1] and
-						function[1] != Xlib.X.AnyModifier ) :
-						has_right_function_flag = True
-						function[2]()
-
-				if not has_right_function_flag :
-					for function in self.functions_list :
-						if event.detail == function[0] and function[1] == Xlib.X.AnyModifier :
-							function[2]()
-			except : pass
-
-	def stop(self) :
-		self.exit(0)
-
-		for function in self.functions_list :
-			self.root.ungrab_key(function[0], function[1])
+	def __new__(self, parent = None) :
+		if self.keys_grabber_thread_object == None :
+			self.keys_grabber_thread_object = KeysGrabberThread.KeysGrabberThread.__new__(self, parent)
+		return self.keys_grabber_thread_object
 
