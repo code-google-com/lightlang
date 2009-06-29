@@ -21,9 +21,6 @@
 
 
 import Qt
-import Xlib.display
-import Xlib.XK
-import Xlib.X
 import Config
 import Const
 import KeysGrabberThread
