@@ -39,7 +39,7 @@ NoModifier = -1
 
 
 #####
-Display = None
+DisplayObject = None
 
 
 #####
@@ -49,13 +49,13 @@ def tr(str) :
 
 #####
 def checkModifier(modifier) :
-	if Display == None :
+	if DisplayObject == None :
 		initDisplay()
 
 	if modifier == NoModifier :
 		return True
 
-	keymap = Display.query_keymap()
+	keymap = DisplayObject.query_keymap()
 	keys = []
 
 	for count1 in range(0, len(keymap)) :
@@ -71,6 +71,6 @@ def checkModifier(modifier) :
 
 #####
 def initDisplay() :
-	global Display
-	Display = Xlib.display.Display()
+	global DisplayObject
+	DisplayObject = Xlib.display.Display()
 
