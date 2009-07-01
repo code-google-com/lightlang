@@ -22,10 +22,10 @@ INS_DICTS_DIR=@prefix@/share/sl/dicts
 #####
 all :
 	for file in `$(LS) $(DICTS_SRC_DIR)/*.??-??`; do \
-		$(SL) --print-index $(DICTS_SRC_DIR)/"$$file" 1> $(TMP_FILE) && \
-		$(CAT) $(DICTS_SRC_DIR)/"$$file" 1>> $(TMP_FILE) && \
-		$(SL) --print-index $(TMP_FILE) 1> $(DICTS_DIR)/"$$file" && \
-		$(CAT) $(DICTS_SRC_DIR)/"$$file" 1>> $(DICTS_DIR)/"$$file"; \
+		$(SL) --print-index $$file 1> $(TMP_FILE) && \
+		$(CAT) $$file 1>> $(TMP_FILE) && \
+		$(SL) --print-index $(TMP_FILE) 1> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/} && \
+		$(CAT) $$file 1>> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/}; \
 	done
 	$(RM) -f $(TMP_FILE)
 
