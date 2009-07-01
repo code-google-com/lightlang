@@ -16,8 +16,8 @@ INS_EN_HTML_DOC_DIR=@prefix@/share/doc/lightlang/html/en
 #####
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_EN_HTML_DOC_DIR)
-	$(CP) $(EN_HTML_DOC_DIR)/*.html $(DESTDIR)$(INS_EN_HTML_DOC_DIR)
-	$(CP) $(EN_HTML_DOC_DIR)/*.png $(DESTDIR)$(INS_EN_HTML_DOC_DIR)
+	$(CP) -f $(EN_HTML_DOC_DIR)/*.html $(DESTDIR)$(INS_EN_HTML_DOC_DIR)
+	$(CP) -f $(EN_HTML_DOC_DIR)/*.png $(DESTDIR)$(INS_EN_HTML_DOC_DIR)
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)

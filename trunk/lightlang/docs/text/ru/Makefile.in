@@ -15,7 +15,7 @@ INS_RU_TEXT_DOC_DIR=@prefix@/share/doc/lightlang/text/ru
 #####
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_RU_TEXT_DOC_DIR)
-	$(CP) -r $(RU_TEXT_DOC_DIR)/* $(DESTDIR)$(INS_RU_TEXT_DOC_DIR)
+	$(CP) -f $(RU_TEXT_DOC_DIR)/* $(DESTDIR)$(INS_RU_TEXT_DOC_DIR)
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)

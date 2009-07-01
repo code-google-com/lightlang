@@ -16,8 +16,8 @@ INS_RU_HTML_DOC_DIR=@prefix@/share/doc/lightlang/html/ru
 #####
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
-	$(CP) $(RU_HTML_DOC_DIR)/*.html $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
-	$(CP) $(RU_HTML_DOC_DIR)/*.png $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
+	$(CP) -f $(RU_HTML_DOC_DIR)/*.html $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
+	$(CP) -f $(RU_HTML_DOC_DIR)/*.png $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)

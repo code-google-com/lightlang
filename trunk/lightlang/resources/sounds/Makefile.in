@@ -17,7 +17,7 @@ INS_SOUNDS_DIR=@prefix@/share/sl/sounds
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_SOUNDS_DIR)
 	-$(CHMOD) 777 $(DESTDIR)$(INS_SOUNDS_DIR)
-	-$(CP) -r $(SOUNDS_DIR)/* $(DESTDIR)$(INS_SOUNDS_DIR)
+	-$(CP) -rf $(SOUNDS_DIR)/* $(DESTDIR)$(INS_SOUNDS_DIR)
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_SOUNDS_DIR)
