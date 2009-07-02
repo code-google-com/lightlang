@@ -22,19 +22,20 @@
 
 import Qt
 import Xlib.display
+import Xlib.XK
 import Config
 import Const
 
 
 #####
-LeftCtrlModifier = 133
-LeftAltModifier = 256
-LeftShiftModifier = 194
-LeftWinModifier = 451
-RightCtrlModifier = 421
-RightAltModifier = 449
-RightShiftModifier = 230
-RightWinModifier = 452
+LeftCtrlModifier = Xlib.XK.XK_Control_L
+LeftAltModifier = Xlib.XK.XK_Alt_L
+LeftShiftModifier = Xlib.XK.XK_Shift_L
+LeftWinModifier = Xlib.XK.XK_Super_L
+RightCtrlModifier = Xlib.XK.XK_Control_R
+RightAltModifier = Xlib.XK.XK_Alt_R
+RightShiftModifier = Xlib.XK.XK_Shift_R
+RightWinModifier = Xlib.XK.XK_Super_R
 NoModifier = -1
 
 
@@ -56,17 +57,9 @@ def checkModifier(modifier) :
 		return True
 
 	keymap = DisplayObject.query_keymap()
-	keys = []
+	keycode = DisplayObject.keysym_to_keycode(modifier)
 
-	for count1 in range(0, len(keymap)) :
-		Qt.QCoreApplication.processEvents()
-		for count2 in range(0, 32) :
-			keys.append(int(keymap[count1] & (1 << count2)))
-
-	if keys[modifier] != 0 :
-		return True
-	else :
-		return False
+	return 1 & (keymap[keycode / 8] >> (keycode & 7))
 
 
 #####
