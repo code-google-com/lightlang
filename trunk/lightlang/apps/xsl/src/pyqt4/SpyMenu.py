@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import User
-import MouseSelector
+import MouseSelectorThread
 try :
 	import KeyboardModifiersMenu
 except : pass
@@ -46,7 +46,7 @@ class SpyMenu(Qt.QMenu) :
 
 		#####
 
-		self.mouse_selector = MouseSelector.MouseSelector()
+		self.mouse_selector_thread = MouseSelectorThread.MouseSelectorThread()
 
 		#####
 
@@ -69,19 +69,19 @@ class SpyMenu(Qt.QMenu) :
 
 		#####
 
-		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
-		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
+		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
 		try :
 			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"),
-				self.mouse_selector.setModifier)
+				self.mouse_selector_thread.setModifier)
 		except : pass
 
 
 	### Public ###
 
 	def startSpy(self) :
-		self.mouse_selector.start()
+		self.mouse_selector_thread.start()
 
 		self.start_spy_menu_action.setEnabled(False)
 		self.stop_spy_menu_action.setEnabled(True)
@@ -91,7 +91,7 @@ class SpyMenu(Qt.QMenu) :
 		self.spyStartedSignal()
 
 	def stopSpy(self) :
-		self.mouse_selector.stop()
+		self.mouse_selector_thread.stop()
 
 		self.start_spy_menu_action.setEnabled(True)
 		self.stop_spy_menu_action.setEnabled(False)
