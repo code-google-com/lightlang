@@ -89,7 +89,7 @@ class MouseSelectorThread(Qt.QThread) :
 			return
 		self.old_selection = word
 
-		# TODO: add mouse-buttons checks
+		# TODO: add mouse-buttons checks here
 
 		try :
 			if not KeyboardModifiers.checkModifier(self.modifier) :
