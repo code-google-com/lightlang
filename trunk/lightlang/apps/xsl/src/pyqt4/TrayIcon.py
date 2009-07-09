@@ -25,6 +25,7 @@ import Config
 import Const
 import EntitledMenu
 try :
+	import KeysGrabberThread
 	import KeysGrabberThreadSingleton
 except : pass
 
@@ -62,7 +63,8 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.stop_spy_menu_action.setEnabled(False)
 		self.tray_menu.addSeparator()
 		try :
-			self.keys_grabber_thread_singleton.addFunction("XK_F3", "ControlMask", self.visibleChangeRequestSignal)
+			self.keys_grabber_thread_singleton.addFunction(KeysGrabberThread.Key_F3, KeysGrabberThread.CtrlModifier,
+				self.visibleChangeRequestSignal)
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
 				self.visibleChangeRequestSignal, Qt.QKeySequence("Ctrl+F3"))
 		except :

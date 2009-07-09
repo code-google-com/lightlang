@@ -29,6 +29,23 @@ import Const
 
 
 #####
+Key_F1 = Xlib.XK.XK_F1
+Key_F2 = Xlib.XK.XK_F2
+Key_F3 = Xlib.XK.XK_F3
+Key_F4 = Xlib.XK.XK_F4
+Key_F5 = Xlib.XK.XK_F5
+Key_F6 = Xlib.XK.XK_F6
+Key_F7 = Xlib.XK.XK_F7
+Key_F8 = Xlib.XK.XK_F8
+Key_F9 = Xlib.XK.XK_F9
+Key_F10 = Xlib.XK.XK_F10
+Key_F11 = Xlib.XK.XK_F11
+Key_F12 = Xlib.XK.XK_F12
+CtrlModifier = Xlib.X.ControlMask
+ShiftModifier = Xlib.X.ShiftMask
+
+
+#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
@@ -56,12 +73,9 @@ class KeysGrabberThread(Qt.QThread) :
 	def addFunction(self, key, modifier, function) :
 		self.exit(0)
 
-		keycode = self.display.keysym_to_keycode(getattr(Xlib.XK, key))
-		modifier_mask = getattr(Xlib.X, modifier)
-
-		self.functions_list.append([keycode, modifier_mask, function])
-
-		self.root.grab_key(keycode, modifier_mask, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
+		key = self.display.keysym_to_keycode(key)
+		self.functions_list.append([key, modifier, function])
+		self.root.grab_key(key, modifier, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
 
 		self.start()
 
