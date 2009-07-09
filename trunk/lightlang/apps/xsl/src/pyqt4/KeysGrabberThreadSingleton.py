@@ -32,7 +32,7 @@ def tr(str) :
 
 
 #####
-class KeysGrabber(KeysGrabberThread.KeysGrabberThread) :
+class KeysGrabberThreadSingleton(KeysGrabberThread.KeysGrabberThread) :
 	keys_grabber_thread_object = None
 
 	def __new__(self, parent = None) :
