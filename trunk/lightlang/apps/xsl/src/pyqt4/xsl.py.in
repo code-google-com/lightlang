@@ -32,25 +32,32 @@ if __name__ == "__main__" :
 	enable_psyco_flag = False
 	libs_dir = "@prefix@/lib/xsl/pyqt4"
 
-	try :
-		opts, args = getopt.getopt(sys.argv[1:], "hs:",
-			["enable-psyco", "libs-dir=", "help", "session="])
+	#####
 
-		for opt, arg in opts :
-			if opt in ("--enable-psyco") :
-				enable_psyco_flag = True
-			if opt in ("--libs-dir") :
-				libs_dir = arg
-			if opt in ("-h", "--help") :
-				print >> sys.stderr, "usage: xsl [--enable-psyco|--libs-dir=<dir>|-h|--help]"
-				sys.exit(0)
-	except :
-		print >> sys.stderr, "xsl: options parser error: ignored"
+	try :
+		opts, args = getopt.getopt(sys.argv[1:], "hs:", ["enable-psyco", "libs-dir=", "help", "session="])
+	except getopt.GetoptError, err :
+		print >> sys.stderr, "xsl: "+str(err)
+		print >> sys.stderr, "usage: xsl [ --enable-psyco | --libs-dir=<dir> | -h | --help ]"
+		sys.exit(1)
+
+	for opt, arg in opts :
+		if opt in ("--enable-psyco") :
+			enable_psyco_flag = True
+			continue
+		if opt in ("--libs-dir") :
+			libs_dir = arg
+			continue
+		if opt in ("-h", "--help") :
+			print "usage: xsl [ --enable-psyco | --libs-dir=<dir> | -h | --help ]"
+			sys.exit(0)
 
 	#####
 
 	sys.path.append(libs_dir)
-	import Main # raises accept
+	import Main
+
+	#####
 
 	if enable_psyco_flag :
 		try :
