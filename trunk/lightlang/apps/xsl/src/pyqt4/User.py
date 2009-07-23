@@ -52,12 +52,7 @@ def settingsPath() :
 	user_settings_file_name = SettingsObject.fileName()
 
 	index = user_settings_file_name.lastIndexOf("/")
-	if index >= 0 :
-		user_settings_dir_path = user_settings_file_name.left(index)
-	else :
-		user_settings_dir_path = Qt.QString()
-
-	return user_settings_dir_path
+	return ( user_settings_file_name.left(index) if index >= 0 else Qt.QString() )
 
 
 ##### Private #####
