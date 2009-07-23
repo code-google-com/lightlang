@@ -138,7 +138,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.showUp)
 
 		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.setDictsList)
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.lFind)
+		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), lambda : self.find_in_sl_panel.lFind)
 
 		#########################
 		##### Creating Menu #####
