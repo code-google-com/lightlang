@@ -58,8 +58,8 @@ class FindWordInSL(Qt.QObject) :
 		#####
 
 		self.replaces_list = [
-			["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
-			["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
+				["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
+				["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
 			]
 
 		#####
@@ -151,10 +151,7 @@ class FindWordInSL(Qt.QObject) :
 		self.processFinishedSignal()
 
 	def processStateChenged(self, state) :
-		if state == Qt.QProcess.Starting or state == Qt.QProcess.Running :
-			self.proc_block_flag = True
-		else :
-			self.proc_block_flag = False
+		self.proc_block_flag = ( True if state == Qt.QProcess.Starting or state == Qt.QProcess.Running else False )
 
 	def setText(self) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
