@@ -114,7 +114,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			[ tr("Ukrainian"),		Qt.QVariant("uk") ],
 			[ tr("Vietnamese"),		Qt.QVariant("vi") ],
 			]
-		self.internalSortLangs(0, len(self.langs_list) -1)
+		self.internalSortLangs()
 
 		self.lang = Locale.mainLang()
 
@@ -222,7 +222,11 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	### Private ###
 
-	def internalSortLangs(self, left, right) :
+	def internalSortLangs(self, left = None, right = None) :
+		if left == right == None :
+			left = 0
+			right = len(self.langs_list) -1
+
 		if left >= right :
 			return
 
