@@ -301,9 +301,7 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def focusChanged(self) :
-		new_panels_focus_flags_list = []
-		for panel in self.panels_list :
-			new_panels_focus_flags_list.append(panel.hasInternalFocus())
+		new_panels_focus_flags_list = [ panel.hasInternalFocus() for panel in self.panels_list ]
 		if True in new_panels_focus_flags_list :
 			self.panels_focus_flags_list = new_panels_focus_flags_list
 
