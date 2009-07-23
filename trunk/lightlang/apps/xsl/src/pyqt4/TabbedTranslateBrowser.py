@@ -134,8 +134,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		if self.shred_lock_flag :
 			return
 
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 
 		self.tab_widget.removeTab(index)
 		self.single_translate_browsers.pop(index)
@@ -164,23 +163,19 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def text(self, index = -1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		return self.single_translate_browsers[index].text()
 
 	def caption(self, index = -1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		return self.tab_widget.tabText(index)
 
 	def browser(self, index = -1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		return self.single_translate_browsers[index]
 
 	def document(self, index = -1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		return self.single_translate_browsers[index].document()
 
 	###
@@ -189,8 +184,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		if self.shred_lock_flag :
 			return
 
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
 		self.tab_widget.setTabText(index, tr("(Untitled)"))
 
@@ -210,26 +204,22 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		if self.shred_lock_flag :
 			return
 
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		self.single_translate_browsers[index].clear()
 		self.tab_widget.setTabText(index, Qt.QString())
 
 	###
 
 	def zoomIn(self, index = -1, range = 1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		self.single_translate_browsers[index].zoomIn(range)
 
 	def zoomOut(self, index = -1, range = 1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		self.single_translate_browsers[index].zoomOut(range)
 
 	def zoomNormal(self, index = -1) :
-		if index < 0 :
-			index = self.tab_widget.currentIndex()
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 		self.single_translate_browsers[index].zoomNormal()
 
 
