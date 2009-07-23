@@ -165,48 +165,35 @@ class FindInSLPanel(Qt.QDockWidget) :
 	###
 
 	def uFind(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.external_find.uFind(word)
 		self.wordChangedSignal(word)
 
 	def cFind(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.external_find.cFind(word)
 		self.wordChangedSignal(word)
 
 	def lFind(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			self.list_browser.setText(tr("Enter the word, please"))
 			return
 		self.internal_find.lFind(word)
 
 	def iFind(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			self.list_browser.setText(tr("Enter the word, please"))
 			return
 		self.internal_find.iFind(word)
 
 	def uFindInNewTab(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
@@ -214,9 +201,7 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.wordChangedSignal(word)
 
 	def cFindInNewTab(self, word = None) :
-		if word == None :
-			word = self.line_edit.text()
-		word = word.simplified()
+		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
