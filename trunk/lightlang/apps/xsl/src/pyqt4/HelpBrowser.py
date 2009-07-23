@@ -140,11 +140,9 @@ class HelpBrowser(Qt.QWidget) :
 
 	def show(self) :
 		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
-		if x_window_position < 0 :
-			x_window_position = 0
+		x_window_position = ( 0 if x_window_position < 0 else x_window_position )
 		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
-		if y_window_position < 0 :
-			y_window_position = 0
+		y_window_position = ( 0 if y_window_position < 0 else y_window_position )
 
 		self.move(Qt.QPoint(x_window_position, y_window_position))
 
