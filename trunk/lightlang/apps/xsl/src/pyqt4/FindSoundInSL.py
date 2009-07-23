@@ -115,8 +115,5 @@ class FindSoundInSL(Qt.QObject) :
 				Qt.QMessageBox.Yes)
 
 	def processStateChenged(self, state) :
-		if state == Qt.QProcess.Starting or state == Qt.QProcess.Running :
-			self.proc_block_flag = True
-		else :
-			self.proc_block_flag = False
+		self.proc_block_flag = ( True if state == Qt.QProcess.Starting or state == Qt.QProcess.Running else False )
 
