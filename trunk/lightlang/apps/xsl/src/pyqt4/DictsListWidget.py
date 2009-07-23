@@ -73,10 +73,7 @@ class DictsListWidget(Qt.QTableWidget) :
 				count += 1
 				continue
 
-			if item_code_regexp.cap(1).toInt()[0] > 0 :
-				dict_state = Qt.Qt.Checked
-			else :
-				dict_state = Qt.Qt.Unchecked
+			dict_state = ( Qt.Qt.Checked if item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
 
 			dict_name = item_code_regexp.cap(2)
 
@@ -105,10 +102,7 @@ class DictsListWidget(Qt.QTableWidget) :
 
 			item = self.cellWidget(count, 0)
 
-			if item.dictState() == Qt.Qt.Checked :
-				enable_dict_flag = 1
-			else :
-				enable_dict_flag = 0
+			enable_dict_flag = ( 1 if item.dictState() == Qt.Qt.Checked else 0 )
 
 			dict_name = item.dictName()
 
@@ -205,16 +199,10 @@ class DictsListWidget(Qt.QTableWidget) :
 	###
 
 	def isUpAvailable(self, index) :
-		if 0 < index < self.rowCount() :
-			return True
-		else :
-			return False
+		return ( True if 0 < index < self.rowCount() else False )
 
 	def isDownAvailable(self, index) :
-		if 0 <= index < self.rowCount() -1 :
-			return True
-		else :
-			return False
+		return ( True if 0 <= index < self.rowCount() -1 else False )
 
 	###
 
