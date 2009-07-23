@@ -160,31 +160,18 @@ class DictInformationWindow(Qt.QWidget) :
 	### Private ###
 
 	def dictCaption(self) :
-		dict_caption_regexp = Qt.QRegExp("([^\\.]+)\\...-..")
-
-		if dict_caption_regexp.exactMatch(self.dict_name) :
-			dict_caption = dict_caption_regexp.cap(1)
-		else :
-			dict_caption = Qt.QString(self.dict_name)
-
+		rx = Qt.QRegExp("([^\\.]+)\\...-..")
+		dict_caption = ( rx.cap(1) if rx.exactMatch(self.dict_name) else Qt.QString(self.dict_name) )
 		dict_caption.replace("_", " ")
-
 		return dict_caption
 
 	def dictDirection(self) :
-		dict_direction_regexp = Qt.QRegExp("[^\\.]+\\.(..-..)")
-
-		if dict_direction_regexp.exactMatch(self.dict_name) :
-			return dict_direction_regexp.cap(1)
-		else :
-			return tr("Unavailable")
+		rx = Qt.QRegExp("[^\\.]+\\.(..-..)")
+		return ( rx.cap(1) if rx.exactMatch(self.dict_name) else tr("Unavailable") )
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
-		if Qt.QFile.exists(dict_file_path) :
-			return dict_file_path
-		else :
-			return tr("Unavailable")
+		return ( dict_file_path if Qt.QFile.exists(dict_file_path) else tr("Unavailable") )
 
 	def dictFileSize(self) :
 		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
