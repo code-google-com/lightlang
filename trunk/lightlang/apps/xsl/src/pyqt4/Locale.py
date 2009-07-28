@@ -26,13 +26,25 @@ import Const
 
 
 #####
+LocaleObject = None
+
+
+#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
 
 ##### Public #####
+def locale() :
+	if LocaleObject == None :
+		initLocale()
+	return LocaleObject
+
 def mainLang() :
-	lang = Qt.QLocale().name()
+	if LocaleObject == None :
+		initLocale()
+
+	lang = LocaleObject.name()
 	lang.remove(lang.indexOf("_"), lang.length())
 
 	if lang.simplified().isEmpty() :
@@ -42,7 +54,10 @@ def mainLang() :
 
 
 def docsLang() :
-	lang = Qt.QLocale().name()
+	if LocaleObject == None :
+		initLocale()
+
+	lang = LocaleObject.name()
 	lang.remove(lang.indexOf("_"), lang.length())
 
 	if not lang.simplified().isEmpty() :
@@ -53,4 +68,10 @@ def docsLang() :
 		lang = "en"
 
 	return Qt.QString(lang)
+
+
+##### Private #####
+def initLocale() :
+	global LocaleObject
+	LocaleObject = Qt.QLocale()
 
