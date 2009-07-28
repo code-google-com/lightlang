@@ -91,21 +91,22 @@ class KeysGrabberThread(Qt.QThread) :
 
 				has_right_function_flag = False
 
-				for function in self.functions_list :
-					if ( event.detail == function[0] and (event.state & function[1]) == function[1] and
-						function[1] != Xlib.X.AnyModifier ) :
+				for functions_list_item in self.functions_list :
+					if ( event.detail == functions_list_item[0] and
+						(event.state & functions_list_item[1]) == functions_list_item[1] and
+						functions_list_item[1] != Xlib.X.AnyModifier ) :
 						has_right_function_flag = True
-						function[2]()
+						functions_list_item[2]()
 
 				if not has_right_function_flag :
-					for function in self.functions_list :
-						if event.detail == function[0] and function[1] == Xlib.X.AnyModifier :
-							function[2]()
+					for functions_list_item in self.functions_list :
+						if event.detail == functions_list_item[0] and functions_list_item[1] == Xlib.X.AnyModifier :
+							functions_list_item[2]()
 			except : pass
 
 	def stop(self) :
 		self.exit(0)
 
-		for function in self.functions_list :
-			self.root.ungrab_key(function[0], function[1])
+		for functions_list_item in self.functions_list :
+			self.root.ungrab_key(functions_list_item[0], functions_list_item[1])
 
