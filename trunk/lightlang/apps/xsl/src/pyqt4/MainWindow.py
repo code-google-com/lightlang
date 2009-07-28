@@ -258,8 +258,8 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def save(self) :
-		for panel in self.panels_list :
-			panel.saveSettings()
+		for panels_list_item in self.panels_list :
+			panels_list_item.saveSettings()
 
 		self.dicts_manager.saveSettings()
 		self.spy_menu.saveSettings()
@@ -271,8 +271,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.saveSettings()
 
 	def load(self) :
-		for panel in self.panels_list :
-			panel.loadSettings()
+		for panels_list_item in self.panels_list :
+			panels_list_item.loadSettings()
 
 		self.dicts_manager.loadSettings()
 		self.spy_menu.loadSettings()
@@ -301,7 +301,7 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def focusChanged(self) :
-		new_panels_focus_flags_list = [ panel.hasInternalFocus() for panel in self.panels_list ]
+		new_panels_focus_flags_list = [ panels_list_item.hasInternalFocus() for panels_list_item in self.panels_list ]
 		if True in new_panels_focus_flags_list :
 			self.panels_focus_flags_list = new_panels_focus_flags_list
 
@@ -365,8 +365,8 @@ class MainWindow(Qt.QMainWindow) :
 	def registrateStream(self, source_object_index) :
 		self.tabbed_translate_browser.setShredLock(True)
 		tabbed_translate_browser_index = self.tabbed_translate_browser.currentIndex()
-		for source_object in self.source_objects_list :
-			if source_object[1] == tabbed_translate_browser_index :
+		for source_objects_list_item in self.source_objects_list :
+			if source_objects_list_item[1] == tabbed_translate_browser_index :
 				self.tabbed_translate_browser.addTab()
 				tabbed_translate_browser_index = self.tabbed_translate_browser.currentIndex()
 				break
@@ -377,8 +377,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.source_objects_list[source_object_index][1] = -1
 
 	def checkBusyStreams(self) :
-		for source_object in self.source_objects_list :
-			if source_object[1] != -1 :
+		for source_objects_list_item in self.source_objects_list :
+			if source_objects_list_item[1] != -1 :
 				return True
 		return False
 
@@ -443,8 +443,8 @@ class MainWindow(Qt.QMainWindow) :
 		if self.checkBusyStreams() :
 			return
 
-		for panel in self.panels_list :
-			panel.clear()
+		for panels_list_item in self.panels_list :
+			panels_list_item.clear()
 
 		self.tabbed_translate_browser.clearAll()
 
