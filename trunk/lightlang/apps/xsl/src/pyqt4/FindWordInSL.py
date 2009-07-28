@@ -58,8 +58,8 @@ class FindWordInSL(Qt.QObject) :
 		#####
 
 		self.replaces_list = [
-				["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
-				["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
+			["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
+			["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
 			]
 
 		#####
