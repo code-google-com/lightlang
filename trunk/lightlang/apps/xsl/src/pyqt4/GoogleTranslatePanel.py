@@ -26,6 +26,7 @@ import Const
 import Locale
 import User
 import GoogleTranslate
+import GoogleTranslateLangsList
 import TextEdit
 
 
@@ -70,52 +71,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.google_translate = GoogleTranslate.GoogleTranslate()
 
-		self.langs_list = [
-			[ tr("Albanian"),		Qt.QVariant("sq") ],
-			[ tr("Arabic"),			Qt.QVariant("ar") ],
-			[ tr("Bulgarian"),		Qt.QVariant("bg") ],
-			[ tr("Catalan"),		Qt.QVariant("ca") ],
-			[ tr("Chinese (Simplified)"),	Qt.QVariant("zh-CN") ],
-			[ tr("Chinese (Traditional)"),	Qt.QVariant("zh-TW") ],
-			[ tr("Croatian"),		Qt.QVariant("hr") ],
-			[ tr("Czech"),			Qt.QVariant("cs") ],
-			[ tr("Danish"),			Qt.QVariant("da") ],
-			[ tr("Dutch"),			Qt.QVariant("nl") ],
-			[ tr("English"),		Qt.QVariant("en") ],
-			[ tr("Estonian"),		Qt.QVariant("et") ],
-			[ tr("Filipino"),		Qt.QVariant("tl") ],
-			[ tr("Finnish"),		Qt.QVariant("fi") ],
-			[ tr("French"),			Qt.QVariant("fr") ],
-			[ tr("Galician"),		Qt.QVariant("gl") ],
-			[ tr("German"),			Qt.QVariant("de") ],
-			[ tr("Greek"),			Qt.QVariant("el") ],
-			[ tr("Hebrew"),			Qt.QVariant("iw") ],
-			[ tr("Hindi"),			Qt.QVariant("hi") ],
-			[ tr("Hungarian"),		Qt.QVariant("hu") ],
-			[ tr("Indonesian"),		Qt.QVariant("id") ],
-			[ tr("Italian"),		Qt.QVariant("it") ],
-			[ tr("Japanese"),		Qt.QVariant("ja") ],
-			[ tr("Korean"),			Qt.QVariant("ko") ],
-			[ tr("Latvian"),		Qt.QVariant("lv") ],
-			[ tr("Lithuanian"),		Qt.QVariant("lt") ],
-			[ tr("Maltese"),		Qt.QVariant("mt") ],
-			[ tr("Norwegian"),		Qt.QVariant("no") ],
-			[ tr("Polish"),			Qt.QVariant("pl") ],
-			[ tr("Portuguese"),		Qt.QVariant("pt") ],
-			[ tr("Romanian"),		Qt.QVariant("ro") ],
-			[ tr("Russian"),		Qt.QVariant("ru") ],
-			[ tr("Serbian"),		Qt.QVariant("sr") ],
-			[ tr("Slovak"),			Qt.QVariant("sk") ],
-			[ tr("Slovenian"),		Qt.QVariant("sl") ],
-			[ tr("Spanish"),		Qt.QVariant("es") ],
-			[ tr("Swedish"),		Qt.QVariant("sv") ],
-			[ tr("Thai"),			Qt.QVariant("th") ],
-			[ tr("Turkish"),		Qt.QVariant("tr") ],
-			[ tr("Ukrainian"),		Qt.QVariant("uk") ],
-			[ tr("Vietnamese"),		Qt.QVariant("vi") ],
-			]
-		self.internalSortLangs()
-
 		self.lang = Locale.mainLang()
 
 		#####
@@ -123,7 +78,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.sl_combobox = Qt.QComboBox()
 		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.sl_combobox.setMaxVisibleItems(15)
-		for langs_list_item in self.langs_list :
+		for langs_list_item in GoogleTranslateLangsList.langsList() :
 			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
 		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("I don't know..."), Qt.QVariant("auto"))
@@ -139,7 +94,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.tl_combobox = Qt.QComboBox()
 		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.tl_combobox.setMaxVisibleItems(15)
-		for langs_list_item in self.langs_list :
+		for langs_list_item in GoogleTranslateLangsList.langsList() :
 			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
 		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+self.lang+".png"), tr("Your language"), Qt.QVariant(self.lang))
@@ -221,26 +176,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 
 	### Private ###
-
-	def internalSortLangs(self, left = None, right = None) :
-		if left == right == None :
-			left = 0
-			right = len(self.langs_list) -1
-
-		if left >= right :
-			return
-
-		i = j = left
-		while j <= right :
-			if self.langs_list[j][0] <= self.langs_list[right][0] :
-				self.langs_list[i], self.langs_list[j] = self.langs_list[j], self.langs_list[i]
-				i += 1
-			j += 1
-
-		self.internalSortLangs(left, i - 2)
-		self.internalSortLangs(i, right)
-
-	###
 
 	def invertLangs(self) :
 		sl_index = self.sl_combobox.currentIndex()
