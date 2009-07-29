@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Window
 import Locale
 import TextBrowser
 import FindInTextFrame
@@ -42,9 +43,9 @@ def tr(str) :
 
 
 #####
-class HelpBrowser(Qt.QWidget) :
+class HelpBrowser(Window.Window) :
 	def __init__(self, parent = None) :
-		Qt.QWidget.__init__(self, parent)
+		Window.Window.__init__(self, parent)
 
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -139,16 +140,8 @@ class HelpBrowser(Qt.QWidget) :
 	### Public ###
 
 	def show(self) :
-		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
-		x_window_position = ( 0 if x_window_position < 0 else x_window_position )
-		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
-		y_window_position = ( 0 if y_window_position < 0 else y_window_position )
-
-		self.move(Qt.QPoint(x_window_position, y_window_position))
-
-		Qt.QWidget.show(self)
-		self.raise_()
-		self.activateWindow()
+		self.text_browser.setFocus(Qt.Qt.OtherFocusReason)
+		Window.Window.show(self)
 
 
 	### Private ###

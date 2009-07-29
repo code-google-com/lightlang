@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Window
 import User
 import DictsListWidget
 
@@ -41,9 +42,9 @@ def tr(str) :
 
 
 #####
-class DictsManager(Qt.QWidget) :
+class DictsManager(Window.Window) :
 	def __init__(self, parent = None) :
-		Qt.QWidget.__init__(self, parent)
+		Window.Window.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -211,18 +212,8 @@ class DictsManager(Qt.QWidget) :
 	###
 
 	def show(self) :
-		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
-		x_window_position = ( 0 if x_window_position < 0 else x_window_position )
-		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
-		y_window_position = ( 0 if y_window_position < 0 else y_window_position )
-
-		self.move(Qt.QPoint(x_window_position, y_window_position))
-
 		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
-
-		Qt.QWidget.show(self)
-		self.raise_()
-		self.activateWindow()
+		Window.Window.show(self)
 
 
 	### Private ###
