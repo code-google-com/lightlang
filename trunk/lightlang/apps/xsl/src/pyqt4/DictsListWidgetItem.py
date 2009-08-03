@@ -64,6 +64,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.enable_dict_checkbox = Qt.QCheckBox()
 		self.enable_dict_checkbox.setCheckState(dict_state)
+		self.enable_dict_checkbox.setToolTip(tr("Enter"))
 		self.main_layout.addWidget(self.enable_dict_checkbox)
 
 		self.vertical_frame1 = Qt.QFrame()
