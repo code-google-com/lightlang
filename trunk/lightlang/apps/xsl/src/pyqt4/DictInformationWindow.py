@@ -53,12 +53,18 @@ class DictInformationWindow(Qt.QWidget) :
 		#####
 
 		self.main_layout = Qt.QVBoxLayout()
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
 		self.dict_information_browser_layout = Qt.QVBoxLayout()
+		self.dict_information_browser_layout.setContentsMargins(0, 0, 0, 0)
+		self.dict_information_browser_layout.setSpacing(0)
 		self.main_layout.addLayout(self.dict_information_browser_layout)
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
+		self.control_buttons_layout.setContentsMargins(6, 6, 6, 6)
+		self.control_buttons_layout.setSpacing(6)
 		self.main_layout.addLayout(self.control_buttons_layout)
 
 		#####
