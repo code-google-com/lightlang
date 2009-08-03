@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Window
 
 
 #####
@@ -36,11 +37,9 @@ def tr(str) :
 
 
 #####
-class About(Qt.QDialog) :
+class About(Window.Window) :
 	def __init__(self, parent = None) :
-		Qt.QDialog.__init__(self, parent)
-
-		self.setModal(True)
+		Window.Window.__init__(self, parent)
 
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -97,5 +96,5 @@ class About(Qt.QDialog) :
 
 		#####
 
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
+		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
 
