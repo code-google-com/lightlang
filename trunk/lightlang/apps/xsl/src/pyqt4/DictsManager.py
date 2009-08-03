@@ -100,12 +100,14 @@ class DictsManager(Window.Window) :
 		self.up_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
 		self.up_button.setIconSize(Qt.QSize(22, 22))
 		self.up_button.setEnabled(False)
+		self.up_button.setToolTip(tr("Ctrl+Up"))
 		self.stacked_widget_buttons_layout.addWidget(self.up_button)
 
 		self.down_button = Qt.QToolButton()
 		self.down_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
 		self.down_button.setIconSize(Qt.QSize(22, 22))
 		self.down_button.setEnabled(False)
+		self.down_button.setToolTip(tr("Ctrl+Down"))
 		self.stacked_widget_buttons_layout.addWidget(self.down_button)
 
 		self.stacked_widget_buttons_layout.addStretch()
