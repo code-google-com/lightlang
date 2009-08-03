@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
@@ -8,12 +9,12 @@
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="About.py" line="90"/>
+        <location filename="About.py" line="89"/>
         <source>&lt;center&gt;&lt;h3&gt;XSL - the graphical interface for SL&lt;/h3&gt;&lt;/center&gt;All the programs of the &lt;strong&gt;LightLang&lt;/strong&gt; package are distributable, according&lt;br&gt;to the license &lt;strong&gt;GPLv2&lt;/strong&gt;. For details visit &lt;em&gt;License agreement&lt;/em&gt; of the&lt;br&gt;&lt;strong&gt;LightLang&lt;/strong&gt; manual.&lt;br&gt;&lt;br&gt;Author of the &lt;strong&gt;LightLang&lt;/strong&gt; package:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Devaev Maxim&lt;/em&gt;&lt;br&gt;Thanks to:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Baburina Elisabeth&lt;/em&gt;&lt;br&gt;Valuable assistants:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Vladimir Fomkin&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Tihonov Sergey&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Renat Nasyrov&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Du Vinh&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Aleksey Yum&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Olga Polyakova&lt;/em&gt;&lt;br&gt;Translators:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Kirill Nebogin&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:mdevaev@gmail.com?subject=LightLang&quot;&gt;mdevaev@gmail.com&lt;/a&gt;)&lt;/em&gt;</source>
         <translation>&lt;center&gt;&lt;h3&gt;XSL - графический интерфейс для SL&lt;/h3&gt;&lt;/center&gt;Все программы пакета &lt;strong&gt;LightLang&lt;/strong&gt; распространяются по лицензии&lt;br&gt;&lt;strong&gt;GPLv2&lt;/strong&gt;. Подробнее смотрите в разделе &lt;em&gt;Лицензионное слоглашение&lt;/em&gt;&lt;br&gt; руководства &lt;strong&gt;LightLang&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Автор пакета &lt;strong&gt;LightLang&lt;/strong&gt;:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Деваев Максим&lt;/em&gt;&lt;br&gt;Спасибо:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Бабуриной Елизавете&lt;/em&gt;&lt;br&gt;Помогали:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Владимир Фомкин&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Тихонов Сергей&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ренат Насыров&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Доу Винх&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Алексей Юм&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ольга Полякова&lt;/em&gt;&lt;br&gt;Переводчики:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Кирилл Небогин&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:mdevaev@gmail.com?subject=LightLang&quot;&gt;mdevaev@gmail.com&lt;/a&gt;)&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="124"/>
+        <location filename="DictsManager.py" line="126"/>
         <source>&amp;OK</source>
         <translation>&amp;ОК</translation>
     </message>
@@ -23,17 +24,17 @@
         <translation>Информация о словаре</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="118"/>
+        <location filename="DictsManager.py" line="120"/>
         <source>Please wait...</source>
         <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="90"/>
+        <location filename="DictInformationWindow.py" line="96"/>
         <source>&amp;Update</source>
         <translation>Об&amp;новить</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="208"/>
+        <location filename="DictInformationWindow.py" line="214"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -265,7 +266,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Руководство %1</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="153"/>
+        <location filename="HelpBrowser.py" line="176"/>
         <source>%1 Manual - %2</source>
         <translation>Руководство %1 - %2</translation>
     </message>
@@ -725,32 +726,32 @@ If not, remove lock file &quot;%2&quot;</source>
 Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="122"/>
+        <location filename="DictInformationWindow.py" line="128"/>
         <source>Caption</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="124"/>
+        <location filename="DictInformationWindow.py" line="130"/>
         <source>Direction</source>
         <translation>Направление</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="126"/>
+        <location filename="DictInformationWindow.py" line="132"/>
         <source>File path</source>
         <translation>Путь к файлу</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="128"/>
+        <location filename="DictInformationWindow.py" line="134"/>
         <source>File size (KB)</source>
         <translation>Размер файла (КБ)</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="133"/>
+        <location filename="DictInformationWindow.py" line="139"/>
         <source>Count of words</source>
         <translation>Количество слов</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="135"/>
+        <location filename="DictInformationWindow.py" line="141"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -813,6 +814,31 @@ If not, remove lock file &quot;%2&quot;</source>
         <location filename="FindWordInSL.py" line="139"/>
         <source>Error while reading data from the search process</source>
         <translation>Ошибка при чтении данных из поискового процесса</translation>
+    </message>
+    <message>
+        <location filename="DictsListWidgetItem.py" line="67"/>
+        <source>Enter</source>
+        <translation>Enter</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="103"/>
+        <source>Ctrl+Up</source>
+        <translation>Ctrl+Up</translation>
+    </message>
+    <message>
+        <location filename="DictsManager.py" line="110"/>
+        <source>Ctrl+Down</source>
+        <translation>Ctrl+Down</translation>
+    </message>
+    <message>
+        <location filename="HelpBrowser.py" line="84"/>
+        <source>Backspace</source>
+        <translation>Backspace</translation>
+    </message>
+    <message>
+        <location filename="HelpBrowser.py" line="121"/>
+        <source>Ctrl+F, /</source>
+        <translation>Ctrl+F, /</translation>
     </message>
 </context>
 </TS>
