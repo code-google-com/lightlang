@@ -67,6 +67,8 @@ class HelpBrowser(Window.Window) :
 		self.text_browser.setLayout(self.text_browser_layout)
 		self.main_layout.addWidget(self.text_browser)
 
+		###
+
 		self.control_buttons_frame = TransparentFrame.TransparentFrame()
 		self.control_buttons_frame_layout = Qt.QHBoxLayout()
 		self.control_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
@@ -79,6 +81,7 @@ class HelpBrowser(Window.Window) :
 		self.backward_button.setCursor(Qt.Qt.ArrowCursor)
 		self.backward_button.setAutoRaise(True)
 		self.backward_button.setEnabled(False)
+		self.backward_button.setToolTip(tr("Backspace"))
 		self.control_buttons_frame_layout.addWidget(self.backward_button)
 
 		self.forward_button = Qt.QToolButton()
@@ -104,19 +107,29 @@ class HelpBrowser(Window.Window) :
 
 		###
 
+		self.tools_buttons_frame = TransparentFrame.TransparentFrame()
+		self.tools_buttons_frame_layout = Qt.QHBoxLayout()
+		self.tools_buttons_frame_layout.setContentsMargins(0, 0, 0, 0)
+		self.tools_buttons_frame.setLayout(self.tools_buttons_frame_layout)
+		self.text_browser_layout.addWidget(self.tools_buttons_frame)
+
+		self.show_find_in_text_frame_button = Qt.QToolButton()
+		self.show_find_in_text_frame_button.setIcon(Qt.QIcon(IconsDir+"find_22.png"))
+		self.show_find_in_text_frame_button.setIconSize(Qt.QSize(22, 22))
+		self.show_find_in_text_frame_button.setCursor(Qt.Qt.ArrowCursor)
+		self.show_find_in_text_frame_button.setAutoRaise(True)
+		self.show_find_in_text_frame_button.setToolTip(tr("Ctrl+F, /"))
+		self.tools_buttons_frame_layout.addWidget(self.show_find_in_text_frame_button)
+
+		self.tools_buttons_frame.setFixedSize(self.tools_buttons_frame_layout.minimumSize())
+
+		###
+
 		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
 		self.find_in_text_frame.hide()
 		self.main_layout.addWidget(self.find_in_text_frame)
 
 		#####
-
-		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
-		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
-		self.connect(self.text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
-		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
-			self.find_in_text_frame.setLineEditRedAlertPalette)
-		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
-			self.find_in_text_frame.setLineEditDefaultPalette)
 
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.text_browser.findNext)
 		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.text_browser.findPrevious)
@@ -128,6 +141,16 @@ class HelpBrowser(Window.Window) :
 		self.connect(self.forward_button, Qt.SIGNAL("clicked()"), self.text_browser.forward)
 		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
 
+		self.connect(self.show_find_in_text_frame_button, Qt.SIGNAL("clicked()"), self.find_in_text_frame.show)
+		self.connect(self.show_find_in_text_frame_button, Qt.SIGNAL("clicked()"), self.find_in_text_frame.setFocus)
+
+		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
+		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
+		self.connect(self.text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
+		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
+			self.find_in_text_frame.setLineEditRedAlertPalette)
+		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
+			self.find_in_text_frame.setLineEditDefaultPalette)
 		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
 		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setBackwardButtonAvailable)
 		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setForwardButtonAvailable)
