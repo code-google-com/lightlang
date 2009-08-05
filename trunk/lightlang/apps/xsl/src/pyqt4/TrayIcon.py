@@ -63,10 +63,10 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.stop_spy_menu_action.setEnabled(False)
 		self.tray_menu.addSeparator()
 		try :
-			self.keys_grabber_thread_singleton.addFunction(KeysGrabberThread.Key_F3, KeysGrabberThread.CtrlModifier,
+			self.keys_grabber_thread_singleton.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
 				self.visibleChangeRequestSignal)
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
-				self.visibleChangeRequestSignal, Qt.QKeySequence("Ctrl+F3"))
+				self.visibleChangeRequestSignal, Qt.QKeySequence("Win+L"))
 		except :
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
 				self.visibleChangeRequestSignal)

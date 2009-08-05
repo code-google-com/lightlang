@@ -29,20 +29,12 @@ import Const
 
 
 #####
+Key_L = Xlib.XK.XK_L
 Key_F1 = Xlib.XK.XK_F1
-Key_F2 = Xlib.XK.XK_F2
-Key_F3 = Xlib.XK.XK_F3
-Key_F4 = Xlib.XK.XK_F4
-Key_F5 = Xlib.XK.XK_F5
-Key_F6 = Xlib.XK.XK_F6
-Key_F7 = Xlib.XK.XK_F7
-Key_F8 = Xlib.XK.XK_F8
-Key_F9 = Xlib.XK.XK_F9
-Key_F10 = Xlib.XK.XK_F10
-Key_F11 = Xlib.XK.XK_F11
-Key_F12 = Xlib.XK.XK_F12
 CtrlModifier = Xlib.X.ControlMask
+AltModifier = Xlib.X.Mod1Mask
 ShiftModifier = Xlib.X.ShiftMask
+WinModifier = Xlib.X.Mod4Mask
 
 
 #####
@@ -57,7 +49,7 @@ class KeysGrabberThread(Qt.QThread) :
 
 		#####
 
-		self.functions_list = []
+		self.handlers_list = []
 
 		self.display = Xlib.display.Display()
 		self.root = self.display.screen().root
@@ -70,11 +62,13 @@ class KeysGrabberThread(Qt.QThread) :
 
 	### Public ###
 
-	def addFunction(self, key, modifier, function) :
+	def addHandler(self, key, modifier, handler) :
 		self.exit(0)
 
 		key = self.display.keysym_to_keycode(key)
-		self.functions_list.append([key, modifier, function])
+		modifier = modifier & ~(Xlib.X.AnyModifier << 1)
+
+		self.handlers_list.append([key, modifier, handler])
 		self.root.grab_key(key, modifier, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
 
 		self.start()
@@ -84,29 +78,17 @@ class KeysGrabberThread(Qt.QThread) :
 
 	def run(self) :
 		while True :
-			try :
-				event = self.root.display.next_event()
-				if event.type != Xlib.X.KeyRelease :
-					continue
+			event = self.root.display.next_event()
+			if event.type != Xlib.X.KeyRelease :
+				continue
 
-				has_right_function_flag = False
-
-				for functions_list_item in self.functions_list :
-					if ( event.detail == functions_list_item[0] and
-						(event.state & functions_list_item[1]) == functions_list_item[1] and
-						functions_list_item[1] != Xlib.X.AnyModifier ) :
-						has_right_function_flag = True
-						functions_list_item[2]()
-
-				if not has_right_function_flag :
-					for functions_list_item in self.functions_list :
-						if event.detail == functions_list_item[0] and functions_list_item[1] == Xlib.X.AnyModifier :
-							functions_list_item[2]()
-			except : pass
+			for handlers_list_item in self.handlers_list :
+				if event.detail == handlers_list_item[0] and (event.state & handlers_list_item[1]) == handlers_list_item[1] :
+					handlers_list_item[2]()
 
 	def stop(self) :
 		self.exit(0)
 
-		for functions_list_item in self.functions_list :
-			self.root.ungrab_key(functions_list_item[0], functions_list_item[1])
+		for handlers_list_item in self.handlers_list :
+			self.root.ungrab_key(handlers_list_item[0], handlers_list_item[1])
 
