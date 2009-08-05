@@ -40,8 +40,8 @@ class TextEdit(Qt.QTextEdit) :
 
 	### Signals ###
 
-	def translateRequestSignal(self) :
-		self.emit(Qt.SIGNAL("translateRequest()"))
+	def textAppliedSignal(self) :
+		self.emit(Qt.SIGNAL("textApplied()"))
 
 
 	### Handlers ###
@@ -49,7 +49,7 @@ class TextEdit(Qt.QTextEdit) :
 	def keyPressEvent(self, event) :
 		if ( (event.key() == Qt.Qt.Key_Return or event.key() == Qt.Qt.Key_Enter) and
 			event.modifiers() == Qt.Qt.ControlModifier ) :
-			self.translateRequestSignal()
+			self.textAppliedSignal()
 		else :
 			Qt.QTextEdit.keyPressEvent(self, event)
 
