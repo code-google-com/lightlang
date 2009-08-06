@@ -44,7 +44,7 @@ class FindInTextFrame(Qt.QFrame) :
 		#####
 
 		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setContentsMargins(3, 0, 3, 0)
 		self.setLayout(self.main_layout)
 
 		#####
