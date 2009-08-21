@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 import sys
 import os
 import ftplib
@@ -24,28 +25,27 @@ import ftplib
 sys.path.append("@prefix@/lib/llrepo")
 import repos
 
+
 #####
 MyName = "llrepo"
-Version = "2.1"
+Version = "2.2"
 
 DeveloperMail = "mdevaev@gmail.com"
 
-DictsResources = "dicts"
-SoundsResources = "sounds"
-ResourcesTypes = [DictsResources, SoundsResources]
+DictsResourcesType = "dicts"
+SoundsResourcesType = "sounds"
+AllResourcesTypes = [DictsResourcesType, SoundsResourcesType]
 
-LocalRepository = "local"
-RemoteRepository = "remote"
-RepositoriesTypes = [LocalRepository, RemoteRepository]
+LocalRepositoriesType = "local"
+RemoteRepositoriesType = "remote"
+AllRepositoriesTypes = [LocalRepositoriesType, RemoteRepositoriesType]
 
 DictsResourcesPostfix = ".bz2"
 SoundsResourcesPostfix = ".tar.bz2"
 
 SLSharesDir = "@prefix@/share/sl/"
-DictsDir = SLSharesDir+DictsResources+"/"
-SoundsDir = SLSharesDir+SoundsResources+"/"
-
-TMPDir = "/tmp/"
+DictsDir = SLSharesDir+DictsResourcesType+"/"
+SoundsDir = SLSharesDir+SoundsResourcesType+"/"
 
 ###
 CATProg = "@CAT_PROG@"
@@ -55,31 +55,20 @@ SLProg = "@prefix@/bin/sl"
 
 ###
 RemoteListCommand = "remotelist"
-InstallCommand = "install"
 LocalListCommand = "locallist"
+InstallCommand = "install"
 UninstallCommand = "uninstall"
 HelpCommand = "help"
 VersionCommand = "version"
-AllCommands = [RemoteListCommand, InstallCommand,
-	LocalListCommand, UninstallCommand,
+AllCommands = [RemoteListCommand, LocalListCommand,
+	InstallCommand, UninstallCommand,
 	HelpCommand, VersionCommand]
 
-###
-AllCommandModifier = "all"
-
 
 #####
-class FTPRepositoryServer :
-	def __init__(self, server, port, user, passwd, path) :
-		self.server = server
-		self.port = port
-		self.user = user
-		self.passwd = passwd
-		self.path = path
-
-class RemoteResource :
-	def __init__(self, resource_name, resource_type, file_path,
-		file_size, server, port, user, passwd) :
+class Resource(object) :
+	def __init__(self, resource_name, resource_type, file_path, file_size,
+		server = None, port = None, user = None, passwd = None) :
 		self.resource_name = resource_name
 		self.resource_type = resource_type
 		self.file_path = file_path
@@ -89,16 +78,13 @@ class RemoteResource :
 		self.user = user
 		self.passwd = passwd
 
-class LocalResource :
-	def __init__(self, resource_name, resource_type, file_path, file_size) :
-		self.resource_name = resource_name
-		self.resource_type = resource_type
-		self.file_path = file_path
-		self.file_size = file_size
-
 
 #####
-def sort_resources_list(resources_list, left, right) :
+def sort_resources_list(resources_list, left = None, right = None) :
+	if left == right == None :
+		left = 0
+		right = len(resources_list) -1
+
 	if left >= right :
 		return
 
@@ -112,358 +98,516 @@ def sort_resources_list(resources_list, left, right) :
 	sort_resources_list(resources_list, left, i - 2)
 	sort_resources_list(resources_list, i, right)
 
-
-#####
-def get_remote_resources_list(resources_type = "") :
-	if not resources_type in ResourcesTypes :
+###
+def get_remote_resources_list(resources_type) :
+	if not resources_type in AllResourcesTypes :
 		return []
 
-	repositories_list = []
-	for repos_item in repos.repos :
-		repositories_list.append(FTPRepositoryServer(repos_item["server"], int(repos_item["port"]),
-			repos_item["user"], repos_item["passwd"], repos_item["root"]))
+	###
 
 	remote_resources_list = []
-	for repositories_list_item in repositories_list :
-		ftp = ftplib.FTP()
-		print MyName+": processing remote repository "+repositories_list_item.server+"..."
+
+	for repos_item in repos.repos :
+		print "Processing remote repository \"%s\"..." % (repos_item["server"])
+
 		try :
-			print MyName+": "+ftp.connect(repositories_list_item.server, repositories_list_item.port)
-			print MyName+": "+ftp.login(repositories_list_item.user, repositories_list_item.passwd)
+			ftp = ftplib.FTP()
+			print "--- server \"%s\" -> %s" % (repos_item["server"], ftp.connect(repos_item["server"], int(repos_item["port"])))
+			print "--- server \"%s\" -> %s" % (repos_item["server"], ftp.login(repos_item["user"], repos_item["passwd"]))
+			resources_files_list = ftp.nlst(os.path.join(repos_item["root"], resources_type))
+		except Exception, err1 :
+			try :
+				print "--- server \"%s\" -> %s" % (repos_item["server"], ftp.quit())
+			except Exception, err2 :
+				print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (repos_item["server"], str(err2))
 
-			files_list = ftp.nlst(os.path.join(repositories_list_item.path, resources_type))
-			for files_list_item in files_list :
-				try :
-					if files_list_item[0] == "." :
-						continue
+			print >> sys.stderr, "Error while processing remote repository \"%s\": %s\n" % (repos_item["server"], str(err1))
+			continue
 
-					file_size = ftp.size(files_list_item)
-					if file_size <= 0 :
-						continue
-				except : continue
+		resources_count = 0
 
-				resource_name = os.path.basename(files_list_item)
-				if resources_type == DictsResources :
-					resource_name = resource_name[:-len(DictsResourcesPostfix)]
-				elif resources_type == SoundsResources :
-					resource_name = resource_name[:-len(SoundsResourcesPostfix)]
-
-				remote_resources_list.append(RemoteResource(resource_name, resources_type,
-					files_list_item, file_size, repositories_list_item.server,
-					repositories_list_item.port, repositories_list_item.user,
-					repositories_list_item.passwd))
+		for resources_files_list_item in resources_files_list :
+			if resources_type == DictsResourcesType :
+				resource_name = os.path.basename(resources_files_list_item)[:-len(DictsResourcesPostfix)]
+			elif resources_type == SoundsResourcesType :
+				resource_name = os.path.basename(resources_files_list_item)[:-len(SoundsResourcesPostfix)]
 
 			try :
-				print MyName+": "+ftp.quit()
-			except : pass
-
-		except :
-			print >> sys.stderr, MyName+": error while processing repository"
-
-	sort_resources_list(remote_resources_list, 0, len(remote_resources_list) -1)
-
-	return remote_resources_list
-
-def get_local_resources_list(resources_type = "") :
-	if not resources_type in ResourcesTypes :
-		return []
-
-	local_resources_list = []
-	print MyName+": processing local repository..."
-	try :
-		files_list = []
-		if resources_type == DictsResources :
-			files_list = os.listdir(DictsDir)
-		elif resources_type == SoundsResources :
-			files_list = os.listdir(SoundsDir)
-
-		for files_list_item in files_list :
-			try :
-				if files_list_item[0] == "." :
+				if resources_files_list_item[0] == "." :
 					continue
 			except : continue
 
-			if resources_type == DictsResources :
-				files_list_item = os.path.join(DictsDir, files_list_item)
-			elif resources_type == SoundsResources :
-				files_list_item = os.path.join(SoundsDir, files_list_item)
+			try :
+				resource_file_size = ftp.size(resources_files_list_item)
+				if resource_file_size <= 0 :
+					print >> sys.stderr, "--- resource \"%s\" :: warning, non-positive size" % (resource_name)
+					continue
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while getting size: %s" % (resource_name, str(err1))
+				continue
 
-			if resources_type == DictsResources :
-				try :
-					file_size = os.stat(files_list_item).st_size
-					if file_size <= 0 :
-						continue
-				except : continue
-			elif resources_type == SoundsResources :
-				try :
-					file_size = 0
-					for root, dirs, files in os.walk(files_list_item) :
-						for file in files :
-							file_size += os.stat(os.path.join(root, file)).st_size
-						for dir in dirs :
-							file_size += os.stat(os.path.join(root, dir)).st_size
-					if file_size <= 0 :
-						continue
-				except : continue
+			remote_resources_list.append(Resource(resource_name, resources_type, resources_files_list_item, resource_file_size,
+				repos_item["server"], int(repos_item["port"]), repos_item["user"], repos_item["passwd"]))
 
-			resource_name = os.path.basename(files_list_item)
+			resources_count += 1
 
-			local_resources_list.append(LocalResource(resource_name, resources_type,
-				files_list_item, file_size))
+		try :
+			print "--- server \"%s\" -> %s" % (repos_item["server"], ftp.quit())
+		except Exception, err1 :
+			print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (repos_item["server"], str(err1))
 
-	except :
-		print >> sys.stderr, MyName+": error while processing repository"
+		print "--- server \"%s\" :: %d resources" % (repos_item["server"], resources_count)
 
-	sort_resources_list(local_resources_list, 0, len(local_resources_list) -1)
+		print "Remote repository \"%s\" complete ^_^\n" % (repos_item["server"])
+
+	sort_resources_list(remote_resources_list)
+
+	return remote_resources_list
+
+def get_local_resources_list(resources_type) :
+	if not resources_type in AllResourcesTypes :
+		return []
+
+	###
+
+	print "Processing local repository..."
+	try :
+		if resources_type == DictsResourcesType :
+			resources_files_list = [ os.path.join(DictsDir, item) for item in os.listdir(DictsDir) ]
+		elif resources_type == SoundsResourcesType :
+			resources_files_list = [ os.path.join(SoundsDir, item) for item in os.listdir(SoundsDir) ]
+	except Exception, err1 :
+		print >> sys.stderr, "Error while processing local repository: %s\n" % (str(err1))
+		return []
+
+	local_resources_list = []
+	resources_count = 0
+
+	for resources_files_list_item in resources_files_list :
+		try :
+			if resources_files_list_item[0] == "." :
+				continue
+		except : continue
+
+		resource_name = os.path.basename(resources_files_list_item)
+
+		if resources_type == DictsResourcesType :
+			try :
+				resource_file_size = os.stat(resources_files_list_item).st_size
+				if resource_file_size <= 0 :
+					print >> sys.stderr, "--- resource \"%s\" :: warning, non-positive size" % (resource_name)
+					continue
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while getting size: %s" % (resource_name, str(err1))
+				continue
+		elif resources_type == SoundsResourcesType :
+			try :
+				resource_file_size = 0
+				for root, dirs, files in os.walk(resources_files_list_item) :
+					for item in dirs + files :
+						resource_file_size += os.stat(os.path.join(root, item)).st_size
+				if resource_file_size <= 0 :
+					print >> sys.stderr, "--- resource \"%s\" :: warning, non-positive size" % (resource_name)
+					continue
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while getting size: %s" % (resource_name, str(err1))
+				continue
+
+		local_resources_list.append(Resource(resource_name, resources_type, resources_files_list_item, resource_file_size))
+
+		resources_count += 1
+
+	print "--- local :: %d resources" % (resources_count)
+
+	print "Local repository complete ^_^\n"
+
+	sort_resources_list(local_resources_list)
 
 	return local_resources_list
 
 
 #####
-def print_resources_list(resources_type = "", repository_type = "") :
-	if (not resources_type in ResourcesTypes) or (not repository_type in RepositoriesTypes) :
+def print_resources_list(resources_type, repositories_type) :
+	if (not resources_type in AllResourcesTypes) or (not repositories_type in AllRepositoriesTypes) :
 		return -1
 
-	common_resources_list = []
-	if repository_type == RemoteRepository :
-		common_resources_list = get_remote_resources_list(resources_type)
-	elif repository_type == LocalRepository :
-		common_resources_list = get_local_resources_list(resources_type)
+	###
 
-	if len(common_resources_list) == 0 :
-		print >> sys.stderr, MyName+": no resources"
+	if repositories_type == RemoteRepositoriesType :
+		requested_resources_list = get_remote_resources_list(resources_type)
+		installed_resources_names_list = [ item.resource_name for item in get_local_resources_list(resources_type) ]
+	elif repositories_type == LocalRepositoriesType :
+		requested_resources_list = get_local_resources_list(resources_type)
+		installed_resources_names_list = [ item.resource_name for item in requested_resources_list ]
+
+	if len(requested_resources_list) == 0 :
+		print >> sys.stderr, "No resources :-(\n"
 		return -1
 
-	print "="*80
-	print "\tList of available "+repository_type+" "+resources_type+" resources"
-	print "="*80
+	###
 
-	past_resources_list = []
-	for common_resources_list_item in common_resources_list :
-		if common_resources_list_item.resource_name in past_resources_list :
+	print "="*80
+	print "\tList of available %s %s resources" % (repositories_type, resources_type)
+	print "="*80
+	print "%4s  %-58s %4s %6s" % ("Num", "Name", "Stat", "Size")
+	print "-"*80
+
+	past_resources_names_list = []
+	resources_count = 0
+
+	for requested_resources_list_item in requested_resources_list :
+		if requested_resources_list_item.resource_name in past_resources_names_list :
 			continue
-		sys.stdout.write(" "*(70-len(str(common_resources_list_item.file_size/1024))))
-		sys.stdout.write(str(common_resources_list_item.file_size/1024)+" Kb\r")
-		sys.stdout.write(common_resources_list_item.resource_name+" \n")
-		past_resources_list.append(common_resources_list_item.resource_name)
 
-	print "="*80
+		past_resources_names_list.append(requested_resources_list_item.resource_name)
+		resources_count += 1
+
+		resource_installed_flag = ( True if requested_resources_list_item.resource_name in installed_resources_names_list else False )
+
+		print "%4d  %-59s %3s %6d Kb" % ( resources_count, requested_resources_list_item.resource_name,
+			( "ins" if resource_installed_flag else "---" ), requested_resources_list_item.file_size/1024 )
+
+	print "="*80+"\n"
 
 	return 0
 
 
 #####
-dh_data_count = 0
-dh_out_file = None
-dh_out_file_full_size = 0
-def download_handler(data_block) :
-	global dh_data_count
-	dh_out_file.write(data_block)
-	dh_data_count += len(data_block)
-	percent = 100 * dh_data_count / dh_out_file_full_size
-	sys.stdout.write(MyName+": downloading progress: ")
-	sys.stdout.write("|"+"="*(percent/5)+" "*(20-percent/5)+"| "+str(percent)+"%, ")
-	sys.stdout.write(str(dh_data_count/1024)+" of "+str(dh_out_file_full_size/1024)+" Kb\r")
-	sys.stdout.flush()
+def make_download_handler(out_file, out_file_size) :
+	def download_handler(data_block, static=[out_file_size, 0]) :
+		out_file.write(data_block)
+		static[1] += len(data_block)
 
-def download_resource(remote_resource, out_file) :
-	global dh_data_count
-	global dh_out_file
-	global dh_out_file_full_size
+		percent = (100.0 * static[1]) / static[0]
+		sys.stdout.write("--- retr :: [%s] %3.1f%% %6d of %d Kb\r" % ( ("="*int(percent/2.5))+(" "*int(40-percent/2.5)),
+			percent, static[1]/1024, static[0]/1024 ))
+		sys.stdout.flush()
 
-	dh_data_count = 0
-	dh_out_file = out_file
-	dh_out_file_full_size = remote_resource.file_size
+	return download_handler
+
+def download_resource(remote_resource, resource_file_path) :
+	print "--- resource \"%s\" :: downloading..." % (remote_resource.resource_name)
+
+	try :
+		resource_file = open(resource_file_path, "wb")
+	except Exception, err1 :
+		print >> sys.stderr, "--- resource \"%s\" :: error while opening file \"%s\": %s" % (
+			remote_resource.resource_name, resource_file_path, str(err1) )
+		return -1
 
 	try :
 		ftp = ftplib.FTP()
-		print MyName+": downloading file \""+os.path.basename(remote_resource.file_path)+"\"..."
-		print MyName+": "+ftp.connect(remote_resource.server, remote_resource.port)
-		print MyName+": "+ftp.login(remote_resource.user, remote_resource.passwd)
-		ftp.retrbinary("RETR "+remote_resource.file_path, download_handler)
+		print "--- server \"%s\" -> %s" % (remote_resource.server, ftp.connect(remote_resource.server, remote_resource.port))
+		print "--- server \"%s\" -> %s" % (remote_resource.server, ftp.login(remote_resource.user, remote_resource.passwd))
+		ftp.retrbinary("RETR %s" % (remote_resource.file_path), make_download_handler(resource_file, remote_resource.file_size))
 		print
+	except Exception, err1 :
 		try :
-			print MyName+": "+ftp.quit()
-		except : pass
-	except :
-		print >> sys.stderr, MyName+": error while downloading"
+			resource_file.close()
+		except Exception, err2 :
+			print >> sys.stderr, "--- resource \"%s\" :: warning, error while closing file \"%s\": %s" % (
+				remote_resource.resource_name, resource_file_path, str(err2) )
+
+		try :
+			os.remove(resource_file_path)
+		except Exception, err2 :
+			print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+				remote_resource.resource_name, resource_file_path, str(err2) )
+
+		try :
+			print "--- server \"%s\" -> %s" % (remote_resource.server, ftp.quit())
+		except Exception, err2 :
+			print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource.server, str(err2))
+
+		print >> sys.stderr, "--- resource \"%s\" :: error while downloading: %s" % (remote_resource.resource_name, str(err1))
 		return -1
+
+	try :
+		resource_file.close()
+	except Exception, err1 :
+		print >> sys.stderr, "--- resource \"%s\" :: warning, error while closing file \"%s\": %s" % (
+			remote_resource.resource_name, resource_file_path, str(err1) )
+
+	try :
+		print "--- server \"%s\" -> %s" % (remote_resource.server, ftp.quit())
+	except Exception, err1 :
+		print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource.server, str(err1))
+
+	print "--- resource \"%s\" :: downloading complete" % (remote_resource.resource_name)
 
 	return 0
 
-def install_resources(resources_type = "", resources_list = []) :
-	if (not resources_type in ResourcesTypes) or (len(resources_list) == 0) :
+###
+def uncompress_resource(resource_name, resource_type, resource_file_path) :
+	if not resource_type in AllResourcesTypes :
 		return -1
 
-	if resources_type == DictsResources :
-		if not os.access(DictsDir, os.W_OK) :
-			print >> sys.stderr, MyName+": you not have a permissions"
+	###
+
+	print "--- resource \"%s\" :: uncompressing..." % (resource_name)
+
+	if resource_type == DictsResourcesType :
+		print "--- resource \"%s\" :: bzip2 data" % (resource_name)
+
+		if os.system("%s -df \"%s\"" % (BZip2Prog, resource_file_path)) != 0 :
+			try :
+				os.remove(resource_file_path[:-len(DictsResourcesPostfix)])
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+					resource_name, resource_file_path[:-len(DictsResourcesPostfix)], str(err1) )
+
+			print >> sys.stderr, "--- resource \"%s\" :: error while uncompressing" % (resource_name)
 			return -1
-	elif resources_type == SoundsResources :
-		if not os.access(SoundsDir, os.W_OK) :
-			print >> sys.stderr, MyName+": you not have a permissions"
+	elif resource_type == SoundsResourcesType :
+		print "--- resource \"%s\" :: bzip2 tar data" % (resource_name)
+
+		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TARProg, resource_file_path, SoundsDir)) != 0 :
+			try :
+				for root, dirs, files in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
+					for file in files :
+						os.remove(os.path.join(root, file))
+				for root, dirs, files in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
+					for dir in dirs :
+						os.rmdir(os.path.join(root, dir))
+				os.rmdir(resource_file_path[:-len(SoundsResourcesPostfix)])
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing folder \"%s\": %s" % (
+					resource_name, resource_file_path[:-len(SoundsResourcesPostfix)], str(err1) )
+
+			print >> sys.stderr, "--- resource \"%s\" :: error while uncompressing" % (resource_name)
 			return -1
+
+		try :
+			os.remove(resource_file_path)
+		except Exception, err1 :
+			print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+				resource_name, resource_file_path, str(err1) )
+
+	print "--- resource \"%s\" :: uncompressing complete" % (resource_name)
+
+	return 0
+
+###
+def indexate_resource(resource_name, resource_type, resource_file_path) :
+	if not resource_type in AllResourcesTypes :
+		return -1
+
+	###
+
+	if resource_type == DictsResourcesType :
+		print "--- resource \"%s\" :: indexating..." % (resource_name)
+
+		tmp1_file_path = os.tmpnam()+"."+MyName
+		tmp2_file_path = os.tmpnam()+"."+MyName
+
+		if os.system("%s --print-index \"%s\" 1> \"%s\" && %s %s 1>> %s && "
+			"%s --print-index \"%s\" 1> \"%s\" && %s \"%s\" >> \"%s\" && %s \"%s\" > \"%s\"" % (
+			SLProg, resource_file_path, tmp1_file_path, CATProg, resource_file_path, tmp1_file_path,
+			SLProg, tmp1_file_path, tmp2_file_path, CATProg, resource_file_path, tmp2_file_path,
+			CATProg, tmp2_file_path, resource_file_path)) != 0 :
+			try :
+				os.remove(tmp1_file_path)
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+					resource_name, tmp1_file_path, str(err1) )
+
+			try :
+				os.remove(tmp2_file_path)
+			except Exception, err1 :
+				print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+					resource_name, tmp2_file_path, str(err1) )
+
+			print >> sys.stderr, "--- resource \"%s\" :: error while indexating" % (resource_name)
+			return -1
+
+		try :
+			os.remove(tmp1_file_path)
+		except Exception, err1 :
+			print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+				resource_name, tmp1_file_path, str(err1) )
+
+		try :
+			os.remove(tmp2_file_path)
+		except Exception, err1 :
+			print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+				resource_name, tmp2_file_path, str(err1) )
+	elif resource_type == SoundsResourcesType :
+		pass # no index-like procedure required
+
+	print "--- resource \"%s\" :: indexating complete" % (resource_name)
+
+	return 0
+
+#####
+def install_resources(requested_resources_names_list, resources_type) :
+	if not resources_type in AllResourcesTypes :
+		return -1
+
+	###
 
 	remote_resources_list = get_remote_resources_list(resources_type)
 	if len(remote_resources_list) == 0 :
-		print >> sys.stderr, MyName+": no resources"
+		print >> sys.stderr, "No resources :-(\n"
 		return -1
+
+	local_resources_names_list = [ local_resources_list_item.resource_name
+		for local_resources_list_item in get_local_resources_list(resources_type) ]
+
+	###
+
+	print "Analysis of the request..."
+
+	past_resources_names_list = []
+	requested_resources_size = 0
+	requested_resources_count = 0
+
+	count = 0
+	while count < len(remote_resources_list) :
+		if remote_resources_list[count].resource_name in local_resources_names_list :
+			remote_resources_list.pop(count)
+			continue
+
+		if remote_resources_list[count].resource_name in past_resources_names_list :
+			count += 1
+			continue
+
+		if remote_resources_list[count].resource_name in requested_resources_names_list or "all" in requested_resources_names_list :
+			past_resources_names_list.append(remote_resources_list[count].resource_name)
+			requested_resources_size += remote_resources_list[count].file_size
+			requested_resources_count += 1
+
+		count += 1
+
+	for requested_resources_names_list_item in requested_resources_names_list :
+		if requested_resources_names_list_item in local_resources_names_list :
+			print >> sys.stderr, "--- resource \"%s\" :: is already installed" % (requested_resources_names_list_item)
+
+	if requested_resources_count == 0 :
+		print >> sys.stderr, "No appropriate resources\n"
+		return 0
+
+	print "OK, %.2f Mb in %d resources for downloading" % (requested_resources_size/1048576.0, requested_resources_count)
+	sys.stdout.write("Continue? [y/n]: ")
+	sys.stdout.flush()
+	answer = raw_input()
+	if answer.lower() != 'y' and answer.lower() != "yes" :
+		print
+		return 0
+	print
+
+	###
+
+	past_resources_names_list = []
 
 	for remote_resources_list_item in remote_resources_list :
-		if remote_resources_list_item.resource_name in resources_list or AllCommandModifier in resources_list :
-			if resources_type == DictsResources :
-				print "-"*80
+		if remote_resources_list_item.resource_name in past_resources_names_list :
+			continue
 
-				out_file_path = os.path.join(TMPDir, os.path.basename(
-					remote_resources_list_item.file_path))
+		if remote_resources_list_item.resource_name in requested_resources_names_list or "all" in requested_resources_names_list :
+			print "Installing resource \"%s\"..." % (remote_resources_list_item.resource_name)
 
+			if resources_type == DictsResourcesType :
+				compressed_resource_file_path = os.path.join(DictsDir, os.path.basename(remote_resources_list_item.file_path))
+				resource_file_path = compressed_resource_file_path[0:-len(DictsResourcesPostfix)]
+			elif resources_type == SoundsResourcesType :
+				compressed_resource_file_path = os.path.join(SoundsDir, os.path.basename(remote_resources_list_item.file_path))
+				resource_file_path = compressed_resource_file_path[0:-len(SoundsResourcesPostfix)]
+
+			if download_resource(remote_resources_list_item, compressed_resource_file_path) != 0 :
+				print >> sys.stderr, "Error while installation resource \"%s\"\n" % (remote_resources_list_item.resource_name)
+				continue
+
+			if uncompress_resource(remote_resources_list_item.resource_name, resources_type, compressed_resource_file_path) != 0 :
 				try :
-					out_file = open(out_file_path, "wb")
-				except :
-					print >> sys.stderr, MyName+": cannot create out file \""+out_file_path+"\""
-					continue
+					os.remove(compressed_resource_file_path)
+				except Exception, err1 :
+					print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+						remote_resources_list_item.resource_name, compressed_resource_file_path, str(err1) )
 
-				if download_resource(remote_resources_list_item, out_file) != 0 :
-					continue
+				print >> sys.stderr, "Error while installation resource \"%s\"\n" % (remote_resources_list_item.resource_name)
 
+			if indexate_resource(remote_resources_list_item.resource_name, resources_type, resource_file_path) != 0 :
 				try :
-					out_file.close()
-				except : pass
+					os.remove(resource_file_path)
+				except Exception, err1 :
+					print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
+						remote_resources_list_item.resource_name, resource_file_path, str(err1) )
 
-				print MyName+": uncompressing file \""+out_file_path+"\"..."
-				if os.system(BZip2Prog+" -df \""+out_file_path+"\"") != 0 :
-					continue
+				print >> sys.stderr, "Error while installation resource \"%s\"\n" % (remote_resources_list_item.resource_name)
 
-				out_file_path = os.path.join(TMPDir, remote_resources_list_item.resource_name)
-				tmp_file_path = os.path.join(TMPDir, "tmpdict")
-				resource_path = os.path.join(DictsDir, remote_resources_list_item.resource_name)
+			past_resources_names_list.append(remote_resources_list_item.resource_name)
 
-				print MyName+": indexating file \""+out_file_path+"\"..."
-				if os.system(SLProg+" --print-index \""+out_file_path+"\" 1> \""+tmp_file_path+"\"") != 0 :
-					continue
-				if os.system(CATProg+" \""+out_file_path+"\" 1>> \""+tmp_file_path+"\"") != 0 :
-					continue
-				if os.system(SLProg+" --print-index \""+tmp_file_path+"\" 1> \""+resource_path+"\"") != 0 :
-					continue
-				if os.system(CATProg+" \""+out_file_path+"\" 1>> \""+resource_path+"\"") != 0 :
-					continue
-
-				try :
-					os.remove(out_file_path)
-					os.remove(tmp_file_path)
-				except : pass
-
-			elif resources_type == SoundsResources :
-				print "-"*80
-
-				out_file_path = os.path.join(SoundsDir, os.path.basename(
-					remote_resources_list_item.file_path))
-				try :
-					out_file = open(out_file_path, "wb")
-				except :
-					print >> sys.stderr, MyName+": cannot create out file \""+out_file_path+"\""
-					continue
-
-				if download_resource(remote_resources_list_item, out_file) != 0 :
-					continue
-
-				try :
-					out_file.close()
-				except : pass
-
-				print MyName+": uncompressing file \""+out_file_path+"\"..."
-				if os.system(TARProg+" -xjf \""+out_file_path+"\" -C "+SoundsDir) != 0 :
-					continue
-
-				try :
-					os.remove(out_file_path)
-				except : pass
-
-
-			print MyName+": \""+remote_resources_list_item.resource_name+"\": done"
-
-			count = 0
-			while count < len(resources_list) :
-				if resources_list[count] == remote_resources_list_item.resource_name :
-					resources_list.pop(count)
-				count += 1
+			print "Installation of resource \"%s\" complete\n" % (remote_resources_list_item.resource_name)
 
 	return 0
 
+def uninstall_resources(requested_resources_names_list, resources_type) :
+	past_resources_names_list = []
 
-#####
-def uninstall_resources(resources_type = "", resources_list = []) :
-	if (not resources_type in ResourcesTypes) or (len(resources_list) == 0) :
-		return -1
+	for requested_resources_names_list_item in requested_resources_names_list :
+		if requested_resources_names_list_item in past_resources_names_list :
+			continue
 
-	if resources_type == DictsResources :
-		if not os.access(DictsDir, os.W_OK) :
-			print >> sys.stderr, MyName+": you not have a permissions"
-			return -1
-	elif resources_type == SoundsResources :
-		if not os.access(SoundsDir, os.W_OK) :
-			print >> sys.stderr, MyName+": you not have a permissions"
-			return -1
+		print "Removing resource \"%s\"..." % (requested_resources_names_list_item)
 
-	if resources_type == DictsResources :
-		for resources_list_item in resources_list :
-			print MyName+": removing dict \""+resources_list_item+"\"..."
+		if resources_type == DictsResourcesType :
 			try :
-				os.remove(os.path.join(DictsDir, resources_list_item))
-			except :
-				print >> sys.stderr, MyName+": cannot remove dict \""+resources_list_item+"\""
-
-	elif resources_type == SoundsResources :
-		for resources_list_item in resources_list :
-			print MyName+": removing sound \""+resources_list_item+"\"..."
+				os.remove(os.path.join(DictsDir, requested_resources_names_list_item))
+			except Exception, err1 :
+				print >> sys.stderr, "Error while removing resource \"%s\": %s" % (requested_resources_names_list_item, str(err1))
+				continue
+		elif resources_type == SoundsResourcesType :
 			try :
-				resources_list_item = os.path.join(SoundsDir, resources_list_item)
-				for root, dirs, files in os.walk(resources_list_item) :
+				requested_resources_names_list_item = os.path.join(SoundsDir, requested_resources_names_list_item)
+				for root, dirs, files in os.walk(requested_resources_names_list_item) :
 					for file in files :
 						os.remove(os.path.join(root, file))
-				for root, dirs, files in os.walk(resources_list_item) :
+				for root, dirs, files in os.walk(requested_resources_names_list_item) :
 					for dir in dirs :
 						os.rmdir(os.path.join(root, dir))
-				os.rmdir(resources_list_item)
-			except :
-				resources_list_item = os.path.basename(resources_list_item)
-				print >> sys.stderr, MyName+": cannot remove sound \""+resources_list_item+"\""
+				os.rmdir(requested_resources_names_list_item)
+			except Exception, err1 :
+				print >> sys.stderr, "Error while removing resource \"%s\": %s" % (requested_resources_names_list_item, str(err1))
+				continue
+
+		past_resources_names_list.append(requested_resources_names_list_item)
+
+		print "Removing of resource \"%s\" complete" % (requested_resources_names_list_item)
 
 	return 0
 
-
-####
+#####
 def help() :
 	print "-"*80
 	version()
 	print "-"*80
 	print "Remote repository commands:"
-	print "\t"+MyName+" "+RemoteListCommand+" "+DictsResources
-	print "\t"+MyName+" "+RemoteListCommand+" "+SoundsResources
-	print "\t"+MyName+" "+InstallCommand+" "+DictsResources+" <file1> <file2> <fileN>"
-	print "\t"+MyName+" "+InstallCommand+" "+SoundsResources+" <file1> <file2> <fileN>"
+	print "\t%s %s %s" % (MyName, RemoteListCommand, DictsResourcesType)
+	print "\t%s %s %s" % (MyName, RemoteListCommand, SoundsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, InstallCommand, DictsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, InstallCommand, SoundsResourcesType)
 	print "Local repository commands:"
-	print "\t"+MyName+" "+LocalListCommand+" "+DictsResources
-	print "\t"+MyName+" "+LocalListCommand+" "+SoundsResources
-	print "\t"+MyName+" "+UninstallCommand+" "+DictsResources+" <file1> <file2> <fileN>"
-	print "\t"+MyName+" "+UninstallCommand+" "+SoundsResources+" <file1> <file2> <fileN>"
+	print "\t%s %s %s" % (MyName, LocalListCommand, DictsResourcesType)
+	print "\t%s %s %s" % (MyName, LocalListCommand, SoundsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, UninstallCommand, DictsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, UninstallCommand, SoundsResourcesType)
 	print "Information commands:"
-	print "\t"+MyName+" "+HelpCommand
-	print "\t"+MyName+" "+VersionCommand
+	print "\t%s %s" % (MyName, HelpCommand)
+	print "\t%s %s" % (MyName, VersionCommand)
 	print "-"*80
 
 def version() :
-	print MyName+"-"+Version+", Copyright (C) 2007-2016 Devaev Maxim, "+DeveloperMail
+	print "%s-%s, Copyright (C) 2007-2016 Devaev Maxim, %s" % (MyName, Version, DeveloperMail)
 
 
 ##### Main #####
 if __name__ == "__main__" :
 	if len(sys.argv) < 2 :
-		print >> sys.stderr, MyName+": bad usage, try \""+MyName+" "+HelpCommand+"\""
+		print >> sys.stderr, "Bad usage, try \"%s %s\"" % (MyName, HelpCommand)
 		sys.exit(1)
 
 	if not sys.argv[1] in AllCommands :
-		print >> sys.stderr, MyName+": unknown command"
+		print >> sys.stderr, "Unknown command \"%s\", try \"%s %s\"" % (sys.argv[1], MyName, HelpCommand)
 		sys.exit(1)
 
 	if sys.argv[1] == HelpCommand :
@@ -474,43 +618,43 @@ if __name__ == "__main__" :
 
 	elif sys.argv[1] == RemoteListCommand :
 		if len(sys.argv) < 3 :
-			print >> sys.stderr, MyName+": required resource type"
+			print >> sys.stderr, "Command \"%s\" requires resource type" % (sys.argv[1])
 			sys.exit(1)
-		if not sys.argv[2] in ResourcesTypes :
-			print >> sys.stderr, MyName+": unknown resource type"
+		if not sys.argv[2] in AllResourcesTypes :
+			print >> sys.stderr, "Unknown resource type \"%s\"" % (sys.argv[2])
 			sys.exit(1)
-		print_resources_list(sys.argv[2], RemoteRepository)
+		sys.exit( 1 if print_resources_list(sys.argv[2], RemoteRepositoriesType) != 0 else 0 )
 
 	elif sys.argv[1] == LocalListCommand :
 		if len(sys.argv) < 3 :
-			print >> sys.stderr, MyName+": required resource type"
+			print >> sys.stderr, "Command \"%s\" requires resource type" % (sys.argv[1])
 			sys.exit(1)
-		if not sys.argv[2] in ResourcesTypes :
-			print >> sys.stderr, MyName+": unknown resource type"
+		if not sys.argv[2] in AllResourcesTypes :
+			print >> sys.stderr, "Unknown resource type \"%s\"" % (sys.argv[2])
 			sys.exit(1)
-		print_resources_list(sys.argv[2], LocalRepository)
+		sys.exit( 1 if print_resources_list(sys.argv[2], LocalRepositoriesType) != 0 else 0 )
 
 	elif sys.argv[1] == InstallCommand :
 		if len(sys.argv) < 3 :
-			print >> sys.stderr, MyName+": required resource type"
+			print >> sys.stderr, "Command \"%s\" requires resource type" % (sys.argv[1])
 			sys.exit(1)
-		if not sys.argv[2] in ResourcesTypes :
-			print >> sys.stderr, MyName+": unknown resource type"
+		if not sys.argv[2] in AllResourcesTypes :
+			print >> sys.stderr, "Unknown resource type \"%s\"" % (sys.argv[2])
 			sys.exit(1)
 		if len(sys.argv) < 4 :
-			print >> sys.stderr, MyName+": minimum one file required"
+			print >> sys.stderr, "Minimum one file required for command \"%s\"" % (sys.argv[1])
 			sys.exit(1)
-		install_resources(sys.argv[2], sys.argv[3:])
+		sys.exit( 1 if install_resources(sys.argv[3:], sys.argv[2]) != 0 else 0 )
 
 	elif sys.argv[1] == UninstallCommand :
 		if len(sys.argv) < 3 :
-			print >> sys.stderr, MyName+": required resource type"
+			print >> sys.stderr, "Command \"%s\" requires resource type" % (sys.argv[1])
 			sys.exit(1)
-		if not sys.argv[2] in ResourcesTypes :
-			print >> sys.stderr, MyName+": unknown resource type"
+		if not sys.argv[2] in AllResourcesTypes :
+			print >> sys.stderr, "Unknown resource type \"%s\"" % (sys.argv[2])
 			sys.exit(1)
 		if len(sys.argv) < 4 :
-			print >> sys.stderr, MyName+": minimum one file required"
+			print >> sys.stderr, "Minimum one file required for command \"%s\"" % (sys.argv[1])
 			sys.exit(1)
-		uninstall_resources(sys.argv[2], sys.argv[3:])
+		sys.exit( 1 if uninstall_resources(sys.argv[3:], sys.argv[2]) != 0 else 0 )
 
