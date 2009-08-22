@@ -73,7 +73,7 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////////////
 
 	struct option long_options[] = {
-		{OPT_FIND_USUALY,		required_argument,	NULL,	'u'}, // +
+		{OPT_FIND_USUALLY,		required_argument,	NULL,	'u'}, // +
 		{OPT_FIND_FIRST_CONCURRENCE,	required_argument,	NULL,	'f'}, // +
 		{OPT_FIND_WORD_COMBINATIONS,	required_argument,	NULL,	'c'}, // +
 		{OPT_FIND_LIST,			required_argument,	NULL,	'l'}, // +
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 	{
 		switch (ch)
 		{
-			case 'u' : ec += xfind_word(optarg, usualy_regimen, 0, dicts_list);
+			case 'u' : ec += xfind_word(optarg, usually_regimen, 0, dicts_list);
 					use_default_function_flag = false;	break;
 
 			case 'f' : ec += xfind_word(optarg, first_concurrence_regimen, 0, dicts_list);
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 	}
 
 	if ( (argc == 2) && use_default_function_flag )
-		xfind_word(argv[1], usualy_regimen, 0, NULL);
+		xfind_word(argv[1], usually_regimen, 0, NULL);
 	else if ( (argc != 2) && use_default_function_flag )
 	{
 		fprintf(stderr, "%s: bad usage, try \"%s --help\"\n", MYNAME, MYNAME);
@@ -341,7 +341,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 			no_dicts_flag = false;
 		}
 
-		if ( no_translate_flag && (regimen == usualy_regimen) )
+		if ( no_translate_flag && (regimen == usually_regimen) )
 		{
 			rewinddir(dicts_dp);
 
@@ -374,7 +374,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 			no_dicts_flag = false;
 		}
 
-		if ( no_translate_flag && (regimen == usualy_regimen) )
+		if ( no_translate_flag && (regimen == usually_regimen) )
 		{
 			while ( (dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list)) != NULL )
 			{

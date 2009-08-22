@@ -77,7 +77,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		return -1;
 	}
 
-	if ( regimen == usualy_regimen )
+	if ( regimen == usually_regimen )
 	{
 		pos = read_index(word_wc[0], dict_fp);
 		if ( pos > 0 )

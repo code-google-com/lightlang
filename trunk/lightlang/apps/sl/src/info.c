@@ -47,7 +47,7 @@ void help(void)
 	version();
 	puts("------------------------------------------------------------------------");
 	printf("Search options:\n");
-	printf("\t-u <word> | --%s <word>\n", OPT_FIND_USUALY);
+	printf("\t-u <word> | --%s <word>\n", OPT_FIND_USUALLY);
 	printf("\t-f <word> | --%s <word>\n", OPT_FIND_FIRST_CONCURRENCE);
 	printf("\t-c <word> | --%s <word>\n", OPT_FIND_WORD_COMBINATIONS);
 	printf("\t-l <word> | --%s <word>\n", OPT_FIND_LIST);

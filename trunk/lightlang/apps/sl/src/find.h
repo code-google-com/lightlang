@@ -40,7 +40,7 @@
 # define MAX_WORD_SIZE		256
 /*********************************** Types *************************************/
 typedef enum {
-	usualy_regimen,
+	usually_regimen,
 	first_concurrence_regimen,
 	word_combinations_regimen,
 	list_regimen,

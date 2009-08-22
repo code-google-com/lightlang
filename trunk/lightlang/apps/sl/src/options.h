@@ -29,7 +29,7 @@
 # define _GNU_SOURCE
 
 /*********************************** Macro *************************************/
-# define OPT_FIND_USUALY		"usualy"
+# define OPT_FIND_USUALLY		"usually"
 # define OPT_FIND_FIRST_CONCURRENCE	"first-concurrence"
 # define OPT_FIND_WORD_COMBINATIONS	"word-combinations"
 # define OPT_FIND_LIST			"list"
