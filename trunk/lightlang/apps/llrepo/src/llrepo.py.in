@@ -542,6 +542,39 @@ def install_resources(requested_resources_names_list, resources_type) :
 	return 0
 
 def uninstall_resources(requested_resources_names_list, resources_type) :
+	if not resources_type in AllResourcesTypes :
+		return -1
+
+	###
+
+	local_resources_names_list = [ local_resources_list_item.resource_name
+		for local_resources_list_item in get_local_resources_list(resources_type) ]
+
+	print "Analysis of the request..."
+
+	count = 0
+	while count < len(requested_resources_names_list) :
+		if not requested_resources_names_list[count] in local_resources_names_list :
+			print >> sys.stderr, "--- resource \"%s\" :: is already removed" % (requested_resources_names_list[count])
+			requested_resources_names_list.pop(count)
+			continue
+		count += 1
+
+	if count == 0 :
+		print >> sys.stderr, "No appropriate resources\n"
+		return 0
+
+	print "OK, %d resources for removing" % (count)
+	sys.stdout.write("Continue? [y/n]: ")
+	sys.stdout.flush()
+	answer = raw_input()
+	if answer.lower() != 'y' and answer.lower() != "yes" :
+		print
+		return 0
+	print
+
+	###
+
 	past_resources_names_list = []
 
 	for requested_resources_names_list_item in requested_resources_names_list :
@@ -554,7 +587,7 @@ def uninstall_resources(requested_resources_names_list, resources_type) :
 			try :
 				os.remove(os.path.join(DictsDir, requested_resources_names_list_item))
 			except Exception, err1 :
-				print >> sys.stderr, "Error while removing resource \"%s\": %s" % (requested_resources_names_list_item, str(err1))
+				print >> sys.stderr, "Error while removing resource \"%s\": %s\n" % (requested_resources_names_list_item, str(err1))
 				continue
 		elif resources_type == SoundsResourcesType :
 			try :
@@ -567,12 +600,12 @@ def uninstall_resources(requested_resources_names_list, resources_type) :
 						os.rmdir(os.path.join(root, dir))
 				os.rmdir(requested_resources_names_list_item)
 			except Exception, err1 :
-				print >> sys.stderr, "Error while removing resource \"%s\": %s" % (requested_resources_names_list_item, str(err1))
+				print >> sys.stderr, "Error while removing resource \"%s\": %s\n" % (requested_resources_names_list_item, str(err1))
 				continue
 
 		past_resources_names_list.append(requested_resources_names_list_item)
 
-		print "Removing of resource \"%s\" complete" % (requested_resources_names_list_item)
+		print "Removing of resource \"%s\" complete\n" % (requested_resources_names_list_item)
 
 	return 0
 
