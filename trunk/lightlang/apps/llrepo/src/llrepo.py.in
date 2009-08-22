@@ -133,7 +133,7 @@ def get_remote_resources_list(resources_type) :
 				resource_name = os.path.basename(resources_files_list_item)[:-len(SoundsResourcesPostfix)]
 
 			try :
-				if resources_files_list_item[0] == "." :
+				if resource_name == "." :
 					continue
 			except : continue
 
@@ -184,12 +184,12 @@ def get_local_resources_list(resources_type) :
 	resources_count = 0
 
 	for resources_files_list_item in resources_files_list :
+		resource_name = os.path.basename(resources_files_list_item)
+
 		try :
-			if resources_files_list_item[0] == "." :
+			if resource_name == "." :
 				continue
 		except : continue
-
-		resource_name = os.path.basename(resources_files_list_item)
 
 		if resources_type == DictsResourcesType :
 			try :
@@ -490,7 +490,7 @@ def install_resources(requested_resources_names_list, resources_type) :
 	sys.stdout.write("Continue? [y/n]: ")
 	sys.stdout.flush()
 	answer = raw_input()
-	if answer.lower() != 'y' and answer.lower() != "yes" :
+	if answer.lower() != "y" and answer.lower() != "yes" :
 		print
 		return 0
 	print
@@ -568,7 +568,7 @@ def uninstall_resources(requested_resources_names_list, resources_type) :
 	sys.stdout.write("Continue? [y/n]: ")
 	sys.stdout.flush()
 	answer = raw_input()
-	if answer.lower() != 'y' and answer.lower() != "yes" :
+	if answer.lower() != "y" and answer.lower() != "yes" :
 		print
 		return 0
 	print
