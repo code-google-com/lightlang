@@ -50,10 +50,8 @@ class SpyMenu(Qt.QMenu) :
 
 		#####
 
-		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"),
-			tr("Start Spy"), self.startSpy)
-		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"),
-			tr("Stop Spy"), self.stopSpy)
+		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"), tr("Start Spy"), self.startSpy)
+		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"), tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
 		self.addSeparator()
 		self.show_translate_window_menu_action = self.addAction(tr("Show popup window"))
@@ -73,8 +71,7 @@ class SpyMenu(Qt.QMenu) :
 		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
 		try :
-			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"),
-				self.mouse_selector_thread.setModifier)
+			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"), self.mouse_selector_thread.setModifier)
 		except : pass
 
 
@@ -104,12 +101,9 @@ class SpyMenu(Qt.QMenu) :
 
 	def saveSettings(self) :
 		settings = User.settings()
-		settings.setValue("spy_menu/show_translate_window_flag",
-			Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
-		settings.setValue("spy_menu/auto_detect_window_flag",
-			Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
-		settings.setValue("spy_menu/spy_is_running_flag",
-			Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
+		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
 
 		try :
 			self.keyboard_modifiers_menu.saveSettings()
@@ -118,10 +112,8 @@ class SpyMenu(Qt.QMenu) :
 
 	def loadSettings(self) :
 		settings = User.settings()
-		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag",
-			Qt.QVariant(True)).toBool())
-		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag",
-			Qt.QVariant(True)).toBool())
+		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag", Qt.QVariant(True)).toBool())
+		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag", Qt.QVariant(True)).toBool())
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
 			self.startSpy()
 
