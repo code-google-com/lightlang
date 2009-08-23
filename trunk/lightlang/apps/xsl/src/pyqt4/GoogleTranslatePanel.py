@@ -150,17 +150,13 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def saveSettings(self) :
 		settings = User.settings()
-		settings.setValue("google_translate_panel/sl_combobox_index",
-			Qt.QVariant(self.sl_combobox.currentIndex()))
-		settings.setValue("google_translate_panel/tl_combobox_index",
-			Qt.QVariant(self.tl_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/sl_combobox_index", Qt.QVariant(self.sl_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/tl_combobox_index", Qt.QVariant(self.tl_combobox.currentIndex()))
 
 	def loadSettings(self) :
 		settings = User.settings()
-		self.sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index",
-			Qt.QVariant(0)).toInt()[0])
-		self.tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index",
-			Qt.QVariant(0)).toInt()[0])
+		self.sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index", Qt.QVariant(0)).toInt()[0])
+		self.tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index", Qt.QVariant(0)).toInt()[0])
 
 	###
 
