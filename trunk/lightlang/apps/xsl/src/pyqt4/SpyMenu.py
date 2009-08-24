@@ -25,8 +25,9 @@ import Config
 import Const
 import User
 import MouseSelectorThread
+import RadioButtonsMenu
 try :
-	import KeyboardModifiersMenu
+	import KeyboardModifiers
 except : pass
 
 
@@ -53,15 +54,31 @@ class SpyMenu(Qt.QMenu) :
 		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"), tr("Start Spy"), self.startSpy)
 		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"), tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
+
 		self.addSeparator()
+
 		self.show_translate_window_menu_action = self.addAction(tr("Show popup window"))
 		self.show_translate_window_menu_action.setCheckable(True)
+
 		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
+
 		try :
 			self.addSeparator()
-			self.keyboard_modifiers_menu = KeyboardModifiersMenu.KeyboardModifiersMenu(tr("Keyboard modifiers"))
+			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
 			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+			self.keyboard_modifiers_menu.addRadioButton(tr("No modifier"), KeyboardModifiers.NoModifier)
+			self.keyboard_modifiers_menu.addSeparator()
+			self.keyboard_modifiers_menu.addRadioButton(tr("Left Ctrl"), KeyboardModifiers.LeftCtrlModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Left Alt"), KeyboardModifiers.LeftAltModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Left Shift"), KeyboardModifiers.LeftShiftModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Left Win"), KeyboardModifiers.LeftWinModifier)
+			self.keyboard_modifiers_menu.addSeparator()
+			self.keyboard_modifiers_menu.addRadioButton(tr("Right Ctrl"), KeyboardModifiers.RightCtrlModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Right Alt"), KeyboardModifiers.RightAltModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Right Shift"), KeyboardModifiers.RightShiftModifier)
+			self.keyboard_modifiers_menu.addRadioButton(tr("Right Win"), KeyboardModifiers.RightWinModifier)
+			self.keyboard_modifiers_menu.setIndex(0)
 			self.addMenu(self.keyboard_modifiers_menu)
 		except : pass
 
@@ -71,7 +88,8 @@ class SpyMenu(Qt.QMenu) :
 		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
 		try :
-			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("modifierChanged(int)"), self.mouse_selector_thread.setModifier)
+			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("dataChanged(const QVariant &)"),
+				lambda data : self.mouse_selector_thread.setModifier(data.toInt()[0]))
 		except : pass
 
 
@@ -106,7 +124,7 @@ class SpyMenu(Qt.QMenu) :
 		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
 
 		try :
-			self.keyboard_modifiers_menu.saveSettings()
+			settings.setValue("spy_menu/keyboard_modifier_index", Qt.QVariant(self.keyboard_modifiers_menu.index()))
 		except : pass
 
 
@@ -118,7 +136,7 @@ class SpyMenu(Qt.QMenu) :
 			self.startSpy()
 
 		try :
-			self.keyboard_modifiers_menu.loadSettings()
+			self.keyboard_modifiers_menu.setIndex(settings.value("spy_menu/keyboard_modifier_index", Qt.QVariant(0)).toInt()[0])
 		except : pass
 
 

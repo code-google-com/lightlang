@@ -23,8 +23,6 @@
 import Qt
 import Config
 import Const
-import User
-import KeyboardModifiers
 
 
 #####
@@ -33,7 +31,7 @@ def tr(str) :
 
 
 #####
-class KeyboardModifiersMenu(Qt.QMenu) :
+class RadioButtonsMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
 
@@ -44,36 +42,7 @@ class KeyboardModifiersMenu(Qt.QMenu) :
 
 		#####
 
-		self.addModifier(tr("Left Ctrl"), KeyboardModifiers.LeftCtrlModifier)
-		self.addModifier(tr("Left Alt"), KeyboardModifiers.LeftAltModifier)
-		self.addModifier(tr("Left Shift"), KeyboardModifiers.LeftShiftModifier)
-		self.addModifier(tr("Left Win"), KeyboardModifiers.LeftWinModifier)
-		self.addSeparator()
-		self.addModifier(tr("Right Ctrl"), KeyboardModifiers.RightCtrlModifier)
-		self.addModifier(tr("Right Alt"), KeyboardModifiers.RightAltModifier)
-		self.addModifier(tr("Right Shift"), KeyboardModifiers.RightShiftModifier)
-		self.addModifier(tr("Right Win"), KeyboardModifiers.RightWinModifier)
-		self.addSeparator()
-		self.addModifier(tr("No modifier"), KeyboardModifiers.NoModifier)
-
-		#####
-
-		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.modifierChangedSignal)
-
-		#####
-
-		self.setIndex(0)
-
-
-	### Public ###
-
-	def saveSettings(self) :
-		settings = User.settings()
-		settings.setValue("keyboard_modifiers_menu/modifier_index", Qt.QVariant(self.index()))
-
-	def loadSettings(self) :
-		settings = User.settings()
-		self.setIndex(settings.value("keyboard_modifiers_menu/modifier_index", Qt.QVariant(0)).toInt()[0])
+		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.dataChangedSignal)
 
 
 	### Private ###
@@ -87,12 +56,12 @@ class KeyboardModifiersMenu(Qt.QMenu) :
 
 	def setIndex(self, index) :
 		self.actions_list[index].setChecked(True)
-		self.modifierChangedSignal(self.actions_list[index])
+		self.dataChangedSignal(self.actions_list[index])
 
-	def addModifier(self, title, modifier) :
+	def addRadioButton(self, title, data) :
 		action = Qt.QAction(title, self)
 		action.setCheckable(True)
-		action.setData(Qt.QVariant(modifier))
+		action.setData(Qt.QVariant(data))
 
 		self.addAction(action)
 		self.actions_list.append(action)
@@ -101,7 +70,6 @@ class KeyboardModifiersMenu(Qt.QMenu) :
 
 	### Signals ###
 
-	def modifierChangedSignal(self, action) :
-		modifier = action.data().toInt()[0]
-		self.emit(Qt.SIGNAL("modifierChanged(int)"), modifier)
+	def dataChangedSignal(self, action) :
+		self.emit(Qt.SIGNAL("dataChanged(const QVariant &)"), action.data())
 

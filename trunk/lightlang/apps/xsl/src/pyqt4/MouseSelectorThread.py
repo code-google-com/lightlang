@@ -47,7 +47,7 @@ class MouseSelectorThread(Qt.QThread) :
 		self.timer.setInterval(300)
 
 		try :
-			self.modifier = KeyboardModifiers.LeftCtrlModifier
+			self.modifier = KeyboardModifiers.NoModifier
 		except : pass
 
 		#####
