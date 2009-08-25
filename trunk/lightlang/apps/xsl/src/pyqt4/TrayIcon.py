@@ -59,7 +59,9 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.start_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"), tr("Start Spy"), self.startSpy)
 		self.stop_spy_menu_action = self.tray_menu.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"), tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
+
 		self.tray_menu.addSeparator()
+
 		try :
 			self.keys_grabber_thread_singleton.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
 				self.visibleChangeRequestSignal)
@@ -68,7 +70,9 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		except :
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
 				self.visibleChangeRequestSignal)
+
 		self.tray_menu.addSeparator()
+
 		self.tray_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"), self.exit)
 		self.setContextMenu(self.tray_menu)
 
