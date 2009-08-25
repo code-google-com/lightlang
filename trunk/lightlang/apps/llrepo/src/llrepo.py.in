@@ -636,7 +636,7 @@ def version() :
 ##### Main #####
 if __name__ == "__main__" :
 	if len(sys.argv) < 2 :
-		print >> sys.stderr, "Bad usage, try \"%s %s\"" % (MyName, HelpCommand)
+		help()
 		sys.exit(1)
 
 	if not sys.argv[1] in AllCommands :
