@@ -41,12 +41,9 @@ class InternetLinksMenu(Qt.QMenu) :
 
 		#####
 
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Developer e-mail"),
-			"mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Offers e-mail"),
-			"mailto:"+Const.OffersMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Bugtrack e-mail"),
-			"mailto:"+Const.BugtrackMail+"?subject="+Const.Organization)
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Developer e-mail"), "mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Offers e-mail"), "mailto:"+Const.OffersMail+"?subject="+Const.Organization)
+		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Bugtrack e-mail"), "mailto:"+Const.BugtrackMail+"?subject="+Const.Organization)
 
 		self.addSeparator()
 
