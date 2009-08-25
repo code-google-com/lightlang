@@ -145,8 +145,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		if error_flag and not self.http_abort_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("HTTP error: %1\nPress \"Yes\" to ignore")
-					.arg(self.http.errorString()),
+				tr("HTTP error: %1\nPress \"Yes\" to ignore").arg(self.http.errorString()),
 				Qt.QMessageBox.Yes)
 
 		self.timer.stop()
@@ -165,8 +164,7 @@ class GoogleTranslate(Qt.QObject) :
 		direction_index = direction_regexp.indexIn(text)
 		translate_index = translate_regexp.indexIn(text)
 		if direction_index > -1 and translate_index > -1 :
-			text = (Qt.QString("<font color=\"#494949\">%1</font><hr>%2")
-				.arg(direction_regexp.cap(1)).arg(translate_regexp.cap(1)))
+			text = (Qt.QString("<font color=\"#494949\">%1</font><hr>%2").arg(direction_regexp.cap(1)).arg(translate_regexp.cap(1)))
 		elif translate_index > -1 :
 			text = translate_regexp.cap(1)
 
