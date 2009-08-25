@@ -59,11 +59,8 @@ class TransparentFrame(Qt.QFrame) :
 		g = self.color.green()
 		b = self.color.blue()
 
-		self.setStyleSheet("QFrame {"
-				"border: 1px solid gray;"
-				"border-radius: 4px;"
-				"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", "+str(a)+");"
-			"}")
+		self.setStyleSheet("QFrame {border: 1px solid gray; border-radius: 4px;"
+				"background-color: rgb("+str(r)+", "+str(g)+", "+str(b)+", "+str(a)+");}")
 
 
 	### Handlers ###
