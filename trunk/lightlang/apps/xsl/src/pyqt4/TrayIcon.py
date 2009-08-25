@@ -66,7 +66,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 			self.keys_grabber_thread_singleton.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
 				self.visibleChangeRequestSignal)
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
-				self.visibleChangeRequestSignal, Qt.QKeySequence("Win+L"))
+				self.visibleChangeRequestSignal, Qt.QKeySequence("Win+L")) # FIXME: Win+L as usually string
 		except :
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"),
 				self.visibleChangeRequestSignal)
