@@ -68,16 +68,21 @@ class SpyMenu(Qt.QMenu) :
 			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
 			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
 			self.keyboard_modifiers_menu.addRadioButton(tr("No modifier"), Qt.QVariant(KeyboardModifiers.NoModifier))
+
 			self.keyboard_modifiers_menu.addSeparator()
+
 			self.keyboard_modifiers_menu.addRadioButton(tr("Left Ctrl"), Qt.QVariant(KeyboardModifiers.LeftCtrlModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Left Alt"), Qt.QVariant(KeyboardModifiers.LeftAltModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Left Shift"), Qt.QVariant(KeyboardModifiers.LeftShiftModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Left Win"), Qt.QVariant(KeyboardModifiers.LeftWinModifier))
+
 			self.keyboard_modifiers_menu.addSeparator()
+
 			self.keyboard_modifiers_menu.addRadioButton(tr("Right Ctrl"), Qt.QVariant(KeyboardModifiers.RightCtrlModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Right Alt"), Qt.QVariant(KeyboardModifiers.RightAltModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Right Shift"), Qt.QVariant(KeyboardModifiers.RightShiftModifier))
 			self.keyboard_modifiers_menu.addRadioButton(tr("Right Win"), Qt.QVariant(KeyboardModifiers.RightWinModifier))
+
 			self.keyboard_modifiers_menu.setIndex(0)
 			self.addMenu(self.keyboard_modifiers_menu)
 		except : pass
