@@ -85,8 +85,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 			if word.isEmpty() :
 				return
 			self.find_sound.find(word)
-		elif (word.startsWith("http:", Qt.Qt.CaseInsensitive) or
-			word.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+		elif word.startsWith("http:", Qt.Qt.CaseInsensitive) or word.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
 			Qt.QDesktopServices.openUrl(url)
 
 
