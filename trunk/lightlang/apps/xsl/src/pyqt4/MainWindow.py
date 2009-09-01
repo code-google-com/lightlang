@@ -339,15 +339,15 @@ class MainWindow(Qt.QMainWindow) :
 
 		index = len(self.source_objects_list) -1
 
-		def registrate_stream(n = index) : self.registrateStream(n)
-		def release_stream(n = index) : self.releaseStream(n)
-		def clear_tabbed_translate_browser(n = index) : self.clearTabbedTranslateBrowser(n)
-		def set_tabbed_translate_browser_caption(word, n = index) : self.setTabbedTranslateBrowserCaption(n, word)
-		def set_tabbed_translate_browser_text(text, n = index) : self.setTabbedTranslateBrowserText(n, text)
-		def add_tabbed_translate_browser_tab(n = index) : self.addTabbedTranslateBrowserTab()
-		def status_bar_start_wait_movie(n = index) : self.status_bar.startWaitMovie()
-		def status_bar_stop_wait_movie(n = index) : self.status_bar.stopWaitMovie()
-		def status_bar_show_status_message(str, n = index) : self.status_bar.showStatusMessage(str)
+		registrate_stream = ( lambda n = index : self.registrateStream(n) )
+		release_stream = ( lambda n = index : self.releaseStream(n) )
+		clear_tabbed_translate_browser = ( lambda n = index : self.clearTabbedTranslateBrowser(n) )
+		set_tabbed_translate_browser_caption = ( lambda word, n = index : self.setTabbedTranslateBrowserCaption(n, word) )
+		set_tabbed_translate_browser_text = ( lambda text, n = index : self.setTabbedTranslateBrowserText(n, text) )
+		add_tabbed_translate_browser_tab = ( lambda : self.addTabbedTranslateBrowserTab() )
+		status_bar_start_wait_movie = ( lambda : self.status_bar.startWaitMovie() )
+		status_bar_stop_wait_movie = ( lambda : self.status_bar.stopWaitMovie() )
+		status_bar_show_status_message = ( lambda str : self.status_bar.showStatusMessage(str) )
 
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processStarted()"), registrate_stream)
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processStarted()"), status_bar_start_wait_movie)
