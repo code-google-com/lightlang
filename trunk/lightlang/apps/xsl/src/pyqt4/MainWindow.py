@@ -213,8 +213,8 @@ class MainWindow(Qt.QMainWindow) :
 		### Help Menu
 
 		self.help_menu = self.main_menu_bar.addMenu(tr("&Help"))
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"),
-			tr("%1 manual").arg(Const.Organization), self.showHelpBrowser, Qt.QKeySequence("F1"))
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"), tr("%1 manual").arg(Const.Organization),
+			self.showHelpBrowser, Qt.QKeySequence("F1"))
 		self.help_menu.addSeparator()
 		self.internet_links_menu = InternetLinksMenu.InternetLinksMenu(tr("Internet links"))
 		self.internet_links_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
