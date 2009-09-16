@@ -26,6 +26,7 @@ import os
 import Config
 import Const
 import Locale
+import Application
 import TrayIcon
 import MainWindow
 
@@ -53,8 +54,7 @@ class Main :
 	### Public ###
 
 	def run(self) :
-		self.app = Qt.QApplication(self.argv)
-		self.app.setQuitOnLastWindowClosed(False)
+		self.app = Application.Application(self.argv)
 
 		self.lang = Locale.mainLang()
 
@@ -78,8 +78,8 @@ class Main :
 
 		#####
 
-		Qt.QObject.connect(self.app, Qt.SIGNAL("commitDataRequest(QSessionManager &)"), self.commitData)
 		Qt.QObject.connect(self.app, Qt.SIGNAL("focusChanged(QWidget *, QWidget*)"), self.main_window.focusChanged)
+		Qt.QObject.connect(self.app, Qt.SIGNAL("saveSettingsRequest()"), self.main_window.save)
 
 		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStarted()"), self.tray_icon.spyStarted)
 		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStopped()"), self.tray_icon.spyStopped)
@@ -136,13 +136,4 @@ class Main :
 		lock_file.open(Qt.QIODevice.WriteOnly|Qt.QIODevice.Truncate)
 		lock_file_stream << os.getpid() << "\n";
 		lock_file.close()
-
-	###
-
-	def commitData(self, session_manager) :
-		if session_manager.allowsInteraction() :
-			self.main_window.save()
-			session_manager.setRestartHint(Qt.QSessionManager.RestartIfRunning)
-		else :
-			print >> sys.stderr, Const.MyName+": cannot save session: ignored"
 
