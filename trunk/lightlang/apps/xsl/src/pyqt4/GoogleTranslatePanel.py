@@ -26,7 +26,7 @@ import Const
 import Locale
 import User
 import GoogleTranslate
-import GoogleTranslateLangsList
+import LangsList
 import TextEdit
 
 
@@ -78,7 +78,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.sl_combobox = Qt.QComboBox()
 		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.sl_combobox.setMaxVisibleItems(15)
-		for langs_list_item in GoogleTranslateLangsList.langsList() :
+		for langs_list_item in LangsList.langsList() :
 			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
 		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("I don't know..."), Qt.QVariant("auto"))
@@ -94,7 +94,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.tl_combobox = Qt.QComboBox()
 		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.tl_combobox.setMaxVisibleItems(15)
-		for langs_list_item in GoogleTranslateLangsList.langsList() :
+		for langs_list_item in LangsList.langsList() :
 			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
 				langs_list_item[0], langs_list_item[1])
 		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+self.lang+".png"), tr("Your language"), Qt.QVariant(self.lang))
