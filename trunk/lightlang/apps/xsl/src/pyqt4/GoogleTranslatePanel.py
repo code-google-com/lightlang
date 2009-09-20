@@ -79,8 +79,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.sl_combobox.setMaxVisibleItems(15)
 		for langs_list_item in LangsList.langsList() :
-			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
-				langs_list_item[0], langs_list_item[1])
+			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1]+".png"),
+				langs_list_item[0], Qt.QVariant(langs_list_item[1]))
 		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("I don't know..."), Qt.QVariant("auto"))
 		self.langs_layout.addWidget(self.sl_combobox)
 
@@ -95,8 +95,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.tl_combobox.setMaxVisibleItems(15)
 		for langs_list_item in LangsList.langsList() :
-			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1].toString()+".png"),
-				langs_list_item[0], langs_list_item[1])
+			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1]+".png"),
+				langs_list_item[0], Qt.QVariant(langs_list_item[1]))
 		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+self.lang+".png"), tr("Your language"), Qt.QVariant(self.lang))
 		self.langs_layout.addWidget(self.tl_combobox)
 
