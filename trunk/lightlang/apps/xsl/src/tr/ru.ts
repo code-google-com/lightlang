@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<!DOCTYPE TS><TS version="1.1" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
@@ -19,7 +18,7 @@
         <translation>&amp;ОК</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="46"/>
+        <location filename="DictInformationWindow.py" line="47"/>
         <source>Dict Information</source>
         <translation>Информация о словаре</translation>
     </message>
@@ -29,12 +28,12 @@
         <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="95"/>
+        <location filename="DictInformationWindow.py" line="96"/>
         <source>&amp;Update</source>
         <translation>Об&amp;новить</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="213"/>
+        <location filename="DictInformationWindow.py" line="215"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -94,112 +93,112 @@
         <translation>Переводчик Google</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="58"/>
+        <location filename="LangsList.py" line="68"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="49"/>
+        <location filename="LangsList.py" line="59"/>
         <source>Arabic</source>
         <translation>Арабский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="51"/>
+        <location filename="LangsList.py" line="61"/>
         <source>Bulgarian</source>
         <translation>Болгарский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="57"/>
+        <location filename="LangsList.py" line="67"/>
         <source>Dutch</source>
         <translation>Голландский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="65"/>
+        <location filename="LangsList.py" line="75"/>
         <source>Greek</source>
         <translation>Греческий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="56"/>
+        <location filename="LangsList.py" line="66"/>
         <source>Danish</source>
         <translation>Датский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="89"/>
+        <location filename="LangsList.py" line="99"/>
         <source>Spanish</source>
         <translation>Испанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="72"/>
+        <location filename="LangsList.py" line="82"/>
         <source>Italian</source>
         <translation>Итальянский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="74"/>
+        <location filename="LangsList.py" line="84"/>
         <source>Korean</source>
         <translation>Корейский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="64"/>
+        <location filename="LangsList.py" line="74"/>
         <source>German</source>
         <translation>Немецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="80"/>
+        <location filename="LangsList.py" line="90"/>
         <source>Norwegian</source>
         <translation>Норвежский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="82"/>
+        <location filename="LangsList.py" line="92"/>
         <source>Polish</source>
         <translation>Польский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="83"/>
+        <location filename="LangsList.py" line="93"/>
         <source>Portuguese</source>
         <translation>Португальский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="84"/>
+        <location filename="LangsList.py" line="94"/>
         <source>Romanian</source>
         <translation>Румынский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="85"/>
+        <location filename="LangsList.py" line="95"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="61"/>
+        <location filename="LangsList.py" line="71"/>
         <source>Finnish</source>
         <translation>Финский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="62"/>
+        <location filename="LangsList.py" line="72"/>
         <source>French</source>
         <translation>Французский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="67"/>
+        <location filename="LangsList.py" line="77"/>
         <source>Hindi</source>
         <translation>Хинди</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="54"/>
+        <location filename="LangsList.py" line="64"/>
         <source>Croatian</source>
         <translation>Хорватский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="55"/>
+        <location filename="LangsList.py" line="65"/>
         <source>Czech</source>
         <translation>Чешский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="91"/>
+        <location filename="LangsList.py" line="101"/>
         <source>Swedish</source>
         <translation>Шведский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="73"/>
+        <location filename="LangsList.py" line="83"/>
         <source>Japanese</source>
         <translation>Японский</translation>
     </message>
@@ -480,7 +479,7 @@ Package version: %2</source>
         <translation>По&amp;мощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="216"/>
+        <location filename="MainWindow.py" line="215"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
@@ -560,12 +559,12 @@ Package version: %2</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="188"/>
+        <location filename="TabbedTranslateBrowser.py" line="194"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="187"/>
+        <location filename="TabbedTranslateBrowser.py" line="193"/>
         <source>&lt;em&gt;Empty&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пусто&lt;/em&gt;</translation>
     </message>
@@ -604,92 +603,92 @@ Spy is running</source>
 Spy-сервис работает</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="48"/>
+        <location filename="LangsList.py" line="58"/>
         <source>Albanian</source>
         <translation>Албанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="52"/>
+        <location filename="LangsList.py" line="62"/>
         <source>Catalan</source>
         <translation>Каталанский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="59"/>
+        <location filename="LangsList.py" line="69"/>
         <source>Estonian</source>
         <translation>Эстонский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="60"/>
+        <location filename="LangsList.py" line="70"/>
         <source>Filipino</source>
         <translation>Филиппинский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="63"/>
+        <location filename="LangsList.py" line="73"/>
         <source>Galician</source>
         <translation>Галицийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="66"/>
+        <location filename="LangsList.py" line="76"/>
         <source>Hebrew</source>
         <translation>Иврит</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="68"/>
+        <location filename="LangsList.py" line="78"/>
         <source>Hungarian</source>
         <translation>Венгерский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="70"/>
+        <location filename="LangsList.py" line="80"/>
         <source>Indonesian</source>
         <translation>Индонезийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="75"/>
+        <location filename="LangsList.py" line="85"/>
         <source>Latvian</source>
         <translation>Латвийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="76"/>
+        <location filename="LangsList.py" line="86"/>
         <source>Lithuanian</source>
         <translation>Литовский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="79"/>
+        <location filename="LangsList.py" line="89"/>
         <source>Maltese</source>
         <translation>Мальтийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="86"/>
+        <location filename="LangsList.py" line="96"/>
         <source>Serbian</source>
         <translation>Сербский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="87"/>
+        <location filename="LangsList.py" line="97"/>
         <source>Slovak</source>
         <translation>Словацкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="88"/>
+        <location filename="LangsList.py" line="98"/>
         <source>Slovenian</source>
         <translation>Словенский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="92"/>
+        <location filename="LangsList.py" line="102"/>
         <source>Thai</source>
         <translation>Тайский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="93"/>
+        <location filename="LangsList.py" line="103"/>
         <source>Turkish</source>
         <translation>Турецкий</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="94"/>
+        <location filename="LangsList.py" line="104"/>
         <source>Ukrainian</source>
         <translation>Украинский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="95"/>
+        <location filename="LangsList.py" line="105"/>
         <source>Vietnamese</source>
         <translation>Вьетнамский</translation>
     </message>
@@ -716,32 +715,27 @@ If not, remove lock file &quot;%2&quot;</source>
 Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="127"/>
+        <location filename="DictInformationWindow.py" line="128"/>
         <source>Caption</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="129"/>
-        <source>Direction</source>
-        <translation>Направление</translation>
-    </message>
-    <message>
-        <location filename="DictInformationWindow.py" line="131"/>
+        <location filename="DictInformationWindow.py" line="132"/>
         <source>File path</source>
         <translation>Путь к файлу</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="133"/>
+        <location filename="DictInformationWindow.py" line="134"/>
         <source>File size (KB)</source>
         <translation>Размер файла (КБ)</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="138"/>
+        <location filename="DictInformationWindow.py" line="139"/>
         <source>Count of words</source>
         <translation>Количество слов</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="140"/>
+        <location filename="DictInformationWindow.py" line="141"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
@@ -806,7 +800,7 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Ошибка при чтении данных из поискового процесса</translation>
     </message>
     <message>
-        <location filename="DictsListWidgetItem.py" line="66"/>
+        <location filename="DictsListWidgetItem.py" line="68"/>
         <source>Enter</source>
         <translation>Enter</translation>
     </message>
@@ -831,59 +825,64 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Ctrl+F, /</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="47"/>
+        <location filename="LangsList.py" line="57"/>
         <source>Afrikaans</source>
         <translation>Африкаанс</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="50"/>
+        <location filename="LangsList.py" line="60"/>
         <source>Belarusian</source>
         <translation>Белорусский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="53"/>
+        <location filename="LangsList.py" line="63"/>
         <source>Chinese</source>
         <translation>Китайский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="69"/>
+        <location filename="LangsList.py" line="79"/>
         <source>Icelandic</source>
         <translation>Исландский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="71"/>
+        <location filename="LangsList.py" line="81"/>
         <source>Irish</source>
         <translation>Ирландский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="77"/>
+        <location filename="LangsList.py" line="87"/>
         <source>Macedonian</source>
         <translation>Македонский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="78"/>
+        <location filename="LangsList.py" line="88"/>
         <source>Malay</source>
         <translation>Малайский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="81"/>
+        <location filename="LangsList.py" line="91"/>
         <source>Persian</source>
         <translation>Персидский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="90"/>
+        <location filename="LangsList.py" line="100"/>
         <source>Swahili</source>
         <translation>Суахили</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="96"/>
+        <location filename="LangsList.py" line="106"/>
         <source>Welsh</source>
         <translation>Валлийский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslateLangsList.py" line="97"/>
+        <location filename="LangsList.py" line="107"/>
         <source>Yiddish</source>
         <translation>Идиш</translation>
+    </message>
+    <message>
+        <location filename="DictInformationWindow.py" line="130"/>
+        <source>Translate direction</source>
+        <translation>Направление перевода</translation>
     </message>
 </context>
 </TS>
