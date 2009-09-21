@@ -27,6 +27,7 @@ import Const
 
 #####
 LangsListObject = None
+LangsCodesDictObject = None
 
 
 #####
@@ -41,6 +42,15 @@ def langsList() :
 	return LangsListObject
 
 
+def langName(short_name) :
+	if LangsCodesDictObject == None :
+		initLangsList()
+	try :
+		return Qt.QString(LangsCodesDictObject[str(short_name)])
+	except :
+		return Qt.QString(short_name)
+
+
 ##### Private #####
 def initLangsList() :
 	global LangsListObject
@@ -51,7 +61,7 @@ def initLangsList() :
 		[ tr("Belarusian"),	Qt.QString("be") ],
 		[ tr("Bulgarian"),	Qt.QString("bg") ],
 		[ tr("Catalan"),	Qt.QString("ca") ],
-		[ tr("Chinese"),	Qt.QString("zh-CN") ],
+		[ tr("Chinese"),	Qt.QString("zh") ],
 		[ tr("Croatian"),	Qt.QString("hr") ],
 		[ tr("Czech"),		Qt.QString("cs") ],
 		[ tr("Danish"),		Qt.QString("da") ],
@@ -99,22 +109,27 @@ def initLangsList() :
 		]
 	sortLangsList(LangsListObject)
 
+	global LangsCodesDictObject
+	LangsCodesDictObject = {}
+	for langs_list_object_item in LangsListObject :
+		LangsCodesDictObject[str(langs_list_object_item[1])] = langs_list_object_item[0]
 
-def sortLangsList(langs_list, left = None, right = None) :
+
+def sortLangsList(langs_list_object, left = None, right = None) :
 	if left == right == None :
 		left = 0
-		right = len(langs_list) -1
+		right = len(langs_list_object) -1
 
 	if left >= right :
 		return
 
 	i = j = left
 	while j <= right :
-		if langs_list[j][0] <= langs_list[right][0] :
-			langs_list[i], langs_list[j] = langs_list[j], langs_list[i]
+		if langs_list_object[j][0] <= langs_list_object[right][0] :
+			langs_list_object[i], langs_list_object[j] = langs_list_object[j], langs_list_object[i]
 			i += 1
 		j += 1
 
-	sortLangsList(langs_list, left, i - 2)
-	sortLangsList(langs_list, i, right)
+	sortLangsList(langs_list_object, left, i - 2)
+	sortLangsList(langs_list_object, i, right)
 
