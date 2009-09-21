@@ -57,6 +57,8 @@ class DictsListWidgetItem(Qt.QWidget) :
 		#####
 
 		self.dict_name = Qt.QString(dict_name)
+		self.dict_caption = Qt.QString(dict_caption)
+		self.dict_direction = Qt.QString(dict_direction)
 
 		self.dict_information_window = DictInformationWindow.DictInformationWindow(dict_name)
 
@@ -106,10 +108,10 @@ class DictsListWidgetItem(Qt.QWidget) :
 		return Qt.QString(self.dict_name)
 
 	def dictCaption(self) :
-		return self.dict_caption_label.text()
+		return Qt.QString(self.dict_caption)
 
 	def dictDirection(self) :
-		return self.dict_direction_label.text()
+		return Qt.QString(self.dict_direction)
 
 	###
 
