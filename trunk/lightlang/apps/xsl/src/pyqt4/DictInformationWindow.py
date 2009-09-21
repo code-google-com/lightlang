@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import LangsList
 import TextBrowser
 
 
@@ -127,7 +128,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 		dict_information.append(html_form.arg(tr("Caption")).arg(self.dictCaption()))
 		dict_information.append("<hr>")
-		dict_information.append(html_form.arg(tr("Direction")).arg(self.dictDirection()))
+		dict_information.append(html_form.arg(tr("Translate direction")).arg(self.dictDirection()))
 		dict_information.append("<hr>")
 		dict_information.append(html_form.arg(tr("File path")).arg(self.dictFilePath()))
 		dict_information.append("<hr>")
@@ -172,8 +173,9 @@ class DictInformationWindow(Qt.QWidget) :
 		return dict_caption
 
 	def dictDirection(self) :
-		rx = Qt.QRegExp("[^\\.]+\\.(..-..)")
-		return ( rx.cap(1) if rx.exactMatch(self.dict_name) else tr("Unavailable") )
+		rx = Qt.QRegExp("[^\\.]+\\.(..)-(..)")
+		return ( LangsList.langName(rx.cap(1))+" &#187; "+LangsList.langName(rx.cap(2))
+			if rx.exactMatch(self.dict_name) else tr("Unavailable") )
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
