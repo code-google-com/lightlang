@@ -174,7 +174,7 @@ class DictInformationWindow(Qt.QWidget) :
 
 	def dictDirection(self) :
 		rx = Qt.QRegExp("[^\\.]+\\.(..)-(..)")
-		return ( LangsList.langName(rx.cap(1))+" &#187; "+LangsList.langName(rx.cap(2))
+		return ( LangsList.langName(rx.cap(1))+" &#187; "+LangsList.langName(rx.cap(2))+" ("+rx.cap(1)+"-"+rx.cap(2)+")"
 			if rx.exactMatch(self.dict_name) else tr("Unavailable") )
 
 	def dictFilePath(self) :
