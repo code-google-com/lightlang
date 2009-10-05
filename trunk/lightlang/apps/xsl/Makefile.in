@@ -49,6 +49,7 @@ all :
 	$(CHMOD) +x $(XSL_PROG)
 
 install :
+	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PROG_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PYQT4_DIR)
