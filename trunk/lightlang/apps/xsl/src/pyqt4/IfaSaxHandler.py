@@ -33,7 +33,7 @@ def tr(str) :
 
 
 #####
-class IFASAXHandler(Qt.QXmlDefaultHandler) :
+class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_app_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)
 

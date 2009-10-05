@@ -32,7 +32,7 @@ def tr(str) :
 
 
 #####
-class TranslateSiteSAXHandler(Qt.QXmlDefaultHandler) :
+class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_site_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)
 

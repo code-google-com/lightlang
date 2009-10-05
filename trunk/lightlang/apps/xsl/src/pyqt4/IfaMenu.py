@@ -25,12 +25,12 @@ import sys
 import Config
 import Const
 import User
-import IFASAXHandler
+import IfaSaxHandler
 
 
 #####
-IFASubdir = "ifa/"
-IFASystemDir = Config.Prefix+"/lib/xsl/"+IFASubdir
+IfaSubdir = "ifa/"
+IfaSystemDir = Config.Prefix+"/lib/xsl/"+IfaSubdir
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
 
@@ -40,7 +40,7 @@ def tr(str) :
 
 
 #####
-class IFAMenu(Qt.QMenu) :
+class IfaMenu(Qt.QMenu) :
 	def __init__(self, title, parent=None) :
 		Qt.QMenu.__init__(self, title, parent)
 
@@ -68,19 +68,19 @@ class IFAMenu(Qt.QMenu) :
 		ifa_file_name_filtes = Qt.QStringList()
 		ifa_file_name_filtes << "*.ifa" << "*.xml"
 
-		ifa_system_dir = Qt.QDir(IFASystemDir)
+		ifa_system_dir = Qt.QDir(IfaSystemDir)
 		ifa_system_dir.setSorting(Qt.QDir.Name)
 		ifa_system_dir.setNameFilters(ifa_file_name_filtes)
 		ifa_system_dir.setFilter(Qt.QDir.Files)
 		ifa_system_dir_entry_list = ifa_system_dir.entryList()
-		ifa_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), IFASystemDir+"\\1")
+		ifa_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), IfaSystemDir+"\\1")
 
-		ifa_user_dir = Qt.QDir(User.settingsPath()+"/"+IFASubdir)
+		ifa_user_dir = Qt.QDir(User.settingsPath()+"/"+IfaSubdir)
 		ifa_user_dir.setSorting(Qt.QDir.Name)
 		ifa_user_dir.setNameFilters(ifa_file_name_filtes)
 		ifa_user_dir.setFilter(Qt.QDir.Files)
 		ifa_user_dir_entry_list = ifa_user_dir.entryList()
-		ifa_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+IFASubdir+"\\1")
+		ifa_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+IfaSubdir+"\\1")
 
 		ifa_files_list = Qt.QStringList()
 		ifa_files_list << ifa_system_dir_entry_list << ifa_user_dir_entry_list
@@ -90,7 +90,7 @@ class IFAMenu(Qt.QMenu) :
 			ifa_file = Qt.QFile(ifa_files_list[count])
 			xml_input_source = Qt.QXmlInputSource(ifa_file)
 			xml_reader = Qt.QXmlSimpleReader()
-			xml_handler = IFASAXHandler.IFASAXHandler(self.addApp)
+			xml_handler = IfaSaxHandler.IfaSaxHandler(self.addApp)
 			xml_reader.setContentHandler(xml_handler)
 			xml_reader.setErrorHandler(xml_handler)
 			xml_reader.parse(xml_input_source)

@@ -32,7 +32,7 @@ import StatusBar
 import DictsManager
 import TranslateWindow
 import SpyMenu
-import IFAMenu
+import IfaMenu
 import TranslateSitesMenu
 import InternetLinksMenu
 import HelpBrowser
@@ -206,7 +206,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 		self.tools_menu.addMenu(self.translate_sites_menu)
 		self.tools_menu.addSeparator()
-		self.ifa_menu = IFAMenu.IFAMenu(tr("Applications"))
+		self.ifa_menu = IfaMenu.IfaMenu(tr("Applications"))
 		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
 		self.tools_menu.addMenu(self.ifa_menu)
 

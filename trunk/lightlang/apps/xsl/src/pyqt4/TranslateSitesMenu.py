@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import User
-import TranslateSiteSAXHandler
+import TranslateSiteSaxHandler
 
 
 #####
@@ -89,7 +89,7 @@ class TranslateSitesMenu(Qt.QMenu) :
 			translate_site_file = Qt.QFile(translate_sites_files_list[count])
 			xml_input_source = Qt.QXmlInputSource(translate_site_file)
 			xml_reader = Qt.QXmlSimpleReader()
-			xml_handler = TranslateSiteSAXHandler.TranslateSiteSAXHandler(self.addSite)
+			xml_handler = TranslateSiteSaxHandler.TranslateSiteSaxHandler(self.addSite)
 			xml_reader.setContentHandler(xml_handler)
 			xml_reader.setErrorHandler(xml_handler)
 			xml_reader.parse(xml_input_source)
