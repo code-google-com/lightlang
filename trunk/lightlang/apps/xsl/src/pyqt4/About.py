@@ -66,12 +66,12 @@ class About(Window.Window) :
 		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_128.png"))
 		self.icon_label_layout.addWidget(self.icon_label)
 
-		self.text_label = Qt.QLabel(tr("<center><h3>XSL - the graphical interface for SL</h3></center>"
-			"All the programs of the <strong>LightLang</strong> package are distributable, according<br>"
+		self.text_label = Qt.QLabel(tr("<center><h3>%1 - the graphical interface for SL</h3></center>"
+			"All the programs of the <strong>%2</strong> package are distributable, according<br>"
 			"to the license <strong>GPLv2</strong>. For details visit <em>License agreement</em> of the<br>"
-			"<strong>LightLang</strong> manual.<br>"
+			"<strong>%2</strong> manual.<br>"
 			"<br>"
-			"Author of the <strong>LightLang</strong> package:<br>"
+			"Author of the <strong>%2</strong> package:<br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Devaev Maxim</em><br>"
 			"Thanks to:<br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Baburina Elisabeth</em><br>"
@@ -85,8 +85,8 @@ class About(Window.Window) :
 			"Translators:<br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Kirill Nebogin</em><br>"
 			"<br>"
-			"<em>Copyright &copy; 2007-2016 Devaev Maxim"
-			" (<a href=\"mailto:mdevaev@gmail.com?subject=LightLang\">mdevaev@gmail.com</a>)</em>"))
+			"<em>Copyright &copy; 2007-2016 Devaev Maxim (<a href=\"mailto:%3?subject=%2\">%3</a>)</em>")
+				.arg(Const.MyName).arg(Const.Organization).arg(Const.DeveloperMail))
 		self.text_label.setOpenExternalLinks(True)
 		self.text_label_layout.addWidget(self.text_label)
 

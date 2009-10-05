@@ -46,7 +46,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		Qt.QSystemTrayIcon.__init__(self, parent)
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl_22.png"))
-		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is stopped"))
+		self.setToolTip(tr("%1 - graphical interface for SL\nSpy is stopped").arg(Const.MyName))
 
 		#####
 
@@ -89,7 +89,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl+spy_22.png"))
 
-		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is running"))
+		self.setToolTip(tr("%1 - graphical interface for SL\nSpy is running").arg(Const.MyName))
 
 	def spyStopped(self) :
 		self.start_spy_menu_action.setEnabled(True)
@@ -97,7 +97,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 
 		self.setIcon(Qt.QIcon(IconsDir+"xsl_22.png"))
 
-		self.setToolTip(tr("XSL - graphical interface for SL\nSpy is stopped"))
+		self.setToolTip(tr("%1 - graphical interface for SL\nSpy is stopped").arg(Const.MyName))
 
 
 	### Private ###
