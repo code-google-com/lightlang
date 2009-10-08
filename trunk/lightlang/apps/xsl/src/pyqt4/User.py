@@ -57,11 +57,11 @@ def settingsPath() :
 
 ##### Private #####
 def initSettings() :
-	myname = Qt.QString(Const.MyName).toLower()
+	my_name = Qt.QString(Const.MyName).toLower()
 
-	if not Qt.QDir(Qt.QDir.homePath()+"/."+myname).exists() :
-		Qt.QDir.home().mkdir("."+myname)
+	if not Qt.QDir(Qt.QDir.homePath()+"/."+my_name).exists() :
+		Qt.QDir.home().mkdir("."+my_name)
 
 	global SettingsObject
-	SettingsObject = Qt.QSettings(Qt.QDir.homePath()+"/."+myname+"/"+myname+SettingsPostfix, Qt.QSettings.IniFormat)
+	SettingsObject = Qt.QSettings(Qt.QDir.homePath()+"/."+my_name+"/"+my_name+SettingsPostfix, Qt.QSettings.IniFormat)
 
