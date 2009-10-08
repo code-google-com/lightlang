@@ -53,23 +53,6 @@ def mainLang() :
 	return Qt.QString(lang)
 
 
-def docsLang() :
-	if LocaleObject == None :
-		initLocale()
-
-	lang = LocaleObject.name()
-	lang.remove(lang.indexOf("_"), lang.length())
-
-	if not lang.simplified().isEmpty() :
-		help_dir = Qt.QDir(Config.Prefix+"/share/doc/lightlang/html/"+lang)
-		if not help_dir.exists() :
-			lang = "en"
-	else :
-		lang = "en"
-
-	return Qt.QString(lang)
-
-
 ##### Private #####
 def initLocale() :
 	global LocaleObject

@@ -34,7 +34,7 @@ import TransparentFrame
 MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
-IndexPage = Config.Prefix+"/share/doc/lightlang/html/"+Locale.docsLang()+"/index.html"
+HtmlDocsDir = Config.Prefix+"/share/doc/lightlang/html/"
 
 
 #####
@@ -58,6 +58,13 @@ class HelpBrowser(Window.Window) :
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
+
+		#####
+
+		index_file_path = HtmlDocsDir+Locale.mainLang()+"/index.html"
+		if not Qt.QFile.exists(index_file_path) :
+			index_file_path = HtmlDocsDir+"en/index.html"
+		self.index_file_url = Qt.QUrl(index_file_path)
 
 		#####
 
@@ -170,11 +177,10 @@ class HelpBrowser(Window.Window) :
 	### Private ###
 
 	def home(self) :
-		self.text_browser.setSource(Qt.QUrl(IndexPage))
+		self.text_browser.setSource(self.index_file_url)
 
 	def updateTitle(self) :
-		self.setWindowTitle(tr("%1 Manual - %2").arg(Const.Organization)
-			.arg(self.text_browser.documentTitle()))
+		self.setWindowTitle(tr("%1 Manual - %2").arg(Const.Organization).arg(self.text_browser.documentTitle()))
 
 	###
 
