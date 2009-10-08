@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import FindWordInSL
+import FindWordInSl
 import ListBrowser
 
 
@@ -37,7 +37,7 @@ def tr(str) :
 
 
 #####
-class FindInSLPanel(Qt.QDockWidget) :
+class FindInSlPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)
 
@@ -73,8 +73,8 @@ class FindInSLPanel(Qt.QDockWidget) :
 		self.delay_timer = Qt.QTimer()
 		self.delay_timer.setInterval(300)
 
-		self.internal_find = FindWordInSL.FindWordInSL()
-		self.external_find = FindWordInSL.FindWordInSL()
+		self.internal_find = FindWordInSl.FindWordInSl()
+		self.external_find = FindWordInSl.FindWordInSl()
 
 		#####
 

@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import TextBrowser
-import FindSoundInSL
+import FindSoundInSl
 
 
 #####
@@ -42,7 +42,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 		#####
 
-		self.find_sound = FindSoundInSL.FindSoundInSL()
+		self.find_sound = FindSoundInSl.FindSoundInSl()
 
 		self.clipboard = Qt.QApplication.clipboard()
 

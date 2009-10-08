@@ -26,9 +26,8 @@ import Const
 
 
 #####
-SL = Config.Prefix+"/bin/sl"
-AllSoundsDir = Config.Prefix+"/share/sl/sounds/"
-AudioPostfix = ".ogg"
+Sl = Config.Prefix+"/bin/sl"
+AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 
 
 #####
@@ -37,58 +36,86 @@ def tr(str) :
 
 
 #####
-class FindSoundInSL(Qt.QObject) :
+class FindWordInSl(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 
 		#####
 
 		self.proc = Qt.QProcess()
+		self.proc.setReadChannelMode(Qt.QProcess.MergedChannels)
+		self.proc.setReadChannel(Qt.QProcess.StandardOutput)
 
 		self.proc_block_flag = False
 		self.proc_kill_flag = False
 
 		self.proc_args = Qt.QStringList()
 
-		self.all_sounds_dir = Qt.QDir(AllSoundsDir)
+		self.proc_output = Qt.QByteArray()
+
+		self.dicts_list = Qt.QStringList()
+
+		#####
+
+		self.replaces_list = [
+			["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
+			["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
+			]
 
 		#####
 
 		self.connect(self.proc, Qt.SIGNAL("error(QProcess::ProcessError)"), self.processError)
 		self.connect(self.proc, Qt.SIGNAL("finished(int, QProcess::ExitStatus)"), self.processFinished)
 		self.connect(self.proc, Qt.SIGNAL("stateChanged(QProcess::ProcessState)"), self.processStateChenged)
+		self.connect(self.proc, Qt.SIGNAL("readyReadStandardOutput()"), self.setText)
 
 
 	### Public ###
 
-	def find(self, word) :
+	def uFind(self, word) :
+		self.find(word, "u")
+
+	def cFind(self, word) :
+		self.find(word, "c")
+
+	def lFind(self, word) :
+		self.find(word, "l")
+
+	def iFind(self, word) :
+		self.find(word, "i")
+
+	def setDictsList(self, dicts_list) :
+		self.dicts_list = dicts_list
+
+
+	### Private ###
+
+	def find(self, word, mode) :
 		word = word.simplified()
 		if word.isEmpty() :
 			return
 		word = word.toLower()
 
 		if self.proc.state() == Qt.QProcess.Starting or self.proc.state() == Qt.QProcess.Running :
+			self.setText()
 			self.proc_kill_flag = True
 			self.proc.kill()
 
+		self.processStartedSignal()
+
+		self.clearRequestSignal()
+
+		self.proc_output.clear()
+
 		self.proc_args.clear()
-		self.proc_args << "-s" << word
+		self.proc_args << "--output-format=html" << "--use-list="+self.dicts_list.join("|") << "-"+mode << word
 
 		while self.proc_block_flag :
 			self.proc.waitForFinished()
 		self.proc_kill_flag = False
-		self.proc.start(SL, self.proc_args)
+		self.proc.start(Sl, self.proc_args)
 
-	def checkWord(self, lang, word) :
-		word = word.simplified()
-		if word.isEmpty() :
-			return
-		word = word.toLower()
-
-		return Qt.QFile.exists(AllSoundsDir+lang+"/"+word[0]+"/"+word+AudioPostfix)
-
-
-	### Private ###
+	###
 
 	def processError(self, error_code) :
 		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :
@@ -103,6 +130,14 @@ class FindSoundInSL(Qt.QObject) :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Connection lost with search process"),
 				Qt.QMessageBox.Yes)
+		elif error_code == Qt.QProcess.WriteError and not self.proc_kill_flag :
+			Qt.QMessageBox.warning(None, Const.MyName,
+				tr("Error while writing data into the search process"),
+				Qt.QMessageBox.Yes)
+		elif error_code == Qt.QProcess.ReadError and not self.proc_kill_flag :
+			Qt.QMessageBox.warning(None, Const.MyName,
+				tr("Error while reading data from the search process"),
+				Qt.QMessageBox.Yes)
 		elif not self.proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Unknown error occured while executing the search process"),
@@ -113,7 +148,32 @@ class FindSoundInSL(Qt.QObject) :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Error of the search process"),
 				Qt.QMessageBox.Yes)
+		self.processFinishedSignal()
 
 	def processStateChenged(self, state) :
 		self.proc_block_flag = ( True if state == Qt.QProcess.Starting or state == Qt.QProcess.Running else False )
+
+	def setText(self) :
+		self.proc_output.append(self.proc.readAllStandardOutput())
+
+		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
+		#for replaces_list_item in self.replaces_list :
+		#	text.replace(replaces_list_item[0], replaces_list_item[1])
+
+		self.textChangedSignal(text)
+
+
+	### Signals ###
+
+	def processStartedSignal(self) :
+		self.emit(Qt.SIGNAL("processStarted()"))
+
+	def processFinishedSignal(self) :
+		self.emit(Qt.SIGNAL("processFinished()"))
+
+	def clearRequestSignal(self) :
+		self.emit(Qt.SIGNAL("clearRequest()"))
+
+	def textChangedSignal(self, text) :
+		self.emit(Qt.SIGNAL("textChanged(const QString &)"), text)
 

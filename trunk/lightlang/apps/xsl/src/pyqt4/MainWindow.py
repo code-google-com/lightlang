@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import User
-import FindInSLPanel
+import FindInSlPanel
 import GoogleTranslatePanel
 import HistoryPanel
 import TabbedTranslateBrowser
@@ -83,7 +83,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.print_dialog = Qt.QPrintDialog(self.printer)
 		self.print_dialog.setWindowTitle(tr("Print page"))
 
-		self.find_in_sl_panel = FindInSLPanel.FindInSLPanel()
+		self.find_in_sl_panel = FindInSlPanel.FindInSlPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
 		self.addSourceObject(self.find_in_sl_panel)
 		self.addPanel(self.find_in_sl_panel)
@@ -121,7 +121,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showFindInSLPanel)
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showFindInSlPanel)
 
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
@@ -193,7 +193,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.tools_menu = self.main_menu_bar.addMenu(tr("&Tools"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("SL search"),
-			self.showFindInSLPanel, Qt.QKeySequence("Ctrl+S"))
+			self.showFindInSlPanel, Qt.QKeySequence("Ctrl+S"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), tr("Google-Translate client"),
@@ -481,7 +481,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	###
 
-	def showFindInSLPanel(self) :
+	def showFindInSlPanel(self) :
 		self.find_in_sl_panel.setFocus()
 		self.find_in_sl_panel.raise_()
 
