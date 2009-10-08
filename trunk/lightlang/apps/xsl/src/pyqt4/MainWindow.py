@@ -406,13 +406,13 @@ class MainWindow(Qt.QMainWindow) :
 			return
 
 		index = self.tabbed_translate_browser.currentIndex()
-		file_name = Qt.QFileDialog.getSaveFileName(None,
+		file_path = Qt.QFileDialog.getSaveFileName(None,
 			tr("Save page \"%1\"").arg(self.tabbed_translate_browser.caption(index)),
 			Qt.QDir.homePath(), "*.html *.htm")
-		if file_name.simplified().isEmpty() :
+		if file_path.simplified().isEmpty() :
 			return
 
-		file = Qt.QFile(file_name)
+		file = Qt.QFile(file_path)
 		if not file.open(Qt.QIODevice.WriteOnly|Qt.QIODevice.Text) :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("This file cannot by open for saving"),
