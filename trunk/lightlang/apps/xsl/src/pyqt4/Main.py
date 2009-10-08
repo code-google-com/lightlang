@@ -109,8 +109,8 @@ class Main :
 	### Private ###
 
 	def checkLockFile(self) :
-		lock_file_name = Qt.QDir.tempPath()+"/"+Qt.QString(Const.MyName).toLower()+".lock"
-		lock_file = Qt.QFile(lock_file_name)
+		lock_file_path = Qt.QDir.tempPath()+"/"+Qt.QString(Const.MyName).toLower()+".lock"
+		lock_file = Qt.QFile(lock_file_path)
 		lock_file_stream = Qt.QTextStream(lock_file)
 
 		if not lock_file.exists() :
@@ -127,7 +127,7 @@ class Main :
 		if old_pid.length() and Qt.QDir("/proc/"+old_pid).exists() and not self.app.isSessionRestored() :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("%1 process is already running, kill old process and try again.\n"
-					"If not, remove lock file \"%2\"").arg(Const.MyName).arg(lock_file_name))
+					"If not, remove lock file \"%2\"").arg(Const.MyName).arg(lock_file_path))
 			lock_file.close()
 			sys.exit(1)
 
