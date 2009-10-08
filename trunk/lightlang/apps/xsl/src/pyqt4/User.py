@@ -49,10 +49,10 @@ def settingsPath() :
 	if SettingsObject == None :
 		initSettings()
 
-	user_settings_file_name = SettingsObject.fileName()
+	user_settings_file_path = SettingsObject.fileName()
 
-	index = user_settings_file_name.lastIndexOf("/")
-	return ( user_settings_file_name.left(index) if index >= 0 else Qt.QString() )
+	index = user_settings_file_path.lastIndexOf("/")
+	return ( user_settings_file_path.left(index) if index >= 0 else Qt.QString() )
 
 
 ##### Private #####
