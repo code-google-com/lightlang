@@ -15,13 +15,13 @@ SL_SRC=src/main.c \
 	src/manager.c \
 	src/mstring.c \
 	src/settings.c \
-	src/find.c \
+	src/search.c \
 	src/info.c
 SL_OBJ=src/main.o \
 	src/manager.o \
 	src/mstring.o \
 	src/settings.o \
-	src/find.o \
+	src/search.o \
 	src/info.o
 SL_CONFIG=src/config.h
 SL_PROG=sl

@@ -192,7 +192,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 	size_t	str1_wc_len;		// Dlina pervoy rasshirennoy stroki
 	size_t	str2_wc_len;		// Dlina vtoroy rasshirennoy stroki
 	int	error_count = 0;	// Schetchik nesovpadeniy
-	int	hard_find;		// Jestkost poiska
+	int	search_exact;		// Jestkost poiska
 	//////////////////////////////////
 
 
@@ -202,7 +202,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 
 	// Vychislyaem jestkost poiska po procentu
 	// nesovpadayushih simvolov
-	hard_find = ((int)str1_wc_len * percent) / 100;
+	search_exact = ((int)str1_wc_len * percent) / 100;
 
 	// Pri ravnoy dline slov
 	if ( str1_wc_len == str2_wc_len )
@@ -211,7 +211,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 		{
 			if ( (*str1_wc) != (*str2_wc) ) ++error_count;
 
-			if ( error_count > hard_find ) return 1;
+			if ( error_count > search_exact ) return 1;
 		}
 
 		return 0;
@@ -228,11 +228,11 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 			}
 			else ++error_count;
 
-			if ( (error_count + (str2_wc_len - str1_wc_len)) > hard_find )
+			if ( (error_count + (str2_wc_len - str1_wc_len)) > search_exact )
 				return 1;
 		}
 
-		if ( (error_count + (str2_wc_len - str1_wc_len)) <= hard_find )
+		if ( (error_count + (str2_wc_len - str1_wc_len)) <= search_exact )
 			return 0;
 		else return 1;
 	}
@@ -248,11 +248,11 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 			}
 			else ++error_count;
 
-			if ( (error_count + (str1_wc_len - str2_wc_len)) > hard_find )
+			if ( (error_count + (str1_wc_len - str2_wc_len)) > search_exact )
 				return 1;
 		}
 
-		if ( (error_count + (str1_wc_len - str2_wc_len)) <= hard_find )
+		if ( (error_count + (str1_wc_len - str2_wc_len)) <= search_exact )
 			return 0;
 		else return 1;
 	}

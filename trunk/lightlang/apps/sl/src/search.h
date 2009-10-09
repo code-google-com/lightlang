@@ -19,12 +19,12 @@
 
 /********************************************************************************
 *										*
-*	find.h - funkcii poiskovoy sistemy programmy.				*
+*	search.h - funkcii poiskovoy sistemy programmy.				*
 *										*
 ********************************************************************************/
 
-#ifndef FIND_H
-# define FIND_H
+#ifndef SEARCH_H
+# define SEARCH_H
 
 # define _GNU_SOURCE
 
@@ -48,8 +48,8 @@ typedef enum {
 } regimen_t;
 
 /********************************* Functions ***********************************/
-int find_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp);
-int find_sound(const char *word);
+int search_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp);
+int search_sound(const char *word);
 
 static long read_index(const wchar_t ch_wc, FILE *dict_fp);
 

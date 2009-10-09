@@ -36,7 +36,7 @@
 #include "config.h"
 #include "const.h"
 #include "settings.h"
-#include "find.h"
+#include "search.h"
 #include "manager.h"
 #include "mstring.h"
 #include "options.h"
@@ -53,7 +53,7 @@ static void set_max_translate_count(const char *str);
 static void set_output_format(const char *str);
 static void set_use_terminal_escapes_flag(const char *str);
 
-static int xfind_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list);
+static int xsearch_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list);
 
 static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp);
 static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list);
@@ -73,12 +73,12 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////////////
 
 	struct option long_options[] = {
-		{OPT_FIND_USUALLY,		required_argument,	NULL,	'u'}, // +
-		{OPT_FIND_FIRST_CONCURRENCE,	required_argument,	NULL,	'f'}, // +
-		{OPT_FIND_WORD_COMBINATIONS,	required_argument,	NULL,	'c'}, // +
-		{OPT_FIND_LIST,			required_argument,	NULL,	'l'}, // +
-		{OPT_FIND_ILL_DEFINED,		required_argument,	NULL,	'i'}, // +
-		{OPT_FIND_SOUND,		required_argument,	NULL,	's'}, // +
+		{OPT_SEARCH_USUALLY,		required_argument,	NULL,	'u'}, // +
+		{OPT_SEARCH_FIRST_CONCURRENCE,	required_argument,	NULL,	'f'}, // +
+		{OPT_SEARCH_WORD_COMBINATIONS,	required_argument,	NULL,	'c'}, // +
+		{OPT_SEARCH_LIST,		required_argument,	NULL,	'l'}, // +
+		{OPT_SEARCH_ILL_DEFINED,	required_argument,	NULL,	'i'}, // +
+		{OPT_SEARCH_SOUND,		required_argument,	NULL,	's'}, // +
 
 		{OPT_DICT_CONNECT,		required_argument,	NULL,	'0'}, // -
 		{OPT_DICT_DISCONNECT,		required_argument,	NULL,	'1'}, // -
@@ -114,22 +114,22 @@ int main(int argc, char **argv)
 	{
 		switch (ch)
 		{
-			case 'u' : ec += xfind_word(optarg, usually_regimen, 0, dicts_list);
+			case 'u' : ec += xsearch_word(optarg, usually_regimen, 0, dicts_list);
 					use_default_function_flag = false;	break;
 
-			case 'f' : ec += xfind_word(optarg, first_concurrence_regimen, 0, dicts_list);
+			case 'f' : ec += xsearch_word(optarg, first_concurrence_regimen, 0, dicts_list);
 					use_default_function_flag = false;	break;
 
-			case 'c' : ec += xfind_word(optarg, word_combinations_regimen, 0, dicts_list);
+			case 'c' : ec += xsearch_word(optarg, word_combinations_regimen, 0, dicts_list);
 					use_default_function_flag = false;	break;
 
-			case 'l' : ec += xfind_word(optarg, list_regimen, 0, dicts_list);
+			case 'l' : ec += xsearch_word(optarg, list_regimen, 0, dicts_list);
 					use_default_function_flag = false;	break;
 
-			case 'i' : ec += xfind_word(optarg, ill_defined_regimen, ill_defined_percent, dicts_list);
+			case 'i' : ec += xsearch_word(optarg, ill_defined_regimen, ill_defined_percent, dicts_list);
 					use_default_function_flag = false;	break;
 
-			case 's' : ec += find_sound(optarg);
+			case 's' : ec += search_sound(optarg);
 					use_default_function_flag = false;	break;
 
 			case '0' : ec += connect_dict(optarg);
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
 	}
 
 	if ( (argc == 2) && use_default_function_flag )
-		xfind_word(argv[1], usually_regimen, 0, NULL);
+		xsearch_word(argv[1], usually_regimen, 0, NULL);
 	else if ( (argc != 2) && use_default_function_flag )
 	{
 		fprintf(stderr, "%s: bad usage, try \"%s --help\"\n", MYNAME, MYNAME);
@@ -303,10 +303,10 @@ static void set_use_terminal_escapes_flag(const char *str)
 
 /********************************************************************************
 *										*
-*	xfind_word() - obolochka dlya funkcii find_word().			*
+*	xsearch_word() - obolochka dlya funkcii search_word().			*
 *										*
 ********************************************************************************/
-static int xfind_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list)
+static int xsearch_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list)
 {
 	//////////////////////////////////////////
 	DIR	*dicts_dp;			// Ukazatel na katalog slovarey
@@ -331,7 +331,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 
 		while ( (dict_fp = get_next_dict_fp_from_dir(&dict_name, dicts_dp)) != NULL )
 		{
-			if ( find_word(word, regimen, percent, dict_name, dict_fp) )
+			if ( search_word(word, regimen, percent, dict_name, dict_fp) )
 				no_translate_flag = false;
 
 			if ( fclose(dict_fp) != 0 )
@@ -347,7 +347,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 
 			while ( (dict_fp = get_next_dict_fp_from_dir(&dict_name, dicts_dp)) != NULL )
 			{
-				if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
+				if ( search_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
 					no_translate_flag = false;
 
 				if ( fclose(dict_fp) != 0 )
@@ -364,7 +364,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 	{
 		while ( (dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list)) != NULL )
 		{
-			if ( find_word(word, regimen, percent, dict_name, dict_fp) )
+			if ( search_word(word, regimen, percent, dict_name, dict_fp) )
 				no_translate_flag = false;
 
 			if ( fclose(dict_fp) != 0 )
@@ -378,7 +378,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 		{
 			while ( (dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list)) != NULL )
 			{
-				if ( find_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
+				if ( search_word(word, first_concurrence_regimen, percent, dict_name, dict_fp) )
 					no_translate_flag = false;
 
 				if ( fclose(dict_fp) != 0 )

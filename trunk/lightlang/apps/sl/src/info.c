@@ -47,12 +47,12 @@ void help(void)
 	version();
 	puts("------------------------------------------------------------------------");
 	printf("Search options:\n");
-	printf("\t-u <word> | --%s <word>\n", OPT_FIND_USUALLY);
-	printf("\t-f <word> | --%s <word>\n", OPT_FIND_FIRST_CONCURRENCE);
-	printf("\t-c <word> | --%s <word>\n", OPT_FIND_WORD_COMBINATIONS);
-	printf("\t-l <word> | --%s <word>\n", OPT_FIND_LIST);
-	printf("\t-i <word> | --%s <word>\n", OPT_FIND_ILL_DEFINED);
-	printf("\t-s <package:word> | --%s <package:word>\n", OPT_FIND_SOUND);
+	printf("\t-u <word> | --%s <word>\n", OPT_SEARCH_USUALLY);
+	printf("\t-f <word> | --%s <word>\n", OPT_SEARCH_FIRST_CONCURRENCE);
+	printf("\t-c <word> | --%s <word>\n", OPT_SEARCH_WORD_COMBINATIONS);
+	printf("\t-l <word> | --%s <word>\n", OPT_SEARCH_LIST);
+	printf("\t-i <word> | --%s <word>\n", OPT_SEARCH_ILL_DEFINED);
+	printf("\t-s <package:word> | --%s <package:word>\n", OPT_SEARCH_SOUND);
 	printf("Dict Management options:\n");
 	printf("\t--%s <dict>\n", OPT_DICT_CONNECT);
 	printf("\t--%s <dict>\n", OPT_DICT_DISCONNECT);

@@ -19,7 +19,7 @@
 
 /********************************************************************************
 *										*
-*	find.c - funkcii poiska i vyvoda perevoda v texte ili HTML.		*
+*	search.c - funkcii poiska i vyvoda perevoda v texte ili HTML.		*
 *										*
 ********************************************************************************/
 
@@ -41,11 +41,11 @@
 #include "settings.h"
 #include "mstring.h"
 
-#include "find.h"
+#include "search.h"
 
 /********************************************************************************
 *										*
-*	find_word() - poisk slov. Prinimaet v kachestve argumentov slovo,	*
+*	search_word() - poisk slov. Prinimaet v kachestve argumentov slovo,	*
 *		rejim poiska (sm. types.h/reg_t), procent simvolov (dlya	*
 *		nechetkogo poiska, v drugih sluchayah = 0), imya slovarya	*
 *		i ukazatel n file slovarya.					*
@@ -53,7 +53,7 @@
 *		Vozvrashyaet kolichestvo naydennyh slov.			*
 *										*
 ********************************************************************************/
-int find_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp)
+int search_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp)
 {
 	//////////////////////////////////////////////////
 	wchar_t		word_wc[MAX_WORD_SIZE];		// Rasshirennaya stroka (slovo)
@@ -342,11 +342,11 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 
 /********************************************************************************
 *										*
-*	find_sound() - poisk zvuka. Prosto zapuskaet komandu PLAYER_PROG	*
+*	search_sound() - poisk zvuka. Prosto zapuskaet komandu PLAYER_PROG	*
 *		dlya slova.							*
 *										*
 ********************************************************************************/
-int find_sound(const char *word)
+int search_sound(const char *word)
 {
 	//////////////////////////////////////////////////
 	wchar_t	*word_wc;				// Slovo v rasshyrennyh simvolah

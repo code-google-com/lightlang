@@ -29,12 +29,12 @@
 # define _GNU_SOURCE
 
 /*********************************** Macro *************************************/
-# define OPT_FIND_USUALLY		"usually"
-# define OPT_FIND_FIRST_CONCURRENCE	"first-concurrence"
-# define OPT_FIND_WORD_COMBINATIONS	"word-combinations"
-# define OPT_FIND_LIST			"list"
-# define OPT_FIND_ILL_DEFINED		"ill-defined"
-# define OPT_FIND_SOUND			"sound"
+# define OPT_SEARCH_USUALLY		"usually"
+# define OPT_SEARCH_FIRST_CONCURRENCE	"first-concurrence"
+# define OPT_SEARCH_WORD_COMBINATIONS	"word-combinations"
+# define OPT_SEARCH_LIST		"list"
+# define OPT_SEARCH_ILL_DEFINED		"ill-defined"
+# define OPT_SEARCH_SOUND		"sound"
 
 # define OPT_DICT_CONNECT		"connect"
 # define OPT_DICT_DISCONNECT		"disconnect"
