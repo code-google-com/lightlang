@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import User
-import FindInSlPanel
+import SlSearchPanel
 import GoogleTranslatePanel
 import HistoryPanel
 import TabbedTranslateBrowser
@@ -83,14 +83,14 @@ class MainWindow(Qt.QMainWindow) :
 		self.print_dialog = Qt.QPrintDialog(self.printer)
 		self.print_dialog.setWindowTitle(tr("Print page"))
 
-		self.find_in_sl_panel = FindInSlPanel.FindInSlPanel()
-		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.find_in_sl_panel)
-		self.addSourceObject(self.find_in_sl_panel)
-		self.addPanel(self.find_in_sl_panel)
+		self.sl_search_panel = SlSearchPanel.SlSearchPanel()
+		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.sl_search_panel)
+		self.addSourceObject(self.sl_search_panel)
+		self.addPanel(self.sl_search_panel)
 
 		self.history_panel = HistoryPanel.HistoryPanel()
 		self.addDockWidget(Qt.Qt.LeftDockWidgetArea, self.history_panel)
-		self.tabifyDockWidget(self.find_in_sl_panel, self.history_panel)
+		self.tabifyDockWidget(self.sl_search_panel, self.history_panel)
 		self.addPanel(self.history_panel)
 
 		self.google_translate_panel = GoogleTranslatePanel.GoogleTranslatePanel()
@@ -115,30 +115,30 @@ class MainWindow(Qt.QMainWindow) :
 
 		### Exclusive connections
 
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("clearRequest()"), self.translate_window.clear)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.history_panel.addWord)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.translate_window.setCaption)
-		self.connect(self.find_in_sl_panel, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
+		self.connect(self.sl_search_panel, Qt.SIGNAL("clearRequest()"), self.translate_window.clear)
+		self.connect(self.sl_search_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.history_panel.addWord)
+		self.connect(self.sl_search_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.translate_window.setCaption)
+		self.connect(self.sl_search_panel, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
 
-		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showFindInSlPanel)
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showSlSearchPanel)
 
-		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
-		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.cFind)
+		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.uFind)
+		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.sl_search_panel.cFind)
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("statusChanged(const QString &)"), self.status_bar.showStatusMessage)
 
 		self.connect(self.translate_window, Qt.SIGNAL("newTabRequest()"), self.addTabbedTranslateBrowserTab)
-		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
-		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.find_in_sl_panel.cFind)
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.uFind)
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.sl_search_panel.cFind)
 		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.showUp)
 		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.showUp)
 
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.find_in_sl_panel.setDictsList)
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), lambda : self.find_in_sl_panel.lFind())
+		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.sl_search_panel.setDictsList)
+		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), lambda : self.sl_search_panel.lFind())
 
 		#########################
 		##### Creating Menu #####
@@ -160,8 +160,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear all"),
 			self.clearAllTabbedTranslateBrowser, Qt.QKeySequence("Ctrl+K"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"find_16.png"), tr("Search in translations"),
-			self.tabbed_translate_browser.showFindInTextFrame, Qt.QKeySequence("Ctrl+F"))
+		self.pages_menu.addAction(Qt.QIcon(IconsDir+"search_16.png"), tr("Search in translations"),
+			self.tabbed_translate_browser.showTextSearchFrame, Qt.QKeySequence("Ctrl+F"))
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), tr("New tab"),
 			self.addTabbedTranslateBrowserTab, Qt.QKeySequence("Ctrl+T"))
@@ -193,7 +193,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.tools_menu = self.main_menu_bar.addMenu(tr("&Tools"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("SL search"),
-			self.showFindInSlPanel, Qt.QKeySequence("Ctrl+S"))
+			self.showSlSearchPanel, Qt.QKeySequence("Ctrl+S"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), tr("Search history"),
 			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), tr("Google-Translate client"),
@@ -228,8 +228,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStarted()"), self.spyStartedSignal)
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStopped()"), self.spyStoppedSignal)
 		self.connect(self.spy_menu, Qt.SIGNAL("statusChanged(const QString &)"), self.status_bar.showStatusMessage)
-		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.setWord)
-		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"), self.find_in_sl_panel.uFind)
+		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.setWord)
+		self.connect(self.spy_menu, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.uFind)
 		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"), self.translate_window.show)
 		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"), self.translate_window.setFocus)
 
@@ -243,8 +243,8 @@ class MainWindow(Qt.QMainWindow) :
 			"Welcome to the %1 - the system of electronic dictionaries</em></h2></td></tr></table>"
 			"<hr>").arg(Const.Organization))
 
-		self.find_in_sl_panel.setFocus()
-		self.find_in_sl_panel.raise_()
+		self.sl_search_panel.setFocus()
+		self.sl_search_panel.raise_()
 
 
 	### Public ###
@@ -283,8 +283,8 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.loadSettings()
 
-		self.find_in_sl_panel.setFocus()
-		self.find_in_sl_panel.raise_()
+		self.sl_search_panel.setFocus()
+		self.sl_search_panel.raise_()
 
 		self.status_bar.showStatusMessage(tr("Ready"))
 
@@ -481,9 +481,9 @@ class MainWindow(Qt.QMainWindow) :
 
 	###
 
-	def showFindInSlPanel(self) :
-		self.find_in_sl_panel.setFocus()
-		self.find_in_sl_panel.raise_()
+	def showSlSearchPanel(self) :
+		self.sl_search_panel.setFocus()
+		self.sl_search_panel.raise_()
 
 	def showHistoryPanel(self) :
 		self.history_panel.show()

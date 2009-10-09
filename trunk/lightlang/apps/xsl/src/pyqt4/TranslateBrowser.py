@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import TextBrowser
-import FindSoundInSl
+import SlSoundSearch
 
 
 #####
@@ -42,13 +42,13 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 		#####
 
-		self.find_sound = FindSoundInSl.FindSoundInSl()
+		self.sound_search = SlSoundSearch.SlSoundSearch()
 
 		self.clipboard = Qt.QApplication.clipboard()
 
 		#####
 
-		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findFromAnchor)
+		self.connect(self, Qt.SIGNAL("anchorClicked(const QUrl &)"), self.findAnchor)
 
 
 	### Private ###
@@ -77,14 +77,14 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 	###
 
-	def findFromAnchor(self, url) :
+	def findAnchor(self, url) :
 		word = url.toString()
 		if word.startsWith("#s") :
 			word.remove(0, word.indexOf("_")+1)
 			word = word.simplified()
 			if word.isEmpty() :
 				return
-			self.find_sound.find(word)
+			self.sound_search.find(word)
 		elif word.startsWith("http:", Qt.Qt.CaseInsensitive) or word.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
 			Qt.QDesktopServices.openUrl(url)
 
@@ -117,7 +117,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 				count = 1
 				while count < words_list.count() :
-					if not self.find_sound.checkWord(words_list[0], words_list[count]) :
+					if not self.sound_search.checkWord(words_list[0], words_list[count]) :
 						Qt.QToolTip.showText(Qt.QCursor.pos(), tr("Sound is not full"))
 						return
 					count += 1

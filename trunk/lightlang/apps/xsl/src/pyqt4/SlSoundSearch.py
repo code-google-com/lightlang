@@ -37,7 +37,7 @@ def tr(str) :
 
 
 #####
-class FindSoundInSl(Qt.QObject) :
+class SlSoundSearch(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 

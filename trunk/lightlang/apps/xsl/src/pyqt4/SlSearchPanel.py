@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import FindWordInSl
+import SlWordSearch
 import ListBrowser
 
 
@@ -37,11 +37,11 @@ def tr(str) :
 
 
 #####
-class FindInSlPanel(Qt.QDockWidget) :
+class SlSearchPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)
 
-		self.setObjectName("find_in_sl_panel")
+		self.setObjectName("sl_search_panel")
 
 		self.setWindowTitle(tr("SL Search"))
 
@@ -59,22 +59,22 @@ class FindInSlPanel(Qt.QDockWidget) :
 		self.line_edit_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.line_edit_layout)
 
-		self.top_find_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.top_find_buttons_layout)
+		self.top_search_buttons_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.top_search_buttons_layout)
 
 		self.list_browser_layout = Qt.QVBoxLayout()
 		self.main_layout.addLayout(self.list_browser_layout)
 
-		self.bottom_find_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.bottom_find_buttons_layout)
+		self.bottom_search_buttons_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.bottom_search_buttons_layout)
 
 		#####
 
 		self.delay_timer = Qt.QTimer()
 		self.delay_timer.setInterval(300)
 
-		self.internal_find = FindWordInSl.FindWordInSl()
-		self.external_find = FindWordInSl.FindWordInSl()
+		self.internal_word_search = SlWordSearch.SlWordSearch()
+		self.external_word_search = SlWordSearch.SlWordSearch()
 
 		#####
 
@@ -90,11 +90,11 @@ class FindInSlPanel(Qt.QDockWidget) :
 
 		self.u_find_button = Qt.QPushButton(tr("&Search"))
 		self.u_find_button.setEnabled(False)
-		self.top_find_buttons_layout.addWidget(self.u_find_button)
+		self.top_search_buttons_layout.addWidget(self.u_find_button)
 
 		self.c_find_button = Qt.QPushButton(tr("&Expanded search"))
 		self.c_find_button.setEnabled(False)
-		self.top_find_buttons_layout.addWidget(self.c_find_button)
+		self.top_search_buttons_layout.addWidget(self.c_find_button)
 
 		self.list_browser = ListBrowser.ListBrowser()
 		self.list_browser.setText(tr("Enter the word, please"))
@@ -102,11 +102,11 @@ class FindInSlPanel(Qt.QDockWidget) :
 
 		self.l_find_button = Qt.QPushButton(tr("Word &list"))
 		self.l_find_button.setEnabled(False)
-		self.bottom_find_buttons_layout.addWidget(self.l_find_button)
+		self.bottom_search_buttons_layout.addWidget(self.l_find_button)
 
 		self.i_find_button = Qt.QPushButton(tr("S&imilar words"))
 		self.i_find_button.setEnabled(False)
-		self.bottom_find_buttons_layout.addWidget(self.i_find_button)
+		self.bottom_search_buttons_layout.addWidget(self.i_find_button)
 
 		#####
 
@@ -114,13 +114,13 @@ class FindInSlPanel(Qt.QDockWidget) :
 
 		self.connect(self.delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
 
-		self.connect(self.internal_find, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
-		self.connect(self.internal_find, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setText)
+		self.connect(self.internal_word_search, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
+		self.connect(self.internal_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setText)
 
-		self.connect(self.external_find, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
-		self.connect(self.external_find, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
-		self.connect(self.external_find, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
-		self.connect(self.external_find, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
+		self.connect(self.external_word_search, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
+		self.connect(self.external_word_search, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
+		self.connect(self.external_word_search, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
+		self.connect(self.external_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 
 		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.u_find_button.animateClick)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
@@ -159,8 +159,8 @@ class FindInSlPanel(Qt.QDockWidget) :
 		self.line_edit.clear()
 
 	def setDictsList(self, dicts_list) :
-		self.internal_find.setDictsList(dicts_list)
-		self.external_find.setDictsList(dicts_list)
+		self.internal_word_search.setDictsList(dicts_list)
+		self.external_word_search.setDictsList(dicts_list)
 
 	###
 
@@ -168,14 +168,14 @@ class FindInSlPanel(Qt.QDockWidget) :
 		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
-		self.external_find.uFind(word)
+		self.external_word_search.uFind(word)
 		self.wordChangedSignal(word)
 
 	def cFind(self, word = None) :
 		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
-		self.external_find.cFind(word)
+		self.external_word_search.cFind(word)
 		self.wordChangedSignal(word)
 
 	def lFind(self, word = None) :
@@ -183,21 +183,21 @@ class FindInSlPanel(Qt.QDockWidget) :
 		if word.isEmpty() :
 			self.list_browser.setText(tr("Enter the word, please"))
 			return
-		self.internal_find.lFind(word)
+		self.internal_word_search.lFind(word)
 
 	def iFind(self, word = None) :
 		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			self.list_browser.setText(tr("Enter the word, please"))
 			return
-		self.internal_find.iFind(word)
+		self.internal_word_search.iFind(word)
 
 	def uFindInNewTab(self, word = None) :
 		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
-		self.external_find.uFind(word)
+		self.external_word_search.uFind(word)
 		self.wordChangedSignal(word)
 
 	def cFindInNewTab(self, word = None) :
@@ -205,7 +205,7 @@ class FindInSlPanel(Qt.QDockWidget) :
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
-		self.external_find.cFind(word)
+		self.external_word_search.cFind(word)
 		self.wordChangedSignal(word)
 
 	###

@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import TranslateBrowser
-import FindInTextFrame
+import TextSearchFrame
 
 
 #####
@@ -78,9 +78,9 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.remove_tab_button.setAutoRaise(True)
 		self.tab_widget.setCornerWidget(self.remove_tab_button, Qt.Qt.TopRightCorner)
 
-		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.hide()
-		self.main_layout.addWidget(self.find_in_text_frame)
+		self.text_search_frame = TextSearchFrame.TextSearchFrame()
+		self.text_search_frame.hide()
+		self.main_layout.addWidget(self.text_search_frame)
 
 		#####
 
@@ -92,9 +92,9 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			self.connect(self.tab_widget, Qt.SIGNAL("tabCloseRequested(int)"), self.removeTab)
 		except : pass
 
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.findNext)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.findPrevious)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.instantSearch)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.findNext)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.findPrevious)
+		self.connect(self.text_search_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.instantSearch)
 
 		#####
 
@@ -106,12 +106,12 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	def setShredLock(self, shred_lock_flag) :
 		self.shred_lock_flag = shred_lock_flag
 
-	def showFindInTextFrame(self) :
-		self.find_in_text_frame.show()
-		self.find_in_text_frame.setFocus()
+	def showTextSearchFrame(self) :
+		self.text_search_frame.show()
+		self.text_search_frame.setFocus()
 
-	def hideFindInTextFrame(self) :
-		self.find_in_text_frame.hide()
+	def hideTextSearchFrame(self) :
+		self.text_search_frame.hide()
 
 	###
 
@@ -122,13 +122,13 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("showFindInTextFrameRequest()"), self.showFindInTextFrame)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("hideFindInTextFrameRequest()"), self.hideFindInTextFrame)
+		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.showTextSearchFrame)
+		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.hideTextSearchFrame)
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
-			self.find_in_text_frame.setLineEditRedAlertPalette)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
-			self.find_in_text_frame.setLineEditDefaultPalette)
+		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
+			self.text_search_frame.setLineEditRedAlertPalette)
+		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
+			self.text_search_frame.setLineEditDefaultPalette)
 
 		self.single_translate_browsers[index].setHtml(tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
@@ -203,8 +203,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			self.removeTab(0)
 			count -= 1
 
-		self.find_in_text_frame.hide()
-		self.find_in_text_frame.clear()
+		self.text_search_frame.hide()
+		self.text_search_frame.clear()
 
 	def clear(self, index = -1) :
 		if self.shred_lock_flag :

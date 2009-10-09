@@ -115,7 +115,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		if my_text_cursor.isNull() and not word.isEmpty() :
 			my_text_cursor = self.document().find(word, False)
 			if my_text_cursor.isNull() :
-				self.setFindInTextFrameLineEditRedAlertPaletteSignal()
+				self.setTextSearchFrameLineEditRedAlertPaletteSignal()
 				self.tmp_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.MoveAnchor)
 				self.setTextCursor(self.tmp_text_cursor)
 			else :
@@ -124,9 +124,9 @@ class TextBrowser(Qt.QTextBrowser) :
 		elif not my_text_cursor.isNull() :
 			self.tmp_text_cursor = my_text_cursor
 			self.setTextCursor(my_text_cursor)
-			self.setFindInTextFrameLineEditDefaultPaletteSignal()
+			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 		else :
-			self.setFindInTextFrameLineEditDefaultPaletteSignal()
+			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 
 
 
@@ -141,17 +141,17 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	### Signals ###
 
-	def showFindInTextFrameRequestSignal(self) :
-		self.emit(Qt.SIGNAL("showFindInTextFrameRequest()"))
+	def showTextSearchFrameRequestSignal(self) :
+		self.emit(Qt.SIGNAL("showTextSearchFrameRequest()"))
 
-	def hideFindInTextFrameRequestSignal(self) :
-		self.emit(Qt.SIGNAL("hideFindInTextFrameRequest()"))
+	def hideTextSearchFrameRequestSignal(self) :
+		self.emit(Qt.SIGNAL("hideTextSearchFrameRequest()"))
 
-	def setFindInTextFrameLineEditRedAlertPaletteSignal(self) :
-		self.emit(Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"))
+	def setTextSearchFrameLineEditRedAlertPaletteSignal(self) :
+		self.emit(Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"))
 
-	def setFindInTextFrameLineEditDefaultPaletteSignal(self) :
-		self.emit(Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"))
+	def setTextSearchFrameLineEditDefaultPaletteSignal(self) :
+		self.emit(Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"))
 
 	def statusChangedSignal(self, str) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
@@ -164,10 +164,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	def keyPressEvent(self, event) :
 		if event.key() == Qt.Qt.Key_Escape :
-			self.hideFindInTextFrameRequestSignal()
+			self.hideTextSearchFrameRequestSignal()
 		elif (event.key() == Qt.Qt.Key_Slash or (event.key() == Qt.Qt.Key_F and
 			event.modifiers() == Qt.Qt.ControlModifier)) :
-			self.showFindInTextFrameRequestSignal()
+			self.showTextSearchFrameRequestSignal()
 		elif event.key() == Qt.Qt.Key_Backspace :
 			self.backwardRequestSignal()
 			return

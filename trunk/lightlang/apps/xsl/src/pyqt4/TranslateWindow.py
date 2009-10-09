@@ -25,7 +25,7 @@ import Config
 import Const
 import User
 import PopupWindow
-import FindInTextFrame
+import TextSearchFrame
 import TranslateBrowser
 
 
@@ -84,28 +84,28 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.translate_browser = TranslateBrowser.TranslateBrowser()
 		self.main_layout.addWidget(self.translate_browser)
 
-		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.hide()
-		self.main_layout.addWidget(self.find_in_text_frame)
+		self.text_search_frame = TextSearchFrame.TextSearchFrame()
+		self.text_search_frame.hide()
+		self.main_layout.addWidget(self.text_search_frame)
 
 		#####
 
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
 
-		self.connect(self.translate_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
-		self.connect(self.translate_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
-		self.connect(self.translate_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
-		self.connect(self.translate_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
-			self.find_in_text_frame.setLineEditRedAlertPalette)
-		self.connect(self.translate_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
-			self.find_in_text_frame.setLineEditDefaultPalette)
+		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
+		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.setFocus)
+		self.connect(self.translate_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
+		self.connect(self.translate_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
+			self.text_search_frame.setLineEditRedAlertPalette)
+		self.connect(self.translate_browser, Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
+			self.text_search_frame.setLineEditDefaultPalette)
 		self.connect(self.translate_browser, Qt.SIGNAL("newTabRequest()"), self.newTabRequestSignal)
 		self.connect(self.translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
 
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.translate_browser.findNext)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.translate_browser.findPrevious)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.translate_browser.instantSearch)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.translate_browser.findNext)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.translate_browser.findPrevious)
+		self.connect(self.text_search_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.translate_browser.instantSearch)
 
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
 
@@ -138,7 +138,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.translate_browser.setFocus(reason)
 
 	def show(self) :
-		self.find_in_text_frame.hide()
+		self.text_search_frame.hide()
 		PopupWindow.PopupWindow.show(self)
 
 

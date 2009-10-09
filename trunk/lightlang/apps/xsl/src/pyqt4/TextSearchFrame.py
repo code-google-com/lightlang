@@ -35,7 +35,7 @@ def tr(str) :
 
 
 #####
-class FindInTextFrame(Qt.QFrame) :
+class TextSearchFrame(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)
 

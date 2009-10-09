@@ -36,7 +36,7 @@ def tr(str) :
 
 
 #####
-class FindWordInSl(Qt.QObject) :
+class SlWordSearch(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 

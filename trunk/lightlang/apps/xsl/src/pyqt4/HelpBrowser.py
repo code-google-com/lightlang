@@ -26,7 +26,7 @@ import Const
 import Window
 import Locale
 import TextBrowser
-import FindInTextFrame
+import TextSearchFrame
 import TransparentFrame
 
 
@@ -120,27 +120,27 @@ class HelpBrowser(Window.Window) :
 		self.tools_buttons_frame.setLayout(self.tools_buttons_frame_layout)
 		self.text_browser_layout.addWidget(self.tools_buttons_frame)
 
-		self.show_find_in_text_frame_button = Qt.QToolButton()
-		self.show_find_in_text_frame_button.setIcon(Qt.QIcon(IconsDir+"find_22.png"))
-		self.show_find_in_text_frame_button.setIconSize(Qt.QSize(22, 22))
-		self.show_find_in_text_frame_button.setCursor(Qt.Qt.ArrowCursor)
-		self.show_find_in_text_frame_button.setAutoRaise(True)
-		self.show_find_in_text_frame_button.setToolTip(tr("Ctrl+F, /"))
-		self.tools_buttons_frame_layout.addWidget(self.show_find_in_text_frame_button)
+		self.show_text_search_frame_button = Qt.QToolButton()
+		self.show_text_search_frame_button.setIcon(Qt.QIcon(IconsDir+"search_22.png"))
+		self.show_text_search_frame_button.setIconSize(Qt.QSize(22, 22))
+		self.show_text_search_frame_button.setCursor(Qt.Qt.ArrowCursor)
+		self.show_text_search_frame_button.setAutoRaise(True)
+		self.show_text_search_frame_button.setToolTip(tr("Ctrl+F, /"))
+		self.tools_buttons_frame_layout.addWidget(self.show_text_search_frame_button)
 
 		self.tools_buttons_frame.setFixedSize(self.tools_buttons_frame_layout.minimumSize())
 
 		###
 
-		self.find_in_text_frame = FindInTextFrame.FindInTextFrame()
-		self.find_in_text_frame.hide()
-		self.main_layout.addWidget(self.find_in_text_frame)
+		self.text_search_frame = TextSearchFrame.TextSearchFrame()
+		self.text_search_frame.hide()
+		self.main_layout.addWidget(self.text_search_frame)
 
 		#####
 
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.text_browser.findNext)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.text_browser.findPrevious)
-		self.connect(self.find_in_text_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.text_browser.instantSearch)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.text_browser.findNext)
+		self.connect(self.text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.text_browser.findPrevious)
+		self.connect(self.text_search_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.text_browser.instantSearch)
 
 		self.connect(self.text_browser, Qt.SIGNAL("backwardRequest()"), self.backward_button.animateClick)
 
@@ -148,16 +148,16 @@ class HelpBrowser(Window.Window) :
 		self.connect(self.forward_button, Qt.SIGNAL("clicked()"), self.text_browser.forward)
 		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
 
-		self.connect(self.show_find_in_text_frame_button, Qt.SIGNAL("clicked()"), self.find_in_text_frame.show)
-		self.connect(self.show_find_in_text_frame_button, Qt.SIGNAL("clicked()"), self.find_in_text_frame.setFocus)
+		self.connect(self.show_text_search_frame_button, Qt.SIGNAL("clicked()"), self.text_search_frame.show)
+		self.connect(self.show_text_search_frame_button, Qt.SIGNAL("clicked()"), self.text_search_frame.setFocus)
 
-		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.show)
-		self.connect(self.text_browser, Qt.SIGNAL("showFindInTextFrameRequest()"), self.find_in_text_frame.setFocus)
-		self.connect(self.text_browser, Qt.SIGNAL("hideFindInTextFrameRequest()"), self.find_in_text_frame.hide)
-		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditRedAlertPaletteRequest()"),
-			self.find_in_text_frame.setLineEditRedAlertPalette)
-		self.connect(self.text_browser, Qt.SIGNAL("setFindInTextFrameLineEditDefaultPaletteRequest()"),
-			self.find_in_text_frame.setLineEditDefaultPalette)
+		self.connect(self.text_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
+		self.connect(self.text_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.setFocus)
+		self.connect(self.text_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
+		self.connect(self.text_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
+			self.text_search_frame.setLineEditRedAlertPalette)
+		self.connect(self.text_browser, Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
+			self.text_search_frame.setLineEditDefaultPalette)
 		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
 		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setBackwardButtonAvailable)
 		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setForwardButtonAvailable)
