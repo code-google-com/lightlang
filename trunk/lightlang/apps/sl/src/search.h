@@ -48,8 +48,8 @@ typedef enum {
 } regimen_t;
 
 /********************************* Functions ***********************************/
-int search_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp);
-int search_sound(const char *word);
+int find_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp);
+int find_sound(const char *word);
 
 static long read_index(const wchar_t ch_wc, FILE *dict_fp);
 
