@@ -44,6 +44,8 @@ class About(Window.Window) :
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
+		self.resize(500, 580)
+
 		#####
 
 		self.main_layout = Qt.QVBoxLayout()
