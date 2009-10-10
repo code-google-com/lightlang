@@ -30,6 +30,8 @@ Sl = Config.Prefix+"/bin/sl"
 AllSoundsDir = Config.Prefix+"/share/sl/sounds/"
 AudioPostfix = ".ogg"
 
+SoundSearchOption = "-s"
+
 
 #####
 def tr(str) :
@@ -72,7 +74,7 @@ class SlSoundSearch(Qt.QObject) :
 			self.proc.kill()
 
 		self.proc_args.clear()
-		self.proc_args << "-s" << word
+		self.proc_args << SoundSearchOption << word
 
 		while self.proc_block_flag :
 			self.proc.waitForFinished()
