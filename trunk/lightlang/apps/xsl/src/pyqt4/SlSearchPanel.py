@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import SlWordSearch
-import ListBrowser
+import SlListBrowser
 
 
 #####
@@ -96,7 +96,7 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.c_find_button.setEnabled(False)
 		self.top_search_buttons_layout.addWidget(self.c_find_button)
 
-		self.list_browser = ListBrowser.ListBrowser()
+		self.list_browser = SlListBrowser.SlListBrowser()
 		self.list_browser.setText(tr("Enter the word, please"))
 		self.list_browser_layout.addWidget(self.list_browser)
 

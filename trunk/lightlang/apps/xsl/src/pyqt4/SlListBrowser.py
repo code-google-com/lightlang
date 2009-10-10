@@ -35,7 +35,7 @@ def tr(str) :
 
 
 #####
-class ListBrowser(Qt.QListWidget) :
+class SlListBrowser(Qt.QListWidget) :
 	def __init__(self, parent = None) :
 		Qt.QListWidget.__init__(self, parent)
 
