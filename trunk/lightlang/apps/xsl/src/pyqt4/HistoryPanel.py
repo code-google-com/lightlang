@@ -29,7 +29,7 @@ import User
 #####
 IconsDir = Config.Prefix+"/lib/xsl/icons/"
 
-MaxHistorySize = 100
+MaxHistoryCount = 100
 
 #####
 def tr(str) :
@@ -94,14 +94,14 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.history_browser.insertItem(0, word)
 
 		count = 1
-		while count < self.history_browser.count() and count < MaxHistorySize :
+		while count < self.history_browser.count() and count < MaxHistoryCount :
 			if self.history_browser.item(count).text() == word :
 				self.history_browser.takeItem(count)
 				break
 			count += 1
 
 		count = self.history_browser.count()
-		while count > MaxHistorySize :
+		while count > MaxHistoryCount :
 			self.history_browser.takeItem(count -1)
 			count -= 1
 
