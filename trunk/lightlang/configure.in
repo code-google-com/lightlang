@@ -17,14 +17,10 @@ dnl ################# Options #################
 
 AC_ARG_WITH(default_config,
 	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal,
-available: normal, recommended, console])],
+available: normal, console])],
 	DEFAULT_CONFIG=$withval, DEFAULT_CONFIG="normal")
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="yes"
-	DEFAULT_PYTHON_XLIB_FLAG="yes"
-elif [[ "$DEFAULT_CONFIG" = "recommended" ]]; then
-	DEFAULT_AUDIO_PLAYER="mplayer"
 	DEFAULT_GUI_FLAG="yes"
 	DEFAULT_PYTHON_XLIB_FLAG="yes"
 elif [[ "$DEFAULT_CONFIG" = "console" ]]; then
