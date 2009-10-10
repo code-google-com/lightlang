@@ -73,16 +73,16 @@ class SlWordSearch(Qt.QObject) :
 	### Public ###
 
 	def uFind(self, word) :
-		self.find(word, "u")
+		self.find(word, "-u")
 
 	def cFind(self, word) :
-		self.find(word, "c")
+		self.find(word, "-c")
 
 	def lFind(self, word) :
-		self.find(word, "l")
+		self.find(word, "-l")
 
 	def iFind(self, word) :
-		self.find(word, "i")
+		self.find(word, "-i")
 
 	def setDictsList(self, dicts_list) :
 		self.dicts_list = dicts_list
@@ -108,7 +108,7 @@ class SlWordSearch(Qt.QObject) :
 		self.proc_output.clear()
 
 		self.proc_args.clear()
-		self.proc_args << "--output-format=html" << "--use-list="+self.dicts_list.join("|") << "-"+mode << word
+		self.proc_args << "--output-format=html" << "--use-list="+self.dicts_list.join("|") << mode << word
 
 		while self.proc_block_flag :
 			self.proc.waitForFinished()
