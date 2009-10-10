@@ -29,6 +29,11 @@ import Const
 Sl = Config.Prefix+"/bin/sl"
 AllDictsDir = Config.Prefix+"/share/sl/dicts/"
 
+UsuallySearchOption = "-u"
+WordCombinationsSearchOption = "-c"
+ListSearchOption = "-l"
+IllDefinedSearchOption = "-i"
+
 
 #####
 def tr(str) :
@@ -73,16 +78,16 @@ class SlWordSearch(Qt.QObject) :
 	### Public ###
 
 	def uFind(self, word) :
-		self.find(word, "-u")
+		self.find(word, UsuallySearchOption)
 
 	def cFind(self, word) :
-		self.find(word, "-c")
+		self.find(word, WordCombinationsSearchOption)
 
 	def lFind(self, word) :
-		self.find(word, "-l")
+		self.find(word, ListSearchOption)
 
 	def iFind(self, word) :
-		self.find(word, "-i")
+		self.find(word, IllDefinedSearchOption)
 
 	def setDictsList(self, dicts_list) :
 		self.dicts_list = dicts_list
@@ -157,10 +162,11 @@ class SlWordSearch(Qt.QObject) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
+		# FIXME: add normal translate replacing
 		#for replaces_list_item in self.replaces_list :
 		#	text.replace(replaces_list_item[0], replaces_list_item[1])
 
-		if self.proc_args[2] == "-u" or self.proc_args[2] == "-c" :
+		if self.proc_args[2] == UsuallySearchOption or self.proc_args[2] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
 		else :
 			list = Qt.QStringList()
