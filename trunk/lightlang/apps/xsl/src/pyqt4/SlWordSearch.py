@@ -160,7 +160,53 @@ class SlWordSearch(Qt.QObject) :
 		#for replaces_list_item in self.replaces_list :
 		#	text.replace(replaces_list_item[0], replaces_list_item[1])
 
-		self.textChangedSignal(text)
+		if self.proc_args[2] == "-u" or self.proc_args[2] == "-c" :
+			self.textChangedSignal(text)
+		else :
+			list = Qt.QStringList()
+
+			parts_list = text.split("<table border=\"0\" width=\"100%\">")
+
+			#####
+
+			if parts_list.count() == 1 :
+				em_item_regexp = Qt.QRegExp("<em>(.*)</em>")
+				em_item_regexp.setMinimal(True)
+
+				em_item_pos = em_item_regexp.indexIn(text, 0)
+				while em_item_pos != -1 :
+					list << "{{"+em_item_regexp.cap(1)+"}}"
+					em_item_pos = em_item_regexp.indexIn(text, em_item_pos + em_item_regexp.matchedLength())
+
+				if list.count() == 0 :
+					list << "{{"+text+"}}"
+
+			#####
+
+			caption_item_regexp = Qt.QRegExp("<td bgcolor=\"(.*)\"><h2 align=\"center\"><em>(.*)</em>")
+			caption_item_regexp.setMinimal(True)
+
+			word_item_regexp = Qt.QRegExp("<a href=.*>(.*)</a>")
+			word_item_regexp.setMinimal(True)
+
+			parts_list_count = 1
+			while parts_list_count < parts_list.count() :
+				if caption_item_regexp.indexIn(parts_list[parts_list_count]) < 0 :
+					parts_list_count += 1
+					continue
+				list << "[["+caption_item_regexp.cap(2)+"||"+caption_item_regexp.cap(1)+"]]"
+
+				word_item_pos = word_item_regexp.indexIn(parts_list[parts_list_count], 0)
+				while word_item_pos != -1 :
+					list << word_item_regexp.cap(1)
+					word_item_pos = word_item_regexp.indexIn(parts_list[parts_list_count],
+						word_item_pos + word_item_regexp.matchedLength())
+
+				parts_list_count += 1
+
+			#####
+
+			self.listChangedSignal(list)
 
 
 	### Signals ###
@@ -176,4 +222,7 @@ class SlWordSearch(Qt.QObject) :
 
 	def textChangedSignal(self, text) :
 		self.emit(Qt.SIGNAL("textChanged(const QString &)"), text)
+
+	def listChangedSignal(self, list) :
+		self.emit(Qt.SIGNAL("listChanged(const QStringList &)"), list)
 

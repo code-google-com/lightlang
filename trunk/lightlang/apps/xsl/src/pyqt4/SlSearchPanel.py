@@ -115,7 +115,7 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.connect(self.delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
 
 		self.connect(self.internal_word_search, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
-		self.connect(self.internal_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.list_browser.setText)
+		self.connect(self.internal_word_search, Qt.SIGNAL("listChanged(const QStringList &)"), self.list_browser.setList)
 
 		self.connect(self.external_word_search, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
 		self.connect(self.external_word_search, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
