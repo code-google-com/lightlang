@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import DictInformationWindow
+import DictInfoWindow
 
 
 #####
@@ -60,7 +60,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.dict_caption = Qt.QString(dict_caption)
 		self.dict_direction = Qt.QString(dict_direction)
 
-		self.dict_information_window = DictInformationWindow.DictInformationWindow(dict_name)
+		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name)
 
 		#####
 
@@ -85,18 +85,18 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self.main_layout.addWidget(self.vertical_frame2)
 
-		self.show_information_button = Qt.QToolButton()
-		self.show_information_button.setIcon(Qt.QIcon(IconsDir+"info_16.png"))
-		self.show_information_button.setIconSize(Qt.QSize(16, 16))
-		self.show_information_button.setCursor(Qt.Qt.ArrowCursor)
-		self.show_information_button.setAutoRaise(True)
-		self.main_layout.addWidget(self.show_information_button)
+		self.show_info_button = Qt.QToolButton()
+		self.show_info_button.setIcon(Qt.QIcon(IconsDir+"info_16.png"))
+		self.show_info_button.setIconSize(Qt.QSize(16, 16))
+		self.show_info_button.setCursor(Qt.Qt.ArrowCursor)
+		self.show_info_button.setAutoRaise(True)
+		self.main_layout.addWidget(self.show_info_button)
 
 		#####
 
 		self.connect(self.enable_dict_checkbox, Qt.SIGNAL("stateChanged(int)"), self.stateChangedSignal)
 
-		self.connect(self.show_information_button, Qt.SIGNAL("clicked()"), self.dict_information_window.show)
+		self.connect(self.show_info_button, Qt.SIGNAL("clicked()"), self.dict_info_window.show)
 
 
 	### Public ###

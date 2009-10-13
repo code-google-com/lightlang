@@ -41,7 +41,7 @@ def tr(str) :
 
 
 #####
-class DictInformationWindow(Qt.QWidget) :
+class DictInfoWindow(Qt.QWidget) :
 	def __init__(self, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
@@ -58,10 +58,10 @@ class DictInformationWindow(Qt.QWidget) :
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
-		self.dict_information_browser_layout = Qt.QVBoxLayout()
-		self.dict_information_browser_layout.setContentsMargins(0, 0, 0, 0)
-		self.dict_information_browser_layout.setSpacing(0)
-		self.main_layout.addLayout(self.dict_information_browser_layout)
+		self.dict_info_browser_layout = Qt.QVBoxLayout()
+		self.dict_info_browser_layout.setContentsMargins(0, 0, 0, 0)
+		self.dict_info_browser_layout.setSpacing(0)
+		self.main_layout.addLayout(self.dict_info_browser_layout)
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
 		self.control_buttons_layout.setContentsMargins(6, 6, 6, 6)
@@ -76,8 +76,8 @@ class DictInformationWindow(Qt.QWidget) :
 
 		#####
 
-		self.dict_information_browser = TextBrowser.TextBrowser()
-		self.dict_information_browser_layout.addWidget(self.dict_information_browser)
+		self.dict_info_browser = TextBrowser.TextBrowser()
+		self.dict_info_browser_layout.addWidget(self.dict_info_browser)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
 		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
@@ -94,8 +94,8 @@ class DictInformationWindow(Qt.QWidget) :
 
 		self.control_buttons_layout.addStretch()
 
-		self.update_information_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
-		self.control_buttons_layout.addWidget(self.update_information_button)
+		self.update_info_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
+		self.control_buttons_layout.addWidget(self.update_info_button)
 
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
 		self.ok_button.setDefault(True)
@@ -103,18 +103,18 @@ class DictInformationWindow(Qt.QWidget) :
 
 		#####
 
-		self.connect(self.update_information_button, Qt.SIGNAL("clicked()"), self.updateInformation)
+		self.connect(self.update_info_button, Qt.SIGNAL("clicked()"), self.updateInfo)
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
 
 
 	### Public ###
 
-	def updateInformation(self) :
+	def updateInfo(self) :
 		if self.dict_name.isEmpty() :
 			return
 
-		self.update_information_button.blockSignals(True)
-		self.update_information_button.setEnabled(False)
+		self.update_info_button.blockSignals(True)
+		self.update_info_button.setEnabled(False)
 
 		self.wait_picture_movie_label.show()
 		self.wait_picture_movie.start()
@@ -122,25 +122,25 @@ class DictInformationWindow(Qt.QWidget) :
 
 		###
 
-		dict_information = Qt.QString()
+		dict_info = Qt.QString()
 
 		html_form = Qt.QString("<strong><font color=\"#494949\">%1</font></strong>: %2")
 
-		dict_information.append(html_form.arg(tr("Caption")).arg(self.dictCaption()))
-		dict_information.append("<hr>")
-		dict_information.append(html_form.arg(tr("Translate direction")).arg(self.dictDirection()))
-		dict_information.append("<hr>")
-		dict_information.append(html_form.arg(tr("File path")).arg(self.dictFilePath()))
-		dict_information.append("<hr>")
-		dict_information.append(html_form.arg(tr("File size (KB)")).arg(self.dictFileSize()))
-		dict_information.append("<hr>")
-		self.dict_information_browser.setHtml(dict_information)
+		dict_info.append(html_form.arg(tr("Caption")).arg(self.dictCaption()))
+		dict_info.append("<hr>")
+		dict_info.append(html_form.arg(tr("Translate direction")).arg(self.dictDirection()))
+		dict_info.append("<hr>")
+		dict_info.append(html_form.arg(tr("File path")).arg(self.dictFilePath()))
+		dict_info.append("<hr>")
+		dict_info.append(html_form.arg(tr("File size (KB)")).arg(self.dictFileSize()))
+		dict_info.append("<hr>")
+		self.dict_info_browser.setHtml(dict_info)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_information.append(html_form.arg(tr("Count of words")).arg(word_count))
-		dict_information.append("<hr>")
-		dict_information.append(html_form.arg(tr("Description")).arg(dict_description))
-		self.dict_information_browser.setHtml(dict_information)
+		dict_info.append(html_form.arg(tr("Count of words")).arg(word_count))
+		dict_info.append("<hr>")
+		dict_info.append(html_form.arg(tr("Description")).arg(dict_description))
+		self.dict_info_browser.setHtml(dict_info)
 
 		###
 
@@ -151,8 +151,8 @@ class DictInformationWindow(Qt.QWidget) :
 		self.wait_picture_movie.jumpToFrame(0)
 		self.wait_message_label.hide()
 
-		self.update_information_button.setEnabled(True)
-		self.update_information_button.blockSignals(False)
+		self.update_info_button.setEnabled(True)
+		self.update_info_button.blockSignals(False)
 
 	def show(self) :
 		Qt.QWidget.show(self)
@@ -160,7 +160,7 @@ class DictInformationWindow(Qt.QWidget) :
 		self.activateWindow()
 
 		if not self.is_loaded_flag :
-			self.updateInformation()
+			self.updateInfo()
 			self.is_loaded_flag = True
 
 
