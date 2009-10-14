@@ -124,7 +124,7 @@ class SlWordSearch(Qt.QObject) :
 		self.proc_output.clear()
 
 		self.proc_args.clear()
-		self.proc_args << "--output-format=html" << "--use-list="+self.dicts_list.join("|") << mode << word
+		self.proc_args << "--output-format=html" << "--no-css" << "--use-list="+self.dicts_list.join("|") << mode << word
 
 		while self.proc_block_flag :
 			self.proc.waitForFinished()
