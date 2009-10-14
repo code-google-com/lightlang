@@ -44,7 +44,7 @@ class ListBrowser(Qt.QListWidget) :
 		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\]\\]")
 		self.caption_item_regexp.setMinimal(True)
 
-		self.caption_color = Qt.QString("#DFEDFF")
+		self.caption_color = Qt.QString()
 		user_style_css = UserStyleCss.userStyleCss()
 		caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
 		caption_color_regexp.setMinimal(True)

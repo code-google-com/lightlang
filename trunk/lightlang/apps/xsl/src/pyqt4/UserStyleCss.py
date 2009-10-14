@@ -48,6 +48,20 @@ def userStyleCss() :
 
 ##### Private #####
 def initUserStyleCss() :
+	global UserStyleCssObject
+	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
+		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
+		".word_header_font {font-size: normal; color: #494949;}\n"
+		".list_item_number_font {font-style: italic;}\n"
+		".article_number_font {font-style: italic; font-weight: bold;}\n"
+		".strong_font {font-weight: bold;}\n"
+		".italic_font {font-style: italic;}\n"
+		".green_font {color: #0A7700;}\n"
+		".underline_font {font-decoration: underline;}\n"
+		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
+		".sound_link_font {font-size: normal;}\n"
+		".info_font {font-style: italic;}\n")
+
 	my_name = Qt.QString(Const.MyName).toLower()
 
 	if not Qt.QDir(Qt.QDir.homePath()+"/."+my_name).exists() :
@@ -56,10 +70,8 @@ def initUserStyleCss() :
 	user_style_css_file = Qt.QFile(Qt.QDir.homePath()+"/."+my_name+"/"+UserStyleCssName)
 	user_style_css_file_stream = Qt.QTextStream(user_style_css_file)
 
-	global UserStyleCssObject
 	if user_style_css_file.open(Qt.QIODevice.ReadOnly) :
-		UserStyleCssObject = "\n"+user_style_css_file_stream.readAll()+"\n"
+		UserStyleCssObject.append("\n"+user_style_css_file_stream.readAll()+"\n")
 		UserStyleCssObject.remove(Qt.QRegExp("/\\*([^*]|\\*[^/]|\\n)*\\*/"))
-	else :
-		UserStyleCssObject = Qt.QString("\n")
+		user_style_css_file.close()
 

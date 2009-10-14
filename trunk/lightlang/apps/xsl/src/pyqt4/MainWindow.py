@@ -238,11 +238,9 @@ class MainWindow(Qt.QMainWindow) :
 		################
 
 		self.tabbed_translate_browser.setCaption(0, tr("Welcome"))
-		hello_text = tr("<html><head><style type=\"text/css\">.dict_header_background {background-color: #DFEDFF;}"
-				".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}</style>"
-				"<body><br><br><hr><table border=\"0\" width=\"100%\"><tr><td class=\"dict_header_background\""
+		hello_text = tr("<br><br><hr><table border=\"0\" width=\"100%\"><tr><td class=\"dict_header_background\""
 				" align=\"center\"><font class=\"dict_header_font\">Welcome to the %1 - the system of electronic dictionaries"
-				"</font></td></tr></table><hr></body></html>").arg(Const.Organization)
+				"</font></td></tr></table><hr>").arg(Const.Organization)
 		self.tabbed_translate_browser.setText(0, hello_text)
 
 		self.sl_search_panel.setFocus()
