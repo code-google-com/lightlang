@@ -177,7 +177,7 @@ class SlWordSearch(Qt.QObject) :
 		for replaces_list_item in self.replaces_list :
 			text.replace(replaces_list_item[0], replaces_list_item[1])
 
-		if self.proc_args[2] == UsuallySearchOption or self.proc_args[2] == WordCombinationsSearchOption :
+		if self.proc_args[3] == UsuallySearchOption or self.proc_args[3] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
 		else :
 			list = Qt.QStringList()
