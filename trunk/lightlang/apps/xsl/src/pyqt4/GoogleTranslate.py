@@ -93,7 +93,7 @@ class GoogleTranslate(Qt.QObject) :
 			Qt.QDesktopServices.openUrl(Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
 				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text)))
 			self.textChangedSignal(tr("<font class=\"info_font\">Link <font class=\"word_header_font\">%1</font> translation"
-				"was opened in your browser</font>").arg(text))
+				" was opened in your browser</font>").arg(text))
 			self.processFinishedSignal()
 			return
 
