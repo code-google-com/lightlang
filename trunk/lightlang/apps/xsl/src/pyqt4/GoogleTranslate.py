@@ -83,7 +83,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http_output.clear()
 
 		self.wordChangedSignal(tr("Google Translate"))
-		self.textChangedSignal(tr("<em>Please wait...</em>"))
+		self.textChangedSignal(tr("<font class=\"info_font\">Please wait...</font>"))
 
 		text = text.trimmed()
 
@@ -92,7 +92,8 @@ class GoogleTranslate(Qt.QObject) :
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
 			Qt.QDesktopServices.openUrl(Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
 				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text)))
-			self.textChangedSignal(tr("<em>Link <strong>%1</strong> translation was opened in your browser</em>").arg(text))
+			self.textChangedSignal(tr("<font class=\"info_font\">Link <font class=\"word_header_font\">%1</font> translation"
+				"was opened in your browser</font>").arg(text))
 			self.processFinishedSignal()
 			return
 
@@ -121,7 +122,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.http_abort_flag = False
 
 		self.statusChangedSignal(Qt.QString())
-		self.textChangedSignal(tr("<em>Aborted</em>"))
+		self.textChangedSignal(tr("<font class=\"info_font\">Aborted</font>"))
 
 
 	### Private ###
@@ -164,7 +165,7 @@ class GoogleTranslate(Qt.QObject) :
 		direction_index = self.direction_regexp.indexIn(text)
 		translate_index = self.translate_regexp.indexIn(text)
 		if direction_index > -1 and translate_index > -1 :
-			text = ( Qt.QString("<font color=\"#494949\">%1</font><hr>%2")
+			text = ( Qt.QString("<font class=\"word_header_font\">%1</font><hr>%2")
 				.arg(self.direction_regexp.cap(1)).arg(self.translate_regexp.cap(1)) )
 		elif translate_index > -1 :
 			text = self.translate_regexp.cap(1)

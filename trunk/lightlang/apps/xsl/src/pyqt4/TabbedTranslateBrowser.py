@@ -130,7 +130,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
 			self.text_search_frame.setLineEditDefaultPalette)
 
-		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
+		self.single_translate_browsers[index].setText(tr("<font class=\"info_font\">Empty</font>"))
 		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 
@@ -191,7 +191,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			return
 
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
+		self.single_translate_browsers[index].setText(tr("<font class=\"info_font\">Empty</font>"))
 		self.tab_widget.setTabText(index, tr("(Untitled)"))
 
 	def clearAll(self) :
