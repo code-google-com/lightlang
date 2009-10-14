@@ -50,6 +50,7 @@
 
 # define OPT_SETTINGS_OUTPUT_FORMAT	"output-format"
 # define OPT_SETTINGS_USE_ESCS		"use-terminal-escapes"
+# define OPT_SETTINGS_USE_CSS		"use-css"
 
 # define OPT_INFO_HELP			"help"
 # define OPT_INFO_VERSION		"version"

@@ -497,23 +497,24 @@ void print_begin_page(const char *word)
 			"\t<meta name=\"GENERATOR\" content=\"SL Engine\">\n"
 			"\t<meta name=\"AUTHOR\" content=\"Devaev Maxim aka Liksys\">\n"
 			"\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n"
-			"\t<style type=\"text/css\">\n"
-			"\t\t.dict_header_background {background-color: #DFEDFF;}\n"
-			"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-			"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
-			"\t\t.list_item_number_font {font-style: italic;}\n"
-			"\t\t.article_number_font {font-style: italic; font-weight: bold;}\n"
-			"\t\t.strong_font {font-weight: bold;}\n"
-			"\t\t.italic_font {font-style: italic;}\n"
-			"\t\t.green_font {color: #0A7700;}\n"
-			"\t\t.underline_font {font-decoration: underline;}\n"
-			"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
-			"\t\t.sound_link_font {font-size: normal;}\n"
-			"\t\t.info_font {font-style: italic;}\n"
-			"\t</style>\n"
+			"\t<style type=\"text/css\">\n", word, settings.locale_encoding);
+		if ( settings.use_css_flag )
+			puts("\t\t.dict_header_background {background-color: #DFEDFF;}\n"
+				"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
+				"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
+				"\t\t.list_item_number_font {font-style: italic;}\n"
+				"\t\t.article_number_font {font-style: italic; font-weight: bold;}\n"
+				"\t\t.strong_font {font-weight: bold;}\n"
+				"\t\t.italic_font {font-style: italic;}\n"
+				"\t\t.green_font {color: #0A7700;}\n"
+				"\t\t.underline_font {font-decoration: underline;}\n"
+				"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
+				"\t\t.sound_link_font {font-size: normal;}\n"
+				"\t\t.info_font {font-style: italic;}");
+		puts("\t</style>\n"
 			"</head>\n"
 			"<body>\n"
-			"<!-- translate -->\n", word, settings.locale_encoding);
+			"<!-- translate -->");
 	}
 	// others formats pass
 }

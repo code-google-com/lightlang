@@ -69,6 +69,7 @@ int init_settings(void)
 
 	settings.max_translate_count = DEFAULT_MAX_TRANSLATE_COUNT;
 	settings.output_format = text_output_format;
+	settings.use_css_flag = true;
 
 	return 0;
 }

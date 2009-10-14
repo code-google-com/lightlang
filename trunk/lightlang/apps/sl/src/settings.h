@@ -52,6 +52,7 @@ typedef struct {			// Tip parametrov sistemy
 	int max_terminal_line_len;	// Dlina stroki terminala
 	int max_translate_count;
 	bool use_terminal_escapes_flag;
+	bool use_css_flag;
 	output_format_t output_format;	// Format vyvoda
 } settings_t;
 

@@ -68,6 +68,7 @@ void help(void)
 	printf("Settings options:\n");
 	printf("\t--%s=<html|text|native>\n", OPT_SETTINGS_OUTPUT_FORMAT);
 	printf("\t--%s=<yes|no>\n", OPT_SETTINGS_USE_ESCS);
+	printf("\t--%s=<yes|no>\n", OPT_SETTINGS_USE_CSS);
 	printf("Information options:\n");
 	printf("\t-h | --%s\n", OPT_INFO_HELP);
 	printf("\t-v | --%s\n", OPT_INFO_VERSION);

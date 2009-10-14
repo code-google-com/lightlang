@@ -52,6 +52,7 @@ static int get_percent(const char *percent_str);
 static void set_max_translate_count(const char *str);
 static void set_output_format(const char *str);
 static void set_use_terminal_escapes_flag(const char *str);
+static void set_use_css_flag(const char *str);
 
 static int xfind_word(const char *word, const regimen_t regimen, const int percent, const char *dicts_list);
 
@@ -93,6 +94,7 @@ int main(int argc, char **argv)
 		{OPT_MISC_SHOW_TIME,		no_argument,		NULL,	't'}, // +
 		{OPT_SETTINGS_OUTPUT_FORMAT,	required_argument,	NULL,	'7'}, // -
 		{OPT_SETTINGS_USE_ESCS,		required_argument,	NULL,	'8'}, // -
+		{OPT_SETTINGS_USE_CSS,		required_argument,	NULL,	'9'}, // -
 
 		{OPT_INFO_HELP,			no_argument,		NULL,	'h'}, // +
 		{OPT_INFO_VERSION,		no_argument,		NULL,	'v'}, // +
@@ -163,6 +165,9 @@ int main(int argc, char **argv)
 					use_default_function_flag = false;	break;
 
 			case '8' : set_use_terminal_escapes_flag(optarg);
+					use_default_function_flag = false;	break;
+
+			case '9' : set_use_css_flag(optarg);
 					use_default_function_flag = false;	break;
 
 			case 't' : show_time_flag = true;
@@ -297,6 +302,25 @@ static void set_use_terminal_escapes_flag(const char *str)
 		settings.use_terminal_escapes_flag = true;
 	else if ( !strcmp(str, "no") )
 		settings.use_terminal_escapes_flag = false;
+	else fprintf(stderr, "%s: unknown replay \"%s\", please use"
+		" \"yes\" or \"no\": ignored\n", MYNAME, str);
+}
+
+/********************************************************************************
+*										*
+*	set_use_css_flag() - ustanavlivaet razrechenie na ispolzivanie CSS	*
+*										*
+********************************************************************************/
+static void set_use_css_flag(const char *str)
+{
+	//////////////////////////////////
+	extern settings_t settings;	// Parametry sistemy
+	//////////////////////////////////
+
+	if ( !strcmp(str, "yes") )
+		settings.use_css_flag = true;
+	else if ( !strcmp(str, "no") )
+		settings.use_css_flag = false;
 	else fprintf(stderr, "%s: unknown replay \"%s\", please use"
 		" \"yes\" or \"no\": ignored\n", MYNAME, str);
 }
