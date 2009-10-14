@@ -74,6 +74,8 @@ class DictInfoWindow(Qt.QWidget) :
 
 		self.is_loaded_flag = False
 
+		self.dict_name_regexp = Qt.QRegExp("([^\\.]+)\\.((..)-(..))")
+
 		#####
 
 		self.dict_info_browser = TextBrowser.TextBrowser()
@@ -167,15 +169,20 @@ class DictInfoWindow(Qt.QWidget) :
 	### Private ###
 
 	def dictCaption(self) :
-		rx = Qt.QRegExp("([^\\.]+)\\...-..")
-		dict_caption = ( rx.cap(1) if rx.exactMatch(self.dict_name) else Qt.QString(self.dict_name) )
+		if self.dict_name_regexp.exactMatch(self.dict_name) :
+			dict_caption = self.dict_name_regexp.cap(1)
+		else :
+			dict_caption = Qt.QString(self.dict_name)
 		dict_caption.replace("_", " ")
+		dict_caption.replace(".", " ")
 		return dict_caption
 
 	def dictDirection(self) :
-		rx = Qt.QRegExp("[^\\.]+\\.(..)-(..)")
-		return ( LangsList.langName(rx.cap(1))+" &#187; "+LangsList.langName(rx.cap(2))+" ("+rx.cap(1)+"-"+rx.cap(2)+")"
-			if rx.exactMatch(self.dict_name) else tr("Unavailable") )
+		if self.dict_name_regexp.exactMatch(self.dict_name) :
+			return ( Qt.QString("%1 &#187; %2 (%3)").arg(LangsList.langName(self.dict_name_regexp.cap(3)))
+				.arg(LangsList.langName(self.dict_name_regexp.cap(4))).arg(self.dict_name_regexp.cap(2)) )
+		else :
+			return tr("Unavailable")
 
 	def dictFilePath(self) :
 		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)

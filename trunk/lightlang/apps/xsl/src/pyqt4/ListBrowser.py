@@ -35,27 +35,29 @@ class ListBrowser(Qt.QListWidget) :
 	def __init__(self, parent = None) :
 		Qt.QListWidget.__init__(self, parent)
 
+		#####
+
+		self.warning_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
+		self.warning_item_regexp.setMinimal(True)
+
+		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\|\\|(.*)\\]\\]")
+		self.caption_item_regexp.setMinimal(True)
+
 
 	### Public ###
 
 	def setList(self, list) :
 		self.clear()
 
-		warning_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
-		warning_item_regexp.setMinimal(True)
-
-		caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\|\\|(.*)\\]\\]")
-		caption_item_regexp.setMinimal(True)
-
 		count = 0
 		while count < list.count() :
-			if warning_item_regexp.exactMatch(list[count]) :
-				warning_item = Qt.QListWidgetItem(warning_item_regexp.cap(1))
+			if self.warning_item_regexp.exactMatch(list[count]) :
+				warning_item = Qt.QListWidgetItem(self.warning_item_regexp.cap(1))
 				warning_item.setFlags(Qt.Qt.NoItemFlags)
 
 				self.addItem(warning_item)
-			elif caption_item_regexp.exactMatch(list[count]) :
-				caption_item = Qt.QListWidgetItem(caption_item_regexp.cap(1))
+			elif self.caption_item_regexp.exactMatch(list[count]) :
+				caption_item = Qt.QListWidgetItem(self.caption_item_regexp.cap(1))
 
 				caption_item_font = caption_item.font()
 				caption_item_font.setBold(True)
@@ -71,7 +73,7 @@ class ListBrowser(Qt.QListWidget) :
 
 				caption_item_background_brush = caption_item.background()
 				caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
-				caption_item_background_brush.setColor(Qt.QColor(caption_item_regexp.cap(2)))
+				caption_item_background_brush.setColor(Qt.QColor(self.caption_item_regexp.cap(2)))
 
 				caption_item.setFlags(Qt.Qt.NoItemFlags)
 				caption_item.setTextAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)

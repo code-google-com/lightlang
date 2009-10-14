@@ -52,6 +52,10 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		#####
 
+		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
+
+		#####
+
 		self.connect(self, Qt.SIGNAL("cellActivated(int, int)"), self.invertDictState)
 		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"), self.currentRowChanged)
 
@@ -63,18 +67,16 @@ class DictsListWidget(Qt.QTableWidget) :
 	def setList(self, list) :
 		self.setRowCount(0)
 
-		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
-
 		count = 0
 		while count < list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not item_code_regexp.exactMatch(list[count]) :
+			if not self.item_code_regexp.exactMatch(list[count]) :
 				count += 1
 				continue
 
-			dict_state = ( Qt.Qt.Checked if item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
-			dict_name = item_code_regexp.cap(2)
+			dict_state = ( Qt.Qt.Checked if self.item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
+			dict_name = self.item_code_regexp.cap(2)
 
 			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name))
 

@@ -53,6 +53,12 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.lang = Locale.mainLang()
 
+		self.direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
+		self.direction_regexp.setMinimal(True)
+
+		self.translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
+		self.translate_regexp.setMinimal(True)
+
 		#####
 
 		self.connect(self.http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
@@ -155,18 +161,13 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
-		direction_regexp.setMinimal(True)
-
-		translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
-		translate_regexp.setMinimal(True)
-
-		direction_index = direction_regexp.indexIn(text)
-		translate_index = translate_regexp.indexIn(text)
+		direction_index = self.direction_regexp.indexIn(text)
+		translate_index = self.translate_regexp.indexIn(text)
 		if direction_index > -1 and translate_index > -1 :
-			text = (Qt.QString("<font color=\"#494949\">%1</font><hr>%2").arg(direction_regexp.cap(1)).arg(translate_regexp.cap(1)))
+			text = ( Qt.QString("<font color=\"#494949\">%1</font><hr>%2")
+				.arg(self.direction_regexp.cap(1)).arg(self.translate_regexp.cap(1)) )
 		elif translate_index > -1 :
-			text = translate_regexp.cap(1)
+			text = self.translate_regexp.cap(1)
 
 		###
 

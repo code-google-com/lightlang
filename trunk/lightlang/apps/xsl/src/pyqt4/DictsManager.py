@@ -72,6 +72,10 @@ class DictsManager(Window.Window) :
 
 		#####
 
+		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
+
+		#####
+
 		self.filter_label = Qt.QLabel(tr("&Filter:"))
 		self.line_edit_layout.addWidget(self.filter_label)
 
@@ -230,20 +234,16 @@ class DictsManager(Window.Window) :
 
 		###
 
-		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
-
-		###
-
 		count = 0
 		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not item_code_regexp.exactMatch(local_dicts_list[count]) :
+			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
 
-			if not all_dicts_dir_entry_list.contains(item_code_regexp.cap(2)) :
+			if not all_dicts_dir_entry_list.contains(self.item_code_regexp.cap(2)) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
@@ -253,7 +253,7 @@ class DictsManager(Window.Window) :
 		###
 
 		tmp_list = Qt.QStringList(local_dicts_list)
-		tmp_list.replaceInStrings(item_code_regexp, "\\2")
+		tmp_list.replaceInStrings(self.item_code_regexp, "\\2")
 
 		###
 

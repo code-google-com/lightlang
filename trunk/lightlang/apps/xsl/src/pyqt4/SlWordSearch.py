@@ -60,6 +60,17 @@ class SlWordSearch(Qt.QObject) :
 
 		self.dicts_list = Qt.QStringList()
 
+		self.warning_item_regexp = Qt.QRegExp("<font class=\"warning_font\">(.*)</font>")
+		self.warning_item_regexp.setMinimal(True)
+
+		self.caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
+
+		self.caption_item_regexp = Qt.QRegExp("<font class=\"dict_header_font\">(.*)</font>")
+		self.caption_item_regexp.setMinimal(True)
+
+		self.word_item_regexp = Qt.QRegExp("<a href=.*>(.*)</a>")
+		self.word_item_regexp.setMinimal(True)
+
 		#####
 
 		self.replaces_list = [
@@ -175,45 +186,35 @@ class SlWordSearch(Qt.QObject) :
 			#####
 
 			if parts_list.count() == 1 :
-				warning_item_regexp = Qt.QRegExp("<font class=\"warning_font\">(.*)</font>")
-				warning_item_regexp.setMinimal(True)
-
-				warning_item_pos = warning_item_regexp.indexIn(text, 0)
+				warning_item_pos = self.warning_item_regexp.indexIn(text, 0)
 				while warning_item_pos != -1 :
-					list << "{{"+warning_item_regexp.cap(1)+"}}"
-					warning_item_pos = warning_item_regexp.indexIn(text, warning_item_pos + warning_item_regexp.matchedLength())
+					list << "{{"+self.warning_item_regexp.cap(1)+"}}"
+					warning_item_pos = self.warning_item_regexp.indexIn(text, warning_item_pos +
+						self.warning_item_regexp.matchedLength())
 
 				if list.count() == 0 :
 					list << "{{"+text+"}}"
 
 			#####
 
-			caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
-
-			caption_item_regexp = Qt.QRegExp("<font class=\"dict_header_font\">(.*)</font>")
-			caption_item_regexp.setMinimal(True)
-
-			word_item_regexp = Qt.QRegExp("<a href=.*>(.*)</a>")
-			word_item_regexp.setMinimal(True)
-
-			if caption_color_regexp.exactMatch(parts_list[0]) :
-				caption_color = caption_color_regexp.cap(1)
+			if self.caption_color_regexp.exactMatch(parts_list[0]) :
+				caption_color = self.caption_color_regexp.cap(1)
 			else :
 				caption_color = Qt.QString("#FFFFFF")
 
 			parts_list_count = 1
 			while parts_list_count < parts_list.count() :
-				if caption_item_regexp.indexIn(parts_list[parts_list_count]) < 0 :
+				if self.caption_item_regexp.indexIn(parts_list[parts_list_count]) < 0 :
 					parts_list_count += 1
 					continue
 
-				list << "[["+caption_item_regexp.cap(1)+"||"+caption_color+"]]"
+				list << "[["+self.caption_item_regexp.cap(1)+"||"+caption_color+"]]"
 
-				word_item_pos = word_item_regexp.indexIn(parts_list[parts_list_count], 0)
+				word_item_pos = self.word_item_regexp.indexIn(parts_list[parts_list_count], 0)
 				while word_item_pos != -1 :
-					list << word_item_regexp.cap(1)
-					word_item_pos = word_item_regexp.indexIn(parts_list[parts_list_count],
-						word_item_pos + word_item_regexp.matchedLength())
+					list << self.word_item_regexp.cap(1)
+					word_item_pos = self.word_item_regexp.indexIn(parts_list[parts_list_count], word_item_pos +
+						self.word_item_regexp.matchedLength())
 
 				parts_list_count += 1
 
