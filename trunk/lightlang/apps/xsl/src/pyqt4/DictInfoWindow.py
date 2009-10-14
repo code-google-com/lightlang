@@ -136,13 +136,13 @@ class DictInfoWindow(Qt.QWidget) :
 		dict_info.append("<hr>")
 		dict_info.append(html_form.arg(tr("File size (KB)")).arg(self.dictFileSize()))
 		dict_info.append("<hr>")
-		self.dict_info_browser.setHtml(dict_info)
+		self.dict_info_browser.setText(dict_info)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
 		dict_info.append(html_form.arg(tr("Count of words")).arg(word_count))
 		dict_info.append("<hr>")
 		dict_info.append(html_form.arg(tr("Description")).arg(dict_description))
-		self.dict_info_browser.setHtml(dict_info)
+		self.dict_info_browser.setText(dict_info)
 
 		###
 
