@@ -130,7 +130,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
 			self.text_search_frame.setLineEditDefaultPalette)
 
-		self.single_translate_browsers[index].setHtml(tr("<em>Empty</em>"))
+		self.single_translate_browsers[index].setText(tr("<em>Empty</em>"))
 		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 
