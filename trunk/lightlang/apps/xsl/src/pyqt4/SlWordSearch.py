@@ -65,8 +65,8 @@ class SlWordSearch(Qt.QObject) :
 
 		###
 
-		self.warning_item_regexp = Qt.QRegExp("<font class=\"warning_font\">(.*)</font>")
-		self.warning_item_regexp.setMinimal(True)
+		self.info_item_regexp = Qt.QRegExp("<font class=\"info_font\">(.*)</font>")
+		self.info_item_regexp.setMinimal(True)
 
 		self.caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
 		self.caption_color_regexp.setMinimal(True)
@@ -80,8 +80,8 @@ class SlWordSearch(Qt.QObject) :
 		#####
 
 		self.replaces_list = [
-			["<font class=\"warning_font\">This word is not found</font>", tr("<font class=\"warning_font\">This word is not found</font>")],
-			["<font class=\"warning_font\">No dict is connected</font>", tr("<font class=\"warning_font\">No dict is connected</font>")]
+			["<font class=\"info_font\">This word is not found</font>", tr("<font class=\"info_font\">This word is not found</font>")],
+			["<font class=\"info_font\">No dict is connected</font>", tr("<font class=\"info_font\">No dict is connected</font>")]
 			]
 
 		#####
@@ -195,11 +195,11 @@ class SlWordSearch(Qt.QObject) :
 			#####
 
 			if parts_list.count() == 1 :
-				warning_item_pos = self.warning_item_regexp.indexIn(text, 0)
-				while warning_item_pos != -1 :
-					list << "{{"+self.warning_item_regexp.cap(1)+"}}"
-					warning_item_pos = self.warning_item_regexp.indexIn(text, warning_item_pos +
-						self.warning_item_regexp.matchedLength())
+				info_item_pos = self.info_item_regexp.indexIn(text, 0)
+				while info_item_pos != -1 :
+					list << "{{"+self.info_item_regexp.cap(1)+"}}"
+					info_item_pos = self.info_item_regexp.indexIn(text, info_item_pos +
+						self.info_item_regexp.matchedLength())
 
 				if list.count() == 0 :
 					list << "{{"+text+"}}"

@@ -509,7 +509,7 @@ void print_begin_page(const char *word)
 			"\t\t.underline_font {font-decoration: underline;}\n"
 			"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
 			"\t\t.sound_link_font {font-size: normal;}\n"
-			"\t\t.warning_font {font-style: italic;}\n"
+			"\t\t.info_font {font-style: italic;}\n"
 			"\t</style>\n"
 			"</head>\n"
 			"<body>\n"

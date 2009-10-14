@@ -37,8 +37,8 @@ class ListBrowser(Qt.QListWidget) :
 
 		#####
 
-		self.warning_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
-		self.warning_item_regexp.setMinimal(True)
+		self.info_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
+		self.info_item_regexp.setMinimal(True)
 
 		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\|\\|(.*)\\]\\]")
 		self.caption_item_regexp.setMinimal(True)
@@ -51,11 +51,11 @@ class ListBrowser(Qt.QListWidget) :
 
 		count = 0
 		while count < list.count() :
-			if self.warning_item_regexp.exactMatch(list[count]) :
-				warning_item = Qt.QListWidgetItem(self.warning_item_regexp.cap(1))
-				warning_item.setFlags(Qt.Qt.NoItemFlags)
+			if self.info_item_regexp.exactMatch(list[count]) :
+				info_item = Qt.QListWidgetItem(self.info_item_regexp.cap(1))
+				info_item.setFlags(Qt.Qt.NoItemFlags)
 
-				self.addItem(warning_item)
+				self.addItem(info_item)
 			elif self.caption_item_regexp.exactMatch(list[count]) :
 				caption_item = Qt.QListWidgetItem(self.caption_item_regexp.cap(1))
 

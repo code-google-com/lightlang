@@ -390,19 +390,19 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 
 	if ( no_translate_flag )
 		if ( settings.output_format == html_output_format )
-			puts("\t<font class=\"warning_font\">This word is not found</font><br>");
+			puts("\t<font class=\"info_font\">This word is not found</font><br>");
 		else if ( settings.output_format == text_output_format )
-			fprintf(stderr, "%s: this word is not found\n", MYNAME);
+			printf("%s: this word is not found\n", MYNAME);
 		else if ( settings.output_format == native_output_format )
-			fprintf(stderr, "%s: this word is not found\n", MYNAME);
+			printf("%s: this word is not found\n", MYNAME);
 
 	if ( no_dicts_flag )
 		if ( settings.output_format == html_output_format )
-			puts("\t<font class=\"warning_font\">No dict is connected</font><br>");
+			puts("\t<font class=\"info_font\">No dict is connected</font><br>");
 		else if ( settings.output_format == text_output_format )
-			fprintf(stderr, "%s: no dict is connected\n", MYNAME);
+			printf("%s: no dict is connected\n", MYNAME);
 		else if ( settings.output_format == native_output_format )
-			fprintf(stderr, "%s: no dict is connected\n", MYNAME);
+			printf("%s: no dict is connected\n", MYNAME);
 
 	print_end_page();
 
