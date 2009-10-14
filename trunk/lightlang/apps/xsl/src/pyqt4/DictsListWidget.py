@@ -63,7 +63,7 @@ class DictsListWidget(Qt.QTableWidget) :
 	def setList(self, list) :
 		self.setRowCount(0)
 
-		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{((.+)\\.(..-..))\\}")
+		item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
 
 		count = 0
 		while count < list.count() :
@@ -74,16 +74,9 @@ class DictsListWidget(Qt.QTableWidget) :
 				continue
 
 			dict_state = ( Qt.Qt.Checked if item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
-
 			dict_name = item_code_regexp.cap(2)
 
-			dict_caption = item_code_regexp.cap(3)
-			dict_caption.replace("_", " ")
-
-			dict_direction = item_code_regexp.cap(4)
-
-			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state,
-				dict_name, dict_caption, dict_direction))
+			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name))
 
 			count += 1
 
@@ -103,7 +96,6 @@ class DictsListWidget(Qt.QTableWidget) :
 			item = self.cellWidget(count, 0)
 
 			enable_dict_flag = ( 1 if item.dictState() == Qt.Qt.Checked else 0 )
-
 			dict_name = item.dictName()
 
 			list << Qt.QString("{%1}{%2}").arg(enable_dict_flag).arg(dict_name)
@@ -155,6 +147,7 @@ class DictsListWidget(Qt.QTableWidget) :
 
 			dict_name = item.dictName()
 			dict_name.replace("_", " ")
+			dict_name.replace(".", " ")
 
 			if not dict_name.contains(str, Qt.Qt.CaseInsensitive) :
 				self.hideRow(count)
@@ -184,8 +177,7 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		internal_widget = self.cellWidget(index, 0)
 
-		external_widget = DictsListWidgetItem.DictsListWidgetItem(internal_widget.dictState(),
-			internal_widget.dictName(), internal_widget.dictCaption(), internal_widget.dictDirection())
+		external_widget = DictsListWidgetItem.DictsListWidgetItem(internal_widget.dictState(), internal_widget.dictName())
 
 		self.removeRow(index)
 

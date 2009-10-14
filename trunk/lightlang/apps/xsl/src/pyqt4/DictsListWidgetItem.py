@@ -37,7 +37,7 @@ def tr(str) :
 
 #####
 class DictsListWidgetItem(Qt.QWidget) :
-	def __init__(self, dict_state, dict_name, dict_caption, dict_direction, parent = None) :
+	def __init__(self, dict_state, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
@@ -57,8 +57,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 		#####
 
 		self.dict_name = Qt.QString(dict_name)
-		self.dict_caption = Qt.QString(dict_caption)
-		self.dict_direction = Qt.QString(dict_direction)
 
 		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name)
 
@@ -73,12 +71,23 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self.main_layout.addWidget(self.vertical_frame1)
 
-		self.dict_caption_label = Qt.QLabel(dict_caption)
+		self.dict_caption_label = Qt.QLabel()
+		dict_caption_regexp = Qt.QRegExp("(.+)\\...-..")
+		if dict_caption_regexp.exactMatch(dict_name) :
+			dict_caption = dict_caption_regexp.cap(1)
+			dict_caption.replace("_", " ")
+			dict_caption.replace(".", " ")
+			self.dict_caption_label.setText(dict_caption)
+		else :
+			self.dict_caption_label.setText(dict_name)
 		self.main_layout.addWidget(self.dict_caption_label)
 
 		self.main_layout.addStretch()
 
-		self.dict_direction_label = Qt.QLabel(dict_direction)
+		self.dict_direction_label = Qt.QLabel()
+		dict_direction_regexp = Qt.QRegExp(".+\\.(..-..)")
+		if dict_direction_regexp.exactMatch(dict_name) :
+			self.dict_direction_label.setText(dict_direction_regexp.cap(1))
 		self.main_layout.addWidget(self.dict_direction_label)
 
 		self.vertical_frame2 = Qt.QFrame()
@@ -106,12 +115,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 	def dictName(self) :
 		return Qt.QString(self.dict_name)
-
-	def dictCaption(self) :
-		return Qt.QString(self.dict_caption)
-
-	def dictDirection(self) :
-		return Qt.QString(self.dict_direction)
 
 	###
 
