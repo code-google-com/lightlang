@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import UserStyleCss
 
 
 #####
@@ -60,10 +61,15 @@ class SlWordSearch(Qt.QObject) :
 
 		self.dicts_list = Qt.QStringList()
 
+		self.user_style_css = UserStyleCss.userStyleCss()
+
+		###
+
 		self.warning_item_regexp = Qt.QRegExp("<font class=\"warning_font\">(.*)</font>")
 		self.warning_item_regexp.setMinimal(True)
 
 		self.caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
+		self.caption_color_regexp.setMinimal(True)
 
 		self.caption_item_regexp = Qt.QRegExp("<font class=\"dict_header_font\">(.*)</font>")
 		self.caption_item_regexp.setMinimal(True)
@@ -173,8 +179,11 @@ class SlWordSearch(Qt.QObject) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
+
 		for replaces_list_item in self.replaces_list :
 			text.replace(replaces_list_item[0], replaces_list_item[1])
+
+		text.insert(text.indexOf("</style>"), self.user_style_css)
 
 		if self.proc_args[2] == UsuallySearchOption or self.proc_args[2] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
@@ -195,12 +204,16 @@ class SlWordSearch(Qt.QObject) :
 				if list.count() == 0 :
 					list << "{{"+text+"}}"
 
-			#####
+			###
 
-			if self.caption_color_regexp.exactMatch(parts_list[0]) :
+			caption_color = Qt.QString("#FFFFFF")
+			caption_color_pos = self.caption_color_regexp.indexIn(parts_list[0])
+			while caption_color_pos != -1 :
 				caption_color = self.caption_color_regexp.cap(1)
-			else :
-				caption_color = Qt.QString("#FFFFFF")
+				caption_color_pos = self.caption_color_regexp.indexIn(parts_list[0], caption_color_pos +
+					self.caption_color_regexp.matchedLength())
+
+			###
 
 			parts_list_count = 1
 			while parts_list_count < parts_list.count() :
