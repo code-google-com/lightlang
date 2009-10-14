@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import UserStyleCss
 
 
 #####
@@ -40,8 +41,18 @@ class ListBrowser(Qt.QListWidget) :
 		self.info_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
 		self.info_item_regexp.setMinimal(True)
 
-		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\|\\|(.*)\\]\\]")
+		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\]\\]")
 		self.caption_item_regexp.setMinimal(True)
+
+		self.caption_color = Qt.QString("#DFEDFF")
+		user_style_css = UserStyleCss.userStyleCss()
+		caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
+		caption_color_regexp.setMinimal(True)
+		caption_color_pos = caption_color_regexp.indexIn(user_style_css)
+		while caption_color_pos != -1 :
+			self.caption_color = caption_color_regexp.cap(1)
+			caption_color_pos = caption_color_regexp.indexIn(user_style_css, caption_color_pos +
+				caption_color_regexp.matchedLength())
 
 
 	### Public ###
@@ -62,24 +73,23 @@ class ListBrowser(Qt.QListWidget) :
 				caption_item_font = caption_item.font()
 				caption_item_font.setBold(True)
 				caption_item_font.setItalic(True)
-
 				if caption_item_font.pixelSize() > 0 :
 					caption_item_font.setPixelSize(caption_item_font.pixelSize() +1)
 				elif caption_item_font.pointSize() > 0 :
 					caption_item_font.setPointSize(caption_item_font.pointSize() +1)
+				caption_item.setFont(caption_item_font)
 
 				caption_item_foreground_brush = caption_item.foreground()
 				caption_item_foreground_brush.setStyle(Qt.Qt.SolidPattern)
+				caption_item.setForeground(caption_item_foreground_brush)
 
 				caption_item_background_brush = caption_item.background()
 				caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
-				caption_item_background_brush.setColor(Qt.QColor(self.caption_item_regexp.cap(2)))
+				caption_item_background_brush.setColor(Qt.QColor(self.caption_color))
+				caption_item.setBackground(caption_item_background_brush)
 
 				caption_item.setFlags(Qt.Qt.NoItemFlags)
 				caption_item.setTextAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
-				caption_item.setFont(caption_item_font)
-				caption_item.setForeground(caption_item_foreground_brush)
-				caption_item.setBackground(caption_item_background_brush)
 
 				self.addItem(caption_item)
 			else :
