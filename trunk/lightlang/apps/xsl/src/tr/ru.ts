@@ -741,32 +741,32 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Окно словаря</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="138"/>
+        <location filename="SlWordSearch.py" line="144"/>
         <source>An error occured when creating the search process</source>
         <translation>Ошибка при создании поискового процесса</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="164"/>
+        <location filename="SlWordSearch.py" line="170"/>
         <source>Error of the search process</source>
         <translation>Ошибка поискового процесса</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="146"/>
+        <location filename="SlWordSearch.py" line="152"/>
         <source>Connection lost with search process</source>
         <translation>Связь с поисковым процессом потеряна</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="158"/>
+        <location filename="SlWordSearch.py" line="164"/>
         <source>Unknown error occured while executing the search process</source>
         <translation>При выполнении поискового процесса произошла неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="150"/>
+        <location filename="SlWordSearch.py" line="156"/>
         <source>Error while writing data into the search process</source>
         <translation>Ошибка при записи данных в поисковый процесс</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="154"/>
+        <location filename="SlWordSearch.py" line="160"/>
         <source>Error while reading data from the search process</source>
         <translation>Ошибка при чтении данных из поискового процесса</translation>
     </message>
@@ -875,14 +875,14 @@ Spy is running</source>
 Spy-сервис работает</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="76"/>
-        <source>&lt;font class=&quot;warning_font&quot;&gt;This word is not found&lt;/font&gt;</source>
-        <translation>&lt;font class=&quot;warning_font&quot;&gt;Такого слова не найдено&lt;/font&gt;</translation>
+        <location filename="SlWordSearch.py" line="82"/>
+        <source>&lt;font class=&quot;info_font&quot;&gt;This word is not found&lt;/font&gt;</source>
+        <translation>&lt;font class=&quot;info_font&quot;&gt;Такого слова не найдено&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="82"/>
-        <source>&lt;font class=&quot;warning_font&quot;&gt;No dict is connected&lt;/font&gt;</source>
-        <translation>&lt;font class=&quot;warning_font&quot;&gt;Нет подключенных словарей&lt;/font&gt;</translation>
+        <location filename="SlWordSearch.py" line="88"/>
+        <source>&lt;font class=&quot;info_font&quot;&gt;No dict is connected&lt;/font&gt;</source>
+        <translation>&lt;font class=&quot;info_font&quot;&gt;Нет подключенных словарей&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>
