@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import Locale
-import User
+import Settings
 import GoogleTranslate
 import LangsList
 import TextEdit
@@ -149,12 +149,12 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 	### Public ###
 
 	def saveSettings(self) :
-		settings = User.settings()
+		settings = Settings.settings()
 		settings.setValue("google_translate_panel/sl_combobox_index", Qt.QVariant(self.sl_combobox.currentIndex()))
 		settings.setValue("google_translate_panel/tl_combobox_index", Qt.QVariant(self.tl_combobox.currentIndex()))
 
 	def loadSettings(self) :
-		settings = User.settings()
+		settings = Settings.settings()
 		self.sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index", Qt.QVariant(0)).toInt()[0])
 		self.tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index", Qt.QVariant(0)).toInt()[0])
 

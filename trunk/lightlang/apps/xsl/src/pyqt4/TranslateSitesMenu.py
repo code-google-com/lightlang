@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import User
+import Settings
 import TranslateSiteSaxHandler
 
 
@@ -74,12 +74,12 @@ class TranslateSitesMenu(Qt.QMenu) :
 		translate_sites_system_dir_entry_list = translate_sites_system_dir.entryList()
 		translate_sites_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), TranslateSitesSystemDir+"\\1")
 
-		translate_sites_user_dir = Qt.QDir(User.settingsPath()+"/"+TranslateSitesSubdir)
+		translate_sites_user_dir = Qt.QDir(Settings.settingsPath()+"/"+TranslateSitesSubdir)
 		translate_sites_user_dir.setSorting(Qt.QDir.Name)
 		translate_sites_user_dir.setNameFilters(translate_sites_file_name_filtes)
 		translate_sites_user_dir.setFilter(Qt.QDir.Files)
 		translate_sites_user_dir_entry_list = translate_sites_user_dir.entryList()
-		translate_sites_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+TranslateSitesSubdir+"\\1")
+		translate_sites_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), Settings.settingsPath()+"/"+TranslateSitesSubdir+"\\1")
 
 		translate_sites_files_list = Qt.QStringList()
 		translate_sites_files_list << translate_sites_system_dir_entry_list << translate_sites_user_dir_entry_list

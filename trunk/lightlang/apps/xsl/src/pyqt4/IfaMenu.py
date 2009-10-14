@@ -24,7 +24,7 @@ import Qt
 import sys
 import Config
 import Const
-import User
+import Settings
 import IfaSaxHandler
 
 
@@ -75,12 +75,12 @@ class IfaMenu(Qt.QMenu) :
 		ifa_system_dir_entry_list = ifa_system_dir.entryList()
 		ifa_system_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), IfaSystemDir+"\\1")
 
-		ifa_user_dir = Qt.QDir(User.settingsPath()+"/"+IfaSubdir)
+		ifa_user_dir = Qt.QDir(Settings.settingsPath()+"/"+IfaSubdir)
 		ifa_user_dir.setSorting(Qt.QDir.Name)
 		ifa_user_dir.setNameFilters(ifa_file_name_filtes)
 		ifa_user_dir.setFilter(Qt.QDir.Files)
 		ifa_user_dir_entry_list = ifa_user_dir.entryList()
-		ifa_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), User.settingsPath()+"/"+IfaSubdir+"\\1")
+		ifa_user_dir_entry_list.replaceInStrings(Qt.QRegExp("^(.*)$"), Settings.settingsPath()+"/"+IfaSubdir+"\\1")
 
 		ifa_files_list = Qt.QStringList()
 		ifa_files_list << ifa_system_dir_entry_list << ifa_user_dir_entry_list

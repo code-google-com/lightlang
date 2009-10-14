@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import User
+import Settings
 import MouseSelectorThread
 import RadioButtonsMenu
 try :
@@ -123,7 +123,7 @@ class SpyMenu(Qt.QMenu) :
 	### 
 
 	def saveSettings(self) :
-		settings = User.settings()
+		settings = Settings.settings()
 		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
@@ -134,7 +134,7 @@ class SpyMenu(Qt.QMenu) :
 
 
 	def loadSettings(self) :
-		settings = User.settings()
+		settings = Settings.settings()
 		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag", Qt.QVariant(True)).toBool())
 		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag", Qt.QVariant(True)).toBool())
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :

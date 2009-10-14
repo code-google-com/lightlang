@@ -24,7 +24,7 @@ import Qt
 import Config
 import Const
 import Window
-import User
+import Settings
 import DictsListWidget
 
 
@@ -191,7 +191,7 @@ class DictsManager(Window.Window) :
 	###
 
 	def saveSettings(self) :
-		settings = User.settings()
+		settings = Settings.settings()
 		settings.setValue("dicts_manager/size", Qt.QVariant(self.size()))
 		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
@@ -201,7 +201,7 @@ class DictsManager(Window.Window) :
 
 		###
 
-		settings = User.settings()
+		settings = Settings.settings()
 
 		self.resize(settings.value("dicts_manager/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 
