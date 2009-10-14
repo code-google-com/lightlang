@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import UserStyleCss
 
 
 #####
@@ -43,6 +44,9 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self.tmp_text_cursor = Qt.QTextCursor()
 
+		self.user_style_css = UserStyleCss.userStyleCss()
+		# setSource() dont accept user-style.css
+
 		#####
 
 		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
@@ -51,6 +55,12 @@ class TextBrowser(Qt.QTextBrowser) :
 	### Public ###
 
 	def setText(self, text) :
+		index = text.indexOf("</style>")
+		if index > 0 :
+			text = Qt.QString(text).insert(index, self.user_style_css)
+		else :
+			text = Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(self.user_style_css).arg(text)
+
 		self.setHtml(text)
 
 	def text(self) :
