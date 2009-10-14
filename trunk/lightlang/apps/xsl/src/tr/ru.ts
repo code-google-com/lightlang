@@ -8,27 +8,27 @@
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="125"/>
+        <location filename="DictsManager.py" line="129"/>
         <source>&amp;OK</source>
         <translation>&amp;ОК</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="47"/>
+        <location filename="DictInfoWindow.py" line="47"/>
         <source>Dict Information</source>
         <translation>Информация о словаре</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="119"/>
+        <location filename="DictsManager.py" line="123"/>
         <source>Please wait...</source>
         <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="96"/>
+        <location filename="DictInfoWindow.py" line="98"/>
         <source>&amp;Update</source>
         <translation>Об&amp;новить</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="215"/>
+        <location filename="DictInfoWindow.py" line="222"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -38,7 +38,7 @@
         <translation>Менеджер словарей</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="74"/>
+        <location filename="DictsManager.py" line="78"/>
         <source>&amp;Filter:</source>
         <translation>&amp;Фильтр:</translation>
     </message>
@@ -53,37 +53,37 @@
         <translation>Расширенный поиск (в новой вкладке)</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="45"/>
+        <location filename="SlSearchPanel.py" line="45"/>
         <source>SL Search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="90"/>
+        <location filename="SlSearchPanel.py" line="90"/>
         <source>&amp;Search</source>
         <translation>&amp;Поиск</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="94"/>
+        <location filename="SlSearchPanel.py" line="94"/>
         <source>&amp;Expanded search</source>
         <translation>&amp;Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="102"/>
+        <location filename="SlSearchPanel.py" line="102"/>
         <source>Word &amp;list</source>
         <translation>Список с&amp;лов</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="106"/>
+        <location filename="SlSearchPanel.py" line="106"/>
         <source>S&amp;imilar words</source>
         <translation>Похож&amp;ие слова</translation>
     </message>
     <message>
-        <location filename="FindInTextFrame.py" line="61"/>
+        <location filename="TextSearchFrame.py" line="61"/>
         <source>Search:</source>
         <translation>Поиск:</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="78"/>
+        <location filename="GoogleTranslate.py" line="84"/>
         <source>Google Translate</source>
         <translation>Переводчик Google</translation>
     </message>
@@ -208,47 +208,47 @@
         <translation>Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="79"/>
+        <location filename="GoogleTranslate.py" line="85"/>
         <source>&lt;em&gt;Please wait...&lt;/em&gt;</source>
         <translation>&lt;em&gt;Пожалуйста, подождите...&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="117"/>
+        <location filename="GoogleTranslate.py" line="123"/>
         <source>&lt;em&gt;Aborted&lt;/em&gt;</source>
         <translation>&lt;em&gt;Прервано&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="126"/>
+        <location filename="GoogleTranslate.py" line="132"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="128"/>
+        <location filename="GoogleTranslate.py" line="134"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="130"/>
+        <location filename="GoogleTranslate.py" line="136"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="132"/>
+        <location filename="GoogleTranslate.py" line="138"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="134"/>
+        <location filename="GoogleTranslate.py" line="140"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="136"/>
+        <location filename="GoogleTranslate.py" line="142"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="147"/>
+        <location filename="GoogleTranslate.py" line="153"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -260,7 +260,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Руководство %1</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="175"/>
+        <location filename="HelpBrowser.py" line="182"/>
         <source>%1 Manual - %2</source>
         <translation>Руководство %1 - %2</translation>
     </message>
@@ -679,7 +679,7 @@ Package version: %2</source>
         <translation>Я не знаю...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="88"/>
+        <location filename="GoogleTranslate.py" line="94"/>
         <source>&lt;em&gt;Link &lt;strong&gt;%1&lt;/strong&gt; translation was opened in your browser&lt;/em&gt;</source>
         <translation>&lt;em&gt;Ссылка &lt;strong&gt;%1&lt;/strong&gt; открыта в окне вашего браузера&lt;/em&gt;</translation>
     </message>
@@ -696,44 +696,34 @@ If not, remove lock file &quot;%2&quot;</source>
 Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="128"/>
+        <location filename="DictInfoWindow.py" line="130"/>
         <source>Caption</source>
         <translation>Заголовок</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="132"/>
+        <location filename="DictInfoWindow.py" line="134"/>
         <source>File path</source>
         <translation>Путь к файлу</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="134"/>
+        <location filename="DictInfoWindow.py" line="136"/>
         <source>File size (KB)</source>
         <translation>Размер файла (КБ)</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="139"/>
+        <location filename="DictInfoWindow.py" line="141"/>
         <source>Count of words</source>
         <translation>Количество слов</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="141"/>
+        <location filename="DictInfoWindow.py" line="143"/>
         <source>Description</source>
         <translation>Описание</translation>
     </message>
     <message>
-        <location filename="FindInSLPanel.py" line="190"/>
+        <location filename="SlSearchPanel.py" line="190"/>
         <source>Enter the word, please</source>
         <translation>Пожалуйста, введите слово</translation>
-    </message>
-    <message>
-        <location filename="FindWordInSL.py" line="60"/>
-        <source>&lt;em&gt;This word is not found&lt;/em&gt;</source>
-        <translation>&lt;em&gt;Такого слова не найдено&lt;/em&gt;</translation>
-    </message>
-    <message>
-        <location filename="FindWordInSL.py" line="66"/>
-        <source>&lt;em&gt;No dict is connected&lt;/em&gt;</source>
-        <translation>&lt;em&gt;Нет подключенных словарей&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="MainWindow.py" line="180"/>
@@ -751,32 +741,32 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Окно словаря</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="122"/>
+        <location filename="SlWordSearch.py" line="138"/>
         <source>An error occured when creating the search process</source>
         <translation>Ошибка при создании поискового процесса</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="148"/>
+        <location filename="SlWordSearch.py" line="164"/>
         <source>Error of the search process</source>
         <translation>Ошибка поискового процесса</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="130"/>
+        <location filename="SlWordSearch.py" line="146"/>
         <source>Connection lost with search process</source>
         <translation>Связь с поисковым процессом потеряна</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="142"/>
+        <location filename="SlWordSearch.py" line="158"/>
         <source>Unknown error occured while executing the search process</source>
         <translation>При выполнении поискового процесса произошла неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="134"/>
+        <location filename="SlWordSearch.py" line="150"/>
         <source>Error while writing data into the search process</source>
         <translation>Ошибка при записи данных в поисковый процесс</translation>
     </message>
     <message>
-        <location filename="FindWordInSL.py" line="138"/>
+        <location filename="SlWordSearch.py" line="154"/>
         <source>Error while reading data from the search process</source>
         <translation>Ошибка при чтении данных из поискового процесса</translation>
     </message>
@@ -786,22 +776,22 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Enter</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="102"/>
+        <location filename="DictsManager.py" line="106"/>
         <source>Ctrl+Up</source>
         <translation>Ctrl+Up</translation>
     </message>
     <message>
-        <location filename="DictsManager.py" line="109"/>
+        <location filename="DictsManager.py" line="113"/>
         <source>Ctrl+Down</source>
         <translation>Ctrl+Down</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="83"/>
+        <location filename="HelpBrowser.py" line="90"/>
         <source>Backspace</source>
         <translation>Backspace</translation>
     </message>
     <message>
-        <location filename="HelpBrowser.py" line="120"/>
+        <location filename="HelpBrowser.py" line="127"/>
         <source>Ctrl+F, /</source>
         <translation>Ctrl+F, /</translation>
     </message>
@@ -861,12 +851,12 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Идиш</translation>
     </message>
     <message>
-        <location filename="DictInformationWindow.py" line="130"/>
+        <location filename="DictInfoWindow.py" line="132"/>
         <source>Translate direction</source>
         <translation>Направление перевода</translation>
     </message>
     <message>
-        <location filename="About.py" line="88"/>
+        <location filename="About.py" line="90"/>
         <source>&lt;center&gt;&lt;h3&gt;%1 - the graphical interface for SL&lt;/h3&gt;&lt;/center&gt;All the programs of the &lt;strong&gt;%2&lt;/strong&gt; package are distributable, according&lt;br&gt;to the license &lt;strong&gt;GPLv2&lt;/strong&gt;. For details visit &lt;em&gt;License agreement&lt;/em&gt; of the&lt;br&gt;&lt;strong&gt;%2&lt;/strong&gt; manual.&lt;br&gt;&lt;br&gt;Author of the &lt;strong&gt;%2&lt;/strong&gt; package:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Devaev Maxim&lt;/em&gt;&lt;br&gt;Thanks to:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Baburina Elisabeth&lt;/em&gt;&lt;br&gt;Valuable assistants:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Vladimir Fomkin&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Tihonov Sergey&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Renat Nasyrov&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Du Vinh&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Aleksey Yum&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Olga Polyakova&lt;/em&gt;&lt;br&gt;Translators:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Kirill Nebogin&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:%3?subject=%2&quot;&gt;%3&lt;/a&gt;)&lt;/em&gt;</source>
         <translation>&lt;center&gt;&lt;h3&gt;%1 - графический интерфейс для SL&lt;/h3&gt;&lt;/center&gt;Все программы пакета &lt;strong&gt;%2&lt;/strong&gt; распространяются по лицензии&lt;br&gt;&lt;strong&gt;GPLv2&lt;/strong&gt;. Подробнее смотрите в разделе &lt;em&gt;Лицензионное слоглашение&lt;/em&gt;&lt;br&gt; руководства &lt;strong&gt;%2&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Автор пакета &lt;strong&gt;%2&lt;/strong&gt;:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Деваев Максим&lt;/em&gt;&lt;br&gt;Спасибо:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Бабуриной Елизавете&lt;/em&gt;&lt;br&gt;Помогали:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Владимир Фомкин&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Тихонов Сергей&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ренат Насыров&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Доу Винх&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Алексей Юм&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ольга Полякова&lt;/em&gt;&lt;br&gt;Переводчики:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Кирилл Небогин&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:%3?subject=%2&quot;&gt;%3&lt;/a&gt;)&lt;/em&gt;</translation>
     </message>
@@ -883,6 +873,16 @@ Spy-сервис не запущен</translation>
 Spy is running</source>
         <translation>%1 - графический интерфейс для SL
 Spy-сервис работает</translation>
+    </message>
+    <message>
+        <location filename="SlWordSearch.py" line="76"/>
+        <source>&lt;font class=&quot;warning_font&quot;&gt;This word is not found&lt;/font&gt;</source>
+        <translation>&lt;font class=&quot;warning_font&quot;&gt;Такого слова не найдено&lt;/font&gt;</translation>
+    </message>
+    <message>
+        <location filename="SlWordSearch.py" line="82"/>
+        <source>&lt;font class=&quot;warning_font&quot;&gt;No dict is connected&lt;/font&gt;</source>
+        <translation>&lt;font class=&quot;warning_font&quot;&gt;Нет подключенных словарей&lt;/font&gt;</translation>
     </message>
 </context>
 </TS>
