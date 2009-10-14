@@ -63,8 +63,8 @@ class SlWordSearch(Qt.QObject) :
 		#####
 
 		self.replaces_list = [
-			["<em>This word is not found</em>", tr("<em>This word is not found</em>")],
-			["<em>No dict is connected</em>", tr("<em>No dict is connected</em>")]
+			["<font class=\"warning_font\">This word is not found</font>", tr("<font class=\"warning_font\">This word is not found</font>")],
+			["<font class=\"warning_font\">No dict is connected</font>", tr("<font class=\"warning_font\">No dict is connected</font>")]
 			]
 
 		#####
@@ -162,9 +162,8 @@ class SlWordSearch(Qt.QObject) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
-		# FIXME: add normal translate replacing
-		#for replaces_list_item in self.replaces_list :
-		#	text.replace(replaces_list_item[0], replaces_list_item[1])
+		for replaces_list_item in self.replaces_list :
+			text.replace(replaces_list_item[0], replaces_list_item[1])
 
 		if self.proc_args[2] == UsuallySearchOption or self.proc_args[2] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
@@ -176,31 +175,39 @@ class SlWordSearch(Qt.QObject) :
 			#####
 
 			if parts_list.count() == 1 :
-				em_item_regexp = Qt.QRegExp("<em>(.*)</em>")
-				em_item_regexp.setMinimal(True)
+				warning_item_regexp = Qt.QRegExp("<font class=\"warning_font\">(.*)</font>")
+				warning_item_regexp.setMinimal(True)
 
-				em_item_pos = em_item_regexp.indexIn(text, 0)
-				while em_item_pos != -1 :
-					list << "{{"+em_item_regexp.cap(1)+"}}"
-					em_item_pos = em_item_regexp.indexIn(text, em_item_pos + em_item_regexp.matchedLength())
+				warning_item_pos = warning_item_regexp.indexIn(text, 0)
+				while warning_item_pos != -1 :
+					list << "{{"+warning_item_regexp.cap(1)+"}}"
+					warning_item_pos = warning_item_regexp.indexIn(text, warning_item_pos + warning_item_regexp.matchedLength())
 
 				if list.count() == 0 :
 					list << "{{"+text+"}}"
 
 			#####
 
-			caption_item_regexp = Qt.QRegExp("<td bgcolor=\"(.*)\"><h2 align=\"center\"><em>(.*)</em>")
+			caption_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
+
+			caption_item_regexp = Qt.QRegExp("<font class=\"dict_header_font\">(.*)</font>")
 			caption_item_regexp.setMinimal(True)
 
 			word_item_regexp = Qt.QRegExp("<a href=.*>(.*)</a>")
 			word_item_regexp.setMinimal(True)
+
+			if caption_color_regexp.exactMatch(parts_list[0]) :
+				caption_color = caption_color_regexp.cap(1)
+			else :
+				caption_color = Qt.QString("#FFFFFF")
 
 			parts_list_count = 1
 			while parts_list_count < parts_list.count() :
 				if caption_item_regexp.indexIn(parts_list[parts_list_count]) < 0 :
 					parts_list_count += 1
 					continue
-				list << "[["+caption_item_regexp.cap(2)+"||"+caption_item_regexp.cap(1)+"]]"
+
+				list << "[["+caption_item_regexp.cap(1)+"||"+caption_color+"]]"
 
 				word_item_pos = word_item_regexp.indexIn(parts_list[parts_list_count], 0)
 				while word_item_pos != -1 :

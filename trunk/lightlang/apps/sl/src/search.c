@@ -115,8 +115,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					print_header(dict_name);
 
 					if ( settings.output_format == html_output_format )
-						printf("\t<em><font color=\"#494949\" size=\"+1\">"
-							"&nbsp;&nbsp;&nbsp;%ls</font></em><br>\n", word_wc);
+						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
 					else if ( settings.output_format == text_output_format )
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
@@ -171,8 +170,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					print_header(dict_name);
 
 					if ( settings.output_format == html_output_format )
-						printf("\t<em><font color=\"#494949\" size=\"+1\">"
-							"&nbsp;&nbsp;&nbsp;%ls</font></em><br>\n", word_wc);
+						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
 					else if ( settings.output_format == text_output_format )
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
@@ -213,8 +211,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 						print_header(dict_name);
 
 						if ( settings.output_format == html_output_format )
-							printf("\t<em><font color=\"#494949\" size=\"+1\">"
-								"&nbsp;&nbsp;&nbsp;%ls</font></em><br>\n", word_wc);
+							printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
 						else if ( settings.output_format == text_output_format )
 							printf("\n\t<< %ls >>\n", word_wc);
 						// native format pass
@@ -276,8 +273,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					print_separator();
 
 					if ( settings.output_format == html_output_format )
-						printf("\t<em><font color=\"#494949\" size=\"+1\">"
-							"&nbsp;&nbsp;&nbsp;%ls</font></em><br>\n", word_wc);
+						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
 					else if ( settings.output_format == text_output_format )
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
@@ -317,8 +313,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					print_separator();
 
 					if ( settings.output_format == html_output_format )
-						printf("\t<em><font color=\"#494949\" size=\"+1\">"
-							"&nbsp;&nbsp;&nbsp;%ls</font></em><br>\n", word_wc);
+						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
 					else if ( settings.output_format == text_output_format )
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
@@ -496,16 +491,31 @@ void print_begin_page(const char *word)
 			"<!--      \\      /       -->\n"
 			"<!--        \\  /         -->\n"
 			"<!--         \\/          -->\n"
-			"<!-- ------------------- -->\n"
+			"<!-- ******************* -->\n"
 			"<head>\n"
 			"\t<title>%s</title>\n"
 			"\t<meta name=\"GENERATOR\" content=\"SL Engine\">\n"
 			"\t<meta name=\"AUTHOR\" content=\"Devaev Maxim aka Liksys\">\n"
 			"\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n"
+			"\t<style type=\"text/css\">\n"
+			"\t\t.dict_header_background {background-color: #DFEDFF;}\n"
+			"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
+			"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
+			"\t\t.list_item_number_font {font-style: italic;}\n"
+			"\t\t.article_number_font {font-style: italic; font-weight: bold;}\n"
+			"\t\t.strong_font {font-weight: bold;}\n"
+			"\t\t.italic_font {font-style: italic;}\n"
+			"\t\t.green_font {color: #0A7700;}\n"
+			"\t\t.underline_font {font-decoration: underline;}\n"
+			"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
+			"\t\t.sound_link_font {font-size: normal;}\n"
+			"\t\t.warning_font {font-style: italic;}\n"
+			"\t</style>\n"
 			"</head>\n"
 			"<body>\n"
-			"<!-- translate --->\n", word, settings.locale_encoding);
+			"<!-- translate -->\n", word, settings.locale_encoding);
 	}
+	// others formats pass
 }
 
 /********************************************************************************
@@ -522,6 +532,7 @@ void print_end_page(void)
 
 	if ( settings.output_format == html_output_format )
 		printf("</body>\n</html>\n");
+	// others formats pass
 }
 
 /********************************************************************************
@@ -563,11 +574,12 @@ static void print_header(const char *dict_name)
 
 	if ( settings.output_format == html_output_format )
 	{
-		printf("\t<table border=\"0\" width=\"100%\"><tr><td bgcolor=\"#DFEDFF\"><h2 align=\"center\"><em>");
+		printf("\t<table border=\"0\" width=\"100%\"><tr><td align=\"center\""
+			" class=\"dict_header_background\"><font class=\"dict_header_font\">");
 		for (; (*dict_name); dict_name++)
 			if ( (*dict_name) == '_' ) putchar(' ');
 			else putchar(*dict_name);
-		printf("</em></h2></td></tr></table>\n");
+		printf("</font></td></tr></table>\n");
 	}
 	else if ( settings.output_format == text_output_format )
 	{
@@ -606,7 +618,8 @@ static void print_list_item(const wchar_t *word_wc, const int word_number)
 
 
 	if ( settings.output_format == html_output_format )
-		printf("\t(<em>%d</em>) <a href=\"#i_%ls\">%ls</a><br>\n", word_number, word_wc, word_wc);
+		printf("\t(<font class=\"list_item_number_font\">%d</font>) <a href=\"#i_%ls\">%ls</a><br>\n",
+			word_number, word_wc, word_wc);
 	else if ( settings.output_format == text_output_format )
 	{
 		if ( settings.use_terminal_escapes_flag )
@@ -634,9 +647,9 @@ static void print_translate(const char *str, const int word_number)
 	int		blocks_count = 0;		// Schetchik blokov
 	int		char_count = 0;			// Schetchik simvolov
 	int		count = 0;			// Schetchik
-	bool		underline_text_flag = false;	// Flag podcherknutogo teksta
-	bool		word_link_text_flag = false;	// Flag ssylki-teksta
-	bool		sound_link_text_flag = false;	// Flag ssylki-zvuka
+	bool		underline_font_flag = false;	// Flag podcherknutogo teksta
+	bool		word_link_font_flag = false;	// Flag ssylki-teksta
+	bool		sound_link_font_flag = false;	// Flag ssylki-zvuka
 	bool		shiel_flag = false;		// Flag ekranirovaniya
 	extern settings_t	settings;		// Parametry sistemy
 	//////////////////////////////////////////////////
@@ -646,7 +659,7 @@ static void print_translate(const char *str, const int word_number)
 
 	if ( settings.output_format == html_output_format )
 	{
-		printf("\t<dl><dd>\n\t\t<strong><em>(%d)</em></strong> ", word_number);
+		printf("\t<dl><dd>\n\t\t(<font class=\"article_number_font\">%d</font>) ", word_number);
 
 		for (; (*str); str++)
 		{
@@ -665,15 +678,15 @@ static void print_translate(const char *str, const int word_number)
 			{
 				switch (*str)
 				{
-					case '[' : printf("<strong>"); ++strong_font_count; break;
+					case '[' : printf("<font class=\"strong_font\">"); ++strong_font_count; break;
 					case ']' : if ( strong_font_count > 0 )
-						{ printf("</strong>"); --strong_font_count; } break;
+						{ printf("</font>"); --strong_font_count; } break;
 
-					case '(' : printf("<em>"); ++italic_font_count; break;
+					case '(' : printf("<font class=\"italic_font\">"); ++italic_font_count; break;
 					case ')' : if ( italic_font_count > 0 )
-						{ printf("</em>"); --italic_font_count; } break;
+						{ printf("</font>"); --italic_font_count; } break;
 
-					case '<' : printf("<font color=\"#0A7700\">"); ++green_font_count; break;
+					case '<' : printf("<font class=\"green_font\">"); ++green_font_count; break;
 					case '>' : if ( green_font_count > 0 )
 						{ printf("</font>"); --green_font_count; } break;
 
@@ -681,18 +694,18 @@ static void print_translate(const char *str, const int word_number)
 					case '}' : if ( blocks_count > 0 )
 						{ printf("</dd></dl>"); --blocks_count; } break;
 
-					case '_' : if ( !underline_text_flag )
-						{ printf("<u>"); underline_text_flag = true; }
-						else { printf("</u>"); underline_text_flag = false; } break;
+					case '_' : if ( !underline_font_flag )
+						{ printf("<font class=\"underline_font\">"); underline_font_flag = true; }
+						else { printf("</font>"); underline_font_flag = false; } break;
 
-					case '@' : if ( !word_link_text_flag )
-						{ printf("<u><font color=\"#DFEDFF\">"); word_link_text_flag = true; }
-						else { printf("</font></u>"); word_link_text_flag = false; } break;
+					case '@' : if ( !word_link_font_flag )
+						{ printf("<font class\"word_link_font\">"); word_link_font_flag = true; }
+						else { printf("</font>"); word_link_font_flag = false; } break;
 
-					case 's' : if ( !sound_link_text_flag )
-						{ printf("&nbsp;[&nbsp;<a href=\"#s_"); sound_link_text_flag = true; }
-						else { printf("\"><font size=\"+1\">\u266B</font></a>&nbsp;]&nbsp;");
-						sound_link_text_flag = false; } break;
+					case 's' : if ( !sound_link_font_flag )
+						{ printf("&nbsp;[&nbsp;<a class=\"sound_link_font\"href=\"#s_"); sound_link_font_flag = true; }
+						else { printf("\">\u266B</a>&nbsp;]&nbsp;");
+						sound_link_font_flag = false; } break;
 
 					case '\\' : putchar('\\'); break;
 
@@ -714,12 +727,12 @@ static void print_translate(const char *str, const int word_number)
 			else putchar(*str);
 		}
 
-		for (; strong_font_count > 0; strong_font_count--) printf("</strong>");
-		for (; italic_font_count > 0; italic_font_count--) printf("</em>");
+		for (; strong_font_count > 0; strong_font_count--) printf("</font>");
+		for (; italic_font_count > 0; italic_font_count--) printf("</font>");
 		for (; green_font_count > 0; green_font_count--) printf("</font>");
 		for (; blocks_count > 0; blocks_count--) printf("</dd></dl>");
-		if ( underline_text_flag ) { printf("</u>"); underline_text_flag = false; }
-		if ( word_link_text_flag ) { printf("</font></u>"); word_link_text_flag = false; }
+		if ( underline_font_flag ) { printf("</font>"); underline_font_flag = false; }
+		if ( word_link_font_flag ) { printf("</font>"); word_link_font_flag = false; }
 
 		printf("\n\t</dd></dl>\n");
 	}
@@ -754,7 +767,7 @@ static void print_translate(const char *str, const int word_number)
 						{
 							printf("\033[0m");
 							if ( green_font_count ) printf("\033[32m");
-							if ( underline_text_flag ) printf("\033[4m");
+							if ( underline_font_flag ) printf("\033[4m");
 							strong_font_count = 0;
 						} break;
 
@@ -764,7 +777,7 @@ static void print_translate(const char *str, const int word_number)
 						{
 							printf("\033[0m");
 							if ( strong_font_count ) printf("\033[1m");
-							if ( underline_text_flag ) printf("\033[4m");
+							if ( underline_font_flag ) printf("\033[4m");
 							green_font_count = 0;
 						} break;
 
@@ -779,23 +792,23 @@ static void print_translate(const char *str, const int word_number)
 
 					case L'_' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !underline_text_flag )
-							{ printf("\033[4m"); underline_text_flag = true; }
-							else { printf("\033[24m"); underline_text_flag = false; }
+							if ( !underline_font_flag )
+							{ printf("\033[4m"); underline_font_flag = true; }
+							else { printf("\033[24m"); underline_font_flag = false; }
 						} break;
 
 					case L'@' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !word_link_text_flag )
-							{ printf("\033[4m"); word_link_text_flag = true; }
-							else { printf("\033[24m"); word_link_text_flag = false; }
+							if ( !word_link_font_flag )
+							{ printf("\033[4m"); word_link_font_flag = true; }
+							else { printf("\033[24m"); word_link_font_flag = false; }
 						} break;
 
 					case L's' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !sound_link_text_flag )
-							{ printf("[\033[4msnd:\""); sound_link_text_flag = true; }
-							else { printf("\"\033[24m]"); sound_link_text_flag = false; }
+							if ( !sound_link_font_flag )
+							{ printf("[\033[4msnd:\""); sound_link_font_flag = true; }
+							else { printf("\"\033[24m]"); sound_link_font_flag = false; }
 						} break;
 
 					case L'\\' : putchar('\\'); break;
