@@ -201,9 +201,9 @@ def get_local_resources_list(resources_type) :
 		elif resources_type == SoundsResourcesType :
 			try :
 				resource_file_size = 0
-				for root, dirs, files in os.walk(resources_files_list_item) :
-					for item in dirs + files :
-						resource_file_size += os.stat(os.path.join(root, item)).st_size
+				for root_dir_path, dirs_list, files_list in os.walk(resources_files_list_item) :
+					for item in dirs_list + files_list :
+						resource_file_size += os.stat(os.path.join(root_dir_path, item)).st_size
 				if resource_file_size <= 0 :
 					print >> sys.stderr, "--- resource \"%s\" :: warning, non-positive size" % (resource_name)
 					continue
@@ -361,12 +361,12 @@ def uncompress_resource(resource_name, resource_type, resource_file_path) :
 
 		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TARProg, resource_file_path, SoundsDir)) != 0 :
 			try :
-				for root, dirs, files in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
-					for file in files :
-						os.remove(os.path.join(root, file))
-				for root, dirs, files in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
-					for dir in dirs :
-						os.rmdir(os.path.join(root, dir))
+				for root_dir_path, dirs_list, files_list in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
+					for files_list_item in files_list :
+						os.remove(os.path.join(root_dir_path, files_list_item))
+				for root_dir_path, dirs_list, files_list in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
+					for dirs_list_item in dirs_list :
+						os.rmdir(os.path.join(root_dir_path, dirs_list_item))
 				os.rmdir(resource_file_path[:-len(SoundsResourcesPostfix)])
 			except Exception, err1 :
 				print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing folder \"%s\": %s" % (
@@ -530,12 +530,12 @@ def uninstall_resources(requested_resources_names_list, resources_type) :
 		elif resources_type == SoundsResourcesType :
 			try :
 				requested_resources_names_list_item = os.path.join(SoundsDir, requested_resources_names_list_item)
-				for root, dirs, files in os.walk(requested_resources_names_list_item) :
-					for file in files :
-						os.remove(os.path.join(root, file))
-				for root, dirs, files in os.walk(requested_resources_names_list_item) :
-					for dir in dirs :
-						os.rmdir(os.path.join(root, dir))
+				for root_dir_path, dirs_list, files_list in os.walk(requested_resources_names_list_item) :
+					for files_list_item in files_list :
+						os.remove(os.path.join(root_dir_path, files_list_item))
+				for root_dir_path, dirs_list, files_list in os.walk(requested_resources_names_list_item) :
+					for dirs_list_item in dirs_list :
+						os.rmdir(os.path.join(root_dir_path, dirs_list_item))
 				os.rmdir(requested_resources_names_list_item)
 			except Exception, err1 :
 				print >> sys.stderr, "Error while removing resource \"%s\": %s\n" % (requested_resources_names_list_item, str(err1))
