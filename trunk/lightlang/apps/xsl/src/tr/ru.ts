@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
@@ -28,7 +29,7 @@
         <translation>Об&amp;новить</translation>
     </message>
     <message>
-        <location filename="DictInfoWindow.py" line="222"/>
+        <location filename="DictInfoWindow.py" line="214"/>
         <source>Unavailable</source>
         <translation>Недоступно</translation>
     </message>
@@ -664,38 +665,6 @@ Package version: %2</source>
         <translation>Ваш язык</translation>
     </message>
     <message>
-        <location filename="Main.py" line="129"/>
-        <source>%1 process is already running, kill old process and try again.
-If not, remove lock file &quot;%2&quot;</source>
-        <translation>Процесс %1 уже был запущен, завершите старый процесс и попробуйте снова.
-Если это ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
-    </message>
-    <message>
-        <location filename="DictInfoWindow.py" line="130"/>
-        <source>Caption</source>
-        <translation>Заголовок</translation>
-    </message>
-    <message>
-        <location filename="DictInfoWindow.py" line="134"/>
-        <source>File path</source>
-        <translation>Путь к файлу</translation>
-    </message>
-    <message>
-        <location filename="DictInfoWindow.py" line="136"/>
-        <source>File size (KB)</source>
-        <translation>Размер файла (КБ)</translation>
-    </message>
-    <message>
-        <location filename="DictInfoWindow.py" line="141"/>
-        <source>Count of words</source>
-        <translation>Количество слов</translation>
-    </message>
-    <message>
-        <location filename="DictInfoWindow.py" line="143"/>
-        <source>Description</source>
-        <translation>Описание</translation>
-    </message>
-    <message>
         <location filename="SlSearchPanel.py" line="190"/>
         <source>Enter the word, please</source>
         <translation>Пожалуйста, введите слово</translation>
@@ -826,11 +795,6 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>Идиш</translation>
     </message>
     <message>
-        <location filename="DictInfoWindow.py" line="132"/>
-        <source>Translate direction</source>
-        <translation>Направление перевода</translation>
-    </message>
-    <message>
         <location filename="About.py" line="90"/>
         <source>&lt;center&gt;&lt;h3&gt;%1 - the graphical interface for SL&lt;/h3&gt;&lt;/center&gt;All the programs of the &lt;strong&gt;%2&lt;/strong&gt; package are distributable, according&lt;br&gt;to the license &lt;strong&gt;GPLv2&lt;/strong&gt;. For details visit &lt;em&gt;License agreement&lt;/em&gt; of the&lt;br&gt;&lt;strong&gt;%2&lt;/strong&gt; manual.&lt;br&gt;&lt;br&gt;Author of the &lt;strong&gt;%2&lt;/strong&gt; package:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Devaev Maxim&lt;/em&gt;&lt;br&gt;Thanks to:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Baburina Elisabeth&lt;/em&gt;&lt;br&gt;Valuable assistants:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Vladimir Fomkin&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Tihonov Sergey&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Renat Nasyrov&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Du Vinh&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Aleksey Yum&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Olga Polyakova&lt;/em&gt;&lt;br&gt;Translators:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Kirill Nebogin&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:%3?subject=%2&quot;&gt;%3&lt;/a&gt;)&lt;/em&gt;</source>
         <translation>&lt;center&gt;&lt;h3&gt;%1 - графический интерфейс для SL&lt;/h3&gt;&lt;/center&gt;Все программы пакета &lt;strong&gt;%2&lt;/strong&gt; распространяются по лицензии&lt;br&gt;&lt;strong&gt;GPLv2&lt;/strong&gt;. Подробнее смотрите в разделе &lt;em&gt;Лицензионное слоглашение&lt;/em&gt;&lt;br&gt; руководства &lt;strong&gt;%2&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Автор пакета &lt;strong&gt;%2&lt;/strong&gt;:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Деваев Максим&lt;/em&gt;&lt;br&gt;Спасибо:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Бабуриной Елизавете&lt;/em&gt;&lt;br&gt;Помогали:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Владимир Фомкин&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Тихонов Сергей&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ренат Насыров&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Доу Винх&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Алексей Юм&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ольга Полякова&lt;/em&gt;&lt;br&gt;Переводчики:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Кирилл Небогин&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:%3?subject=%2&quot;&gt;%3&lt;/a&gt;)&lt;/em&gt;</translation>
@@ -883,6 +847,43 @@ Spy-сервис работает</translation>
         <location filename="GoogleTranslate.py" line="96"/>
         <source>&lt;font class=&quot;word_header_font&quot;&gt;Link of site &quot;%1&quot; translation was opened in your browser&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>&lt;font class=&quot;word_header_font&quot;&gt;Перевод сайта &quot;%1&quot; открыт в вашем браузере&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="127"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;Caption&lt;/font&gt;: %2&lt;hr&gt;</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Заголовок&lt;/font&gt;: %2&lt;hr&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="128"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;Translate direction&lt;/font&gt;: %2&lt;hr&gt;</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Направление перевода&lt;/font&gt;: %2&lt;hr&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="129"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;File path&lt;/font&gt;: %2&lt;hr&gt;</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Путь к файлу&lt;/font&gt;: %2&lt;hr&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="130"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;File size (KB)&lt;/font&gt;: %2&lt;hr&gt;</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Размер файла (килобайт)&lt;/font&gt;: %2&lt;hr&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="134"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;Count of words&lt;/font&gt;: %2&lt;hr&gt;</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Количество слов&lt;/font&gt;: %2&lt;hr&gt;</translation>
+    </message>
+    <message>
+        <location filename="DictInfoWindow.py" line="135"/>
+        <source>&lt;font class=&quot;text_label_font&quot;&gt;Description&lt;/font&gt;: %2</source>
+        <translation>&lt;font class=&quot;text_label_font&quot;&gt;Описание словаря&lt;/font&gt;: %2</translation>
+    </message>
+    <message>
+        <location filename="StartupLock.py" line="59"/>
+        <source>Oops, %1 process is already running, kill old process and try again.
+If not, remove lock file &quot;%2&quot;</source>
+        <translation>Опаньки, а %1-то уже был запущен, убейте старый процесс и попробуйте снова.
+Если же это досадная ошибка, просто удалите файл-предохранитель &quot;%2&quot;</translation>
     </message>
 </context>
 </TS>
