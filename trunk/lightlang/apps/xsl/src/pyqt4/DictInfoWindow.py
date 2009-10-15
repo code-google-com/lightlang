@@ -125,23 +125,15 @@ class DictInfoWindow(Qt.QWidget) :
 		###
 
 		dict_info = Qt.QString()
-
-		html_form = Qt.QString("<strong><font color=\"#494949\">%1</font></strong>: %2")
-
-		dict_info.append(html_form.arg(tr("Caption")).arg(self.dictCaption()))
-		dict_info.append("<hr>")
-		dict_info.append(html_form.arg(tr("Translate direction")).arg(self.dictDirection()))
-		dict_info.append("<hr>")
-		dict_info.append(html_form.arg(tr("File path")).arg(self.dictFilePath()))
-		dict_info.append("<hr>")
-		dict_info.append(html_form.arg(tr("File size (KB)")).arg(self.dictFileSize()))
-		dict_info.append("<hr>")
+		dict_info.append(tr("<font class=\"text_label_font\">Caption</font>: %2<hr>").arg(self.dictCaption()))
+		dict_info.append(tr("<font class=\"text_label_font\">Translate direction</font>: %2<hr>").arg(self.dictDirection()))
+		dict_info.append(tr("<font class=\"text_label_font\">File path</font>: %2<hr>").arg(self.dictFilePath()))
+		dict_info.append(tr("<font class=\"text_label_font\">File size (KB)</font>: %2<hr>").arg(self.dictFileSize()))
 		self.dict_info_browser.setText(dict_info)
 
 		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_info.append(html_form.arg(tr("Count of words")).arg(word_count))
-		dict_info.append("<hr>")
-		dict_info.append(html_form.arg(tr("Description")).arg(dict_description))
+		dict_info.append(tr("<font class=\"text_label_font\">Count of words</font>: %2<hr>").arg(word_count))
+		dict_info.append(tr("<font class=\"text_label_font\">Description</font>: %2").arg(dict_description))
 		self.dict_info_browser.setText(dict_info)
 
 		###
@@ -193,11 +185,11 @@ class DictInfoWindow(Qt.QWidget) :
 		return Qt.QString().setNum(dict_file.size() / 1024) # KB
 
 	def dictDescriptionAndWordCount(self) :
-		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
-		dict_file_stream = Qt.QTextStream(dict_file)
-
 		dict_description = Qt.QString()
 		word_count = 0
+
+		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
+		dict_file_stream = Qt.QTextStream(dict_file)
 
 		if dict_file.open(Qt.QIODevice.ReadOnly) :
 			first_comment_flag = False
