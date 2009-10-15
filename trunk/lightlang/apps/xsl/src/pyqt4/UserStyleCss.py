@@ -51,7 +51,7 @@ def initUserStyleCss() :
 	global UserStyleCssObject
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
 		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-		".word_header_font {font-size: normal; font-weight: bold; color: #494949;}\n"
+		".word_header_font {font-size: normal; color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"
 		".article_number_font {font-style: italic; font-weight: bold;}\n"
 		".strong_font {font-weight: bold;}\n"
@@ -60,7 +60,8 @@ def initUserStyleCss() :
 		".underline_font {font-decoration: underline;}\n"
 		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
 		".sound_link_font {font-size: normal;}\n"
-		".info_font {font-style: italic;}\n")
+		".info_font {font-style: italic;}\n"
+		".text_label_font {font-size: normal; color: #494949; font-style: italic; font-weight: bold;}\n")
 
 	my_name = Qt.QString(Const.MyName).toLower()
 

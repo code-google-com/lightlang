@@ -501,7 +501,7 @@ void print_begin_page(const char *word)
 		if ( settings.use_css_flag )
 			puts("\t\t.dict_header_background {background-color: #DFEDFF;}\n"
 				"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-				"\t\t.word_header_font {font-size: normal; font-weight: bold; color: #494949;}\n"
+				"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
 				"\t\t.list_item_number_font {font-style: italic;}\n"
 				"\t\t.article_number_font {font-style: italic; font-weight: bold;}\n"
 				"\t\t.strong_font {font-weight: bold;}\n"
