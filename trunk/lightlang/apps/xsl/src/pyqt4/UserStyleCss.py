@@ -51,7 +51,7 @@ def initUserStyleCss() :
 	global UserStyleCssObject
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
 		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-		".word_header_font {font-size: normal; color: #494949;}\n"
+		".word_header_font {font-size: normal; font-weight: bold; color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"
 		".article_number_font {font-style: italic; font-weight: bold;}\n"
 		".strong_font {font-weight: bold;}\n"
