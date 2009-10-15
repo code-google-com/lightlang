@@ -24,6 +24,7 @@ import Qt
 import Config
 import Const
 import Settings
+import UserStyleCss
 import PopupWindow
 import TextSearchFrame
 import TranslateBrowser
@@ -56,14 +57,17 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.caption_frame.setMouseTracking(True)
 		self.caption_frame.setFrameShape(Qt.QFrame.Box)
 		self.caption_frame.setFrameShadow(Qt.QFrame.Raised)
-		self.caption_frame.setStyleSheet("QFrame {border: 2px solid gray; border-radius: 8px;}")
 
 		self.main_layout.addWidget(self.caption_frame)
 
 		self.caption_frame_layout = Qt.QHBoxLayout()
-		self.caption_frame_layout.setContentsMargins(1, 1, 22, 1)
+		self.caption_frame_layout.setContentsMargins(20, 1, 2, 1)
 		self.caption_frame_layout.setSpacing(1)
 		self.caption_frame.setLayout(self.caption_frame_layout)
+
+		#####
+
+		self.user_style_css = UserStyleCss.userStyleCss()
 
 		#####
 
@@ -113,8 +117,8 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 	### Public ###
 
 	def setCaption(self, str) :
-		self.caption_label.setText(Qt.QString("<em><strong><font color=\"#494949\">"
-			"&nbsp;&nbsp;&nbsp;%1&nbsp;&nbsp;&nbsp;</font></strong></em>").arg(str))
+		self.caption_label.setText(Qt.QString("<html><head><style>"+self.user_style_css+"</style></head>"
+			"<body><font class=\"text_label_font\">%1</font></body></html>").arg(str))
 
 	def setText(self, text) :
 		self.translate_browser.setText(text)
