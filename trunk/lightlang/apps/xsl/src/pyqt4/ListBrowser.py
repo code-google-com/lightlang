@@ -46,29 +46,40 @@ class ListBrowser(Qt.QListWidget) :
 
 		###
 
+		self.caption_item_font = Qt.QListWidgetItem().font()
+		self.caption_item_foreground_brush = Qt.QListWidgetItem().foreground()
+		self.caption_item_foreground_brush.setStyle(Qt.Qt.SolidPattern)
+		self.caption_item_background_brush = Qt.QListWidgetItem().background()
+		self.caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
+
 		user_style_css = UserStyleCss.userStyleCss()
 
-		self.caption_font_bold_flag = False
-		self.caption_font_italic_flag = False
-		self.caption_font_large_flag = False
-		caption_font_regexp = Qt.QRegExp(".*\\.dict_header_font\\W*\\{(.*)\\}.*")
-		caption_font_regexp.setMinimal(True)
-		caption_font_pos = caption_font_regexp.indexIn(user_style_css)
-		while caption_font_pos != -1 :
-			self.caption_font_bold_flag = caption_font_regexp.cap(1).contains("bold")
-			self.caption_font_italic_flag = caption_font_regexp.cap(1).contains("italic")
-			self.caption_font_large_flag = caption_font_regexp.cap(1).contains("large")
-			caption_font_pos = caption_font_regexp.indexIn(user_style_css, caption_font_pos +
-				caption_font_regexp.matchedLength())
+		dict_header_font_regexp = Qt.QRegExp("\\.dict_header_font\\s+\\{(([^(\\{|\\})])*"
+			"(color:\\s*(#\\w{6});([^(\\{|\\})])*)?)\\}")
+		dict_header_font_regexp.setMinimal(True)
+		dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css)
+		while dict_header_font_pos != -1 :
+			self.caption_item_font.setBold(dict_header_font_regexp.cap(1).contains("bold"))
+			self.caption_item_font.setItalic(dict_header_font_regexp.cap(1).contains("italic"))
+			if dict_header_font_regexp.cap(1).contains("large") :
+				if self.caption_item_font.pixelSize() > 0 :
+					self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() +1)
+				elif self.caption_item_font.pointSize() > 0 :
+					self.caption_item_font.setPointSize(self.caption_item_font.pointSize() +1)
+			if not dict_header_font_regexp.cap(4).isEmpty() :
+				self.caption_item_foreground_brush.setColor(Qt.QColor(dict_header_font_regexp.cap(4)))
+			dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css, dict_header_font_pos +
+				dict_header_font_regexp.matchedLength())
 
-		self.caption_background_color = Qt.QColor("#FFFFFF")
-		caption_background_color_regexp = Qt.QRegExp(".*\\.dict_header_background\\W*\\{.*background-color:\\W*(#\\w{6});.*\\}.*")
-		caption_background_color_regexp.setMinimal(True)
-		caption_background_color_pos = caption_background_color_regexp.indexIn(user_style_css)
-		while caption_background_color_pos != -1 :
-			self.caption_background_color = Qt.QColor(caption_background_color_regexp.cap(1))
-			caption_background_color_pos = caption_background_color_regexp.indexIn(user_style_css, caption_background_color_pos +
-				caption_background_color_regexp.matchedLength())
+		dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
+			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
+		dict_header_background_regexp.setMinimal(True)
+		dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css)
+		while dict_header_background_pos != -1 :
+			if not dict_header_background_regexp.cap(2).isEmpty() :
+				self.caption_item_background_brush.setColor(Qt.QColor(dict_header_background_regexp.cap(2)))
+			dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css, dict_header_background_pos +
+				dict_header_background_regexp.matchedLength())
 
 
 	### Public ###
@@ -81,33 +92,14 @@ class ListBrowser(Qt.QListWidget) :
 			if self.info_item_regexp.exactMatch(list[count]) :
 				info_item = Qt.QListWidgetItem(self.info_item_regexp.cap(1))
 				info_item.setFlags(Qt.Qt.NoItemFlags)
-
 				self.addItem(info_item)
 			elif self.caption_item_regexp.exactMatch(list[count]) :
 				caption_item = Qt.QListWidgetItem(self.caption_item_regexp.cap(1))
-
-				caption_item_font = caption_item.font()
-				caption_item_font.setBold(self.caption_font_bold_flag)
-				caption_item_font.setItalic(self.caption_font_italic_flag)
-				if self.caption_font_large_flag :
-					if caption_item_font.pixelSize() > 0 :
-						caption_item_font.setPixelSize(caption_item_font.pixelSize() +1)
-					elif caption_item_font.pointSize() > 0 :
-						caption_item_font.setPointSize(caption_item_font.pointSize() +1)
-				caption_item.setFont(caption_item_font)
-
-				caption_item_foreground_brush = caption_item.foreground()
-				caption_item_foreground_brush.setStyle(Qt.Qt.SolidPattern)
-				caption_item.setForeground(caption_item_foreground_brush)
-
-				caption_item_background_brush = caption_item.background()
-				caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
-				caption_item_background_brush.setColor(self.caption_background_color)
-				caption_item.setBackground(caption_item_background_brush)
-
 				caption_item.setFlags(Qt.Qt.NoItemFlags)
+				caption_item.setFont(self.caption_item_font)
+				caption_item.setForeground(self.caption_item_foreground_brush)
+				caption_item.setBackground(self.caption_item_background_brush)
 				caption_item.setTextAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
-
 				self.addItem(caption_item)
 			else :
 				self.addItem(list[count])
