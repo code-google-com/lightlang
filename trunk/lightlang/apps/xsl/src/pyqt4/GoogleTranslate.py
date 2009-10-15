@@ -90,10 +90,11 @@ class GoogleTranslate(Qt.QObject) :
 		###
 
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
-			Qt.QDesktopServices.openUrl(Qt.QUrl(Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
-				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text)))
-			self.textChangedSignal(tr("<font class=\"info_font\">Link <font class=\"word_header_font\">%1</font> translation"
-				" was opened in your browser</font>").arg(text))
+			site = ( Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
+				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text) )
+			Qt.QDesktopServices.openUrl(Qt.QUrl(site))
+			self.textChangedSignal(tr("<font class=\"word_header_font\">Link of site \"%1\" translation"
+				" was opened in your browser</font><hr><br><a href=\"%2\">%2</a>").arg(text).arg(site))
 			self.processFinishedSignal()
 			return
 
