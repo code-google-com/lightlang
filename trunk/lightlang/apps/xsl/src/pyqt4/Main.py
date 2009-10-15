@@ -21,11 +21,10 @@
 
 
 import Qt
-import sys
-import os
 import Config
 import Const
 import Locale
+import StartupLock
 import UserStyleCss
 import Application
 import TrayIcon
@@ -65,7 +64,7 @@ class Main :
 
 		self.app.setStyleSheet(UserStyleCss.userStyleCss())
 
-		self.checkLockFile()
+		StartupLock.test()
 
 		#####
 
@@ -107,36 +106,4 @@ class Main :
 		#####
 
 		self.app.exec_()
-
-
-	### Private ###
-
-	def checkLockFile(self) :
-		lock_file_path = Qt.QDir.tempPath()+"/"+Qt.QString(Const.MyName).toLower()+".lock"
-		lock_file = Qt.QFile(lock_file_path)
-		lock_file_stream = Qt.QTextStream(lock_file)
-
-		if not lock_file.exists() :
-			if not lock_file.open(Qt.QIODevice.WriteOnly) :
-				print >> sys.stderr, Const.MyName+": cannot create lock file: ignored"
-				return
-			lock_file.close()
-
-		if not lock_file.open(Qt.QIODevice.ReadOnly) :
-			print >> sys.stderr, Const.MyName+": cannot open lock file: ignored"
-			return
-
-		old_pid = Qt.QString(lock_file_stream.readLine())
-		if old_pid.length() and Qt.QDir("/proc/"+old_pid).exists() and not self.app.isSessionRestored() :
-			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("%1 process is already running, kill old process and try again.\n"
-					"If not, remove lock file \"%2\"").arg(Const.MyName).arg(lock_file_path))
-			lock_file.close()
-			sys.exit(1)
-
-		lock_file.close()
-
-		lock_file.open(Qt.QIODevice.WriteOnly|Qt.QIODevice.Truncate)
-		lock_file_stream << os.getpid() << "\n";
-		lock_file.close()
 
