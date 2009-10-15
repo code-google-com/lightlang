@@ -26,6 +26,7 @@ import os
 import Config
 import Const
 import Locale
+import UserStyleCss
 import Application
 import TrayIcon
 import MainWindow
@@ -61,6 +62,8 @@ class Main :
 		self.translator = Qt.QTranslator()
 		self.translator.load(TrDir+self.lang)
 		self.app.installTranslator(self.translator)
+
+		self.app.setStyleSheet(UserStyleCss.userStyleCss())
 
 		self.checkLockFile()
 
