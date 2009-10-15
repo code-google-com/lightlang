@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<!DOCTYPE TS><TS version="1.1" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
@@ -209,37 +208,37 @@
         <translation>Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="133"/>
+        <location filename="GoogleTranslate.py" line="134"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="135"/>
+        <location filename="GoogleTranslate.py" line="136"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="137"/>
+        <location filename="GoogleTranslate.py" line="138"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="139"/>
+        <location filename="GoogleTranslate.py" line="140"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="141"/>
+        <location filename="GoogleTranslate.py" line="142"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="143"/>
+        <location filename="GoogleTranslate.py" line="144"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="154"/>
+        <location filename="GoogleTranslate.py" line="155"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -866,7 +865,7 @@ Spy-сервис работает</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="124"/>
+        <location filename="GoogleTranslate.py" line="125"/>
         <source>&lt;font class=&quot;info_font&quot;&gt;Aborted&lt;/font&gt;</source>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Прервано&lt;/font&gt;</translation>
     </message>
@@ -881,10 +880,9 @@ Spy-сервис работает</translation>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Пусто&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="95"/>
-        <source>&lt;font class=&quot;info_font&quot;&gt;Link &lt;font class=&quot;word_header_font&quot;&gt;%1&lt;/font&gt; translation was opened in your browser&lt;/font&gt;</source>
-        <translatorcomment>&lt;font class=&quot;info_font&quot;&gt;Ссылка &lt;font class=&quot;word_header_font&quot;&gt;%1&lt;/font&gt; на перевод открыта в вашем браузере&lt;/font&gt;</translatorcomment>
-        <translation></translation>
+        <location filename="GoogleTranslate.py" line="96"/>
+        <source>&lt;font class=&quot;word_header_font&quot;&gt;Link of site &quot;%1&quot; translation was opened in your browser&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
+        <translation>&lt;font class=&quot;word_header_font&quot;&gt;Перевод сайта &quot;%1&quot; открыт в вашем браузере&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
 </context>
 </TS>
