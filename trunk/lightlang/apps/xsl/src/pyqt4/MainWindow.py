@@ -180,9 +180,6 @@ class MainWindow(Qt.QMainWindow) :
 			self.tabbed_translate_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
 		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_normal_16.png"), tr("Zoom normal"),
 			self.tabbed_translate_browser.zoomNormal, Qt.QKeySequence("Ctrl+0"))
-		self.view_menu.addSeparator()
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Toggle to fullscreen"),
-			self.toggleFullScreen, Qt.QKeySequence("F11"))
 
 		### Spy Menu
 
@@ -298,6 +295,11 @@ class MainWindow(Qt.QMainWindow) :
 		else :
 			self.close()
 
+	def showUp(self) :
+		if self.isVisible() :
+			self.visibleChange()
+		self.visibleChange()
+
 	###
 
 	def focusChanged(self) :
@@ -314,13 +316,6 @@ class MainWindow(Qt.QMainWindow) :
 
 	###
 
-	def showUp(self) :
-		if self.isVisible() :
-			self.visibleChange()
-		self.visibleChange()
-
-	###
-
 	def exit(self) :
 		self.save()
 		Qt.QApplication.instance().exit(0)
@@ -331,8 +326,6 @@ class MainWindow(Qt.QMainWindow) :
 	def addPanel(self, panel) :
 		self.panels_list.append(panel)
 		self.panels_focus_flags_list.append(False)
-
-	###
 
 	def addSourceObject(self, source_object) :
 		self.source_objects_list.append([source_object, -1])
@@ -472,12 +465,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
-
-	def toggleFullScreen(self) :
-		if self.isFullScreen() :
-			self.showNormal()
-		else :
-			self.showFullScreen()
 
 	###
 
