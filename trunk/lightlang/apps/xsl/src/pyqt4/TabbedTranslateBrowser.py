@@ -52,7 +52,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 		self.shred_lock_flag = False
 
-		self.single_translate_browsers = []
+		self.translate_browsers_list = []
 
 		self.tmp_text_cursor = Qt.QTextCursor()
 
@@ -116,22 +116,22 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def addTab(self) :
-		self.single_translate_browsers.append(TranslateBrowser.TranslateBrowser())
-		index = len(self.single_translate_browsers) -1
+		self.translate_browsers_list.append(TranslateBrowser.TranslateBrowser())
+		index = len(self.translate_browsers_list) -1
 
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.showTextSearchFrame)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.hideTextSearchFrame)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.showTextSearchFrame)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.hideTextSearchFrame)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
 			self.text_search_frame.setLineEditRedAlertPalette)
-		self.connect(self.single_translate_browsers[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
 			self.text_search_frame.setLineEditDefaultPalette)
 
-		self.single_translate_browsers[index].setText(tr("<font class=\"info_font\">Empty</font>"))
-		self.tab_widget.addTab(self.single_translate_browsers[index], tr("(Untitled)"))
+		self.translate_browsers_list[index].setText(tr("<font class=\"info_font\">Empty</font>"))
+		self.tab_widget.addTab(self.translate_browsers_list[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 
 		self.tabChangedSignal()
@@ -143,7 +143,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
 
 		self.tab_widget.removeTab(index)
-		self.single_translate_browsers.pop(index)
+		self.translate_browsers_list.pop(index)
 
 		if self.tab_widget.count() == 0 :
 			self.addTab()
@@ -161,7 +161,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def setText(self, index, text) :
-		self.single_translate_browsers[index].setText(text)
+		self.translate_browsers_list[index].setText(text)
 
 	def setCaption(self, index, word) :
 		self.tab_widget.setTabText(index, word)
@@ -170,7 +170,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 	def text(self, index = -1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		return self.single_translate_browsers[index].text()
+		return self.translate_browsers_list[index].text()
 
 	def caption(self, index = -1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
@@ -178,11 +178,11 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 	def browser(self, index = -1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		return self.single_translate_browsers[index]
+		return self.translate_browsers_list[index]
 
 	def document(self, index = -1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		return self.single_translate_browsers[index].document()
+		return self.translate_browsers_list[index].document()
 
 	###
 
@@ -191,7 +191,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			return
 
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].setText(tr("<font class=\"info_font\">Empty</font>"))
+		self.translate_browsers_list[index].setText(tr("<font class=\"info_font\">Empty</font>"))
 		self.tab_widget.setTabText(index, tr("(Untitled)"))
 
 	def clearAll(self) :
@@ -211,37 +211,37 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 			return
 
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].clear()
+		self.translate_browsers_list[index].clear()
 		self.tab_widget.setTabText(index, Qt.QString())
 
 	###
 
 	def zoomIn(self, index = -1, range = 1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].zoomIn(range)
+		self.translate_browsers_list[index].zoomIn(range)
 
 	def zoomOut(self, index = -1, range = 1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].zoomOut(range)
+		self.translate_browsers_list[index].zoomOut(range)
 
 	def zoomNormal(self, index = -1) :
 		index = ( self.tab_widget.currentIndex() if index < 0 else index )
-		self.single_translate_browsers[index].zoomNormal()
+		self.translate_browsers_list[index].zoomNormal()
 
 
 	### Private ###
 
 	def findNext(self, word) :
 		index = self.currentIndex()
-		self.single_translate_browsers[index].findNext(word)
+		self.translate_browsers_list[index].findNext(word)
 
 	def findPrevious(self, word) :
 		index = self.currentIndex()
-		self.single_translate_browsers[index].findPrevious(word)
+		self.translate_browsers_list[index].findPrevious(word)
 
 	def instantSearch(self, word) :
 		index = self.currentIndex()
-		self.single_translate_browsers[index].instantSearch(word)
+		self.translate_browsers_list[index].instantSearch(word)
 
 
 	### Signals ###
