@@ -26,7 +26,7 @@ import Const
 import Locale
 import StartupLock
 import UserStyleCss
-import Application
+import MainApplication
 import TrayIcon
 import MainWindow
 
@@ -54,7 +54,7 @@ class Main :
 	### Public ###
 
 	def run(self) :
-		self.app = Application.Application(self.argv)
+		self.app = MainApplication.MainApplication(self.argv)
 
 		self.lang = Locale.mainLang()
 

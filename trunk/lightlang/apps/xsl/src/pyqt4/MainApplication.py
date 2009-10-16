@@ -31,7 +31,7 @@ def tr(str) :
 
 
 #####
-class Application(Qt.QApplication) :
+class MainApplication(Qt.QApplication) :
 	def __init__(self, argv) :
 		Qt.QApplication.__init__(self, argv)
 
