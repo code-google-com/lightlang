@@ -60,8 +60,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.dict_name = Qt.QString(dict_name)
 
-		self.dict_name_regexp = Qt.QRegExp("([^\\.]+)\\.(..-..)")
-
 		#####
 
 		self.enable_dict_checkbox = Qt.QCheckBox()
@@ -73,9 +71,13 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self.main_layout.addWidget(self.vertical_frame1)
 
+		###
+
+		dict_name_regexp = Qt.QRegExp("([^\\.]+)\\.(..-..)")
+
 		self.dict_caption_label = Qt.QLabel()
-		if self.dict_name_regexp.exactMatch(dict_name) :
-			dict_caption = self.dict_name_regexp.cap(1)
+		if dict_name_regexp.exactMatch(dict_name) :
+			dict_caption = dict_name_regexp.cap(1)
 			dict_caption.replace("_", " ")
 			dict_caption.replace(".", " ")
 			self.dict_caption_label.setText(dict_caption)
@@ -86,9 +88,11 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.main_layout.addStretch()
 
 		self.dict_direction_label = Qt.QLabel()
-		if self.dict_name_regexp.exactMatch(dict_name) :
-			self.dict_direction_label.setText(self.dict_name_regexp.cap(2))
+		if dict_name_regexp.exactMatch(dict_name) :
+			self.dict_direction_label.setText(dict_name_regexp.cap(2))
 		self.main_layout.addWidget(self.dict_direction_label)
+
+		###
 
 		self.vertical_frame2 = Qt.QFrame()
 		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
