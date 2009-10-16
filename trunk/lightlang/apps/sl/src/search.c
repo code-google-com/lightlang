@@ -72,8 +72,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 	if ( strlen(word) < 1 ) return 0;
 	if ( strnlowcpy_wc(word_wc, word, MAX_WORD_SIZE -1) == NULL )
 	{
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n",
-			MYNAME, strerror(errno) );
+		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
@@ -84,7 +83,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		{
 			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
 				fprintf(stderr, "%s: cannot seek: incorrect index \"%lc %ld\": %s: ignored\n",
-					MYNAME, word_wc[0], pos, strerror(errno) );
+					MYNAME, word_wc[0], pos, strerror(errno));
 		}
 		else if ( pos == 0 ) return 0;
 		else rewind(dict_fp);
@@ -139,7 +138,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		{
 			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
 				fprintf(stderr, "%s: cannot seek: incorrect index \"%lc %ld\": %s: ignored\n",
-					MYNAME, word_wc[0], pos, strerror(errno) );
+					MYNAME, word_wc[0], pos, strerror(errno));
 		}
 		else if ( pos == 0 ) return 0;
 		else rewind(dict_fp);
@@ -196,8 +195,8 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
 				continue;
 
-			for (token_str_wc = wcstok(str_wc, L" -./\\", &state_str_wc);
-				token_str_wc; token_str_wc = wcstok(NULL, L" -./\\", &state_str_wc))
+			for (token_str_wc = wcstok(str_wc, L" -./\\", &state_str_wc); token_str_wc;
+				token_str_wc = wcstok(NULL, L" -./\\", &state_str_wc))
 			{
 				if ( word_wc[0] != token_str_wc[0] ) continue;
 
@@ -241,7 +240,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		{
 			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
 				fprintf(stderr, "%s: cannot seek: incorrect index \"%lc %ld\": %s: ignored\n",
-					MYNAME, word_wc[0], pos, strerror(errno) );
+					MYNAME, word_wc[0], pos, strerror(errno));
 		}
 		else if ( pos == 0 ) return 0;
 		else rewind(dict_fp);
@@ -361,15 +360,14 @@ int find_sound(const char *word)
 	if ( (word_wc = (wchar_t *) malloc(word_wc_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
-
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 		return -1;
 	}
 
 	strnlowcpy_wc(word_wc, word, word_wc_len);
 
-	for (token_word_wc = wcstok(word_wc, L" -./\\:", &state_token_word_wc);
-		token_word_wc; token_word_wc = wcstok(NULL, L" -./\\:", &state_token_word_wc))
+	for (token_word_wc = wcstok(word_wc, L" -./\\:", &state_token_word_wc); token_word_wc;
+		token_word_wc = wcstok(NULL, L" -./\\:", &state_token_word_wc))
 	{
 		if ( first_token_flag )
 		{
@@ -378,7 +376,7 @@ int find_sound(const char *word)
 			if ( (lang_wc = (wchar_t *) malloc(lang_wc_len)) == NULL )
 			{
 				fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-					MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+					MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 
 				free(word_wc);
 				return -1;
@@ -392,21 +390,21 @@ int find_sound(const char *word)
 			continue;
 		}
 
-		play_command_len = (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) +
-			wcslen(token_word_wc) * sizeof(wchar_t) + strlen(AUDIO_POSTFIX) + 32) * sizeof(char);
+		play_command_len = (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) + wcslen(token_word_wc) * sizeof(wchar_t)
+			+ strlen(AUDIO_POSTFIX) + 32) * sizeof(char);
 
 		if ( (play_command = (char *) malloc(play_command_len)) == NULL )
 		{
 			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 
 			free(word_wc);
 			if ( !first_token_flag ) free(lang_wc);
 			return -1;
 		}
 
-		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR,
-			lang_wc, token_word_wc[0], token_word_wc, AUDIO_POSTFIX);
+		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc, token_word_wc[0],
+			token_word_wc, AUDIO_POSTFIX);
 
 		system(play_command);
 
@@ -457,8 +455,7 @@ static long read_index(const wchar_t ch_wc, FILE *dict_fp)
 
 		if ( sscanf(str, "%lc %ld", &ch_str_wc, &pos) != 2 )
 		{
-			fprintf(stderr, "%s: warning: bad index: \"%s\": ignored\n",
-				MYNAME, str);
+			fprintf(stderr, "%s: warning: bad index: \"%s\": ignored\n", MYNAME, str);
 			continue;
 		}
 
@@ -588,8 +585,7 @@ static void print_header(const char *dict_name)
 			puts(dict_name);
 		else
 		{
-			for (count = 0; count < ((settings.max_terminal_line_len
-				- strlen(dict_name)) / 2); count++)
+			for (count = 0; count < ((settings.max_terminal_line_len - strlen(dict_name)) / 2); count++)
 				putchar('=');
 			putchar(' ');
 			if ( settings.use_terminal_escapes_flag ) printf("\033[1m");
@@ -679,40 +675,53 @@ static void print_translate(const char *str, const int word_number)
 			{
 				switch (*str)
 				{
-					case '[' : printf("<font class=\"strong_font\">"); ++strong_font_count; break;
-					case ']' : if ( strong_font_count > 0 )
-						{ printf("</font>"); --strong_font_count; } break;
+					case '[' : printf("<font class=\"strong_font\">");
+						++strong_font_count;
+						break;
+					case ']' : if ( strong_font_count > 0 )	{ printf("</font>"); --strong_font_count; }
+						break;
 
-					case '(' : printf("<font class=\"italic_font\">"); ++italic_font_count; break;
-					case ')' : if ( italic_font_count > 0 )
-						{ printf("</font>"); --italic_font_count; } break;
+					case '(' : printf("<font class=\"italic_font\">");
+						++italic_font_count;
+						break;
+					case ')' : if ( italic_font_count > 0 ) { printf("</font>"); --italic_font_count; }
+						break;
 
-					case '<' : printf("<font class=\"green_font\">"); ++green_font_count; break;
-					case '>' : if ( green_font_count > 0 )
-						{ printf("</font>"); --green_font_count; } break;
+					case '<' : printf("<font class=\"green_font\">");
+						++green_font_count;
+						break;
+					case '>' : if ( green_font_count > 0 ) { printf("</font>"); --green_font_count; }
+						break;
 
-					case '{' : printf("<dl><dd>"); ++blocks_count; break;
-					case '}' : if ( blocks_count > 0 )
-						{ printf("</dd></dl>"); --blocks_count; } break;
+					case '{' : printf("<dl><dd>");
+						++blocks_count;
+						break;
+					case '}' : if ( blocks_count > 0 ) { printf("</dd></dl>"); --blocks_count; }
+						break;
 
-					case '_' : if ( !underline_font_flag )
-						{ printf("<font class=\"underline_font\">"); underline_font_flag = true; }
-						else { printf("</font>"); underline_font_flag = false; } break;
+					case '_' : if ( !underline_font_flag ) { printf("<font class=\"underline_font\">");
+							underline_font_flag = true; }
+						else { printf("</font>"); underline_font_flag = false; }
+						break;
 
-					case '@' : if ( !word_link_font_flag )
-						{ printf("<font class\"word_link_font\">"); word_link_font_flag = true; }
-						else { printf("</font>"); word_link_font_flag = false; } break;
+					case '@' : if ( !word_link_font_flag ) { printf("<font class\"word_link_font\">");
+							word_link_font_flag = true; }
+						else { printf("</font>"); word_link_font_flag = false; }
+						break;
 
-					case 's' : if ( !sound_link_font_flag )
-						{ printf("&nbsp;[&nbsp;<a class=\"sound_link_font\"href=\"#s_"); sound_link_font_flag = true; }
-						else { printf("\">\u266B</a>&nbsp;]&nbsp;");
-						sound_link_font_flag = false; } break;
+					case 's' : if ( !sound_link_font_flag ) { printf("&nbsp;[&nbsp;<a class=\"sound_link_font\"href=\"#s_");
+							sound_link_font_flag = true; }
+						else { printf("\">\u266B</a>&nbsp;]&nbsp;"); sound_link_font_flag = false; }
+						break;
 
-					case '\\' : putchar('\\'); break;
+					case '\\' : putchar('\\');
+						break;
 
-					case 'n' : printf("<br>"); break;
+					case 'n' : printf("<br>");
+						break;
 
-					case 't' : printf("&nbsp;&nbsp;&nbsp;"); break;
+					case 't' : printf("&nbsp;&nbsp;&nbsp;");
+						break;
 
 					default : break;
 				}
@@ -762,28 +771,29 @@ static void print_translate(const char *str, const int word_number)
 			{
 				switch (ch_wc)
 				{
-					case L'[' : if ( settings.use_terminal_escapes_flag )
-						{ printf("\033[1m"); strong_font_count = 1; } break;
+					case L'[' : if ( settings.use_terminal_escapes_flag ) { printf("\033[1m"); strong_font_count = 1; }
+						break;
 					case L']' : if ( settings.use_terminal_escapes_flag )
 						{
 							printf("\033[0m");
 							if ( green_font_count ) printf("\033[32m");
 							if ( underline_font_flag ) printf("\033[4m");
 							strong_font_count = 0;
-						} break;
+						}
+						break;
 
-					case L'<' : if ( settings.use_terminal_escapes_flag )
-						{ printf("\033[32m"); green_font_count = 1; } break;
+					case L'<' : if ( settings.use_terminal_escapes_flag ) { printf("\033[32m"); green_font_count = 1; }
+						break;
 					case L'>' : if ( settings.use_terminal_escapes_flag )
 						{
 							printf("\033[0m");
 							if ( strong_font_count ) printf("\033[1m");
 							if ( underline_font_flag ) printf("\033[4m");
 							green_font_count = 0;
-						} break;
+						}
+						break;
 
-					case L'{' : blocks_count += 3; char_count = blocks_count;
-						putchar('\n');
+					case L'{' : blocks_count += 3; char_count = blocks_count; putchar('\n');
 						for (count = 0; count < blocks_count; count++) putchar(' ');
 						break;
 					case L'}' : blocks_count -= 3;
@@ -793,30 +803,33 @@ static void print_translate(const char *str, const int word_number)
 
 					case L'_' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !underline_font_flag )
-							{ printf("\033[4m"); underline_font_flag = true; }
+							if ( !underline_font_flag ) { printf("\033[4m"); underline_font_flag = true; }
 							else { printf("\033[24m"); underline_font_flag = false; }
-						} break;
+						}
+						break;
 
 					case L'@' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !word_link_font_flag )
-							{ printf("\033[4m"); word_link_font_flag = true; }
+							if ( !word_link_font_flag ) { printf("\033[4m"); word_link_font_flag = true; }
 							else { printf("\033[24m"); word_link_font_flag = false; }
-						} break;
+						}
+						break;
 
 					case L's' : if ( settings.use_terminal_escapes_flag )
 						{
-							if ( !sound_link_font_flag )
-							{ printf("[\033[4msnd:\""); sound_link_font_flag = true; }
+							if ( !sound_link_font_flag ) { printf("[\033[4msnd:\""); sound_link_font_flag = true; }
 							else { printf("\"\033[24m]"); sound_link_font_flag = false; }
-						} break;
+						}
+						break;
 
-					case L'\\' : putchar('\\'); break;
+					case L'\\' : putchar('\\');
+						break;
 
-					case L'n' : putchar('\n'); break;
+					case L'n' : putchar('\n');
+						break;
 
-					case L't' : putchar('\t'); break;
+					case L't' : putchar('\t');
+						break;
 
 					default : break;
 				}
@@ -825,13 +838,13 @@ static void print_translate(const char *str, const int word_number)
 				continue;
 			}
 
-			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) &&
-				(ch_wc == L' ') && !isdigit(*(str +1)) )
-				{
-					putchar('\n');
-					for (count = 0; count < blocks_count +3; count++) putchar(' ');
-					char_count = blocks_count +3;
-				}
+			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) && (ch_wc == L' ') && !isdigit(*(str +1)) )
+			{
+				putchar('\n');
+				for (count = 0; count < blocks_count +3; count++)
+					putchar(' ');
+				char_count = blocks_count +3;
+			}
 
 			printf("%lc", ch_wc); // putwchar() - DON'T WORK!
 

@@ -79,8 +79,7 @@ wchar_t get_first_low_wc(const char *str)
 
 	if ( mbrtowc(&ch_wc, str, sizeof(wchar_t), NULL) < 0 )
 	{
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t)(1): %s\n",
-			MYNAME, strerror(errno) );
+		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t)(1): %s\n", MYNAME, strerror(errno));
 		return L'\0';
 	}
 

@@ -74,7 +74,7 @@ int install_dict(const char *in_dict_path)
 	if ( (out_dict_path = (char *) malloc(out_dict_path_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 		return -1;
 	}
 
@@ -82,7 +82,7 @@ int install_dict(const char *in_dict_path)
 	sprintf(out_dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
 
 	// Kopiruem ...
-	printf("%s: installing of \"%s\" is starting...\n", MYNAME, in_dict_path);
+	printf("%s: installation of \"%s\" is starting...\n", MYNAME, in_dict_path);
 	if ( copy_file(in_dict_path, out_dict_path) != 0 )
 	{
 		free(out_dict_path);
@@ -113,7 +113,7 @@ int uninstall_dict(const char *dict_name)
 	if ( (dict_path = (char *) malloc(dict_path_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 		return -1;
 	}
 
@@ -122,17 +122,16 @@ int uninstall_dict(const char *dict_name)
 
 	// Udalyaem slovar ...
 	printf("%s: uninstalling dict \"%s\"...\n", MYNAME, dict_name);
-        if ( unlink(dict_path) != 0 )
-        {
-                fprintf(stderr, "%s: cannot uninstall dict \"%s\": %s\n",
-                        MYNAME, dict_name, strerror(errno) );
+	if ( unlink(dict_path) != 0 )
+	{
+		fprintf(stderr, "%s: cannot uninstall dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
-                free(dict_path);
-                return -1;
-        }
-        printf("%s: done\n", MYNAME);
+		free(dict_path);
+		return -1;
+	}
+	printf("%s: done\n", MYNAME);
 
-        free(dict_path);
+	free(dict_path);
 	return 0;
 }
 
@@ -161,14 +160,14 @@ int connect_dict(const char *dict_name)
 	if ( (in_dict_path = (char *) malloc(in_dict_path_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 		return -1;
 	}
 
 	if ( (out_dict_path = (char *) malloc(out_dict_path_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 
 		free(in_dict_path);
 		return -1;
@@ -183,8 +182,7 @@ int connect_dict(const char *dict_name)
 	printf("%s: connecting dict \"%s\"...\n", MYNAME, dict_name);
 	if ( access(in_dict_path, F_OK) != 0 )
 	{
-		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n",
-			MYNAME, dict_name, strerror(errno) );
+		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 		free(in_dict_path);
 		free(out_dict_path);
@@ -194,8 +192,7 @@ int connect_dict(const char *dict_name)
 	// Sozdaem ssylku
 	if ( symlink(in_dict_path, out_dict_path) != 0 )
 	{
-		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n",
-			MYNAME, dict_name, strerror(errno) );
+		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 		free(in_dict_path);
 		free(out_dict_path);
@@ -229,7 +226,7 @@ int disconnect_dict(const char *dict_name)
 	if ( (dict_path = (char *) malloc(dict_path_len)) == NULL )
 	{
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 		return -1;
 	}
 
@@ -240,8 +237,7 @@ int disconnect_dict(const char *dict_name)
 	printf("%s: disconnecting dict \"%s\"...\n", MYNAME, dict_name);
 	if ( unlink(dict_path) != 0 )
 	{
-		fprintf(stderr, "%s: cannot disconnect dict \"%s\": %s\n",
-			MYNAME, dict_name, strerror(errno) );
+		fprintf(stderr, "%s: cannot disconnect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 		free(dict_path);
 		return -1;
@@ -295,8 +291,7 @@ int print_index(const char *dict_path)
 	// Otkryvaem file slovarya
 	if ( (dict_fp = fopen(dict_path, "r")) == NULL )
 	{
-		fprintf(stderr, "%s: cannot open file \"%s\": %s\n",
-			MYNAME, dict_path, strerror(errno) );
+		fprintf(stderr, "%s: cannot open file \"%s\": %s\n", MYNAME, dict_path, strerror(errno));
 		return -1;
 	}
 
@@ -330,8 +325,7 @@ int print_index(const char *dict_path)
 	free(str);
 
 	if ( fclose(dict_fp) != 0 )
-		fprintf(stderr, "%s: cannot close file \"%s\": %s\n",
-			MYNAME, dict_path, strerror(errno) );
+		fprintf(stderr, "%s: cannot close file \"%s\": %s\n", MYNAME, dict_path, strerror(errno));
 
 	return 0;
 }
@@ -351,19 +345,16 @@ static int copy_file(const char *in_file_path, const char *out_file_path)
 
 	if ( (in_file_des = open(in_file_path, O_RDONLY)) == -1 )
 	{
-		fprintf(stderr, "%s: cannot open in file \"%s\": %s\n",
-			MYNAME, in_file_path, strerror(errno) );
+		fprintf(stderr, "%s: cannot open in file \"%s\": %s\n",	MYNAME, in_file_path, strerror(errno));
 		return -1;
 	}
 
 	if ( (out_file_des = open(out_file_path, O_WRONLY|O_CREAT|O_TRUNC, 0644)) == -1 )
 	{
-		fprintf(stderr, "%s: cannot open out file \"%s\": %s\n",
-			MYNAME, out_file_path, strerror(errno) );
+		fprintf(stderr, "%s: cannot open out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
 		if ( close(in_file_des) != 0 )
-			fprintf(stderr, "%s: close error in file \"%s\": %s\n",
-				MYNAME, in_file_path, strerror(errno) );
+			fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
 		return -1;
 	}
@@ -374,28 +365,23 @@ static int copy_file(const char *in_file_path, const char *out_file_path)
 
 		if (rcount != wcount)
 		{
-			fprintf(stderr, "%s: read/write error: %s\n",
-				MYNAME, strerror(errno) );
+			fprintf(stderr, "%s: read/write error: %s\n", MYNAME, strerror(errno));
 
 			if ( close(in_file_des) != 0 )
-				fprintf(stderr, "%s: close error in file \"%s\": %s\n",
-					MYNAME, in_file_path, strerror(errno) );
+				fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
 			if ( close(out_file_des) != 0 )
-				fprintf(stderr, "%s: close error out file \"%s\": %s\n",
-					MYNAME, out_file_path, strerror(errno) );
+				fprintf(stderr, "%s: close error out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
 			return -1;
 		}
 	}
 
 	if ( close(in_file_des) != 0 )
-		fprintf(stderr, "%s: close error in file \"%s\": %s\n",
-			MYNAME, in_file_path, strerror(errno) );
+		fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
 	if ( close(out_file_des) != 0 )
-		fprintf(stderr, "%s: close error out file \"%s\": %s\n",
-			MYNAME, out_file_path, strerror(errno) );
+		fprintf(stderr, "%s: close error out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
 	return 0;
 }
@@ -420,8 +406,7 @@ static int print_dir(const char *dicts_dir) // private
 	// Otkryvaem katalog so slovaryami ...
 	if ( (dicts_dp = opendir(dicts_dir)) == NULL )
 	{
-		fprintf(stderr, "%s: cannot open folder \"%s\": %s\n",
-			MYNAME, dicts_dir, strerror(errno) );
+		fprintf(stderr, "%s: cannot open folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
 		return -1;
 	}
 
@@ -441,8 +426,7 @@ static int print_dir(const char *dicts_dir) // private
 				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
 
 			if ( closedir(dicts_dp) != 0 )
-				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n",
-					MYNAME, dicts_dir, strerror(errno) );
+				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
 
 			return -1;
 		}
@@ -453,12 +437,10 @@ static int print_dir(const char *dicts_dir) // private
 		// Poluchaem informaciyu o slovare
 		if ( lstat(dict_path, &dict_st) != 0 )
 		{
-			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n",
-				MYNAME, dicts_dp_ent->d_name, strerror(errno) );
+			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
 
 			if ( closedir(dicts_dp) != 0 )
-				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n",
-					MYNAME, dicts_dir, strerror(errno) );
+				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
 
 			free(dict_path);
 			return -1;
@@ -466,8 +448,7 @@ static int print_dir(const char *dicts_dir) // private
 
 		// Tolko obychnye fily ili ssylki
 		dict_st.st_mode &= S_IFMT;
-		if ( ((dict_st.st_mode & S_IFLNK) != S_IFLNK) &&
-			((dict_st.st_mode & S_IFREG) != S_IFREG) )
+		if ( ((dict_st.st_mode & S_IFLNK) != S_IFLNK) && ((dict_st.st_mode & S_IFREG) != S_IFREG) )
 		{
 			free(dict_path);
 			continue;
@@ -482,8 +463,7 @@ static int print_dir(const char *dicts_dir) // private
 	}
 
 	if ( closedir(dicts_dp) != 0 )
-		fprintf(stderr, "%s: cannot close folder \"%s\": %s\n",
-			MYNAME, dicts_dir, strerror(errno) );
+		fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
 
 	return 0;
 }

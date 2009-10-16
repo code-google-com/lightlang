@@ -31,7 +31,7 @@
 # include "config.h"
 
 /*********************************** Macro *************************************/
-# define ALL_DICTS_DIR __PREFIX "/share/sl/dicts"
+# define ALL_DICTS_DIR PREFIX "/share/sl/dicts"
 
 /********************************* Functions ***********************************/
 int install_dict(const char *in_dict_path);	// Ustanavlivaet slovar

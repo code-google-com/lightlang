@@ -135,7 +135,7 @@ void debug(void)
 #endif
 
 #ifdef __CFLAGS
-	printf("CFLAGS\t\t\t:\t%s\n", __CFLAGS);
+	printf("CFLAGS\t\t\t:\t%s\n", CFLAGS);
 #endif
 
 #if defined(linux) || defined(__linux) || defined(__linux__)
@@ -169,7 +169,7 @@ void debug(void)
 
 	puts("--------------------------------------------------------------------------------");
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-	printf("Prefix\t\t\t:\t%s\n", __PREFIX);
+	printf("Prefix\t\t\t:\t%s\n", PREFIX);
 	puts("--------------------------------------------------------------------------------");
 }
 

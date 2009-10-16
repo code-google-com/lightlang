@@ -30,9 +30,9 @@
 # define _GNU_SOURCE
 
 /********************************* Macro ***************************************/
-# define __PREFIX		"@prefix@"		// Sistemnyy prefix
+# define PREFIX			"@prefix@"		// Sistemnyy prefix
 
-# define __CFLAGS		"@CFLAGS@"		// Flagi kompilera
+# define CFLAGS			"@CFLAGS@"		// Flagi kompilera
 
 # define AUDIO_PLAYER_PROG	"@AUDIO_PLAYER_PROG@"	// Pleer
 

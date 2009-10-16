@@ -117,77 +117,101 @@ int main(int argc, char **argv)
 		switch (ch)
 		{
 			case 'u' : ec += xfind_word(optarg, usually_regimen, 0, dicts_list);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'f' : ec += xfind_word(optarg, first_concurrence_regimen, 0, dicts_list);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'c' : ec += xfind_word(optarg, word_combinations_regimen, 0, dicts_list);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'l' : ec += xfind_word(optarg, list_regimen, 0, dicts_list);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'i' : ec += xfind_word(optarg, ill_defined_regimen, ill_defined_percent, dicts_list);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 's' : ec += find_sound(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '0' : ec += connect_dict(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '1' : ec += disconnect_dict(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '2' : ec += print_info();
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '3' : ec += install_dict(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '4' : ec += uninstall_dict(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '5' : dicts_list = optarg;
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '6' : ec += print_index(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'm' : set_max_translate_count(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'p' : ill_defined_percent = get_percent(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '7' : set_output_format(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '8' : set_use_terminal_escapes_flag(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case '9' : set_use_css_flag(optarg);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 't' : show_time_flag = true;
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'h' : help();
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'v' : version();
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case 'd' : debug();
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 
 			case ':' : fprintf(stderr, "%s: option \"-%c\" requires an argument: ignored\n", MYNAME, optopt);
-					++ec;					break;
+				++ec;
+				break;
 
 			case '?' :
 			default : fprintf(stderr, "%s: option \"-%c\" is invalid: ignored\n", MYNAME, optopt);
-					use_default_function_flag = false;	break;
+				use_default_function_flag = false;
+				break;
 		}
 	}
 
@@ -200,16 +224,14 @@ int main(int argc, char **argv)
 	}
 
 	if ( close_settings() != 0 )
-		fprintf(stderr, "%s: cannot close settings\n", MYNAME);
+		fprintf(stderr, "%s: warning: cannot close settings\n", MYNAME);
 
 	if ( show_time_flag )
 	{
 		end_time_label = clock();
 
 		if ( (begin_time_label != -1) && (end_time_label != -1) )
-			printf("%s: CPU time used: %.2f sec\n",
-				MYNAME,	(double)(((double)(end_time_label -
-					begin_time_label))/CLOCKS_PER_SEC) );
+			printf("%s: search time: %.2f sec\n", MYNAME, ((double)(end_time_label - begin_time_label))/CLOCKS_PER_SEC);
 	}
 
 	return abs(ec);
@@ -229,15 +251,13 @@ static int get_percent(const char *percent_str)
 
 	if ( !isdigit(percent_str[0]) )
 	{
-		fprintf(stderr, "%s: bad argument \"%s\": ignored\n",
-			MYNAME, percent_str );
+		fprintf(stderr, "%s: bad argument \"%s\": ignored\n", MYNAME, percent_str);
 		return 40;
 	}
 
 	if ( (percent = atoi(percent_str)) > 100 )
 	{
-		fprintf(stderr, "%s: argument \"%s\": 0 <= arg <= 100: ignored\n",
-			MYNAME, percent_str );
+		fprintf(stderr, "%s: argument \"%s\": 0 <= arg <= 100: ignored\n", MYNAME, percent_str);
 		return 40;
 	}
 
@@ -257,8 +277,7 @@ static void set_max_translate_count(const char *str)
 
 	if ( !isdigit(str[0]) )
 	{
-		fprintf(stderr, "%s: bad argument \"%s\": ignored\n",
-			MYNAME, str);
+		fprintf(stderr, "%s: bad argument \"%s\": ignored\n", MYNAME, str);
 		return;
 	}
 
@@ -302,8 +321,7 @@ static void set_use_terminal_escapes_flag(const char *str)
 		settings.use_terminal_escapes_flag = true;
 	else if ( !strcmp(str, "no") )
 		settings.use_terminal_escapes_flag = false;
-	else fprintf(stderr, "%s: unknown replay \"%s\", please use"
-		" \"yes\" or \"no\": ignored\n", MYNAME, str);
+	else fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
 }
 
 /********************************************************************************
@@ -321,8 +339,7 @@ static void set_use_css_flag(const char *str)
 		settings.use_css_flag = true;
 	else if ( !strcmp(str, "no") )
 		settings.use_css_flag = false;
-	else fprintf(stderr, "%s: unknown replay \"%s\", please use"
-		" \"yes\" or \"no\": ignored\n", MYNAME, str);
+	else fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
 }
 
 /********************************************************************************
@@ -348,8 +365,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 	{
 		if ( (dicts_dp = opendir(settings.user_dicts_dir)) == NULL )
 		{
-			fprintf(stderr, "%s: cannot open dict folder \"%s\": %s\n",
-				MYNAME, settings.user_dicts_dir, strerror(errno) );
+			fprintf(stderr, "%s: cannot open dict folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
 			return -1;
 		}
 
@@ -359,8 +375,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 				no_translate_flag = false;
 
 			if ( fclose(dict_fp) != 0 )
-				fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-					MYNAME, dict_name, strerror(errno) );
+				fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 			no_dicts_flag = false;
 		}
@@ -375,14 +390,12 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 					no_translate_flag = false;
 
 				if ( fclose(dict_fp) != 0 )
-					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-						MYNAME, dict_name, strerror(errno) );
+					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 			}
 		}
 
 		if ( closedir(dicts_dp) == -1 )
-			fprintf(stderr, "%s: cannot close dict folder \"%s\": %s\n",
-				MYNAME, settings.user_dicts_dir, strerror(errno) );
+			fprintf(stderr, "%s: cannot close dict folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
 	}
 	else
 	{
@@ -392,8 +405,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 				no_translate_flag = false;
 
 			if ( fclose(dict_fp) != 0 )
-				fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-					MYNAME, dict_name, strerror(errno) );
+				fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 			no_dicts_flag = false;
 		}
@@ -406,8 +418,7 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 					no_translate_flag = false;
 
 				if ( fclose(dict_fp) != 0 )
-					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n",
-						MYNAME, dict_name, strerror(errno) );
+					fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 			}
 		}
 	}
@@ -415,17 +426,13 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 	if ( no_translate_flag )
 		if ( settings.output_format == html_output_format )
 			puts("\t<font class=\"info_font\">This word is not found</font><br>");
-		else if ( settings.output_format == text_output_format )
-			printf("%s: this word is not found\n", MYNAME);
-		else if ( settings.output_format == native_output_format )
+		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
 			printf("%s: this word is not found\n", MYNAME);
 
 	if ( no_dicts_flag )
 		if ( settings.output_format == html_output_format )
 			puts("\t<font class=\"info_font\">No dict is connected</font><br>");
-		else if ( settings.output_format == text_output_format )
-			printf("%s: no dict is connected\n", MYNAME);
-		else if ( settings.output_format == native_output_format )
+		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
 			printf("%s: no dict is connected\n", MYNAME);
 
 	print_end_page();
@@ -461,7 +468,7 @@ static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp)
 		if ( (dict_path = (char *) malloc(dict_path_len)) == NULL )
 		{
 			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 			return NULL;
 		}
 
@@ -469,8 +476,7 @@ static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp)
 
 		if ( lstat(dict_path, &dict_st) != 0 )
 		{
-			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n",
-				MYNAME, dicts_dp_ent->d_name, strerror(errno) );
+			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
 
 			free(dict_path);
 			continue;
@@ -485,8 +491,7 @@ static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp)
 
 		if ( (dict_fp = fopen(dict_path, "r")) == NULL )
 		{
-			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n",
-				MYNAME, dicts_dp_ent->d_name, strerror(errno) );
+			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
 
 			free(dict_path);
 			continue;
@@ -532,8 +537,7 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 		}
 		else for (; dicts_list[count1] == '|'; count1++); // Propusk razdeliteley
 
-		for (count2 = 0; dicts_list[count1] && (dicts_list[count1] != '|')
-			&& (count2 < PATH_MAX -1); count1++, count2++)
+		for (count2 = 0; dicts_list[count1] && (dicts_list[count1] != '|') && (count2 < PATH_MAX -1); count1++, count2++)
 			dicts_list_item[count2] = dicts_list[count1]; // Parsim
 		dicts_list_item[count2] = '\0';
 
@@ -541,8 +545,7 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 
 		if ( (dict_fp = fopen(dict_path, "r")) == NULL )
 		{ // Otkryvaem slovar
-			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n",
-				MYNAME, dicts_list_item, strerror(errno) );
+			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dicts_list_item, strerror(errno));
 			continue;
 		}
 

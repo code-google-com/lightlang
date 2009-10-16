@@ -101,8 +101,7 @@ static int init_locale(void)
 {
 	if ( (setlocale(LC_ALL, "") == NULL) && (setlocale(LC_CTYPE, "") == NULL) )
 	{
-		fprintf(stderr, "%s: init: cannot change locale: %s\n",
-			MYNAME, strerror(errno) );
+		fprintf(stderr, "%s: init: cannot change locale: %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
@@ -128,8 +127,7 @@ static int init_user_dicts_dir(void)
 	// Poluchaem domashniy katalog polzovatelya
 	if ( (home_dir = getenv("HOME")) == NULL )
 	{
-		fprintf(stderr, "%s: cannot \"$HOME\" value: %s\n",
-			MYNAME, strerror(errno) );
+		fprintf(stderr, "%s: cannot \"$HOME\" value: %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
@@ -152,7 +150,7 @@ static int init_user_dicts_dir(void)
 		if ( mkdir(settings.user_dicts_dir, 0755) != 0 )
 		{
 			fprintf(stderr, "%s: cannot create user dicts folder \"%s\": %s\n",
-				MYNAME, settings.user_dicts_dir, strerror(errno) );
+				MYNAME, settings.user_dicts_dir, strerror(errno));
 			return -1;
 		}
 
@@ -235,8 +233,7 @@ static int init_use_terminal_escapes_flag(void)
 	*               (,,,,),,)             *
 	**************************************/
 
-	if ( isatty(1) ) settings.use_terminal_escapes_flag = true;
-	else settings.use_terminal_escapes_flag = false;
+	settings.use_terminal_escapes_flag = (bool)isatty(1);
 
 	return 0;
 }

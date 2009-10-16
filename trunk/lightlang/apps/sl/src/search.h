@@ -33,7 +33,7 @@
 # include <wchar.h>
 
 /*********************************** Macro *************************************/
-# define ALL_SOUNDS_DIR		__PREFIX "/share/sl/sounds"
+# define ALL_SOUNDS_DIR		PREFIX "/share/sl/sounds"
 
 # define AUDIO_POSTFIX		".ogg"
 
