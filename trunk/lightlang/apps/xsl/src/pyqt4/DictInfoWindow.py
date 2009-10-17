@@ -42,7 +42,7 @@ def tr(str) :
 
 #####
 class DictInfoWindow(Qt.QWidget) :
-	def __init__(self, dict_name, parent = None) :
+	def __init__(self, dict_name, dict_info = None, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dict Information"))
@@ -79,6 +79,9 @@ class DictInfoWindow(Qt.QWidget) :
 		#####
 
 		self.dict_info_browser = TextBrowser.TextBrowser()
+		if dict_info != None :
+			self.dict_info_browser.setText(dict_info)
+			self.is_loaded_flag = True
 		self.dict_info_browser_layout.addWidget(self.dict_info_browser)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
@@ -147,6 +150,13 @@ class DictInfoWindow(Qt.QWidget) :
 
 		self.update_info_button.setEnabled(True)
 		self.update_info_button.blockSignals(False)
+
+	###
+
+	def dictInfo(self) :
+		return self.dict_info_browser.text()
+
+	###
 
 	def show(self) :
 		Qt.QWidget.show(self)

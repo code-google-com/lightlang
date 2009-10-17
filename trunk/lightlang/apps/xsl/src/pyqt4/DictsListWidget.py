@@ -70,16 +70,12 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-
 			if not self.item_code_regexp.exactMatch(list[count]) :
 				count += 1
 				continue
-
 			dict_state = ( Qt.Qt.Checked if self.item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
 			dict_name = self.item_code_regexp.cap(2)
-
 			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name))
-
 			count += 1
 
 		if count > 0 :
@@ -94,14 +90,9 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-
-			item = self.cellWidget(count, 0)
-
-			enable_dict_flag = ( 1 if item.dictState() == Qt.Qt.Checked else 0 )
-			dict_name = item.dictName()
-
+			enable_dict_flag = ( 1 if self.cellWidget(count, 0).dictState() == Qt.Qt.Checked else 0 )
+			dict_name = self.cellWidget(count, 0).dictName()
 			list << Qt.QString("{%1}{%2}").arg(enable_dict_flag).arg(dict_name)
-
 			count += 1
 
 		return list
@@ -114,12 +105,8 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-
-			item = self.cellWidget(count, 0)
-
-			if item.dictState() == Qt.Qt.Checked :
-				list << item.dictName()
-
+			if self.cellWidget(count, 0).dictState() == Qt.Qt.Checked :
+				list << self.cellWidget(count, 0).dictName()
 			count += 1
 
 		return list
@@ -177,13 +164,16 @@ class DictsListWidget(Qt.QTableWidget) :
 		if index < 0 or index >= self.rowCount() :
 			return None
 
-		internal_widget = self.cellWidget(index, 0)
+		dict_state = self.cellWidget(index, 0).dictState()
+		dict_name = self.cellWidget(index, 0).dictName()
+		dict_info = self.cellWidget(index, 0).dictInfo()
+		dict_info = ( None if Qt.QTextDocumentFragment.fromHtml(dict_info).toPlainText().isEmpty() else dict_info )
 
-		external_widget = DictsListWidgetItem.DictsListWidgetItem(internal_widget.dictState(), internal_widget.dictName())
+		item = DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name, dict_info)
 
 		self.removeRow(index)
 
-		return external_widget
+		return item
 
 	###
 
@@ -193,10 +183,10 @@ class DictsListWidget(Qt.QTableWidget) :
 	###
 
 	def isUpAvailable(self, index) :
-		return ( True if 0 < index < self.rowCount() else False )
+		return ( 0 < index < self.rowCount() )
 
 	def isDownAvailable(self, index) :
-		return ( True if 0 <= index < self.rowCount() -1 else False )
+		return ( 0 <= index < self.rowCount() -1 )
 
 	###
 
