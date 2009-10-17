@@ -41,18 +41,22 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		self.horizontalHeader().hide()
 		self.horizontalHeader().setStretchLastSection(True)
-
 		self.verticalHeader().setResizeMode(Qt.QHeaderView.Fixed)
-
 		self.setHorizontalScrollBarPolicy(Qt.Qt.ScrollBarAlwaysOff)
 
+		self.setMouseTracking(True)
+		self.setSelectionBehavior(Qt.QAbstractItemView.SelectRows)
 		self.setSelectionMode(Qt.QAbstractItemView.SingleSelection)
+		self.setAcceptDrops(True)
+		self.setDropIndicatorShown(True)
 
 		self.setAlternatingRowColors(True)
 
 		#####
 
 		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
+
+		self.pressed_row = -1
 
 		#####
 
@@ -228,4 +232,28 @@ class DictsListWidget(Qt.QTableWidget) :
 				self.down()
 		else :
 			Qt.QTableWidget.keyPressEvent(self, event)
+
+	###
+
+	def mousePressEvent(self, event) :
+		if event.button() == Qt.Qt.LeftButton and self.indexAt(event.pos()).row() > -1 :
+			self.pressed_row = self.indexAt(event.pos()).row()
+			self.selectRow(self.pressed_row)
+
+	def mouseReleaseEvent(self, event) :
+		self.pressed_row = -1
+
+	def mouseMoveEvent(self, event) :
+		if self.pressed_row > -1 :
+			self.startDrag(Qt.Qt.MoveAction)
+
+	def dragLeaveEvent(self, event) :
+		self.pressed_row = -1
+
+	def dropEvent(self, event) :
+		if self.pressed_row > -1 and self.indexAt(event.pos()).row() > -1 :
+			current_row = self.indexAt(event.pos()).row()
+			self.insertDictItem(self.takeDictItem(self.pressed_row), current_row)
+			self.setCurrentCell(current_row, 0)
+		self.pressed_row = -1
 
