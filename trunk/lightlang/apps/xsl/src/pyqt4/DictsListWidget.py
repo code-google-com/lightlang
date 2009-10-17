@@ -56,7 +56,8 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
 
-		self.pressed_row = -1
+		self.start_drag_point = Qt.QPoint()
+		self.pressed_drag_index = -1
 
 		#####
 
@@ -237,23 +238,59 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def mousePressEvent(self, event) :
 		if event.button() == Qt.Qt.LeftButton and self.indexAt(event.pos()).row() > -1 :
-			self.pressed_row = self.indexAt(event.pos()).row()
-			self.selectRow(self.pressed_row)
-
-	def mouseReleaseEvent(self, event) :
-		self.pressed_row = -1
+			self.start_drag_point = event.pos()
+		Qt.QTableWidget.mousePressEvent(self, event)
 
 	def mouseMoveEvent(self, event) :
-		if self.pressed_row > -1 :
-			self.startDrag(Qt.Qt.MoveAction)
+		if not ((event.buttons() & Qt.Qt.LeftButton) and self.indexAt(event.pos()).row() > -1) :
+			return
+		if (event.pos() - self.start_drag_point).manhattanLength() < Qt.QApplication.startDragDistance() :
+			return
 
-	def dragLeaveEvent(self, event) :
-		self.pressed_row = -1
+		self.pressed_drag_index = self.indexAt(event.pos()).row()
+
+		mime_data = Qt.QMimeData()
+		mime_data.setData("application/x-dictslistwidgetitem", Qt.QByteArray())
+
+		drag = Qt.QDrag(self)
+		drag.setMimeData(mime_data)
+		drag.setPixmap(Qt.QPixmap.grabWidget(self.cellWidget(self.pressed_drag_index, 0), 0, 0))
+		drag.exec_(Qt.Qt.MoveAction)
+
+	def dragEnterEvent(self, event) :
+		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
+			self.setCurrentCell(self.indexAt(event.pos()).row(), 0)
+			if event.source() == self :
+				event.setDropAction(Qt.Qt.MoveAction)
+				event.accept()
+			else :
+				event.acceptProposedAction()
+		else :
+			event.ignore()
+
+	def dragMoveEvent(self, event) :
+		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
+			self.setCurrentCell(self.indexAt(event.pos()).row(), 0)
+			if event.source() == self :
+				event.setDropAction(Qt.Qt.MoveAction)
+				event.accept()
+			else :
+				event.acceptProposedAction()
+		else :
+			event.ignore()
 
 	def dropEvent(self, event) :
-		if self.pressed_row > -1 and self.indexAt(event.pos()).row() > -1 :
-			current_row = self.indexAt(event.pos()).row()
-			self.insertDictItem(self.takeDictItem(self.pressed_row), current_row)
-			self.setCurrentCell(current_row, 0)
-		self.pressed_row = -1
+		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
+			current_drop_index = self.indexAt(event.pos()).row()
+
+			self.insertDictItem(self.takeDictItem(self.pressed_drag_index), current_drop_index)
+			self.setCurrentCell(current_drop_index, 0)
+
+			if event.source() == self :
+				event.setDropAction(Qt.Qt.MoveAction)
+				event.accept()
+			else :
+				event.acceptProposedAction()
+		else :
+			event.ignore()
 
