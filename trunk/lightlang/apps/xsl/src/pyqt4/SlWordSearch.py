@@ -167,7 +167,7 @@ class SlWordSearch(Qt.QObject) :
 		self.processFinishedSignal()
 
 	def processStateChenged(self, state) :
-		self.proc_block_flag = ( True if state == Qt.QProcess.Starting or state == Qt.QProcess.Running else False )
+		self.proc_block_flag = ( state == Qt.QProcess.Starting or state == Qt.QProcess.Running )
 
 	def setText(self) :
 		self.proc_output.append(self.proc.readAllStandardOutput())
