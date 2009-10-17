@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import Window
+import CenteredWindow
 import Settings
 import DictsListWidget
 
@@ -42,9 +42,9 @@ def tr(str) :
 
 
 #####
-class DictsManager(Window.Window) :
+class DictsManager(CenteredWindow.CenteredWindow) :
 	def __init__(self, parent = None) :
-		Window.Window.__init__(self, parent)
+		CenteredWindow.CenteredWindow.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -219,7 +219,7 @@ class DictsManager(Window.Window) :
 
 	def show(self) :
 		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
-		Window.Window.show(self)
+		CenteredWindow.CenteredWindow.show(self)
 
 
 	### Private ###

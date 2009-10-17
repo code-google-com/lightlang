@@ -31,7 +31,7 @@ def tr(str) :
 
 
 #####
-class Window(Qt.QWidget) :
+class CenteredWindow(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 

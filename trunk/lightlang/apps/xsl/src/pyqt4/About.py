@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import Window
+import CenteredWindow
 
 
 #####
@@ -37,9 +37,9 @@ def tr(str) :
 
 
 #####
-class About(Window.Window) :
+class About(CenteredWindow.CenteredWindow) :
 	def __init__(self, parent = None) :
-		Window.Window.__init__(self, parent)
+		CenteredWindow.CenteredWindow.__init__(self, parent)
 
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))

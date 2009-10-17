@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import Window
+import CenteredWindow
 import Locale
 import TextBrowser
 import TextSearchFrame
@@ -43,9 +43,9 @@ def tr(str) :
 
 
 #####
-class HelpBrowser(Window.Window) :
+class HelpBrowser(CenteredWindow.CenteredWindow) :
 	def __init__(self, parent = None) :
-		Window.Window.__init__(self, parent)
+		CenteredWindow.CenteredWindow.__init__(self, parent)
 
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -171,7 +171,7 @@ class HelpBrowser(Window.Window) :
 
 	def show(self) :
 		self.text_browser.setFocus(Qt.Qt.OtherFocusReason)
-		Window.Window.show(self)
+		CenteredWindow.CenteredWindow.show(self)
 
 
 	### Private ###
