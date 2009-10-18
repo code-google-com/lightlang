@@ -29,7 +29,7 @@ import GoogleTranslatePanel
 import HistoryPanel
 import TabbedTranslateBrowser
 import StatusBar
-import DictsManager
+import DictsManagerWindow
 import TranslateWindow
 import SpyMenu
 import IfaMenu
@@ -107,7 +107,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.translate_window = TranslateWindow.TranslateWindow()
 
-		self.dicts_manager = DictsManager.DictsManager()
+		self.dicts_manager_window = DictsManagerWindow.DictsManagerWindow()
 
 		self.help_browser_window = HelpBrowserWindow.HelpBrowserWindow()
 
@@ -137,8 +137,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.translate_window, Qt.SIGNAL("uFindRequest(const QString &)"), self.showUp)
 		self.connect(self.translate_window, Qt.SIGNAL("cFindRequest(const QString &)"), self.showUp)
 
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.sl_search_panel.setDictsList)
-		self.connect(self.dicts_manager, Qt.SIGNAL("dictsListChanged(const QStringList &)"), lambda : self.sl_search_panel.lFind())
+		self.connect(self.dicts_manager_window, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.sl_search_panel.setDictsList)
+		self.connect(self.dicts_manager_window, Qt.SIGNAL("dictsListChanged(const QStringList &)"), lambda : self.sl_search_panel.lFind())
 
 		#########################
 		##### Creating Menu #####
@@ -197,7 +197,7 @@ class MainWindow(Qt.QMainWindow) :
 			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
-			self.showDictsManager, Qt.QKeySequence("Ctrl+D"))
+			self.showDictsManagerWindow, Qt.QKeySequence("Ctrl+D"))
 		self.tools_menu.addSeparator()
 		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
 		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
@@ -258,7 +258,7 @@ class MainWindow(Qt.QMainWindow) :
 		for panels_list_item in self.panels_list :
 			panels_list_item.saveSettings()
 
-		self.dicts_manager.saveSettings()
+		self.dicts_manager_window.saveSettings()
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
 
@@ -271,7 +271,7 @@ class MainWindow(Qt.QMainWindow) :
 		for panels_list_item in self.panels_list :
 			panels_list_item.loadSettings()
 
-		self.dicts_manager.loadSettings()
+		self.dicts_manager_window.loadSettings()
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
 
@@ -482,10 +482,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.google_translate_panel.setFocus()
 		self.google_translate_panel.raise_()
 
-	def showDictsManager(self) :
-		self.dicts_manager.show()
-		self.dicts_manager.raise_()
-		self.dicts_manager.activateWindow()
+	def showDictsManagerWindow(self) :
+		self.dicts_manager_window.show()
+		self.dicts_manager_window.raise_()
+		self.dicts_manager_window.activateWindow()
 
 	def showHelpBrowserWindow(self) :
 		self.help_browser_window.show()
