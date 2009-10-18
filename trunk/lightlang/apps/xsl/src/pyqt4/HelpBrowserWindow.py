@@ -43,7 +43,7 @@ def tr(str) :
 
 
 #####
-class HelpBrowser(CenteredWindow.CenteredWindow) :
+class HelpBrowserWindow(CenteredWindow.CenteredWindow) :
 	def __init__(self, parent = None) :
 		CenteredWindow.CenteredWindow.__init__(self, parent)
 
