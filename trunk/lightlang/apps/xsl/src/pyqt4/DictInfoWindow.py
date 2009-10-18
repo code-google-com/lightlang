@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Window
 import LangsList
 import TextBrowser
 
@@ -41,9 +42,9 @@ def tr(str) :
 
 
 #####
-class DictInfoWindow(Qt.QWidget) :
+class DictInfoWindow(Window.Window) :
 	def __init__(self, dict_name, dict_info = None, parent = None) :
-		Qt.QWidget.__init__(self, parent)
+		Window.Window.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dict Information"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -159,9 +160,7 @@ class DictInfoWindow(Qt.QWidget) :
 	###
 
 	def show(self) :
-		Qt.QWidget.show(self)
-		self.raise_()
-		self.activateWindow()
+		Window.Window.show(self)
 
 		if not self.is_loaded_flag :
 			self.updateInfo()

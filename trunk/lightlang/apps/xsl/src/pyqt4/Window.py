@@ -23,7 +23,6 @@
 import Qt
 import Config
 import Const
-import Window
 
 
 #####
@@ -32,19 +31,15 @@ def tr(str) :
 
 
 #####
-class CenteredWindow(Window.Window) :
+class Window(Qt.QWidget) :
 	def __init__(self, parent = None) :
-		Window.Window.__init__(self, parent)
+		Qt.QWidget.__init__(self, parent)
 
 
 	### Public ###
 
 	def show(self) :
-		x_window_position = (Qt.QApplication.desktop().width() - self.width()) / 2
-		x_window_position = ( 0 if x_window_position < 0 else x_window_position )
-		y_window_position = (Qt.QApplication.desktop().height() - self.height()) / 2
-		y_window_position = ( 0 if y_window_position < 0 else y_window_position )
-		self.move(Qt.QPoint(x_window_position, y_window_position))
-
-		Window.Window.show(self)
+		Qt.QWidget.show(self)
+		self.raise_()
+		self.activateWindow()
 
