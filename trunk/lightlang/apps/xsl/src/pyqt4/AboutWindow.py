@@ -59,7 +59,7 @@ class AboutWindow(CenteredWindow.CenteredWindow) :
 		self.main_layout.addLayout(self.text_label_layout)
 
 		self.ok_button_layout = Qt.QHBoxLayout()
-		self.ok_button_layout.setAlignment(Qt.Qt.AlignHCenter)
+		self.ok_button_layout.setAlignment(Qt.Qt.AlignRight)
 		self.main_layout.addLayout(self.ok_button_layout)
 
 		#####
