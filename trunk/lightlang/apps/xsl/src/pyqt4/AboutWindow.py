@@ -37,7 +37,7 @@ def tr(str) :
 
 
 #####
-class About(CenteredWindow.CenteredWindow) :
+class AboutWindow(CenteredWindow.CenteredWindow) :
 	def __init__(self, parent = None) :
 		CenteredWindow.CenteredWindow.__init__(self, parent)
 

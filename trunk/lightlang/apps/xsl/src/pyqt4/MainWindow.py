@@ -36,7 +36,7 @@ import IfaMenu
 import TranslateSitesMenu
 import InternetLinksMenu
 import HelpBrowser
-import About
+import AboutWindow
 
 
 #####
@@ -111,7 +111,7 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.help_browser = HelpBrowser.HelpBrowser()
 
-		self.about = About.About()
+		self.about_window = AboutWindow.AboutWindow()
 
 		### Exclusive connections
 
@@ -217,8 +217,8 @@ class MainWindow(Qt.QMainWindow) :
 		self.internet_links_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 		self.help_menu.addMenu(self.internet_links_menu)
 		self.help_menu.addSeparator()
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.showAbout)
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), self.showAboutQt)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.showAboutWindow)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), self.showAboutQtWindow)
 
 		### Additional connections
 
@@ -492,12 +492,12 @@ class MainWindow(Qt.QMainWindow) :
 		self.help_browser.raise_()
 		self.help_browser.activateWindow()
 
-	def showAbout(self) :
-		self.about.show()
-		self.about.raise_()
-		self.about.activateWindow()
+	def showAboutWindow(self) :
+		self.about_window.show()
+		self.about_window.raise_()
+		self.about_window.activateWindow()
 
-	def showAboutQt(self) :
+	def showAboutQtWindow(self) :
 		Qt.QMessageBox.aboutQt(None)
 
 
