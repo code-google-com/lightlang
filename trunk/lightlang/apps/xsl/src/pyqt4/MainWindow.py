@@ -197,7 +197,7 @@ class MainWindow(Qt.QMainWindow) :
 			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
-			self.showDictsManagerWindow, Qt.QKeySequence("Ctrl+D"))
+			self.dicts_manager_window.show, Qt.QKeySequence("Ctrl+D"))
 		self.tools_menu.addSeparator()
 		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
 		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
@@ -211,16 +211,16 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.help_menu = self.main_menu_bar.addMenu(tr("&Help"))
 		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"), tr("%1 manual").arg(Const.Organization),
-			self.showHelpBrowserWindow, Qt.QKeySequence("F1"))
+			self.help_browser_window.show, Qt.QKeySequence("F1"))
 		self.help_menu.addSeparator()
 		self.internet_links_menu = InternetLinksMenu.InternetLinksMenu(tr("Internet links"))
 		self.internet_links_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
 		self.help_menu.addMenu(self.internet_links_menu)
 		self.help_menu.addSeparator()
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.showAboutWindow)
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), self.showAboutQtWindow)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.about_window.show)
+		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), lambda : Qt.QMessageBox.aboutQt(None))
 
-		### Additional connections
+		### Exclusive connections
 
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStarted()"), self.spyStartedSignal)
 		self.connect(self.spy_menu, Qt.SIGNAL("spyStopped()"), self.spyStoppedSignal)
@@ -235,13 +235,9 @@ class MainWindow(Qt.QMainWindow) :
 		################
 
 		self.tabbed_translate_browser.setCaption(0, tr("Welcome"))
-		hello_text = tr("<br><br><hr><table border=\"0\" width=\"100%\"><tr><td class=\"dict_header_background\""
-				" align=\"center\"><font class=\"dict_header_font\">Welcome to the %1 - the system of electronic dictionaries"
-				"</font></td></tr></table><hr>").arg(Const.Organization)
-		self.tabbed_translate_browser.setText(0, hello_text)
-
-		self.sl_search_panel.setFocus()
-		self.sl_search_panel.raise_()
+		self.tabbed_translate_browser.setText(0, tr("<br><br><hr><table border=\"0\" width=\"100%\"><tr>"
+			"<td class=\"dict_header_background\" align=\"center\"><font class=\"dict_header_font\">"
+			"Welcome to the %1 - the system of electronic dictionaries</font></td></tr></table><hr>").arg(Const.Organization))
 
 
 	### Public ###
@@ -469,6 +465,7 @@ class MainWindow(Qt.QMainWindow) :
 	###
 
 	def showSlSearchPanel(self) :
+		self.sl_search_panel.show()
 		self.sl_search_panel.setFocus()
 		self.sl_search_panel.raise_()
 
@@ -481,24 +478,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.google_translate_panel.show()
 		self.google_translate_panel.setFocus()
 		self.google_translate_panel.raise_()
-
-	def showDictsManagerWindow(self) :
-		self.dicts_manager_window.show()
-		self.dicts_manager_window.raise_()
-		self.dicts_manager_window.activateWindow()
-
-	def showHelpBrowserWindow(self) :
-		self.help_browser_window.show()
-		self.help_browser_window.raise_()
-		self.help_browser_window.activateWindow()
-
-	def showAboutWindow(self) :
-		self.about_window.show()
-		self.about_window.raise_()
-		self.about_window.activateWindow()
-
-	def showAboutQtWindow(self) :
-		Qt.QMessageBox.aboutQt(None)
 
 
 	### Signals ###
