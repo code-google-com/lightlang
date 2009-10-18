@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Panel
 import SlWordSearch
 import SlListBrowser
 
@@ -37,16 +38,15 @@ def tr(str) :
 
 
 #####
-class SlSearchPanel(Qt.QDockWidget) :
+class SlSearchPanel(Panel.Panel) :
 	def __init__(self, parent = None) :
-		Qt.QDockWidget.__init__(self, parent)
+		Panel.Panel.__init__(self, parent)
 
 		self.setObjectName("sl_search_panel")
 
 		self.setWindowTitle(tr("SL Search"))
 
 		self.setFeatures(Qt.QDockWidget.DockWidgetFloatable|Qt.QDockWidget.DockWidgetMovable)
-		self.setAllowedAreas(Qt.Qt.LeftDockWidgetArea|Qt.Qt.RightDockWidgetArea)
 
 		#####
 
@@ -144,8 +144,8 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 	### Public ###
 
-	def setWord(self, word) :
-		self.line_edit.setText(word)
+	def show(self) :
+		Panel.Panel.show(self)
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
@@ -155,12 +155,16 @@ class SlSearchPanel(Qt.QDockWidget) :
 	def hasInternalFocus(self) :
 		return self.line_edit.hasFocus()
 
-	def clear(self) :
-		self.line_edit.clear()
+	def setWord(self, word) :
+		self.line_edit.setText(word)
+		self.setFocus()
 
 	def setDictsList(self, dicts_list) :
 		self.internal_word_search.setDictsList(dicts_list)
 		self.external_word_search.setDictsList(dicts_list)
+
+	def clear(self) :
+		self.line_edit.clear()
 
 	###
 

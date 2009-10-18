@@ -121,7 +121,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.sl_search_panel, Qt.SIGNAL("textChanged(const QString &)"), self.translate_window.setText)
 
 		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.sl_search_panel.setWord)
-		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.showSlSearchPanel)
+		self.connect(self.history_panel, Qt.SIGNAL("wordChanged(const QString &)"), self.sl_search_panel.show)
 
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.setWord)
 		self.connect(self.tabbed_translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.sl_search_panel.uFind)
@@ -190,11 +190,11 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.tools_menu = self.main_menu_bar.addMenu(tr("&Tools"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("SL search"),
-			self.showSlSearchPanel, Qt.QKeySequence("Ctrl+S"))
+			self.sl_search_panel.show, Qt.QKeySequence("Ctrl+S"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"history_16.png"), tr("Search history"),
-			self.showHistoryPanel, Qt.QKeySequence("Ctrl+H"))
+			self.history_panel.show, Qt.QKeySequence("Ctrl+H"))
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"web_16.png"), tr("Google-Translate client"),
-			self.showGoogleTranslatePanel, Qt.QKeySequence("Ctrl+G"))
+			self.google_translate_panel.show, Qt.QKeySequence("Ctrl+G"))
 		self.tools_menu.addSeparator()
 		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
 			self.dicts_manager_window.show, Qt.QKeySequence("Ctrl+D"))
@@ -461,23 +461,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.move(settings.value("main_window/position", Qt.QVariant(Qt.QPoint(0, 0))).toPoint())
 		self.setVisible(settings.value("main_window/is_visible_flag", Qt.QVariant(True)).toBool())
 		self.restoreState(settings.value("main_window/state", Qt.QVariant(Qt.QByteArray())).toByteArray())
-
-	###
-
-	def showSlSearchPanel(self) :
-		self.sl_search_panel.show()
-		self.sl_search_panel.setFocus()
-		self.sl_search_panel.raise_()
-
-	def showHistoryPanel(self) :
-		self.history_panel.show()
-		self.history_panel.setFocus()
-		self.history_panel.raise_()
-
-	def showGoogleTranslatePanel(self) :
-		self.google_translate_panel.show()
-		self.google_translate_panel.setFocus()
-		self.google_translate_panel.raise_()
 
 
 	### Signals ###
