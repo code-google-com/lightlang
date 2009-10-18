@@ -47,6 +47,8 @@ class DictsListWidget(Qt.QTableWidget) :
 		self.setMouseTracking(True)
 		self.setSelectionBehavior(Qt.QAbstractItemView.SelectRows)
 		self.setSelectionMode(Qt.QAbstractItemView.SingleSelection)
+		self.setDragEnabled(True)
+		self.setDragDropMode(Qt.QAbstractItemView.InternalMove)
 		self.setAcceptDrops(True)
 		self.setDropIndicatorShown(True)
 
@@ -259,7 +261,6 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def dragEnterEvent(self, event) :
 		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
-			self.setCurrentCell(self.indexAt(event.pos()).row(), 0)
 			if event.source() == self :
 				event.setDropAction(Qt.Qt.MoveAction)
 				event.accept()
@@ -270,7 +271,6 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def dragMoveEvent(self, event) :
 		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
-			self.setCurrentCell(self.indexAt(event.pos()).row(), 0)
 			if event.source() == self :
 				event.setDropAction(Qt.Qt.MoveAction)
 				event.accept()
