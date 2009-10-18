@@ -204,8 +204,8 @@ def get_local_resources_list(resources_type) :
 			try :
 				resource_file_size = 0
 				for root_dir_path, dirs_list, files_list in os.walk(resources_files_list_item) :
-					for item in dirs_list + files_list :
-						resource_file_size += os.stat(os.path.join(root_dir_path, item)).st_size
+					for files_list_item in dirs_list + files_list :
+						resource_file_size += os.stat(os.path.join(root_dir_path, files_list_item)).st_size
 				if resource_file_size <= 0 :
 					print >> sys.stderr, "--- resource \"%s\" :: warning, non-positive size" % (resource_name)
 					continue
