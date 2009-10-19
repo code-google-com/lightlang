@@ -99,7 +99,7 @@ class AboutWindow(Qt.QDialog) :
 
 		#####
 
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
+		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
 
 	### Public ###
