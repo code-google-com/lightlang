@@ -23,7 +23,6 @@
 import Qt
 import Config
 import Const
-import CenteredWindow
 import Locale
 import TextBrowser
 import TextSearchFrame
@@ -43,9 +42,9 @@ def tr(str) :
 
 
 #####
-class HelpBrowserWindow(CenteredWindow.CenteredWindow) :
+class HelpBrowserWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
-		CenteredWindow.CenteredWindow.__init__(self, parent)
+		Qt.QDialog.__init__(self, parent)
 
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -170,8 +169,8 @@ class HelpBrowserWindow(CenteredWindow.CenteredWindow) :
 	### Public ###
 
 	def show(self) :
+		Qt.QDialog.show(self)
 		self.text_browser.setFocus(Qt.Qt.OtherFocusReason)
-		CenteredWindow.CenteredWindow.show(self)
 
 
 	### Private ###
@@ -196,4 +195,11 @@ class HelpBrowserWindow(CenteredWindow.CenteredWindow) :
 		else :
 			self.forward_button.setEnabled(False)
 
+
+	### Private ###
+	### Handlers ###
+
+	def keyPressEvent(self, event) :
+		if event.key() != Qt.Qt.Key_Escape :
+			Qt.QDialog.keyPressEvent(self, event)
 
