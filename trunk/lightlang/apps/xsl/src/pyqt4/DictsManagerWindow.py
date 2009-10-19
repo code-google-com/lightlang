@@ -23,7 +23,6 @@
 import Qt
 import Config
 import Const
-import CenteredWindow
 import Settings
 import DictsListWidget
 
@@ -42,9 +41,9 @@ def tr(str) :
 
 
 #####
-class DictsManagerWindow(CenteredWindow.CenteredWindow) :
+class DictsManagerWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
-		CenteredWindow.CenteredWindow.__init__(self, parent)
+		Qt.QDialog.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -146,7 +145,7 @@ class DictsManagerWindow(CenteredWindow.CenteredWindow) :
 		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.dicts_list.down)
 		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
 
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
+		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
 		#####
 
@@ -218,8 +217,10 @@ class DictsManagerWindow(CenteredWindow.CenteredWindow) :
 	###
 
 	def show(self) :
+		Qt.QDialog.show(self)
+		self.raise_()
+		self.activateWindow()
 		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
-		CenteredWindow.CenteredWindow.show(self)
 
 
 	### Private ###
