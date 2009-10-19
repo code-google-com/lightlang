@@ -23,7 +23,6 @@
 import Qt
 import Config
 import Const
-import CenteredWindow
 
 
 #####
@@ -37,9 +36,11 @@ def tr(str) :
 
 
 #####
-class AboutWindow(CenteredWindow.CenteredWindow) :
+class AboutWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
-		CenteredWindow.CenteredWindow.__init__(self, parent)
+		Qt.QDialog.__init__(self, parent)
+
+		self.setModal(True)
 
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
@@ -99,4 +100,12 @@ class AboutWindow(CenteredWindow.CenteredWindow) :
 		#####
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.close)
+
+
+	### Public ###
+
+	def show(self) :
+		Qt.QDialog.show(self)
+		self.raise_()
+		self.activateWindow()
 
