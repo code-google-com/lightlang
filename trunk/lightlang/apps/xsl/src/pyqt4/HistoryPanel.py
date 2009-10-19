@@ -24,7 +24,6 @@ import Qt
 import Config
 import Const
 import Settings
-import Panel
 
 
 #####
@@ -38,10 +37,11 @@ def tr(str) :
 
 
 #####
-class HistoryPanel(Panel.Panel) :
+class HistoryPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
-		Panel.Panel.__init__(self, parent)
+		Qt.QDockWidget.__init__(self, parent)
 
+		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
 		self.setObjectName("history_panel")
 
 		self.setWindowTitle(tr("Search history"))
@@ -119,7 +119,8 @@ class HistoryPanel(Panel.Panel) :
 	###
 
 	def show(self) :
-		Panel.Panel.show(self)
+		Qt.QDockWidget.show(self)
+		self.raise_()
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :

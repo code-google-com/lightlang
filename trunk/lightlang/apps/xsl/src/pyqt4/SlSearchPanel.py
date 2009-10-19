@@ -23,7 +23,6 @@
 import Qt
 import Config
 import Const
-import Panel
 import SlWordSearch
 import SlListBrowser
 
@@ -38,15 +37,15 @@ def tr(str) :
 
 
 #####
-class SlSearchPanel(Panel.Panel) :
+class SlSearchPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
-		Panel.Panel.__init__(self, parent)
+		Qt.QDockWidget.__init__(self, parent)
 
+		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
+		self.setFeatures(Qt.QDockWidget.DockWidgetFloatable|Qt.QDockWidget.DockWidgetMovable)
 		self.setObjectName("sl_search_panel")
 
 		self.setWindowTitle(tr("SL Search"))
-
-		self.setFeatures(Qt.QDockWidget.DockWidgetFloatable|Qt.QDockWidget.DockWidgetMovable)
 
 		#####
 
@@ -145,7 +144,8 @@ class SlSearchPanel(Panel.Panel) :
 	### Public ###
 
 	def show(self) :
-		Panel.Panel.show(self)
+		Qt.QDockWidget.show(self)
+		self.raise_()
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :

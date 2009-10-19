@@ -25,7 +25,6 @@ import Config
 import Const
 import Locale
 import Settings
-import Panel
 import GoogleTranslate
 import LangsList
 import TextEdit
@@ -41,10 +40,11 @@ def tr(str) :
 
 
 #####
-class GoogleTranslatePanel(Panel.Panel) :
+class GoogleTranslatePanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
-		Panel.Panel.__init__(self, parent)
+		Qt.QDockWidget.__init__(self, parent)
 
+		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
 		self.setObjectName("google_translate_panel")
 
 		self.setWindowTitle(tr("Google Translate"))
@@ -160,7 +160,8 @@ class GoogleTranslatePanel(Panel.Panel) :
 	###
 
 	def show(self) :
-		Panel.Panel.show(self)
+		Qt.QDockWidget.show(self)
+		self.raise_()
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
