@@ -182,6 +182,13 @@ class TextSearchFrame(Qt.QFrame) :
 	def keyPressEvent(self, event) :
 		if event.key() == Qt.Qt.Key_Escape :
 			self.hide()
-
 		Qt.QFrame.keyPressEvent(self, event)
+
+	def hideEvent(self, event) :
+		self.instantSearchRequestSignal(Qt.QString())
+		Qt.QFrame.hideEvent(self, event)
+
+	def closeEvent(self, event) :
+		self.instantSearchRequestSignal(Qt.QString())
+		Qt.QFrame.closeEvent(self, event)
 

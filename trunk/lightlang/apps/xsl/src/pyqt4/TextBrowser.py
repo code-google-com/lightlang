@@ -37,13 +37,13 @@ class TextBrowser(Qt.QTextBrowser) :
 		Qt.QTextBrowser.__init__(self, parent)
 
 		self.setOpenExternalLinks(True)
+		self.setUndoRedoEnabled(True)
 
 		#####
 
 		self.zoom_count = 0
 
-		self.tmp_text_cursor = Qt.QTextCursor()
-
+		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
 		self.user_style_css = UserStyleCss.userStyleCss()
 		# setSource() dont accept user-style.css
 
@@ -93,6 +93,9 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.findWord(word, True)
 
 	def findWord(self, word, backward_flag = False) :
+		if not self.document().isModified() :
+			self.instantSearch(word)
+
 		text_cursor = self.textCursor()
 
 		if text_cursor.hasSelection() and backward_flag :
@@ -112,40 +115,48 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.setTextCursor(new_text_cursor)
 
 	def instantSearch(self, word) :
+		word_found_flag = False
+
+		if self.document().isModified() :
+			self.document().undo()
+			self.setTextSearchFrameLineEditDefaultPaletteSignal()
+
 		if word.isEmpty() :
-			my_text_cursor = self.tmp_text_cursor = self.textCursor()
-		else :
-			my_text_cursor = self.textCursor()
+			return
 
-		my_text_cursor.setPosition(my_text_cursor.selectionStart(), Qt.QTextCursor.MoveAnchor)
-		self.setTextCursor(my_text_cursor)
+		highlight_cursor = Qt.QTextCursor(self.document())
+		cursor = Qt.QTextCursor(self.document())
 
-		my_text_cursor = self.document().find(word, my_text_cursor)
+		plain_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
+		color_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
+		color_format_font = color_format.font()
+		color_format_font.setBold(True)
+		color_format.setFont(color_format_font)
+		color_format.setForeground(self.highlight_color)
 
-		if my_text_cursor.isNull() and not word.isEmpty() :
-			my_text_cursor = self.document().find(word, False)
-			if my_text_cursor.isNull() :
-				self.setTextSearchFrameLineEditRedAlertPaletteSignal()
-				self.tmp_text_cursor.setPosition(self.tmp_text_cursor.selectionStart(), Qt.QTextCursor.MoveAnchor)
-				self.setTextCursor(self.tmp_text_cursor)
-			else :
-				self.tmp_text_cursor = my_text_cursor
-				self.setTextCursor(my_text_cursor)
-		elif not my_text_cursor.isNull() :
-			self.tmp_text_cursor = my_text_cursor
-			self.setTextCursor(my_text_cursor)
+		cursor.beginEditBlock()
+
+		while (not highlight_cursor.isNull()) and (not highlight_cursor.atEnd()) :
+			Qt.QCoreApplication.processEvents()
+			highlight_cursor = self.document().find(word, highlight_cursor, Qt.QTextDocument.FindWholeWords)
+			if not highlight_cursor.isNull() :
+				word_found_flag = True
+				highlight_cursor.movePosition(Qt.QTextCursor.WordRight, Qt.QTextCursor.KeepAnchor)
+				highlight_cursor.mergeCharFormat(color_format)
+
+		cursor.endEditBlock()
+
+		if word_found_flag :
 			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 		else :
-			self.setTextSearchFrameLineEditDefaultPaletteSignal()
-
+			self.setTextSearchFrameLineEditRedAlertPaletteSignal()
 
 
 	### Private ###
 
 	def setCursorInfo(self, str) :
 		if not str.simplified().isEmpty() :
-			if (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
-				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+			if str.startsWith("http:", Qt.Qt.CaseInsensitive) or str.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
 				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
 
 
@@ -175,8 +186,7 @@ class TextBrowser(Qt.QTextBrowser) :
 	def keyPressEvent(self, event) :
 		if event.key() == Qt.Qt.Key_Escape :
 			self.hideTextSearchFrameRequestSignal()
-		elif (event.key() == Qt.Qt.Key_Slash or (event.key() == Qt.Qt.Key_F and
-			event.modifiers() == Qt.Qt.ControlModifier)) :
+		elif event.key() == Qt.Qt.Key_Slash or (event.key() == Qt.Qt.Key_F and event.modifiers() == Qt.Qt.ControlModifier) :
 			self.showTextSearchFrameRequestSignal()
 		elif event.key() == Qt.Qt.Key_Backspace :
 			self.backwardRequestSignal()

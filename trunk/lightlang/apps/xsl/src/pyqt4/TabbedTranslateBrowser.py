@@ -53,6 +53,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.shred_lock_flag = False
 
 		self.translate_browsers_list = []
+		self.old_index = -1
 
 		self.tmp_text_cursor = Qt.QTextCursor()
 
@@ -87,7 +88,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.add_tab_button, Qt.SIGNAL("clicked()"), self.addTab)
 		self.connect(self.remove_tab_button, Qt.SIGNAL("clicked()"), self.removeTab)
 
-		self.connect(self.tab_widget, Qt.SIGNAL("currentChanged(int)"), self.tabChangedSignal)
+		self.connect(self.tab_widget, Qt.SIGNAL("currentChanged(int)"), self.tabChanged)
 		try : # FIXME: Qt-4.5
 			self.connect(self.tab_widget, Qt.SIGNAL("tabCloseRequested(int)"), self.removeTab)
 		except : pass
@@ -134,8 +135,6 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.tab_widget.addTab(self.translate_browsers_list[index], tr("(Untitled)"))
 		self.tab_widget.setCurrentIndex(index)
 
-		self.tabChangedSignal()
-
 	def removeTab(self, index = -1) :
 		if self.shred_lock_flag :
 			return
@@ -147,8 +146,6 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 		if self.tab_widget.count() == 0 :
 			self.addTab()
-
-		self.tabChangedSignal()
 
 	###
 
@@ -243,11 +240,19 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		index = self.currentIndex()
 		self.translate_browsers_list[index].instantSearch(word)
 
+	###
+
+	def tabChanged(self, index) :
+		if self.translate_browsers_list[self.old_index].document().isModified() :
+			self.translate_browsers_list[self.old_index].document().undo()
+		self.old_index = index
+		self.tabChangedSignal(index)
+
 
 	### Signals ###
 
-	def tabChangedSignal(self) :
-		self.emit(Qt.SIGNAL("tabChanged(int)"), self.tab_widget.currentIndex())
+	def tabChangedSignal(self, index) :
+		self.emit(Qt.SIGNAL("tabChanged(int)"), index)
 
 	def uFindRequestSignal(self, word) :
 		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
