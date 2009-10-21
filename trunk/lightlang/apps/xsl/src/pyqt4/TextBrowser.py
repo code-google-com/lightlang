@@ -24,6 +24,7 @@ import Qt
 import Config
 import Const
 import UserStyleCss
+import ChromeScrollBar
 
 
 #####
@@ -49,6 +50,12 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		#####
 
+		self.chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar()
+		self.chrome_scroll_bar.setOrientation(Qt.Qt.Vertical)
+		self.setVerticalScrollBar(self.chrome_scroll_bar)
+
+		#####
+
 		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
 
 
@@ -65,6 +72,13 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	def text(self) :
 		return self.toHtml()
+
+	###
+
+	def clearHighlight(self) :
+		if self.document().isModified() :
+			self.document().undo()
+			self.chrome_scroll_bar.clearHighlight()
 
 	###
 
@@ -119,6 +133,7 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		if self.document().isModified() :
 			self.document().undo()
+			self.chrome_scroll_bar.clearHighlight()
 			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 
 		if word.isEmpty() :
@@ -143,6 +158,7 @@ class TextBrowser(Qt.QTextBrowser) :
 				word_found_flag = True
 				highlight_cursor.movePosition(Qt.QTextCursor.WordRight, Qt.QTextCursor.KeepAnchor)
 				highlight_cursor.mergeCharFormat(color_format)
+				self.chrome_scroll_bar.addHighlight(highlight_cursor.blockNumber(), self.document().blockCount())
 
 		cursor.endEditBlock()
 

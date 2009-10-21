@@ -243,8 +243,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def tabChanged(self, index) :
-		if self.translate_browsers_list[self.old_index].document().isModified() :
-			self.translate_browsers_list[self.old_index].document().undo()
+		self.translate_browsers_list[self.old_index].clearHighlight()
 		self.old_index = index
 		self.tabChangedSignal(index)
 
