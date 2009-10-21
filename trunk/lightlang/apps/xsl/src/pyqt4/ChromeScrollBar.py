@@ -26,6 +26,13 @@ import Const
 
 
 #####
+HighlightLabelWidthDelta = 8
+HighlightLabelHeight = 6
+
+TransparentAlpha = 100
+
+
+#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
@@ -35,12 +42,51 @@ class ChromeScrollBar(Qt.QScrollBar) :
 	def __init__(self, parent = None) :
 		Qt.QScrollBar.__init__(self, parent)
 
+		self.setOrientation(Qt.Qt.Vertical)
+
+		#####
+
+		self.highlight_labels_list = []
+
+		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
+		self.highlight_color.setAlpha(TransparentAlpha)
+
+		self.highlight_pen = Qt.QPen()
+		self.highlight_pen.setColor(self.highlight_color)
+		self.highlight_pen.setStyle(Qt.Qt.SolidLine)
+
 
 	### Public ###
 
 	def addHighlight(self, block_number, block_count) :
-		pass
+		if not [block_number, block_count] in self.highlight_labels_list :
+			self.highlight_labels_list.append([block_number, block_count])
+
+	def drawHighlight(self) :
+		self.update()
+
+	def isHighlighted(self) :
+		return bool(len(self.highlight_labels_list))
 
 	def clearHighlight(self) :
-		pass
+		self.highlight_labels_list = []
+		self.update()
+
+
+	### Handlers ###
+
+	def paintEvent(self, event) :
+		Qt.QScrollBar.paintEvent(self, event)
+
+		if len(self.highlight_labels_list) > 0 :
+			painter = Qt.QPainter(self)
+			painter.setPen(self.highlight_pen)
+			painter.setBrush(self.highlight_color)
+			for highlight_labels_list_item in self.highlight_labels_list :
+				pos = (self.height() * highlight_labels_list_item[0]) / highlight_labels_list_item[1]
+				if 0 <= pos < self.width() :
+					pos += self.width()
+				elif pos >= self.height() - self.width() * 2 - HighlightLabelHeight :
+					pos -= self.width() * 2
+				painter.drawRect(HighlightLabelWidthDelta / 2, pos, self.width() - HighlightLabelWidthDelta, HighlightLabelHeight)
 

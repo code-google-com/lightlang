@@ -211,6 +211,13 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.translate_browsers_list[index].clear()
 		self.tab_widget.setTabText(index, Qt.QString())
 
+	def clearSpecials(self, index = -1) :
+		if self.shred_lock_flag :
+			return
+
+		index = ( self.tab_widget.currentIndex() if index < 0 else index )
+		self.translate_browsers_list[index].clearSpecials()
+
 	###
 
 	def zoomIn(self, index = -1, range = 1) :
@@ -243,7 +250,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def tabChanged(self, index) :
-		self.translate_browsers_list[self.old_index].clearHighlight()
+		self.translate_browsers_list[self.old_index].clearSpecials()
 		self.old_index = index
 		self.tabChangedSignal(index)
 

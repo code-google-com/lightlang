@@ -51,34 +51,46 @@ class TextBrowser(Qt.QTextBrowser) :
 		#####
 
 		self.chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar()
-		self.chrome_scroll_bar.setOrientation(Qt.Qt.Vertical)
 		self.setVerticalScrollBar(self.chrome_scroll_bar)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
+		self.connect(self, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.chrome_scroll_bar.clearHighlight)
 
 
 	### Public ###
 
 	def setText(self, text) :
+		self.clearSpecials()
+
 		index = text.indexOf("</style>")
 		if index > 0 :
 			text = Qt.QString(text).insert(index, self.user_style_css)
 		else :
 			text = Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(self.user_style_css).arg(text)
-
 		self.setHtml(text)
 
 	def text(self) :
+		self.clearSpecials()
 		return self.toHtml()
 
 	###
 
-	def clearHighlight(self) :
-		if self.document().isModified() :
-			self.document().undo()
-			self.chrome_scroll_bar.clearHighlight()
+	def document(self) :
+		self.clearSpecials()
+		return Qt.QTextBrowser.document(self)
+
+	###
+
+	def clear(self) :
+		self.clearSpecials()
+		Qt.QTextBrowser.clear(self)
+
+	def clearSpecials(self) :
+		if Qt.QTextBrowser.document(self).isModified() :
+			Qt.QTextBrowser.document(self).undo()
+		self.chrome_scroll_bar.clearHighlight()
 
 	###
 
@@ -107,7 +119,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.findWord(word, True)
 
 	def findWord(self, word, backward_flag = False) :
-		if not self.document().isModified() :
+		if not Qt.QTextBrowser.document(self).isModified() :
 			self.instantSearch(word)
 
 		text_cursor = self.textCursor()
@@ -116,12 +128,12 @@ class TextBrowser(Qt.QTextBrowser) :
 			text_cursor.setPosition(text_cursor.anchor(), Qt.QTextCursor.MoveAnchor)
 
 		if not backward_flag :
-			new_text_cursor = self.document().find(word, text_cursor)
+			new_text_cursor = Qt.QTextBrowser.document(self).find(word, text_cursor)
 			if new_text_cursor.isNull() :
 				new_text_cursor = text_cursor
 				self.statusChangedSignal(tr("Not found"))
 		else :
-			new_text_cursor = self.document().find(word, text_cursor, Qt.QTextDocument.FindBackward)
+			new_text_cursor = Qt.QTextBrowser.document(self).find(word, text_cursor, Qt.QTextDocument.FindBackward)
 			if new_text_cursor.isNull() :
 				new_text_cursor = text_cursor
 				self.statusChangedSignal(tr("Not found"))
@@ -131,16 +143,17 @@ class TextBrowser(Qt.QTextBrowser) :
 	def instantSearch(self, word) :
 		word_found_flag = False
 
-		if self.document().isModified() :
-			self.document().undo()
-			self.chrome_scroll_bar.clearHighlight()
+		if Qt.QTextBrowser.document(self).isModified() :
+			Qt.QTextBrowser.document(self).undo()
 			self.setTextSearchFrameLineEditDefaultPaletteSignal()
+		self.chrome_scroll_bar.clearHighlight()
 
 		if word.isEmpty() :
+			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 			return
 
-		highlight_cursor = Qt.QTextCursor(self.document())
-		cursor = Qt.QTextCursor(self.document())
+		highlight_cursor = Qt.QTextCursor(Qt.QTextBrowser.document(self))
+		cursor = Qt.QTextCursor(Qt.QTextBrowser.document(self))
 
 		plain_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
 		color_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
@@ -153,19 +166,21 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		while (not highlight_cursor.isNull()) and (not highlight_cursor.atEnd()) :
 			Qt.QCoreApplication.processEvents()
-			highlight_cursor = self.document().find(word, highlight_cursor, Qt.QTextDocument.FindWholeWords)
+			highlight_cursor = Qt.QTextBrowser.document(self).find(word, highlight_cursor, Qt.QTextDocument.FindWholeWords)
 			if not highlight_cursor.isNull() :
 				word_found_flag = True
 				highlight_cursor.movePosition(Qt.QTextCursor.WordRight, Qt.QTextCursor.KeepAnchor)
 				highlight_cursor.mergeCharFormat(color_format)
-				self.chrome_scroll_bar.addHighlight(highlight_cursor.blockNumber(), self.document().blockCount())
+				self.chrome_scroll_bar.addHighlight(highlight_cursor.blockNumber(), Qt.QTextBrowser.document(self).blockCount())
 
 		cursor.endEditBlock()
 
 		if word_found_flag :
 			self.setTextSearchFrameLineEditDefaultPaletteSignal()
+			self.chrome_scroll_bar.drawHighlight()
 		else :
 			self.setTextSearchFrameLineEditRedAlertPaletteSignal()
+			self.chrome_scroll_bar.clearHighlight()
 
 
 	### Private ###
