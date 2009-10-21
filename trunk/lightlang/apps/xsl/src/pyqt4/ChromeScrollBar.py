@@ -29,8 +29,6 @@ import Const
 HighlightLabelWidthDelta = 8
 HighlightLabelHeight = 6
 
-TransparentAlpha = 100
-
 
 #####
 def tr(str) :
@@ -49,7 +47,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 		self.highlight_labels_list = []
 
 		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
-		self.highlight_color.setAlpha(TransparentAlpha)
+		self.highlight_color.setAlpha(100)
 
 		self.highlight_pen = Qt.QPen()
 		self.highlight_pen.setColor(self.highlight_color)
