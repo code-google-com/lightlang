@@ -155,7 +155,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), tr("Save current page"),
 			self.saveCurrentTabbedTranslateBrowserPage)
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), tr("Print current page"),
-			self.printCurrentTabbedTranslateBrowserPage, Qt.QKeySequence("Ctrl+P"))
+			self.printCurrentTabbedTranslateBrowserPage)
 		self.pages_menu.addSeparator()
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear current page"),
 			self.clearTabbedTranslateBrowserPage, Qt.QKeySequence("Ctrl+E"))
