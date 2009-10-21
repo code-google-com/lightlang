@@ -45,6 +45,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.zoom_count = 0
 
 		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
+		self.highlight_color.setAlpha(100)
 		self.user_style_css = UserStyleCss.userStyleCss()
 		# setSource() dont accept user-style.css
 
@@ -65,7 +66,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.clearSpecials()
 
 		index = text.indexOf("</style>")
-		if index > 0 :
+		if index >= 0 :
 			text = Qt.QString(text).insert(index, self.user_style_css)
 		else :
 			text = Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(self.user_style_css).arg(text)
@@ -157,19 +158,16 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		plain_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
 		color_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
-		color_format_font = color_format.font()
-		color_format_font.setBold(True)
-		color_format.setFont(color_format_font)
-		color_format.setForeground(self.highlight_color)
+		color_format.setBackground(self.highlight_color)
 
 		cursor.beginEditBlock()
 
 		while (not highlight_cursor.isNull()) and (not highlight_cursor.atEnd()) :
-			Qt.QCoreApplication.processEvents()
-			highlight_cursor = Qt.QTextBrowser.document(self).find(word, highlight_cursor, Qt.QTextDocument.FindWholeWords)
+			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
+			highlight_cursor = Qt.QTextBrowser.document(self).find(word, highlight_cursor)
 			if not highlight_cursor.isNull() :
 				word_found_flag = True
-				highlight_cursor.movePosition(Qt.QTextCursor.WordRight, Qt.QTextCursor.KeepAnchor)
+				highlight_cursor.movePosition(Qt.QTextCursor.Right, Qt.QTextCursor.KeepAnchor, 0)
 				highlight_cursor.mergeCharFormat(color_format)
 				self.chrome_scroll_bar.addHighlight(highlight_cursor.blockNumber(), Qt.QTextBrowser.document(self).blockCount())
 
