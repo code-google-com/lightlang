@@ -45,19 +45,13 @@ class AboutWindow(Qt.QDialog) :
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
-		self.resize(500, 580)
-
 		#####
 
 		self.main_layout = Qt.QVBoxLayout()
 		self.setLayout(self.main_layout)
 
-		self.icon_label_layout = Qt.QHBoxLayout()
-		self.icon_label_layout.setAlignment(Qt.Qt.AlignHCenter)
-		self.main_layout.addLayout(self.icon_label_layout)
-
-		self.text_label_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.text_label_layout)
+		self.info_label_layout = Qt.QHBoxLayout()
+		self.main_layout.addLayout(self.info_label_layout)
 
 		self.ok_button_layout = Qt.QHBoxLayout()
 		self.ok_button_layout.setAlignment(Qt.Qt.AlignRight)
@@ -66,10 +60,11 @@ class AboutWindow(Qt.QDialog) :
 		#####
 
 		self.icon_label = Qt.QLabel()
-		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_128.png"))
-		self.icon_label_layout.addWidget(self.icon_label)
+		self.icon_label.setAlignment(Qt.Qt.AlignTop)
+		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_64.png"))
+		self.info_label_layout.addWidget(self.icon_label)
 
-		self.text_label = Qt.QLabel(tr("<center><h3>%1 - the graphical interface for SL</h3></center>"
+		self.text_label = Qt.QLabel(tr("<h3>%1 - the graphical interface for SL</h3>"
 			"All the programs of the <strong>%2</strong> package are distributable, according<br>"
 			"to the license <strong>GPLv2</strong>. For details visit <em>License agreement</em> of the<br>"
 			"<strong>%2</strong> manual.<br>"
@@ -91,7 +86,7 @@ class AboutWindow(Qt.QDialog) :
 			"<em>Copyright &copy; 2007-2016 Devaev Maxim (<a href=\"mailto:%3?subject=%2\">%3</a>)</em>")
 				.arg(Const.MyName).arg(Const.Organization).arg(Const.DeveloperMail))
 		self.text_label.setOpenExternalLinks(True)
-		self.text_label_layout.addWidget(self.text_label)
+		self.info_label_layout.addWidget(self.text_label)
 
 		self.ok_button = Qt.QPushButton(tr("&OK"))
 		self.ok_button.setDefault(True)
