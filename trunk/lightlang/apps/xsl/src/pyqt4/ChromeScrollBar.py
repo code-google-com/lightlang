@@ -26,8 +26,8 @@ import Const
 
 
 #####
-HighlightLabelWidthDelta = 8
-HighlightLabelHeight = 6
+DefaultHighlightHeight = 5
+MinCharacterDistance = 50
 
 
 #####
@@ -44,10 +44,10 @@ class ChromeScrollBar(Qt.QScrollBar) :
 
 		#####
 
-		self.highlight_labels_list = []
+		self.highlight_positions_list = []
 
 		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
-		self.highlight_color.setAlpha(100)
+		self.highlight_color.setAlpha(50)
 
 		self.highlight_pen = Qt.QPen()
 		self.highlight_pen.setColor(self.highlight_color)
@@ -56,18 +56,18 @@ class ChromeScrollBar(Qt.QScrollBar) :
 
 	### Public ###
 
-	def addHighlight(self, block_number, block_count) :
-		if not [block_number, block_count] in self.highlight_labels_list :
-			self.highlight_labels_list.append([block_number, block_count])
+	def addHighlight(self, pos, count) :
+		if len(self.highlight_positions_list) == 0 or abs(self.highlight_positions_list[-1][0] - pos) > MinCharacterDistance :
+			self.highlight_positions_list.append([pos, count])
 
 	def drawHighlight(self) :
 		self.update()
 
 	def isHighlighted(self) :
-		return bool(len(self.highlight_labels_list))
+		return bool(len(self.highlight_positions_list))
 
 	def clearHighlight(self) :
-		self.highlight_labels_list = []
+		self.highlight_positions_list = []
 		self.update()
 
 
@@ -76,15 +76,28 @@ class ChromeScrollBar(Qt.QScrollBar) :
 	def paintEvent(self, event) :
 		Qt.QScrollBar.paintEvent(self, event)
 
-		if len(self.highlight_labels_list) > 0 :
+		if len(self.highlight_positions_list) > 0 :
+			highlight_rects_list = []
+
+			highlight_pass = self.style().pixelMetric(Qt.QStyle.PM_ScrollBarSliderMin) -1
+			highlight_area_height = self.height() - highlight_pass * 3
+
+			for highlight_positions_list_item in self.highlight_positions_list :
+				pos = highlight_area_height * highlight_positions_list_item[0] / highlight_positions_list_item[1] + highlight_pass
+
+				if len(highlight_rects_list) == 0 or pos > highlight_rects_list[-1].bottom() :
+					highlight_rects_list.append(Qt.QRect(0, pos, self.width(), DefaultHighlightHeight))
+				else :
+					highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() + (DefaultHighlightHeight -
+						highlight_rects_list[-1].bottom() + pos))
+
+				if highlight_rects_list[-1].bottom() > highlight_area_height + highlight_pass :
+					highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() - (highlight_rects_list[-1].bottom() -
+						(highlight_area_height + highlight_pass)))
+
 			painter = Qt.QPainter(self)
 			painter.setPen(self.highlight_pen)
 			painter.setBrush(self.highlight_color)
-			for highlight_labels_list_item in self.highlight_labels_list :
-				pos = (self.height() * highlight_labels_list_item[0]) / highlight_labels_list_item[1]
-				if 0 <= pos < self.width() :
-					pos += self.width()
-				elif pos >= self.height() - self.width() * 2 - HighlightLabelHeight :
-					pos -= self.width() * 2
-				painter.drawRect(HighlightLabelWidthDelta / 2, pos, self.width() - HighlightLabelWidthDelta, HighlightLabelHeight)
+			for highlight_rects_list_item in highlight_rects_list :
+				painter.drawRect(highlight_rects_list_item)
 

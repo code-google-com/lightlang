@@ -169,7 +169,7 @@ class TextBrowser(Qt.QTextBrowser) :
 				word_found_flag = True
 				highlight_cursor.movePosition(Qt.QTextCursor.Right, Qt.QTextCursor.KeepAnchor, 0)
 				highlight_cursor.mergeCharFormat(color_format)
-				self.chrome_scroll_bar.addHighlight(highlight_cursor.blockNumber(), Qt.QTextBrowser.document(self).blockCount())
+				self.chrome_scroll_bar.addHighlight(highlight_cursor.position(), Qt.QTextBrowser.document(self).characterCount())
 
 		cursor.endEditBlock()
 
