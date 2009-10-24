@@ -45,6 +45,8 @@ class DictsManagerWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
 
+		self.setObjectName("dicts_manager_window")
+
 		self.setWindowTitle(tr("Dicts Manager"))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
 
@@ -191,8 +193,8 @@ class DictsManagerWindow(Qt.QDialog) :
 
 	def saveSettings(self) :
 		settings = Settings.settings()
-		settings.setValue("dicts_manager/size", Qt.QVariant(self.size()))
-		settings.setValue("dicts_manager/dicts_list", Qt.QVariant(self.dicts_list.list()))
+		settings.setValue("dicts_manager_window/size", Qt.QVariant(self.size()))
+		settings.setValue("dicts_manager_window/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
 	def loadSettings(self) :
 		self.update_dicts_button.blockSignals(True)
@@ -202,9 +204,9 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		settings = Settings.settings()
 
-		self.resize(settings.value("dicts_manager/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
+		self.resize(settings.value("dicts_manager_window/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 
-		local_dicts_list = settings.value("dicts_manager/dicts_list", Qt.QVariant(Qt.QStringList())).toStringList()
+		local_dicts_list = settings.value("dicts_manager_window/dicts_list", Qt.QVariant(Qt.QStringList())).toStringList()
 		self.dicts_list.setList(self.allAndLocalDicts(local_dicts_list))
 
 		###
