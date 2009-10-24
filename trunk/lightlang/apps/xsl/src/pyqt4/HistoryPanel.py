@@ -110,11 +110,11 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def saveSettings(self) :
 		settings = Settings.settings()
-		settings.setValue("history_panel/list", Qt.QVariant(self.list()))
+		settings.setValue("history_panel/history_list", Qt.QVariant(self.historyList()))
 
 	def loadSettings(self) :
 		settings = Settings.settings()
-		self.setList(settings.value("history_panel/list", Qt.QVariant(Qt.QStringList())).toStringList())
+		self.setHistoryList(settings.value("history_panel/history_list", Qt.QVariant(Qt.QStringList())).toStringList())
 
 	###
 
@@ -136,7 +136,7 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	### Private ###
 
-	def list(self) :
+	def historyList(self) :
 		list = Qt.QStringList()
 		count = 0
 		while count < self.history_browser.count() :
@@ -144,7 +144,7 @@ class HistoryPanel(Qt.QDockWidget) :
 			count += 1
 		return list
 
-	def setList(self, list) :
+	def setHistoryList(self, list) :
 		self.history_browser.addItems(list)
 
 		if list.count() > 0 :
