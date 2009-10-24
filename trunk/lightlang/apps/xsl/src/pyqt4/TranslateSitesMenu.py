@@ -43,6 +43,8 @@ class TranslateSitesMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)
 
+		self.setObjectName("translate_sites_menu")
+
 		#####
 
 		self.actions_data_list = []
