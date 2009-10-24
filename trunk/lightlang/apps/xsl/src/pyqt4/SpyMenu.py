@@ -45,6 +45,8 @@ class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)
 
+		self.setObjectName("spy_menu")
+
 		#####
 
 		self.mouse_selector_thread = MouseSelectorThread.MouseSelectorThread()
