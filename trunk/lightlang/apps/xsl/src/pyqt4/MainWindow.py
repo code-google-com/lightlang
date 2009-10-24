@@ -259,6 +259,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager_window.saveSettings()
 		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
+		self.help_browser_window.saveSettings()
 
 		self.translate_sites_menu.saveSettings()
 		self.ifa_menu.saveSettings()
@@ -272,6 +273,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.dicts_manager_window.loadSettings()
 		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
+		self.help_browser_window.loadSettings()
 
 		self.translate_sites_menu.loadSettings()
 		self.ifa_menu.loadSettings()

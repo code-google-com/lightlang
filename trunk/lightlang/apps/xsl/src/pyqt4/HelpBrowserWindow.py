@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Settings
 import Locale
 import TextBrowser
 import TextSearchFrame
@@ -46,10 +47,10 @@ class HelpBrowserWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)
 
+		self.setObjectName("help_browser_window")
+
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
 		self.setWindowIcon(Qt.QIcon(MyIcon))
-
-		self.resize(800, 600)
 
 		#####
 
@@ -161,12 +162,20 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setBackwardButtonAvailable)
 		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setForwardButtonAvailable)
 
-		#####
-
-		self.home()
-
 
 	### Public ###
+
+	def saveSettings(self) :
+		settings = Settings.settings()
+		settings.setValue("help_browser_window/size", Qt.QVariant(self.size()))
+		settings.setValue("help_browser_window/url", Qt.QVariant(self.text_browser.source()))
+
+	def loadSettings(self) :
+		settings = Settings.settings()
+		self.resize(settings.value("help_browser_window/size", Qt.QVariant(Qt.QSize(800, 600))).toSize())
+		self.text_browser.setSource(settings.value("help_browser_window/url", Qt.QVariant(self.index_file_url)).toUrl())
+
+	###
 
 	def show(self) :
 		Qt.QDialog.show(self)
@@ -177,6 +186,8 @@ class HelpBrowserWindow(Qt.QDialog) :
 
 	def home(self) :
 		self.text_browser.setSource(self.index_file_url)
+
+	###
 
 	def updateTitle(self) :
 		self.setWindowTitle(tr("%1 Manual - %2").arg(Const.Organization).arg(self.text_browser.documentTitle()))
@@ -196,7 +207,6 @@ class HelpBrowserWindow(Qt.QDialog) :
 			self.forward_button.setEnabled(False)
 
 
-	### Private ###
 	### Handlers ###
 
 	def keyPressEvent(self, event) :
