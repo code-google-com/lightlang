@@ -233,15 +233,6 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"), self.translate_window.show)
 		self.connect(self.spy_menu, Qt.SIGNAL("showTranslateWindowRequest()"), self.translate_window.setFocus)
 
-		################
-		##### Misc #####
-		################
-
-		self.tabbed_translate_browser.setCaption(0, tr("Welcome"))
-		self.tabbed_translate_browser.setText(0, tr("<br><br><hr><table border=\"0\" width=\"100%\"><tr>"
-			"<td class=\"dict_header_background\" align=\"center\"><font class=\"dict_header_font\">"
-			"Welcome to the %1 - the system of electronic dictionaries</font></td></tr></table><hr>").arg(Const.Organization))
-
 
 	### Public ###
 
@@ -258,10 +249,9 @@ class MainWindow(Qt.QMainWindow) :
 			panels_list_item.saveSettings()
 
 		self.dicts_manager_window.saveSettings()
-		self.spy_menu.saveSettings()
 		self.translate_window.saveSettings()
 		self.help_browser_window.saveSettings()
-
+		self.spy_menu.saveSettings()
 		self.translate_sites_menu.saveSettings()
 		self.ifa_menu.saveSettings()
 
@@ -272,10 +262,9 @@ class MainWindow(Qt.QMainWindow) :
 			panels_list_item.loadSettings()
 
 		self.dicts_manager_window.loadSettings()
-		self.spy_menu.loadSettings()
 		self.translate_window.loadSettings()
 		self.help_browser_window.loadSettings()
-
+		self.spy_menu.loadSettings()
 		self.translate_sites_menu.loadSettings()
 		self.ifa_menu.loadSettings()
 
@@ -283,6 +272,11 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.sl_search_panel.setFocus()
 		self.sl_search_panel.raise_()
+
+		self.tabbed_translate_browser.setCaption(0, tr("Welcome"))
+		self.tabbed_translate_browser.setText(0, tr("<br><br><hr><table border=\"0\" width=\"100%\"><tr>"
+			"<td class=\"dict_header_background\" align=\"center\"><font class=\"dict_header_font\">"
+			"Welcome to the %1 - the system of electronic dictionaries</font></td></tr></table><hr>").arg(Const.Organization))
 
 		self.status_bar.showStatusMessage(tr("Ready"))
 
