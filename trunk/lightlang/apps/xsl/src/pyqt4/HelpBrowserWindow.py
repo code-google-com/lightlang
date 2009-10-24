@@ -23,8 +23,8 @@
 import Qt
 import Config
 import Const
-import Settings
 import Locale
+import Settings
 import TextBrowser
 import TextSearchFrame
 import TransparentFrame
