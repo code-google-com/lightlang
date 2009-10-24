@@ -54,8 +54,9 @@ class MainWindow(Qt.QMainWindow) :
 	def __init__(self, parent = None) :
 		Qt.QMainWindow.__init__(self, parent)
 
-		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
 		self.setObjectName("main_window")
+
+		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
 
 		self.setWindowTitle(Const.Organization+" "+Const.MyName)
 		self.setWindowIcon(Qt.QIcon(MyIcon))

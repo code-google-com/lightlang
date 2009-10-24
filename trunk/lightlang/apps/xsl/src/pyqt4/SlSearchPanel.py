@@ -41,9 +41,10 @@ class SlSearchPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)
 
+		self.setObjectName("sl_search_panel")
+
 		self.setAllowedAreas(Qt.Qt.AllDockWidgetAreas)
 		self.setFeatures(Qt.QDockWidget.DockWidgetFloatable|Qt.QDockWidget.DockWidgetMovable)
-		self.setObjectName("sl_search_panel")
 
 		self.setWindowTitle(tr("SL Search"))
 
