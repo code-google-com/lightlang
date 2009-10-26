@@ -60,9 +60,6 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.line_edit_layout = Qt.QHBoxLayout()
 		self.main_layout.addLayout(self.line_edit_layout)
 
-		self.top_search_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.top_search_buttons_layout)
-
 		self.list_browser_layout = Qt.QVBoxLayout()
 		self.main_layout.addLayout(self.list_browser_layout)
 
@@ -84,19 +81,15 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 		self.u_find_button = Qt.QPushButton(tr("&Search"))
 		self.u_find_button.setEnabled(False)
-		self.top_search_buttons_layout.addWidget(self.u_find_button)
-
-		self.c_find_button = Qt.QPushButton(tr("&Expanded search"))
-		self.c_find_button.setEnabled(False)
-		self.top_search_buttons_layout.addWidget(self.c_find_button)
+		self.line_edit_layout.addWidget(self.u_find_button)
 
 		self.list_browser = SlListBrowser.SlListBrowser()
 		self.list_browser.setText(tr("Enter the word, please"))
 		self.list_browser_layout.addWidget(self.list_browser)
 
-		self.l_find_button = Qt.QPushButton(tr("Word &list"))
-		self.l_find_button.setEnabled(False)
-		self.bottom_search_buttons_layout.addWidget(self.l_find_button)
+		self.c_find_button = Qt.QPushButton(tr("&Expanded search"))
+		self.c_find_button.setEnabled(False)
+		self.bottom_search_buttons_layout.addWidget(self.c_find_button)
 
 		self.i_find_button = Qt.QPushButton(tr("S&imilar words"))
 		self.i_find_button.setEnabled(False)
@@ -122,15 +115,14 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.uFind)
 		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
-		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.cFind)
-		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
 		self.connect(self.list_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFind)
 		self.connect(self.list_browser, Qt.SIGNAL("uFindInNewTabRequest(const QString &)"), self.uFindInNewTab)
 		self.connect(self.list_browser, Qt.SIGNAL("cFindInNewTabRequest(const QString &)"), self.cFindInNewTab)
 
-		self.connect(self.l_find_button, Qt.SIGNAL("clicked()"), self.lFind)
-		self.connect(self.l_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
+		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.cFind)
+		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
+
 		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.iFind)
 		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
@@ -227,7 +219,6 @@ class SlSearchPanel(Qt.QDockWidget) :
 		line_edit_empty_flag = word.simplified().isEmpty()
 		self.u_find_button.setEnabled(not line_edit_empty_flag)
 		self.c_find_button.setEnabled(not line_edit_empty_flag)
-		self.l_find_button.setEnabled(not line_edit_empty_flag)
 		self.i_find_button.setEnabled(not line_edit_empty_flag)
 
 	###
