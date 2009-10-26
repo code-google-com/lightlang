@@ -24,6 +24,7 @@ import Qt
 import Config
 import Const
 import Settings
+import LineEdit
 
 
 #####
@@ -55,19 +56,10 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.main_layout = Qt.QVBoxLayout()
 		self.main_widget.setLayout(self.main_layout)
 
-		self.line_edit_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.line_edit_layout)
-
 		#####
 
-		self.line_edit = Qt.QLineEdit()
-		self.line_edit_layout.addWidget(self.line_edit)
-
-		self.clear_line_edit_button = Qt.QToolButton()
-		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
-		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
-		self.clear_line_edit_button.setEnabled(False)
-		self.line_edit_layout.addWidget(self.clear_line_edit_button)
+		self.line_edit = LineEdit.LineEdit()
+		self.main_layout.addWidget(self.line_edit)
 
 		self.history_browser = Qt.QListWidget()
 		self.main_layout.addWidget(self.history_browser)
@@ -80,9 +72,7 @@ class HistoryPanel(Qt.QDockWidget) :
 
 		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
 
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
-		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
 		self.connect(self.history_browser, Qt.SIGNAL("itemActivated(QListWidgetItem *)"), self.wordChangedSignal)
 		self.connect(self.clear_history_button, Qt.SIGNAL("clicked()"), self.clearHistory)
@@ -164,20 +154,10 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.history_browser.clear()
 		self.clear_history_button.setEnabled(False)
 
-	def setStatusFromLineEdit(self, word) :
-		if word.simplified().isEmpty() :
-			self.clear_line_edit_button.setEnabled(False)
-		else :
-			self.clear_line_edit_button.setEnabled(True)
-
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
 			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 			self.line_edit.selectAll()
-
-	def clearLineEdit(self) :
-		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
