@@ -220,12 +220,9 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.processFinishedSignal()
 
 	def setStatusFromTextEdit(self) :
-		if self.text_edit.toPlainText().simplified().isEmpty() :
-			self.clear_text_edit_button.setEnabled(False)
-			self.translate_button.setEnabled(False)
-		else :
-			self.clear_text_edit_button.setEnabled(True)
-			self.translate_button.setEnabled(True)
+		text_edit_empty_flag = self.text_edit.toPlainText().simplified().isEmpty()
+		self.clear_text_edit_button.setEnabled(not text_edit_empty_flag)
+		self.translate_button.setEnabled(not text_edit_empty_flag)
 
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
