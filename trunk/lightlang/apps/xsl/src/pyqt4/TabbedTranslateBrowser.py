@@ -60,9 +60,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		#####
 
 		self.tab_widget = Qt.QTabWidget()
-		try : # FIXME: Qt-4.5
-			self.tab_widget.setTabsClosable(True)
-		except : pass
+		self.tab_widget.setTabsClosable(True)
 		self.main_layout.addWidget(self.tab_widget)
 
 		self.add_tab_button = Qt.QToolButton()
@@ -89,9 +87,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.remove_tab_button, Qt.SIGNAL("clicked()"), self.removeTab)
 
 		self.connect(self.tab_widget, Qt.SIGNAL("currentChanged(int)"), self.tabChanged)
-		try : # FIXME: Qt-4.5
-			self.connect(self.tab_widget, Qt.SIGNAL("tabCloseRequested(int)"), self.removeTab)
-		except : pass
+		self.connect(self.tab_widget, Qt.SIGNAL("tabCloseRequested(int)"), self.removeTab)
 
 		self.connect(self.text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.findNext)
 		self.connect(self.text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.findPrevious)
