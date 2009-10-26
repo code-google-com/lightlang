@@ -65,7 +65,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		try :
 			self.keys_grabber_thread_singleton.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
 				self.visibleChangeRequestSignal)
-			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window\tWin+L"), self.visibleChangeRequestSignal)
+			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window")+"\tWin+L", self.visibleChangeRequestSignal)
 		except :
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"), self.visibleChangeRequestSignal)
 
