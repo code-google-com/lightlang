@@ -24,6 +24,7 @@ import Qt
 import Config
 import Const
 import Settings
+import LineEdit
 import DictsListWidget
 
 
@@ -80,15 +81,9 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.filter_label = Qt.QLabel(tr("&Filter:"))
 		self.line_edit_layout.addWidget(self.filter_label)
 
-		self.line_edit = Qt.QLineEdit()
+		self.line_edit = LineEdit.LineEdit()
 		self.filter_label.setBuddy(self.line_edit)
 		self.line_edit_layout.addWidget(self.line_edit)
-
-		self.clear_line_edit_button = Qt.QToolButton()
-		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
-		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
-		self.clear_line_edit_button.setEnabled(False)
-		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
 		self.dicts_list = DictsListWidget.DictsListWidget()
 		self.stacked_widget.addWidget(self.dicts_list)
@@ -135,9 +130,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		#####
 
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
-		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
 		self.connect(self.dicts_list, Qt.SIGNAL("upAvailable(bool)"), self.up_button.setEnabled)
 		self.connect(self.dicts_list, Qt.SIGNAL("downAvailable(bool)"), self.down_button.setEnabled)
@@ -270,18 +263,6 @@ class DictsManagerWindow(Qt.QDialog) :
 			count += 1
 
 		return local_dicts_list
-
-	###
-
-	def setStatusFromLineEdit(self, word) :
-		if word.isEmpty() : # Not simplified
-			self.clear_line_edit_button.setEnabled(False)
-		else :
-			self.clear_line_edit_button.setEnabled(True)
-
-	def clearLineEdit(self) :
-		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
