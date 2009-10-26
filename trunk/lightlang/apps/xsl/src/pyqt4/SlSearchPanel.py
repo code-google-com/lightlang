@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import LineEdit
 import SlWordSearch
 import SlListBrowser
 
@@ -78,15 +79,8 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 		#####
 
-		self.line_edit = Qt.QLineEdit()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+		self.line_edit = LineEdit.LineEdit()
 		self.line_edit_layout.addWidget(self.line_edit)
-
-		self.clear_line_edit_button = Qt.QToolButton()
-		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
-		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
-		self.clear_line_edit_button.setEnabled(False)
-		self.line_edit_layout.addWidget(self.clear_line_edit_button)
 
 		self.u_find_button = Qt.QPushButton(tr("&Search"))
 		self.u_find_button.setEnabled(False)
@@ -125,7 +119,6 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.u_find_button.animateClick)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.delay_timer.start)
-		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
 
 		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.uFind)
 		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
@@ -231,20 +224,11 @@ class SlSearchPanel(Qt.QDockWidget) :
 	###
 
 	def setStatusFromLineEdit(self, word) :
-		if word.simplified().isEmpty() :
-			self.clear_line_edit_button.setEnabled(False)
-
-			self.u_find_button.setEnabled(False)
-			self.c_find_button.setEnabled(False)
-			self.l_find_button.setEnabled(False)
-			self.i_find_button.setEnabled(False)
-		else :
-			self.clear_line_edit_button.setEnabled(True)
-
-			self.u_find_button.setEnabled(True)
-			self.c_find_button.setEnabled(True)
-			self.l_find_button.setEnabled(True)
-			self.i_find_button.setEnabled(True)
+		line_edit_empty_flag = word.simplified().isEmpty()
+		self.u_find_button.setEnabled(not line_edit_empty_flag)
+		self.c_find_button.setEnabled(not line_edit_empty_flag)
+		self.l_find_button.setEnabled(not line_edit_empty_flag)
+		self.i_find_button.setEnabled(not line_edit_empty_flag)
 
 	###
 
@@ -252,10 +236,6 @@ class SlSearchPanel(Qt.QDockWidget) :
 		if activate_flag :
 			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 			self.line_edit.selectAll()
-
-	def clearLineEdit(self) :
-		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
