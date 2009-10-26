@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import LineEdit
 
 
 #####
@@ -62,15 +63,9 @@ class TextSearchFrame(Qt.QFrame) :
 		self.line_edit_label = Qt.QLabel(tr("Search:"))
 		self.main_layout.addWidget(self.line_edit_label)
 
-		self.line_edit = Qt.QLineEdit()
+		self.line_edit = LineEdit.LineEdit()
 		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 		self.main_layout.addWidget(self.line_edit)
-
-		self.clear_line_edit_button = Qt.QToolButton()
-		self.clear_line_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
-		self.clear_line_edit_button.setIconSize(Qt.QSize(16, 16))
-		self.clear_line_edit_button.setEnabled(False)
-		self.main_layout.addWidget(self.clear_line_edit_button)
 
 		self.vertical_frame2 = Qt.QFrame()
 		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
@@ -102,8 +97,6 @@ class TextSearchFrame(Qt.QFrame) :
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
 
-		self.connect(self.clear_line_edit_button, Qt.SIGNAL("clicked()"), self.clearLineEdit)
-
 		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.findNextRequest)
 
 		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.findPreviousRequest)
@@ -122,11 +115,6 @@ class TextSearchFrame(Qt.QFrame) :
 
 	def setLineEditDefaultPalette(self) :
 		self.line_edit.setPalette(self.line_edit_default_palette)
-
-	###
-
-	def clear(self) :
-		self.line_edit.clear()
 
 
 	### Private ###
@@ -148,21 +136,10 @@ class TextSearchFrame(Qt.QFrame) :
 
 	###
 
-	def setStatusFromLineEdit(self) :
-		if self.line_edit.text().simplified().isEmpty() :
-			self.clear_line_edit_button.setEnabled(False)
-
-			self.next_button.setEnabled(False)
-			self.previous_button.setEnabled(False)
-		else :
-			self.clear_line_edit_button.setEnabled(True)
-
-			self.next_button.setEnabled(True)
-			self.previous_button.setEnabled(True)
-
-	def clearLineEdit(self) :
-		self.line_edit.clear()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
+	def setStatusFromLineEdit(self, word) :
+		line_edit_empty_flag = word.simplified().isEmpty()
+		self.next_button.setEnabled(not line_edit_empty_flag)
+		self.previous_button.setEnabled(not line_edit_empty_flag)
 
 
 	### Signals ###
