@@ -116,6 +116,11 @@ class TextSearchFrame(Qt.QFrame) :
 	def setLineEditDefaultPalette(self) :
 		self.line_edit.setPalette(self.line_edit_default_palette)
 
+	###
+
+	def clear(self) :
+		self.line_edit.clear()
+
 
 	### Private ###
 
