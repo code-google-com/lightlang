@@ -3,12 +3,12 @@
 <context>
     <name>@default</name>
     <message>
-        <location filename="MainWindow.py" line="221"/>
+        <location filename="MainWindow.py" line="223"/>
         <source>About %1</source>
         <translation>О программе %1</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="128"/>
+        <location filename="DictsManagerWindow.py" line="125"/>
         <source>&amp;OK</source>
         <translation>&amp;ОК</translation>
     </message>
@@ -18,7 +18,7 @@
         <translation>Информация о словаре</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="122"/>
+        <location filename="DictsManagerWindow.py" line="119"/>
         <source>Please wait...</source>
         <translation>Пожалуйста, подождите...</translation>
     </message>
@@ -33,12 +33,12 @@
         <translation>Недоступно</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="47"/>
+        <location filename="DictsManagerWindow.py" line="50"/>
         <source>Dicts Manager</source>
         <translation>Менеджер словарей</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="77"/>
+        <location filename="DictsManagerWindow.py" line="80"/>
         <source>&amp;Filter:</source>
         <translation>&amp;Фильтр:</translation>
     </message>
@@ -53,32 +53,27 @@
         <translation>Расширенный поиск (в новой вкладке)</translation>
     </message>
     <message>
-        <location filename="SlSearchPanel.py" line="47"/>
+        <location filename="SlSearchPanel.py" line="49"/>
         <source>SL Search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="SlSearchPanel.py" line="89"/>
+        <location filename="SlSearchPanel.py" line="81"/>
         <source>&amp;Search</source>
         <translation>&amp;Поиск</translation>
     </message>
     <message>
-        <location filename="SlSearchPanel.py" line="93"/>
+        <location filename="SlSearchPanel.py" line="89"/>
         <source>&amp;Expanded search</source>
         <translation>&amp;Расширенный поиск</translation>
     </message>
     <message>
-        <location filename="SlSearchPanel.py" line="101"/>
-        <source>Word &amp;list</source>
-        <translation>Список с&amp;лов</translation>
-    </message>
-    <message>
-        <location filename="SlSearchPanel.py" line="105"/>
+        <location filename="SlSearchPanel.py" line="93"/>
         <source>S&amp;imilar words</source>
         <translation>Похож&amp;ие слова</translation>
     </message>
     <message>
-        <location filename="TextSearchFrame.py" line="61"/>
+        <location filename="TextSearchFrame.py" line="62"/>
         <source>Search:</source>
         <translation>Поиск:</translation>
     </message>
@@ -198,12 +193,12 @@
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="113"/>
+        <location filename="GoogleTranslatePanel.py" line="114"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="115"/>
+        <location filename="GoogleTranslatePanel.py" line="116"/>
         <source>Ctrl+Enter</source>
         <translation>Ctrl+Enter</translation>
     </message>
@@ -245,32 +240,32 @@ Press &quot;Yes&quot; to ignore</source>
 Проигнорируйте и нажмите &quot;Yes&quot;</translation>
     </message>
     <message>
-        <location filename="HelpBrowserWindow.py" line="48"/>
+        <location filename="HelpBrowserWindow.py" line="51"/>
         <source>%1 Manual</source>
         <translation>Руководство %1</translation>
     </message>
     <message>
-        <location filename="HelpBrowserWindow.py" line="181"/>
+        <location filename="HelpBrowserWindow.py" line="192"/>
         <source>%1 Manual - %2</source>
         <translation>Руководство %1 - %2</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="195"/>
+        <location filename="MainWindow.py" line="197"/>
         <source>Search history</source>
         <translation>История поиска</translation>
     </message>
     <message>
-        <location filename="HistoryPanel.py" line="73"/>
+        <location filename="HistoryPanel.py" line="66"/>
         <source>Clear history</source>
         <translation>Очистить историю</translation>
     </message>
     <message>
-        <location filename="IfaMenu.py" line="136"/>
+        <location filename="IfaMenu.py" line="138"/>
         <source>IFA</source>
         <translation>IFA</translation>
     </message>
     <message>
-        <location filename="IfaMenu.py" line="137"/>
+        <location filename="IfaMenu.py" line="139"/>
         <source>This applications is already running</source>
         <translation>Это приложение уже было запущено</translation>
     </message>
@@ -309,197 +304,197 @@ Package version: %2</source>
 Версия пакета: %2</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="73"/>
+        <location filename="SpyMenu.py" line="75"/>
         <source>Left Ctrl</source>
         <translation>Ctrl слева</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="74"/>
+        <location filename="SpyMenu.py" line="76"/>
         <source>Left Alt</source>
         <translation>Alt слева</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="75"/>
+        <location filename="SpyMenu.py" line="77"/>
         <source>Left Shift</source>
         <translation>Shift слева</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="76"/>
+        <location filename="SpyMenu.py" line="78"/>
         <source>Left Win</source>
         <translation>Win слева</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="80"/>
+        <location filename="SpyMenu.py" line="82"/>
         <source>Right Ctrl</source>
         <translation>Ctrl справа</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="81"/>
+        <location filename="SpyMenu.py" line="83"/>
         <source>Right Alt</source>
         <translation>Alt справа</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="82"/>
+        <location filename="SpyMenu.py" line="84"/>
         <source>Right Shift</source>
         <translation>Shift справа</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="83"/>
+        <location filename="SpyMenu.py" line="85"/>
         <source>Right Win</source>
         <translation>Win справа</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="69"/>
+        <location filename="SpyMenu.py" line="71"/>
         <source>No modifier</source>
         <translation>Без модификатора</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="83"/>
+        <location filename="MainWindow.py" line="85"/>
         <source>Print page</source>
         <translation>Печать страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="153"/>
+        <location filename="MainWindow.py" line="155"/>
         <source>&amp;Pages</source>
         <translation>&amp;Страницы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="154"/>
+        <location filename="MainWindow.py" line="156"/>
         <source>Save current page</source>
         <translation>Сохранить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="156"/>
+        <location filename="MainWindow.py" line="158"/>
         <source>Print current page</source>
         <translation>Распечатать текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="159"/>
+        <location filename="MainWindow.py" line="161"/>
         <source>Clear current page</source>
         <translation>Очистить текущую страницу</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="161"/>
+        <location filename="MainWindow.py" line="163"/>
         <source>Clear all</source>
         <translation>Очистить все</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="164"/>
+        <location filename="MainWindow.py" line="166"/>
         <source>Search in translations</source>
         <translation>Искать в переводе</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="167"/>
+        <location filename="MainWindow.py" line="169"/>
         <source>New tab</source>
         <translation>Новая вкладка</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="169"/>
+        <location filename="MainWindow.py" line="171"/>
         <source>Close tab</source>
         <translation>Закрыть вкладку</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="75"/>
+        <location filename="TrayIcon.py" line="73"/>
         <source>Quit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="177"/>
+        <location filename="MainWindow.py" line="179"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="178"/>
+        <location filename="MainWindow.py" line="180"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="180"/>
+        <location filename="MainWindow.py" line="182"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="187"/>
+        <location filename="MainWindow.py" line="189"/>
         <source>Sp&amp;y</source>
         <translation>Sp&amp;y</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="192"/>
+        <location filename="MainWindow.py" line="194"/>
         <source>&amp;Tools</source>
         <translation>Инс&amp;трументы</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="193"/>
+        <location filename="MainWindow.py" line="195"/>
         <source>SL search</source>
         <translation>Поиск в SL</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="197"/>
+        <location filename="MainWindow.py" line="199"/>
         <source>Google-Translate client</source>
         <translation>Клиент переводчика Google</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="200"/>
+        <location filename="MainWindow.py" line="202"/>
         <source>Dicts management</source>
         <translation>Управление словарями</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="203"/>
+        <location filename="MainWindow.py" line="205"/>
         <source>Web translate</source>
         <translation>Перевод в Интернете</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="207"/>
+        <location filename="MainWindow.py" line="209"/>
         <source>Applications</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="213"/>
+        <location filename="MainWindow.py" line="215"/>
         <source>&amp;Help</source>
         <translation>По&amp;мощь</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="214"/>
+        <location filename="MainWindow.py" line="216"/>
         <source>%1 manual</source>
         <translation>Руковдоство %1</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="217"/>
+        <location filename="MainWindow.py" line="219"/>
         <source>Internet links</source>
         <translation>Ссылки</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="222"/>
+        <location filename="MainWindow.py" line="224"/>
         <source>About Qt4</source>
         <translation>О библиотеке Qt4</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="238"/>
+        <location filename="MainWindow.py" line="276"/>
         <source>Welcome</source>
         <translation>Добро пожаловать</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="283"/>
+        <location filename="MainWindow.py" line="281"/>
         <source>Ready</source>
         <translation>Готов</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="400"/>
+        <location filename="MainWindow.py" line="398"/>
         <source>Save page &quot;%1&quot;</source>
         <translation>Сохранить страницу &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="408"/>
+        <location filename="MainWindow.py" line="406"/>
         <source>This file cannot by open for saving</source>
         <translation>Невозможно открыть этот файл для сохранения</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="417"/>
+        <location filename="MainWindow.py" line="415"/>
         <source>Saved</source>
         <translation>Сохранено</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="430"/>
+        <location filename="MainWindow.py" line="428"/>
         <source>Printing...</source>
         <translation>Печатаем...</translation>
     </message>
@@ -514,27 +509,27 @@ Package version: %2</source>
         <translation>Остановить Spy-сервис</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="59"/>
+        <location filename="SpyMenu.py" line="61"/>
         <source>Show popup window</source>
         <translation>Показывать всплывающее окно</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="62"/>
+        <location filename="SpyMenu.py" line="64"/>
         <source>Auto-detect window</source>
         <translation>Автоидентификация окна</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="108"/>
+        <location filename="SpyMenu.py" line="110"/>
         <source>Spy is running</source>
         <translation>Spy-сервис запущен</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="118"/>
+        <location filename="SpyMenu.py" line="120"/>
         <source>Spy is stopped</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="191"/>
+        <location filename="TabbedTranslateBrowser.py" line="187"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
@@ -649,32 +644,32 @@ Package version: %2</source>
         <translation>Вьетнамский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="82"/>
+        <location filename="GoogleTranslatePanel.py" line="83"/>
         <source>I don&apos;t know...</source>
         <translation>Я не знаю...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="98"/>
+        <location filename="GoogleTranslatePanel.py" line="99"/>
         <source>Your language</source>
         <translation>Ваш язык</translation>
     </message>
     <message>
-        <location filename="SlSearchPanel.py" line="194"/>
+        <location filename="SlSearchPanel.py" line="180"/>
         <source>Enter the word, please</source>
         <translation>Пожалуйста, введите слово</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="182"/>
+        <location filename="MainWindow.py" line="184"/>
         <source>Zoom normal</source>
         <translation>Нормальный размер</translation>
     </message>
     <message>
-        <location filename="SpyMenu.py" line="67"/>
+        <location filename="SpyMenu.py" line="69"/>
         <source>Keyboard modifiers</source>
         <translation>Клавиши-модификаторы</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="70"/>
+        <location filename="TrayIcon.py" line="69"/>
         <source>Dictionary window</source>
         <translation>Окно словаря</translation>
     </message>
@@ -714,22 +709,22 @@ Package version: %2</source>
         <translation>Enter</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="105"/>
+        <location filename="DictsManagerWindow.py" line="102"/>
         <source>Ctrl+Up</source>
         <translation>Ctrl+Up</translation>
     </message>
     <message>
-        <location filename="DictsManagerWindow.py" line="112"/>
+        <location filename="DictsManagerWindow.py" line="109"/>
         <source>Ctrl+Down</source>
         <translation>Ctrl+Down</translation>
     </message>
     <message>
-        <location filename="HelpBrowserWindow.py" line="89"/>
+        <location filename="HelpBrowserWindow.py" line="90"/>
         <source>Backspace</source>
         <translation>Backspace</translation>
     </message>
     <message>
-        <location filename="HelpBrowserWindow.py" line="126"/>
+        <location filename="HelpBrowserWindow.py" line="127"/>
         <source>Ctrl+F, /</source>
         <translation>Ctrl+F, /</translation>
     </message>
@@ -789,14 +784,14 @@ Package version: %2</source>
         <translation>Идиш</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="99"/>
+        <location filename="TrayIcon.py" line="97"/>
         <source>%1 - graphical interface for SL
 Spy is stopped</source>
         <translation>%1 - графический интерфейс для SL
 Spy-сервис не запущен</translation>
     </message>
     <message>
-        <location filename="TrayIcon.py" line="91"/>
+        <location filename="TrayIcon.py" line="89"/>
         <source>%1 - graphical interface for SL
 Spy is running</source>
         <translation>%1 - графический интерфейс для SL
@@ -823,12 +818,12 @@ Spy-сервис работает</translation>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Прервано&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="241"/>
+        <location filename="MainWindow.py" line="279"/>
         <source>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td class=&quot;dict_header_background&quot; align=&quot;center&quot;&gt;&lt;font class=&quot;dict_header_font&quot;&gt;Welcome to the %1 - the system of electronic dictionaries&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</source>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td class=&quot;dict_header_background&quot; align=&quot;center&quot;&gt;&lt;font class=&quot;dict_header_font&quot;&gt;Добро пожаловать в систему электронных словарей %1&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="190"/>
+        <location filename="TabbedTranslateBrowser.py" line="186"/>
         <source>&lt;font class=&quot;info_font&quot;&gt;Empty&lt;/font&gt;</source>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Пусто&lt;/font&gt;</translation>
     </message>
