@@ -179,6 +179,8 @@ class HelpBrowserWindow(Qt.QDialog) :
 
 	def show(self) :
 		Qt.QDialog.show(self)
+		self.raise_()
+		self.activateWindow()
 		self.text_browser.setFocus(Qt.Qt.OtherFocusReason)
 
 
