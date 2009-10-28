@@ -26,6 +26,10 @@ import Const
 
 
 #####
+IconsDir = Config.Prefix+"/lib/xsl/icons/"
+
+
+#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
@@ -36,6 +40,40 @@ class TextEdit(Qt.QTextEdit) :
 		Qt.QTextEdit.__init__(self, parent)
 
 		self.setAcceptRichText(False)
+
+		#####
+
+		self.main_layout = Qt.QVBoxLayout()
+		self.main_layout.setAlignment(Qt.Qt.AlignRight|Qt.Qt.AlignBottom)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setSpacing(0)
+		self.setLayout(self.main_layout)
+
+		#####
+
+		self.clear_button = Qt.QToolButton()
+		self.clear_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
+		self.clear_button.setIconSize(Qt.QSize(16, 16))
+		self.clear_button.setCursor(Qt.Qt.ArrowCursor)
+		self.clear_button.setAutoRaise(True)
+		self.clear_button.setEnabled(False)
+		self.main_layout.addWidget(self.clear_button)
+
+		#####
+
+		self.connect(self, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
+
+		self.connect(self.clear_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
+
+
+	### Private ###
+
+	def clearTextEdit(self) :
+		self.clear()
+		self.setFocus(Qt.Qt.OtherFocusReason)
+
+	def setStatusFromTextEdit(self) :
+		self.clear_button.setEnabled(not self.toPlainText().simplified().isEmpty())
 
 
 	### Signals ###

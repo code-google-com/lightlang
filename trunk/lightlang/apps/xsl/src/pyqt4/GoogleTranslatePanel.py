@@ -103,15 +103,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.text_edit = TextEdit.TextEdit()
 		self.text_edit_layout.addWidget(self.text_edit)
 
-		self.clear_text_edit_button = Qt.QToolButton()
-		self.clear_text_edit_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
-		self.clear_text_edit_button.setIconSize(Qt.QSize(16, 16))
-		size_policy = self.clear_text_edit_button.sizePolicy()
-		size_policy.setVerticalPolicy(Qt.QSizePolicy.Expanding)
-		self.clear_text_edit_button.setSizePolicy(size_policy)
-		self.clear_text_edit_button.setEnabled(False)
-		self.text_edit_layout.addWidget(self.clear_text_edit_button)
-
 		self.translate_button = Qt.QPushButton(tr("T&ranslate"))
 		self.translate_button.setEnabled(False)
 		self.translate_button.setToolTip(tr("Ctrl+Enter"))
@@ -139,10 +130,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
 		self.connect(self.text_edit, Qt.SIGNAL("textApplied()"), self.translate_button.animateClick)
 
-		self.connect(self.clear_text_edit_button, Qt.SIGNAL("clicked()"), self.clearTextEdit)
-
 		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.translate)
-		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), lambda : self.text_edit.setFocus(Qt.Qt.OtherFocusReason))
+		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.setFocus)
 		self.connect(self.abort_button, Qt.SIGNAL("clicked()"), self.abort)
 
 
@@ -205,35 +194,27 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def processStarted(self) :
 		self.abort_button.setEnabled(True)
-
-		self.clear_text_edit_button.setEnabled(False)
 		self.translate_button.setEnabled(False)
 
 		self.processStartedSignal()
 
 	def processFinished(self) :
 		self.abort_button.setEnabled(False)
-
-		self.clear_text_edit_button.setEnabled(True)
-		self.translate_button.setEnabled(True)
+		self.translate_button.setEnabled(not self.text_edit.toPlainText().simplified().isEmpty())
 
 		self.processFinishedSignal()
 
+	###
+
 	def setStatusFromTextEdit(self) :
-		text_edit_empty_flag = self.text_edit.toPlainText().simplified().isEmpty()
-		self.clear_text_edit_button.setEnabled(not text_edit_empty_flag)
-		self.translate_button.setEnabled(not text_edit_empty_flag)
+		self.translate_button.setEnabled(not self.text_edit.toPlainText().simplified().isEmpty())
+
+	###
 
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
 			self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
 			self.text_edit.selectAll()
-
-	###
-
-	def clearTextEdit(self) :
-		self.text_edit.clear()
-		self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Signals ###
