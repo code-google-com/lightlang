@@ -149,10 +149,8 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.connect(self.home_button, Qt.SIGNAL("clicked()"), self.home)
 
 		self.connect(self.show_text_search_frame_button, Qt.SIGNAL("clicked()"), self.text_search_frame.show)
-		self.connect(self.show_text_search_frame_button, Qt.SIGNAL("clicked()"), self.text_search_frame.setFocus)
 
 		self.connect(self.text_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
-		self.connect(self.text_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.setFocus)
 		self.connect(self.text_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
 		self.connect(self.text_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
 			self.text_search_frame.setLineEditRedAlertPalette)

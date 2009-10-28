@@ -97,7 +97,6 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
 
 		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
-		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.setFocus)
 		self.connect(self.translate_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
 		self.connect(self.translate_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
 			self.text_search_frame.setLineEditRedAlertPalette)

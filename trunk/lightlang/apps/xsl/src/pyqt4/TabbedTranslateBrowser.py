@@ -105,7 +105,6 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 	def showTextSearchFrame(self) :
 		self.text_search_frame.show()
-		self.text_search_frame.setFocus()
 
 	def hideTextSearchFrame(self) :
 		self.text_search_frame.hide()
@@ -119,9 +118,9 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
-		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.showTextSearchFrame)
-		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.hideTextSearchFrame)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
 			self.text_search_frame.setLineEditRedAlertPalette)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),

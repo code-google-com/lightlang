@@ -103,6 +103,11 @@ class TextSearchFrame(Qt.QFrame) :
 
 	### Public ###
 
+	def show(self) :
+		Qt.QFrame.show(self)
+		self.raise_()
+		self.setFocus()
+
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
 		self.line_edit.setFocus(reason)
 		self.line_edit.selectAll()
