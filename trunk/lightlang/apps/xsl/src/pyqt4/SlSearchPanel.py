@@ -104,8 +104,8 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.connect(self.internal_word_search, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
 		self.connect(self.internal_word_search, Qt.SIGNAL("listChanged(const QStringList &)"), self.list_browser.setList)
 
-		self.connect(self.external_word_search, Qt.SIGNAL("processStarted()"), self.processStartedSignal)
-		self.connect(self.external_word_search, Qt.SIGNAL("processFinished()"), self.processFinishedSignal)
+		self.connect(self.external_word_search, Qt.SIGNAL("processStarted()"), self.processStarted)
+		self.connect(self.external_word_search, Qt.SIGNAL("processFinished()"), self.processFinished)
 		self.connect(self.external_word_search, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
 		self.connect(self.external_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 
@@ -213,6 +213,22 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.delay_timer.stop()
 		self.lFind()
 
+	###
+
+	def processStarted(self) :
+		self.u_find_button.setEnabled(False)
+		self.c_find_button.setEnabled(False)
+		self.i_find_button.setEnabled(False)
+
+		self.processStartedSignal()
+
+	def processFinished(self) :
+		line_edit_empty_flag = self.line_edit.text().simplified().isEmpty()
+		self.u_find_button.setEnabled(not line_edit_empty_flag)
+		self.c_find_button.setEnabled(not line_edit_empty_flag)
+		self.i_find_button.setEnabled(not line_edit_empty_flag)
+
+		self.processFinishedSignal()
 	###
 
 	def setStatusFromLineEdit(self, word) :
