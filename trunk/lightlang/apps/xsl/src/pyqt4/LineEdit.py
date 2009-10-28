@@ -43,7 +43,7 @@ class LineEdit(Qt.QLineEdit) :
 
 		self.main_layout = Qt.QHBoxLayout()
 		self.main_layout.setAlignment(Qt.Qt.AlignRight)
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setContentsMargins(0, 0, 1, 0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
