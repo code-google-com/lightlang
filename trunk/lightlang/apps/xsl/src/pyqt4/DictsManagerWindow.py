@@ -142,10 +142,6 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
-		#####
-
-		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
-
 
 	### Public ###
 
