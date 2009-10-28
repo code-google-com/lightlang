@@ -64,7 +64,6 @@ class TextSearchFrame(Qt.QFrame) :
 		self.main_layout.addWidget(self.line_edit_label)
 
 		self.line_edit = LineEdit.LineEdit()
-		self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
 		self.main_layout.addWidget(self.line_edit)
 
 		self.vertical_frame2 = Qt.QFrame()
