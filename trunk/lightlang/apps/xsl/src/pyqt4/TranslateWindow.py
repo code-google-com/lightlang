@@ -98,10 +98,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
 		self.connect(self.translate_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
-		self.connect(self.translate_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
-			self.text_search_frame.setLineEditRedAlertPalette)
-		self.connect(self.translate_browser, Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
-			self.text_search_frame.setLineEditDefaultPalette)
+		self.connect(self.translate_browser, Qt.SIGNAL("setFoundRequest(bool)"), self.text_search_frame.setFound)
 		self.connect(self.translate_browser, Qt.SIGNAL("newTabRequest()"), self.newTabRequestSignal)
 		self.connect(self.translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
 		self.connect(self.translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)

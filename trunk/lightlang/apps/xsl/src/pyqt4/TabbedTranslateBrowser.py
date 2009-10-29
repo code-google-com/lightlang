@@ -121,10 +121,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
-		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
-			self.text_search_frame.setLineEditRedAlertPalette)
-		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
-			self.text_search_frame.setLineEditDefaultPalette)
+		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("setFoundRequest(bool)"), self.text_search_frame.setFound)
 
 		self.translate_browsers_list[index].setText(tr("<font class=\"info_font\">Empty</font>"))
 		self.tab_widget.addTab(self.translate_browsers_list[index], tr("(Untitled)"))

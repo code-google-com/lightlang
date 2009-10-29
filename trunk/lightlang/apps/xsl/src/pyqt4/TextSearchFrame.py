@@ -114,11 +114,8 @@ class TextSearchFrame(Qt.QFrame) :
 
 	###
 
-	def setLineEditRedAlertPalette(self) :
-		self.line_edit.setPalette(self.line_edit_red_alert_palette)
-
-	def setLineEditDefaultPalette(self) :
-		self.line_edit.setPalette(self.line_edit_default_palette)
+	def setFound(self, found_flag) :
+		self.line_edit.setPalette(self.line_edit_default_palette if found_flag else self.line_edit_red_alert_palette)
 
 	###
 

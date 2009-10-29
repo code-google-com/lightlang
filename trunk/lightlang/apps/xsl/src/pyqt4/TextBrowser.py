@@ -146,11 +146,11 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		if Qt.QTextBrowser.document(self).isModified() :
 			Qt.QTextBrowser.document(self).undo()
-			self.setTextSearchFrameLineEditDefaultPaletteSignal()
+			self.setFoundRequestSignal(True)
 		self.chrome_scroll_bar.clearHighlight()
 
 		if word.isEmpty() :
-			self.setTextSearchFrameLineEditDefaultPaletteSignal()
+			self.setFoundRequestSignal(True)
 			return
 
 		highlight_cursor = Qt.QTextCursor(Qt.QTextBrowser.document(self))
@@ -173,11 +173,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		cursor.endEditBlock()
 
+		self.setFoundRequestSignal(word_found_flag)
 		if word_found_flag :
-			self.setTextSearchFrameLineEditDefaultPaletteSignal()
 			self.chrome_scroll_bar.drawHighlight()
 		else :
-			self.setTextSearchFrameLineEditRedAlertPaletteSignal()
 			self.chrome_scroll_bar.clearHighlight()
 
 
@@ -197,11 +196,8 @@ class TextBrowser(Qt.QTextBrowser) :
 	def hideTextSearchFrameRequestSignal(self) :
 		self.emit(Qt.SIGNAL("hideTextSearchFrameRequest()"))
 
-	def setTextSearchFrameLineEditRedAlertPaletteSignal(self) :
-		self.emit(Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"))
-
-	def setTextSearchFrameLineEditDefaultPaletteSignal(self) :
-		self.emit(Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"))
+	def setFoundRequestSignal(self, found_flag) :
+		self.emit(Qt.SIGNAL("setFoundRequest(bool)"), found_flag)
 
 	def statusChangedSignal(self, str) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)

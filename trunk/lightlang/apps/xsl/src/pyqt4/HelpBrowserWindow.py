@@ -152,10 +152,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 
 		self.connect(self.text_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
 		self.connect(self.text_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
-		self.connect(self.text_browser, Qt.SIGNAL("setTextSearchFrameLineEditRedAlertPaletteRequest()"),
-			self.text_search_frame.setLineEditRedAlertPalette)
-		self.connect(self.text_browser, Qt.SIGNAL("setTextSearchFrameLineEditDefaultPaletteRequest()"),
-			self.text_search_frame.setLineEditDefaultPalette)
+		self.connect(self.text_browser, Qt.SIGNAL("setFoundRequest(bool)"), self.text_search_frame.setFound)
 		self.connect(self.text_browser, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.updateTitle)
 		self.connect(self.text_browser, Qt.SIGNAL("backwardAvailable(bool)"), self.setBackwardButtonAvailable)
 		self.connect(self.text_browser, Qt.SIGNAL("forwardAvailable(bool)"), self.setForwardButtonAvailable)
