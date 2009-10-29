@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="ru_RU">
+<!DOCTYPE TS>
+<TS version="2.0" language="ru_RU">
 <context>
     <name>@default</name>
     <message>
@@ -193,12 +194,12 @@
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="114"/>
+        <location filename="GoogleTranslatePanel.py" line="105"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="116"/>
+        <location filename="GoogleTranslatePanel.py" line="107"/>
         <source>Ctrl+Enter</source>
         <translation>Ctrl+Enter</translation>
     </message>
@@ -245,7 +246,7 @@ Press &quot;Yes&quot; to ignore</source>
         <translation>Руководство %1</translation>
     </message>
     <message>
-        <location filename="HelpBrowserWindow.py" line="192"/>
+        <location filename="HelpBrowserWindow.py" line="189"/>
         <source>%1 Manual - %2</source>
         <translation>Руководство %1 - %2</translation>
     </message>
@@ -529,7 +530,7 @@ Package version: %2</source>
         <translation>Spy-сервис остановлен</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="187"/>
+        <location filename="TabbedTranslateBrowser.py" line="183"/>
         <source>(Untitled)</source>
         <translation>(Без названия)</translation>
     </message>
@@ -541,7 +542,7 @@ Package version: %2</source>
     <message>
         <location filename="TranslateBrowser.py" line="120"/>
         <source>Sound is not full</source>
-        <translation>Звук не полон</translation>
+        <translation>Эти слова озвучены не полностью</translation>
     </message>
     <message>
         <location filename="TranslateBrowser.py" line="145"/>
@@ -823,7 +824,7 @@ Spy-сервис работает</translation>
         <translation>&lt;br&gt;&lt;br&gt;&lt;hr&gt;&lt;table border=&quot;0&quot; width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td class=&quot;dict_header_background&quot; align=&quot;center&quot;&gt;&lt;font class=&quot;dict_header_font&quot;&gt;Добро пожаловать в систему электронных словарей %1&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;hr&gt;</translation>
     </message>
     <message>
-        <location filename="TabbedTranslateBrowser.py" line="186"/>
+        <location filename="TabbedTranslateBrowser.py" line="182"/>
         <source>&lt;font class=&quot;info_font&quot;&gt;Empty&lt;/font&gt;</source>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Пусто&lt;/font&gt;</translation>
     </message>
