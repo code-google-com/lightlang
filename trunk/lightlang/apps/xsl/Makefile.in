@@ -64,7 +64,7 @@ install :
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_ICON_DIR)
 	$(INS) $(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_DIR)
-	-$(LN) $(INS_XSL_PROG_DIR)/$(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
+	-$(LN) -s $(INS_XSL_PROG_DIR)/$(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
 	$(CP) -f $(XSL_PYQT4_DIR)/*.py $(DESTDIR)$(INS_XSL_PYQT4_DIR)
 	-for file in `$(LS) $(DESTDIR)$(INS_XSL_PYQT4_DIR)/*.py`; do \
 		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
