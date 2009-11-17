@@ -24,6 +24,7 @@ import Qt
 import Const
 import Config
 import Locale
+import LangsList
 
 
 #####
@@ -48,9 +49,14 @@ class GoogleTranslate(Qt.QObject) :
 		self.timer.setInterval(30000)
 
 		self.lang = Locale.mainLang()
+		self.sl = Qt.QString()
+		self.tl = Qt.QString()
 
-		self.translate_regexp = Qt.QRegExp("\\{\\s*\"translatedText\"\\s*:\\s*\"(.*)\"\\s*(,|\\})")
-		self.translate_regexp.setMinimal(True)
+		self.translated_text_regexp = Qt.QRegExp("\"translatedText\"\\s*:\\s*\"(.*)\"")
+		self.translated_text_regexp.setMinimal(True)
+
+		self.detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
+		self.detected_source_language_regexp.setMinimal(True)
 
 		#####
 
@@ -79,6 +85,9 @@ class GoogleTranslate(Qt.QObject) :
 		self.textChangedSignal(tr("<font class=\"info_font\">Please wait...</font>"))
 
 		text = text.trimmed()
+
+		self.sl = sl
+		self.tl = tl
 
 		###
 
@@ -164,8 +173,12 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		if self.translate_regexp.indexIn(text) > -1 :
-			text = self.translate_regexp.cap(1)
+		if self.detected_source_language_regexp.indexIn(text) > -1 :
+			self.sl = self.detected_source_language_regexp.cap(1)
+		if self.translated_text_regexp.indexIn(text) > -1 :
+			text = ( tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3")
+				.arg(LangsList.langName(self.sl)).arg(LangsList.langName(self.tl))
+				.arg(self.translated_text_regexp.cap(1)) )
 
 		###
 
