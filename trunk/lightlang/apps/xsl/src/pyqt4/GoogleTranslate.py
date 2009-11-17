@@ -49,7 +49,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.lang = Locale.mainLang()
 
-		self.translate_regexp = Qt.QRegExp("\\{\\s*\"translatedText\"\\s*:\\s*\"(.*)\"\\s*\\}")
+		self.translate_regexp = Qt.QRegExp("\\{\\s*\"translatedText\"\\s*:\\s*\"(.*)\"\\s*(,|\\})")
 		self.translate_regexp.setMinimal(True)
 
 		#####
@@ -93,9 +93,10 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
+		# FIXME
+		#text.replace("\n", "<br>")
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
-		# FIXME: newline symbols
 		http_request_header = Qt.QHttpRequestHeader("POST",
 			Qt.QString("/ajax/services/language/translate?v=1.0&langpair=%1%7C%2").arg(sl).arg(tl), 1, 1)
 		http_request_header.setValue("Host", "ajax.googleapis.com")
@@ -156,6 +157,10 @@ class GoogleTranslate(Qt.QObject) :
 
 		codec = Qt.QTextCodec.codecForName("UTF-8")
 		text = codec.toUnicode(self.http_output.data())
+		# FIXME
+		#print text
+		#text.replace("\u003c", "<")
+		#text.replace("\u003e", ">")
 
 		###
 
