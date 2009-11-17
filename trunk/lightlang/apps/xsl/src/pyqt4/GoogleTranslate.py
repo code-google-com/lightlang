@@ -27,10 +27,6 @@ import Locale
 
 
 #####
-GoogleTranslateHost = "translate.google.com"
-
-
-#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
@@ -53,10 +49,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.lang = Locale.mainLang()
 
-		self.direction_regexp = Qt.QRegExp("<td id=autotrans style=.*>(<span class=.*>.*</span>.*)</td>")
-		self.direction_regexp.setMinimal(True)
-
-		self.translate_regexp = Qt.QRegExp("<div id=result_box .*>(.*)</div>")
+		self.translate_regexp = Qt.QRegExp("\\{\\s*\"translatedText\"\\s*:\\s*\"(.*)\"\\s*\\}")
 		self.translate_regexp.setMinimal(True)
 
 		#####
@@ -90,8 +83,8 @@ class GoogleTranslate(Qt.QObject) :
 		###
 
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
-			site = ( Qt.QString("http://%1/translate?hl=%2&sl=%3&tl=%4&u=%5&client=t")
-				.arg(GoogleTranslateHost).arg(self.lang).arg(sl).arg(tl).arg(text) )
+			site = ( Qt.QString("http://translate.google.com/translate?js=y&prev=_t&hl=%1&ie=UTF-8&sl=%2&tl=%3&u=%4")
+				.arg(self.lang).arg(sl).arg(tl).arg(text) )
 			Qt.QDesktopServices.openUrl(Qt.QUrl(site))
 			self.textChangedSignal(tr("<font class=\"word_header_font\">Link of site \"%1\" translation"
 				" was opened in your browser</font><hr><br><a href=\"%2\">%2</a>").arg(text).arg(site))
@@ -102,17 +95,20 @@ class GoogleTranslate(Qt.QObject) :
 
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
-		http_request_header = Qt.QHttpRequestHeader("POST", (Qt.QString("/translate_t?client=t&hl=%1&sl=%2&tl=%3")
-			.arg(self.lang).arg(sl).arg(tl)), 1, 1)
-		http_request_header.setValue("Host", GoogleTranslateHost)
+		# FIXME: newline symbols
+		http_request_header = Qt.QHttpRequestHeader("POST",
+			Qt.QString("/ajax/services/language/translate?v=1.0&langpair=%1%7C%2").arg(sl).arg(tl), 1, 1)
+		http_request_header.setValue("Host", "ajax.googleapis.com")
 		http_request_header.setValue("User-Agent", "Mozilla/5.0")
+		http_request_header.setValue("Accept", "*/*")
+		http_request_header.setValue("Content-Type", "application/x-www-form-urlencoded")
 		http_request_header.setContentLength(text.length())
-		http_request_header.setValue("Connection", "Close")
+		http_request_header.setValue("Connection", "close")
 
-		bytes = Qt.QByteArray("text=")
-		bytes.append(text)
+		bytes = Qt.QByteArray()
+		bytes.append("q="+text)
 
-		self.http.setHost(GoogleTranslateHost)
+		self.http.setHost("ajax.googleapis.com")
 		self.http_request_id = self.http.request(http_request_header, bytes)
 
 		self.timer.start()
@@ -163,12 +159,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		direction_index = self.direction_regexp.indexIn(text)
-		translate_index = self.translate_regexp.indexIn(text)
-		if direction_index > -1 and translate_index > -1 :
-			text = ( Qt.QString("<font class=\"word_header_font\">%1</font><hr>%2")
-				.arg(self.direction_regexp.cap(1)).arg(self.translate_regexp.cap(1)) )
-		elif translate_index > -1 :
+		if self.translate_regexp.indexIn(text) > -1 :
 			text = self.translate_regexp.cap(1)
 
 		###
