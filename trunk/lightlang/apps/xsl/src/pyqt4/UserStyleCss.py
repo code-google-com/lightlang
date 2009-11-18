@@ -50,6 +50,7 @@ def userStyleCss() :
 def initUserStyleCss() :
 	global UserStyleCssObject
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
+		".red_alert_background {background-color: #FF6E6E;}\n"
 		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
 		".word_header_font {font-size: normal; color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"
