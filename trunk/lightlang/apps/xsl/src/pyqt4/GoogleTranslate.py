@@ -58,6 +58,8 @@ class GoogleTranslate(Qt.QObject) :
 		self.detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
 		self.detected_source_language_regexp.setMinimal(True)
 
+		self.unicode_char_regexp = Qt.QRegExp("\\\\u([0-9a-fA-F]{4})")
+
 		#####
 
 		self.connect(self.http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
@@ -102,8 +104,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		# FIXME
-		#text.replace("\n", "<br>")
+		text.replace("\n", "<br>")
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
 
 		http_request_header = Qt.QHttpRequestHeader("POST",
@@ -164,21 +165,26 @@ class GoogleTranslate(Qt.QObject) :
 
 		self.timer.stop()
 
+		###
+
 		codec = Qt.QTextCodec.codecForName("UTF-8")
 		text = codec.toUnicode(self.http_output.data())
-		# FIXME
-		#print text
-		#text.replace("\u003c", "<")
-		#text.replace("\u003e", ">")
 
 		###
 
 		if self.detected_source_language_regexp.indexIn(text) > -1 :
 			self.sl = self.detected_source_language_regexp.cap(1)
 		if self.translated_text_regexp.indexIn(text) > -1 :
+			text = self.translated_text_regexp.cap(1)
+
+			unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text)
+			while unicode_char_regexp_pos != -1 :
+				text.replace(unicode_char_regexp_pos, self.unicode_char_regexp.matchedLength(),
+					Qt.QChar(self.unicode_char_regexp.cap(1).toInt(16)[0]))
+				unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
+
 			text = ( tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3")
-				.arg(LangsList.langName(self.sl)).arg(LangsList.langName(self.tl))
-				.arg(self.translated_text_regexp.cap(1)) )
+				.arg(LangsList.langName(self.sl)).arg(LangsList.langName(self.tl)).arg(text) )
 
 		###
 
