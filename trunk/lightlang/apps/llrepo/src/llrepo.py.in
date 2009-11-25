@@ -48,10 +48,10 @@ DictsDir = SLSharesDir+DictsResourcesType+"/"
 SoundsDir = SLSharesDir+SoundsResourcesType+"/"
 
 ###
-CATProg = "@CAT_PROG@"
-TARProg = "@TAR_PROG@"
+CatProg = "@CAT_PROG@"
+TarProg = "@TAR_PROG@"
 BZip2Prog = "@BZIP2_PROG@"
-SLProg = "@prefix@/bin/sl"
+SlProg = "@prefix@/bin/sl"
 
 ###
 RemoteListCommand = "remotelist"
@@ -361,7 +361,7 @@ def uncompress_resource(resource_name, resource_type, resource_file_path) :
 	elif resource_type == SoundsResourcesType :
 		print "--- resource \"%s\" :: bzip2 tar data" % (resource_name)
 
-		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TARProg, resource_file_path, SoundsDir)) != 0 :
+		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TarProg, resource_file_path, SoundsDir)) != 0 :
 			try :
 				for root_dir_path, dirs_list, files_list in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
 					for files_list_item in files_list :
@@ -402,9 +402,9 @@ def indexate_resource(resource_name, resource_type, resource_file_path) :
 
 		if os.system("%s --print-index \"%s\" 1> \"%s\" && %s %s 1>> %s && "
 			"%s --print-index \"%s\" 1> \"%s\" && %s \"%s\" >> \"%s\" && %s \"%s\" > \"%s\"" % (
-			SLProg, resource_file_path, tmp1_file_path, CATProg, resource_file_path, tmp1_file_path,
-			SLProg, tmp1_file_path, tmp2_file_path, CATProg, resource_file_path, tmp2_file_path,
-			CATProg, tmp2_file_path, resource_file_path)) != 0 :
+			SlProg, resource_file_path, tmp1_file_path, CatProg, resource_file_path, tmp1_file_path,
+			SlProg, tmp1_file_path, tmp2_file_path, CatProg, resource_file_path, tmp2_file_path,
+			CatProg, tmp2_file_path, resource_file_path)) != 0 :
 			try :
 				os.remove(tmp1_file_path)
 			except Exception, err1 :
