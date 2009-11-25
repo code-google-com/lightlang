@@ -47,8 +47,7 @@ DictsDir = "resources/dicts/src"
 SoundsDir = "resources/sounds/sounds"
 
 ###
-CATProg = "@CAT_PROG@"
-TARProg = "@TAR_PROG@"
+TarProg = "@TAR_PROG@"
 BZip2Prog = "@BZIP2_PROG@"
 
 ###
@@ -359,7 +358,7 @@ def uncompress_resource(resource_name, resource_type, resource_file_path) :
 	elif resource_type == SoundsResourcesType :
 		print "--- resource \"%s\" :: bzip2 tar data" % (resource_name)
 
-		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TARProg, resource_file_path, SoundsDir)) != 0 :
+		if os.system("%s -xjf \"%s\" -C \"%s\"" % (TarProg, resource_file_path, SoundsDir)) != 0 :
 			try :
 				for root_dir_path, dirs_list, files_list in os.walk(resource_file_path[:-len(SoundsResourcesPostfix)]) :
 					for files_list_item in files_list :
