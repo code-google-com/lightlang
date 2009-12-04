@@ -20,6 +20,7 @@
 
 import sys
 import os
+import tempfile
 import ftplib
 
 sys.path.append("@prefix@/lib/llrepo")
@@ -397,8 +398,8 @@ def indexate_resource(resource_name, resource_type, resource_file_path) :
 	if resource_type == DictsResourcesType :
 		print "--- resource \"%s\" :: indexating..." % (resource_name)
 
-		tmp1_file_path = os.tmpnam()+"."+MyName
-		tmp2_file_path = os.tmpnam()+"."+MyName
+		tmp1_file_path = tempfile.mkstemp()[1]+"."+MyName
+		tmp2_file_path = tempfile.mkstemp()[1]+"."+MyName
 
 		if os.system("%s --print-index \"%s\" 1> \"%s\" && %s %s 1>> %s && "
 			"%s --print-index \"%s\" 1> \"%s\" && %s \"%s\" >> \"%s\" && %s \"%s\" > \"%s\"" % (
