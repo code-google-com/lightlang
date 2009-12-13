@@ -188,6 +188,14 @@ else
 	echo "ok"
 fi
 
+printf "python-test: importing \"tempfile\" module... "
+$PYTHON_PROG -c "import tempfile"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
 if [[ "$GUI_FLAG" = "yes" ]]; then
 
 	printf "python-test: importing \"Xlib\" module... "
