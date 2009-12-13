@@ -58,7 +58,7 @@ class GoogleTranslate(Qt.QObject) :
 		self.detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
 		self.detected_source_language_regexp.setMinimal(True)
 
-		self.unicode_char_regexp = Qt.QRegExp("\\\\u([0-9a-fA-F]{4})")
+		self.unicode_char_regexp = Qt.QRegExp("(\\\\+)u([0-9a-fA-F]{4})")
 
 		#####
 
@@ -104,11 +104,15 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
+		text = Qt.Qt.escape(text)
+		text.replace("\"", "&quot;")
 		text.replace("\n", "<br>")
+
 		text = Qt.QString.fromLocal8Bit(str(Qt.QUrl.toPercentEncoding(text)))
+		text = Qt.QByteArray().append("q="+text)
 
 		http_request_header = Qt.QHttpRequestHeader("POST",
-			Qt.QString("/ajax/services/language/translate?v=1.0&langpair=%1%7C%2").arg(sl).arg(tl), 1, 1)
+			Qt.QString("/ajax/services/language/translate?v=1.0&type=html&langpair=%1%7C%2").arg(sl).arg(tl), 1, 1)
 		http_request_header.setValue("Host", "ajax.googleapis.com")
 		http_request_header.setValue("User-Agent", "Mozilla/5.0")
 		http_request_header.setValue("Accept", "*/*")
@@ -116,11 +120,8 @@ class GoogleTranslate(Qt.QObject) :
 		http_request_header.setContentLength(text.length())
 		http_request_header.setValue("Connection", "close")
 
-		bytes = Qt.QByteArray()
-		bytes.append("q="+text)
-
 		self.http.setHost("ajax.googleapis.com")
-		self.http_request_id = self.http.request(http_request_header, bytes)
+		self.http_request_id = self.http.request(http_request_header, text)
 
 		self.timer.start()
 
@@ -179,9 +180,15 @@ class GoogleTranslate(Qt.QObject) :
 
 			unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text)
 			while unicode_char_regexp_pos != -1 :
-				text.replace(unicode_char_regexp_pos, self.unicode_char_regexp.matchedLength(),
-					Qt.QChar(self.unicode_char_regexp.cap(1).toInt(16)[0]))
-				unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
+				if self.unicode_char_regexp.cap(1).length() % 2 == 1 :
+					text.replace(unicode_char_regexp_pos, self.unicode_char_regexp.matchedLength(),
+						Qt.QChar(self.unicode_char_regexp.cap(2).toInt(16)[0]))
+					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +1)
+				else :
+					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +
+						self.unicode_char_regexp.matchedLength())
+
+			text.replace("\\\\", "\\")
 
 			text = ( tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3")
 				.arg(LangsList.langName(self.sl)).arg(LangsList.langName(self.tl)).arg(text) )
