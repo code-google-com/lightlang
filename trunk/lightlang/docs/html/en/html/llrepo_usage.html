@@ -15,7 +15,7 @@
 
 &nbsp;&nbsp;&nbsp;<strong>LLRepo</strong> - менеджер репозитория <strong>LightLang</strong>, предназначенный для пополнения локальных словарных баз и других ресурсов из <strong>FTP</strong>-репозиториев <strong>LightLang</strong>. Можно очень просто добавить новый ресурс в систему, пользуясь командой <strong>llrepo</strong>. Эта команда выполняет автоматически необходимые вам операции при установке ресурсов. Естественно, компьютер должен быть поключен к Интернету <strong>:-)</strong>.<br>
 <br>
-&nbsp;&nbsp;&nbsp;На данный момент <strong>LLRepo</strong> поддерживает четыре операции для работы с ресурсами: <em>remotelist</em>, <em>locallist</em>, <em>install</em>, <em>uninstall</em>. Первые две - информационные, служат для получения информации о доступных (находящихся в удаленном репозитории) и установленных ресурсов (на вашем компьютере), вторые - для установки и удаления установленных ранее ресурсов. Все четыре опции требуют указания типа ресурса - <em>dicts</em> (словари) или <em>sounds</em> (звуки). Опции установки и удаления принимают после типа ресурса имя ресурса, над которым производится операция (может быть указано несколько ресурсов).<br>
+&nbsp;&nbsp;&nbsp;На данный момент <strong>LLRepo</strong> поддерживает четыре операции для работы с ресурсами: <em>remotelist</em>, <em>locallist</em>, <em>install</em>, <em>remove</em>. Первые две - информационные, служат для получения информации о доступных (находящихся в удаленном репозитории) и установленных ресурсов (на вашем компьютере), вторые - для установки и удаления установленных ранее ресурсов. Все четыре опции требуют указания типа ресурса - <em>dicts</em> (словари) или <em>sounds</em> (звуки). Опции установки и удаления принимают после типа ресурса имя ресурса, над которым производится операция (может быть указано несколько ресурсов).<br>
 <br>
 &nbsp;&nbsp;&nbsp;Для просмотра доступных словарей в репозитории используйте следующую команду:<br>
 <table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remotelist dicts</tt></td></tr></table>
@@ -37,10 +37,10 @@
 <br>
 
 &nbsp;&nbsp;&nbsp;Для удаления установленных словарей используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
-<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall dicts file1 file2 fileN</tt></td></tr></table>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remove dicts file1 file2 fileN</tt></td></tr></table>
 <br>
 &nbsp;&nbsp;&nbsp;Для удаления установленных звуков используйте следующую команду (последними параметрами перечислите имена необходимых ресурсов, полученных от вышеуказанных комманд):<br>
-<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo uninstall sounds file1 file2 fileN</tt></td></tr></table>
+<table border="0" width="100%"><tr><td bgcolor="#FFFBE0"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;llrepo remove sounds file1 file2 fileN</tt></td></tr></table>
 <br>
 &nbsp;&nbsp;&nbsp;Команды <em>help</em> и <em>version</em> выводят краткую справку и информацию о версии программы соответственно.<br>
 <br>

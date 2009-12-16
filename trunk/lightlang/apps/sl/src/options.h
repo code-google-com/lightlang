@@ -40,7 +40,7 @@
 # define OPT_DICT_DISCONNECT		"disconnect"
 # define OPT_DICT_PRINT_INFO		"print-info"
 # define OPT_DICT_INSTALL		"install"
-# define OPT_DICT_UNINSTALL		"uninstall"
+# define OPT_DICT_REMOVE		"remove"
 # define OPT_DICT_USE_LIST		"use-list"
 # define OPT_DICT_PRINT_INDEX		"print-index"
 

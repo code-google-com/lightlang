@@ -96,10 +96,10 @@ int install_dict(const char *in_dict_path)
 
 /********************************************************************************
 *										*
-*	uninstall_dict() - udalyaet slovar iz sistemy.				*
+*	remove_dict() - udalyaet slovar iz sistemy.				*
 *										*
 ********************************************************************************/
-int uninstall_dict(const char *dict_name)
+int remove_dict(const char *dict_name)
 {
 	//////////////////////////
 	char	*dict_path;	// Put k slovaryu
@@ -121,10 +121,10 @@ int uninstall_dict(const char *dict_name)
 	sprintf(dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
 
 	// Udalyaem slovar ...
-	printf("%s: uninstalling dict \"%s\"...\n", MYNAME, dict_name);
+	printf("%s: removing dict \"%s\"...\n", MYNAME, dict_name);
 	if ( unlink(dict_path) != 0 )
 	{
-		fprintf(stderr, "%s: cannot uninstall dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
+		fprintf(stderr, "%s: cannot remove dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
 		free(dict_path);
 		return -1;

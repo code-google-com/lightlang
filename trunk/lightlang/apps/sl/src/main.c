@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 		{OPT_DICT_DISCONNECT,		required_argument,	NULL,	'1'}, // -
 		{OPT_DICT_PRINT_INFO,		no_argument,		NULL,	'2'}, // -
 		{OPT_DICT_INSTALL,		required_argument,	NULL,	'3'}, // -
-		{OPT_DICT_UNINSTALL,		required_argument,	NULL,	'4'}, // -
+		{OPT_DICT_REMOVE,		required_argument,	NULL,	'4'}, // -
 		{OPT_DICT_USE_LIST,		required_argument,	NULL,	'5'}, // -
 		{OPT_DICT_PRINT_INDEX,		required_argument,	NULL,	'6'}, // -
 
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
 				use_default_function_flag = false;
 				break;
 
-			case '4' : ec += uninstall_dict(optarg);
+			case '4' : ec += remove_dict(optarg);
 				use_default_function_flag = false;
 				break;
 

@@ -54,11 +54,11 @@ BZip2Prog = "@BZIP2_PROG@"
 RemoteListCommand = "remotelist"
 LocalListCommand = "locallist"
 InstallCommand = "install"
-UninstallCommand = "uninstall"
+RemoveCommand = "remove"
 HelpCommand = "help"
 VersionCommand = "version"
 AllCommands = [RemoteListCommand, LocalListCommand,
-	InstallCommand, UninstallCommand,
+	InstallCommand, RemoveCommand,
 	HelpCommand, VersionCommand]
 
 
@@ -483,7 +483,7 @@ def install_resources(requested_resources_names_list, resources_type) :
 
 	return 0
 
-def uninstall_resources(requested_resources_names_list, resources_type) :
+def remove_resources(requested_resources_names_list, resources_type) :
 	if not resources_type in AllResourcesTypes :
 		return -1
 
@@ -564,8 +564,8 @@ def help() :
 	print "Local repository commands:"
 	print "\t%s %s %s" % (MyName, LocalListCommand, DictsResourcesType)
 	print "\t%s %s %s" % (MyName, LocalListCommand, SoundsResourcesType)
-	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, UninstallCommand, DictsResourcesType)
-	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, UninstallCommand, SoundsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, RemoveCommand, DictsResourcesType)
+	print "\t%s %s %s <file1> <file2> <fileN>" % (MyName, RemoveCommand, SoundsResourcesType)
 	print "Information commands:"
 	print "\t%s %s" % (MyName, HelpCommand)
 	print "\t%s %s" % (MyName, VersionCommand)
@@ -621,7 +621,7 @@ if __name__ == "__main__" :
 			sys.exit(1)
 		sys.exit( 1 if install_resources(sys.argv[3:], sys.argv[2]) != 0 else 0 )
 
-	elif sys.argv[1] == UninstallCommand :
+	elif sys.argv[1] == RemoveCommand :
 		if len(sys.argv) < 3 :
 			print >> sys.stderr, "Command \"%s\" requires resource type" % (sys.argv[1])
 			sys.exit(1)
@@ -631,5 +631,5 @@ if __name__ == "__main__" :
 		if len(sys.argv) < 4 :
 			print >> sys.stderr, "Minimum one file required for command \"%s\"" % (sys.argv[1])
 			sys.exit(1)
-		sys.exit( 1 if uninstall_resources(sys.argv[3:], sys.argv[2]) != 0 else 0 )
+		sys.exit( 1 if remove_resources(sys.argv[3:], sys.argv[2]) != 0 else 0 )
 

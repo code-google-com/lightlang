@@ -58,7 +58,7 @@ void help(void)
 	printf("\t--%s <dict>\n", OPT_DICT_DISCONNECT);
 	printf("\t--%s\n", OPT_DICT_PRINT_INFO);
 	printf("\t--%s <file>\n", OPT_DICT_INSTALL);
-	printf("\t--%s <dict>\n", OPT_DICT_UNINSTALL);
+	printf("\t--%s <dict>\n", OPT_DICT_REMOVE);
 	printf("\t--%s <list|of|dicts>\n", OPT_DICT_USE_LIST);
 	printf("\t--%s <file>\n", OPT_DICT_PRINT_INDEX);
 	printf("Misc options:\n");

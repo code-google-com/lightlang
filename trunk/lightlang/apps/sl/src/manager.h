@@ -35,7 +35,7 @@
 
 /********************************* Functions ***********************************/
 int install_dict(const char *in_dict_path);	// Ustanavlivaet slovar
-int uninstall_dict(const char *dict_name);	// Udalyaet slovar
+int remove_dict(const char *dict_name);		// Udalyaet slovar
 
 int connect_dict(const char *dict_name);	// Podkluchaet slovar
 int disconnect_dict(const char *dict_name);	// Otkluchaet slovar
