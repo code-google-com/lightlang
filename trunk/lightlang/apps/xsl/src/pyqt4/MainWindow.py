@@ -67,7 +67,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.setCentralWidget(self.main_widget)
 
 		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setContentsMargins(-1, 0, -1, -1)
+		self.main_layout.setContentsMargins(-1, 0, 0, -1)
 		self.main_widget.setLayout(self.main_layout)
 
 		##############################
