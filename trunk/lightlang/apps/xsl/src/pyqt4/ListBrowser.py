@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import UserStyleCss
+import UserStyleCssCollectionSingleton
 
 
 #####
@@ -52,34 +52,20 @@ class ListBrowser(Qt.QListWidget) :
 		self.caption_item_background_brush = Qt.QListWidgetItem().background()
 		self.caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
 
-		user_style_css = UserStyleCss.userStyleCss()
+		user_style_css_collection_singleton = UserStyleCssCollectionSingleton.UserStyleCssCollectionSingleton()
 
-		dict_header_font_regexp = Qt.QRegExp("\\.dict_header_font\\s+\\{(([^(\\{|\\})])*"
-			"(color:\\s*(#\\w{6});([^(\\{|\\})])*)?)\\}")
-		dict_header_font_regexp.setMinimal(True)
-		dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css)
-		while dict_header_font_pos != -1 :
-			self.caption_item_font.setBold(dict_header_font_regexp.cap(1).contains("bold"))
-			self.caption_item_font.setItalic(dict_header_font_regexp.cap(1).contains("italic"))
-			if dict_header_font_regexp.cap(1).contains("large") :
-				if self.caption_item_font.pixelSize() > 0 :
-					self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() +1)
-				elif self.caption_item_font.pointSize() > 0 :
-					self.caption_item_font.setPointSize(self.caption_item_font.pointSize() +1)
-			if not dict_header_font_regexp.cap(4).isEmpty() :
-				self.caption_item_foreground_brush.setColor(Qt.QColor(dict_header_font_regexp.cap(4)))
-			dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css, dict_header_font_pos +
-				dict_header_font_regexp.matchedLength())
+		self.caption_item_font.setBold(user_style_css_collection_singleton.dictHeaderFontBoldFlag())
+		self.caption_item_font.setItalic(user_style_css_collection_singleton.dictHeaderFontItalicFlag())
+		if user_style_css_collection_singleton.dictHeaderFontLargeFlag() :
+			if self.caption_item_font.pixelSize() > 0 :
+				self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() +1)
+			elif self.caption_item_font.pointSize() > 0 :
+				self.caption_item_font.setPointSize(self.caption_item_font.pointSize() +1)
+		if user_style_css_collection_singleton.dictHeaderFontColor() != None :
+			self.caption_item_foreground_brush.setColor(user_style_css_collection_singleton.dictHeaderFontColor())
 
-		dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
-			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-		dict_header_background_regexp.setMinimal(True)
-		dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css)
-		while dict_header_background_pos != -1 :
-			if not dict_header_background_regexp.cap(2).isEmpty() :
-				self.caption_item_background_brush.setColor(Qt.QColor(dict_header_background_regexp.cap(2)))
-			dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css, dict_header_background_pos +
-				dict_header_background_regexp.matchedLength())
+		if user_style_css_collection_singleton.dictHeaderBackgroundColor() != None :
+			self.caption_item_background_brush.setColor(user_style_css_collection_singleton.dictHeaderBackgroundColor())
 
 
 	### Public ###
