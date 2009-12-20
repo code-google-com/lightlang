@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import UserStyleCss
+import UserStyleCssCollectionSingleton
 import LineEdit
 
 
@@ -85,20 +85,13 @@ class TextSearchFrame(Qt.QFrame) :
 
 		#####
 
-		user_style_css = UserStyleCss.userStyleCss()
+		user_style_css_collection_singleton = UserStyleCssCollectionSingleton.UserStyleCssCollectionSingleton()
 
 		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette())
 
 		self.line_edit_red_alert_palette = Qt.QPalette()
-		red_alert_background_regexp = Qt.QRegExp("\\.red_alert_background\\s+\\{([^(\\{|\\})])*"
-			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-		red_alert_background_regexp.setMinimal(True)
-		red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css)
-		while red_alert_background_pos != -1 :
-			if not red_alert_background_regexp.cap(2).isEmpty() :
-				self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, Qt.QColor(red_alert_background_regexp.cap(2)))
-			red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css, red_alert_background_pos +
-				red_alert_background_regexp.matchedLength())
+		if user_style_css_collection_singleton.redAlertBackgroundColor() != None :
+			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, user_style_css_collection_singleton.redAlertBackgroundColor())
 
 		#####
 
