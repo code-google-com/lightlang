@@ -219,9 +219,9 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def dragMoveScroll(self) :
 		if self.last_drag_move_y < self.height() / 10 :
-			self.verticalScrollBar().setValue(self.verticalScrollBar().value() - 1)
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() -1)
 		elif self.height() - self.last_drag_move_y < self.height() / 10 :
-			self.verticalScrollBar().setValue(self.verticalScrollBar().value() + 1)
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() +1)
 
 
 	### Signals ###
@@ -305,8 +305,9 @@ class DictsListWidget(Qt.QTableWidget) :
 		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
 			current_drop_index = self.indexAt(event.pos()).row()
 
-			self.insertDictItem(self.takeDictItem(self.pressed_drag_index), current_drop_index)
-			self.setCurrentCell(current_drop_index, 0)
+			if self.pressed_drag_index != current_drop_index :
+				self.insertDictItem(self.takeDictItem(self.pressed_drag_index), current_drop_index)
+				self.setCurrentCell(current_drop_index, 0)
 
 			if event.source() == self :
 				event.setDropAction(Qt.Qt.MoveAction)
