@@ -102,7 +102,7 @@ class UserStyleCssCollection(Qt.QObject) :
 		while dict_header_font_pos != -1 :
 			self.dict_header_font_bold_flag = dict_header_font_regexp.cap(1).contains("bold")
 			self.dict_header_font_italic_flag = dict_header_font_regexp.cap(1).contains("italic")
-			self.dict_header_font_bold_flag = dict_header_font_regexp.cap(1).contains("large")
+			self.dict_header_font_large_flag = dict_header_font_regexp.cap(1).contains("large")
 			if not dict_header_font_regexp.cap(4).isEmpty() :
 				self.dict_header_font_color = Qt.QColor(dict_header_font_regexp.cap(4))
 
