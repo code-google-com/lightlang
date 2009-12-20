@@ -43,20 +43,22 @@ class DictsListWidgetItem(Qt.QWidget) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
-			self.setFixedHeight((self.font().pixelSize()) * 5)
+			self.setFixedHeight((self.font().pixelSize()) * 4)
 		elif self.font().pointSize() > 0 :
-			self.setFixedHeight((self.font().pointSize()) * 5)
+			self.setFixedHeight((self.font().pointSize()) * 4)
 		else :
-			self.setFixedHeight(50)
+			self.setFixedHeight(40)
 
 		#####
 
 		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setContentsMargins(5, 5, 5, 5)
-		self.main_layout.setSpacing(3)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
 
 		self.enable_dict_checkbox_layout = Qt.QVBoxLayout()
+		self.enable_dict_checkbox_layout.setContentsMargins(5, 5, 5, 5)
+		self.enable_dict_checkbox_layout.setSpacing(3)
 		self.main_layout.addLayout(self.enable_dict_checkbox_layout)
 
 		self.vertical_frame1 = Qt.QFrame()
@@ -64,6 +66,8 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.main_layout.addWidget(self.vertical_frame1)
 
 		self.dict_info_layout = Qt.QVBoxLayout()
+		self.dict_info_layout.setContentsMargins(10, 1, 10, 1)
+		self.dict_info_layout.setSpacing(1)
 		self.main_layout.addLayout(self.dict_info_layout)
 
 		self.dict_name_layout = Qt.QHBoxLayout()
