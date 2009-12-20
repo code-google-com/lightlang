@@ -113,8 +113,8 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 	### Public ###
 
 	def setCaption(self, str) :
-		self.caption_label.setText(Qt.QString("<html><head><style>"+self.user_style_css+"</style></head>"
-			"<body><font class=\"text_label_font\">%1</font></body></html>").arg(str))
+		self.caption_label.setText(Qt.QString("<html><head><style>%1</style></head>"
+			"<body><font class=\"text_label_font\">%2</font></body></html>").arg(self.user_style_css).arg(str))
 
 	def setText(self, text) :
 		self.translate_browser.setText(text)
