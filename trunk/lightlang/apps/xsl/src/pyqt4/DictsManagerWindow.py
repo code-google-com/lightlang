@@ -54,15 +54,24 @@ class DictsManagerWindow(Qt.QDialog) :
 		#####
 
 		self.main_layout = Qt.QVBoxLayout()
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.setLayout(self.main_layout)
 
+		left_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutLeftMargin)
+		top_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutTopMargin)
+		right_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutRightMargin)
+		bottom_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutBottomMargin)
+		vertical_spacing = self.style().pixelMetric(Qt.QStyle.PM_LayoutVerticalSpacing)
+
 		self.line_edit_layout = Qt.QHBoxLayout()
+		self.line_edit_layout.setContentsMargins(left_margin, top_margin, right_margin, vertical_spacing)
 		self.main_layout.addLayout(self.line_edit_layout)
 
 		self.stacked_widget = Qt.QStackedWidget()
 		self.main_layout.addWidget(self.stacked_widget)
 
 		self.stacked_widget_buttons_layout = Qt.QHBoxLayout()
+		self.stacked_widget_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, vertical_spacing)
 		self.main_layout.addLayout(self.stacked_widget_buttons_layout)
 
 		self.horizontal_frame = Qt.QFrame()
@@ -70,6 +79,7 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.main_layout.addWidget(self.horizontal_frame)
 
 		self.control_buttons_layout = Qt.QHBoxLayout()
+		self.control_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, bottom_margin)
 		self.main_layout.addLayout(self.control_buttons_layout)
 
 		#####
