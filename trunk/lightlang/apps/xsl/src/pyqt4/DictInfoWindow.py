@@ -181,8 +181,12 @@ class DictInfoWindow(Qt.QDialog) :
 
 	def dictDirection(self) :
 		if self.dict_name_regexp.exactMatch(self.dict_name) :
-			return ( Qt.QString("%1 &#187; %2 (%3)").arg(LangsList.langName(self.dict_name_regexp.cap(3)))
-				.arg(LangsList.langName(self.dict_name_regexp.cap(4))).arg(self.dict_name_regexp.cap(2)) )
+			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
+			return ( Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; <img src=\"%4\" width=\"%1\" height=\"%2\">"
+				"&nbsp;&nbsp;&nbsp;%5 &#187; %6 (%7)").arg(icon_width).arg(icon_height)
+				.arg(IconsDir+"flags/"+self.dict_name_regexp.cap(3)+".png").arg(IconsDir+"flags/"+self.dict_name_regexp.cap(4)+".png")
+				.arg(LangsList.langName(self.dict_name_regexp.cap(3))).arg(LangsList.langName(self.dict_name_regexp.cap(4)))
+				.arg(self.dict_name_regexp.cap(2)) )
 		else :
 			return tr("Unavailable")
 
