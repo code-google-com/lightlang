@@ -70,14 +70,6 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.stacked_widget = Qt.QStackedWidget()
 		self.main_layout.addWidget(self.stacked_widget)
 
-		self.stacked_widget_buttons_layout = Qt.QHBoxLayout()
-		self.stacked_widget_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, vertical_spacing)
-		self.main_layout.addLayout(self.stacked_widget_buttons_layout)
-
-		self.horizontal_frame = Qt.QFrame()
-		self.horizontal_frame.setFrameStyle(Qt.QFrame.HLine|Qt.QFrame.Sunken)
-		self.main_layout.addWidget(self.horizontal_frame)
-
 		self.control_buttons_layout = Qt.QHBoxLayout()
 		self.control_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, bottom_margin)
 		self.main_layout.addLayout(self.control_buttons_layout)
@@ -108,22 +100,6 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
 		self.stacked_widget.addWidget(self.wait_picture_movie_label)
 
-		self.up_button = Qt.QToolButton()
-		self.up_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
-		self.up_button.setIconSize(Qt.QSize(22, 22))
-		self.up_button.setEnabled(False)
-		self.up_button.setToolTip(tr("Ctrl+Up"))
-		self.stacked_widget_buttons_layout.addWidget(self.up_button)
-
-		self.down_button = Qt.QToolButton()
-		self.down_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
-		self.down_button.setIconSize(Qt.QSize(22, 22))
-		self.down_button.setEnabled(False)
-		self.down_button.setToolTip(tr("Ctrl+Down"))
-		self.stacked_widget_buttons_layout.addWidget(self.down_button)
-
-		self.stacked_widget_buttons_layout.addStretch()
-
 		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
 		self.wait_message_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_message_label)
@@ -141,12 +117,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
 
-		self.connect(self.dicts_list, Qt.SIGNAL("upAvailable(bool)"), self.up_button.setEnabled)
-		self.connect(self.dicts_list, Qt.SIGNAL("downAvailable(bool)"), self.down_button.setEnabled)
 		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
-
-		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.dicts_list.up)
-		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.dicts_list.down)
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 

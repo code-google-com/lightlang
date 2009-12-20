@@ -43,9 +43,9 @@ class DictsListWidgetItem(Qt.QWidget) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
-			self.setFixedHeight((self.font().pixelSize() + 4) * 4)
+			self.setFixedHeight((self.font().pixelSize()) * 5)
 		elif self.font().pointSize() > 0 :
-			self.setFixedHeight((self.font().pointSize() + 4) * 4)
+			self.setFixedHeight((self.font().pointSize()) * 5)
 		else :
 			self.setFixedHeight(50)
 
@@ -68,10 +68,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.dict_name_layout = Qt.QHBoxLayout()
 		self.dict_info_layout.addLayout(self.dict_name_layout)
-
-		self.horizontal_frame1 = Qt.QFrame()
-		self.horizontal_frame1.setFrameStyle(Qt.QFrame.HLine|Qt.QFrame.Sunken)
-		self.dict_info_layout.addWidget(self.horizontal_frame1)
 
 		self.dict_details_layout = Qt.QHBoxLayout()
 		self.dict_info_layout.addLayout(self.dict_details_layout)
