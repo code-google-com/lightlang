@@ -60,11 +60,17 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		self.start_drag_point = Qt.QPoint()
 		self.pressed_drag_index = -1
+		self.last_drag_move_y = -1
+
+		self.scroll_timer = Qt.QTimer()
+		self.scroll_timer.setInterval(200)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("cellActivated(int, int)"), self.invertDictState)
 		self.connect(self, Qt.SIGNAL("currentCellChanged(int, int, int, int)"), self.currentRowChanged)
+
+		self.connect(self.scroll_timer, Qt.SIGNAL("timeout()"), self.dragMoveScroll)
 
 		self.connect(self.verticalHeader(), Qt.SIGNAL("sectionClicked(int)"), self.setCurrentRow)
 
@@ -209,6 +215,14 @@ class DictsListWidget(Qt.QTableWidget) :
 	def invertDictState(self, index) :
 		self.cellWidget(index, 0).invertDictState()
 
+	###
+
+	def dragMoveScroll(self) :
+		if self.last_drag_move_y < self.height() / 10 :
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() - 1)
+		elif self.height() - self.last_drag_move_y < self.height() / 10 :
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() + 1)
+
 
 	### Signals ###
 
@@ -278,6 +292,14 @@ class DictsListWidget(Qt.QTableWidget) :
 				event.acceptProposedAction()
 		else :
 			event.ignore()
+
+		if event.pos().y() < self.height() / 10 or self.height() - event.pos().y() < self.height() / 10 :
+			self.last_drag_move_y = event.pos().y()
+			if not self.scroll_timer.isActive() :
+				self.scroll_timer.start()
+		else :
+			if self.scroll_timer.isActive() :
+				self.scroll_timer.stop()
 
 	def dropEvent(self, event) :
 		if event.mimeData().hasFormat("application/x-dictslistwidgetitem") :
