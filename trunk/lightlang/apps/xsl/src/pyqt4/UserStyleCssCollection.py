@@ -33,12 +33,12 @@ def tr(str) :
 
 #####
 class UserStyleCssCollection(Qt.QObject) :
-	def __init__(self. parent = None) :
+	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
 
 		#####
 
-		self.user_style_css = UserStyleCss()
+		self.user_style_css = UserStyleCss.userStyleCss()
 
 		#####
 
@@ -98,7 +98,7 @@ class UserStyleCssCollection(Qt.QObject) :
 		dict_header_font_regexp = Qt.QRegExp("\\.dict_header_font\\s+\\{(([^(\\{|\\})])*"
 			"(color:\\s*(#\\w{6});([^(\\{|\\})])*)?)\\}")
 		dict_header_font_regexp.setMinimal(True)
-		dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css)
+		dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css)
 		while dict_header_font_pos != -1 :
 			self.dict_header_font_bold_flag = dict_header_font_regexp.cap(1).contains("bold")
 			self.dict_header_font_italic_flag = dict_header_font_regexp.cap(1).contains("italic")
@@ -106,30 +106,30 @@ class UserStyleCssCollection(Qt.QObject) :
 			if not dict_header_font_regexp.cap(4).isEmpty() :
 				self.dict_header_font_color = Qt.QColor(dict_header_font_regexp.cap(4))
 
-			dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css, dict_header_font_pos +
+			dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css, dict_header_font_pos +
 				dict_header_font_regexp.matchedLength())
 
 	def parseDictHeaderBackground(self) :
 		dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
 			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
 		dict_header_background_regexp.setMinimal(True)
-		dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css)
+		dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css)
 		while dict_header_background_pos != -1 :
 			if not dict_header_background_regexp.cap(2).isEmpty() :
 				self.dict_header_background_color = Qt.QColor(dict_header_background_regexp.cap(2))
 
-			dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css, dict_header_background_pos +
+			dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css, dict_header_background_pos +
 				dict_header_background_regexp.matchedLength())
 
 	def parseRedAlertBackground(self) :
 		red_alert_background_regexp = Qt.QRegExp("\\.red_alert_background\\s+\\{([^(\\{|\\})])*"
 			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
 		red_alert_background_regexp.setMinimal(True)
-		red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css)
+		red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css)
 		while red_alert_background_pos != -1 :
 			if not red_alert_background_regexp.cap(2).isEmpty() :
 				self.red_alert_background_color = Qt.QColor(red_alert_background_regexp.cap(2))
 
-			red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css, red_alert_background_pos +
+			red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css, red_alert_background_pos +
 				red_alert_background_regexp.matchedLength())
 

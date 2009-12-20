@@ -36,7 +36,7 @@ class UserStyleCssCollectionSingleton(UserStyleCssCollection.UserStyleCssCollect
 	user_style_css_collection_object = None
 
 	def __new__(self, parent = None) :
-		if user_style_css_collection_object == None :
+		if self.user_style_css_collection_object == None :
 			self.user_style_css_collection_object = UserStyleCssCollection.UserStyleCssCollection.__new__(self, parent)
-		return user_style_css_collection_object
+		return self.user_style_css_collection_object
 
