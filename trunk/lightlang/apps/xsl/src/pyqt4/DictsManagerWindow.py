@@ -86,6 +86,8 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
 
+		self.all_dicts_dir_watcher = Qt.QFileSystemWatcher(Qt.QStringList() << AllDictsDir)
+
 		#####
 
 		self.filter_label = Qt.QLabel(tr("&Filter:"))
@@ -122,11 +124,6 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.stacked_widget_buttons_layout.addStretch()
 
-		self.update_dicts_button = Qt.QToolButton()
-		self.update_dicts_button.setIcon(Qt.QIcon(IconsDir+"update_22.png"))
-		self.update_dicts_button.setIconSize(Qt.QSize(22, 22))
-		self.stacked_widget_buttons_layout.addWidget(self.update_dicts_button)
-
 		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
 		self.wait_message_label.hide()
 		self.control_buttons_layout.addWidget(self.wait_message_label)
@@ -140,6 +137,8 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		#####
 
+		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.updateDicts)
+
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
 
 		self.connect(self.dicts_list, Qt.SIGNAL("upAvailable(bool)"), self.up_button.setEnabled)
@@ -148,7 +147,6 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.connect(self.up_button, Qt.SIGNAL("clicked()"), self.dicts_list.up)
 		self.connect(self.down_button, Qt.SIGNAL("clicked()"), self.dicts_list.down)
-		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
 
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
@@ -156,8 +154,7 @@ class DictsManagerWindow(Qt.QDialog) :
 	### Public ###
 
 	def updateDicts(self) :
-		self.update_dicts_button.blockSignals(True)
-		self.update_dicts_button.setEnabled(False)
+		self.all_dicts_dir_watcher.blockSignals(True)
 
 		self.line_edit.clear()
 		self.line_edit.setEnabled(False)
@@ -181,8 +178,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.line_edit.setEnabled(True)
 
-		self.update_dicts_button.setEnabled(True)
-		self.update_dicts_button.blockSignals(False)
+		self.all_dicts_dir_watcher.blockSignals(False)
 
 		#####
 
@@ -196,8 +192,7 @@ class DictsManagerWindow(Qt.QDialog) :
 		settings.setValue("dicts_manager_window/dicts_list", Qt.QVariant(self.dicts_list.list()))
 
 	def loadSettings(self) :
-		self.update_dicts_button.blockSignals(True)
-		self.update_dicts_button.setEnabled(False)
+		self.all_dicts_dir_watcher.blockSignals(True)
 
 		###
 
@@ -212,8 +207,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		Qt.QCoreApplication.processEvents()
 
-		self.update_dicts_button.setEnabled(True)
-		self.update_dicts_button.blockSignals(False)
+		self.all_dicts_dir_watcher.blockSignals(False)
 
 	###
 
