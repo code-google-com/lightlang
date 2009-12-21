@@ -110,6 +110,11 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.control_buttons_layout.addStretch()
 
+		self.update_dicts_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
+		self.update_dicts_button.setAutoDefault(False)
+		self.update_dicts_button.setDefault(False)
+		self.control_buttons_layout.addWidget(self.update_dicts_button)
+
 		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
 		self.ok_button.setAutoDefault(False)
 		self.ok_button.setDefault(False)
@@ -125,6 +130,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
 
+		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
 		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
 
@@ -132,6 +138,9 @@ class DictsManagerWindow(Qt.QDialog) :
 
 	def updateDicts(self) :
 		self.all_dicts_dir_watcher.blockSignals(True)
+		self.all_dicts_dir_watcher_timer.stop()
+		self.update_dicts_button.blockSignals(True)
+		self.update_dicts_button.setEnabled(False)
 
 		self.line_edit.clear()
 		self.line_edit.setEnabled(False)
@@ -155,6 +164,8 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.line_edit.setEnabled(True)
 
+		self.update_dicts_button.setEnabled(True)
+		self.update_dicts_button.blockSignals(False)
 		self.all_dicts_dir_watcher.blockSignals(False)
 
 		#####
@@ -170,6 +181,9 @@ class DictsManagerWindow(Qt.QDialog) :
 
 	def loadSettings(self) :
 		self.all_dicts_dir_watcher.blockSignals(True)
+		self.all_dicts_dir_watcher_timer.stop()
+		self.update_dicts_button.blockSignals(True)
+		self.update_dicts_button.setEnabled(False)
 
 		###
 
@@ -184,6 +198,8 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		Qt.QCoreApplication.processEvents()
 
+		self.update_dicts_button.setEnabled(True)
+		self.update_dicts_button.blockSignals(False)
 		self.all_dicts_dir_watcher.blockSignals(False)
 
 	###
