@@ -80,6 +80,10 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.all_dicts_dir_watcher = Qt.QFileSystemWatcher(Qt.QStringList() << AllDictsDir)
 
+		self.all_dicts_dir_watcher_timer = Qt.QTimer()
+		self.all_dicts_dir_watcher_timer.setInterval(5000)
+		self.all_dicts_dir_watcher_timer.setSingleShot(True)
+
 		#####
 
 		self.filter_label = Qt.QLabel(tr("&Filter:"))
@@ -113,7 +117,9 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		#####
 
-		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.updateDicts)
+		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.all_dicts_dir_watcher_timer.start)
+
+		self.connect(self.all_dicts_dir_watcher_timer, Qt.SIGNAL("timeout()"), self.updateDicts)
 
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
 
