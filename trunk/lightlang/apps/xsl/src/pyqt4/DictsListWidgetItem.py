@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import UserStyleCss
+import UserStyleCssCollection
 import LangsList
 import DictInfoWindow
 
@@ -80,7 +80,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.dict_name = Qt.QString(dict_name)
 
-		self.user_style_css = UserStyleCss.userStyleCss()
+		self.user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
 
 		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name, dict_info)
 
@@ -94,11 +94,17 @@ class DictsListWidgetItem(Qt.QWidget) :
 		###
 
 		self.dict_caption_label = Qt.QLabel()
+		dict_caption_label_font = self.dict_caption_label.font()
+		dict_caption_label_font.setBold(self.user_style_css_collection.dictHeaderFontBoldFlag())
+		self.dict_caption_label.setFont(dict_caption_label_font)
 		self.dict_name_layout.addWidget(self.dict_caption_label)
 
 		self.dict_name_layout.addStretch()
 
 		self.dict_direction_label = Qt.QLabel()
+		dict_direction_font = self.dict_direction_label.font()
+		dict_direction_font.setBold(self.user_style_css_collection.dictHeaderFontBoldFlag())
+		self.dict_direction_label.setFont(dict_direction_font)
 		self.dict_name_layout.addWidget(self.dict_direction_label)
 
 		self.dict_details_layout.addItem(Qt.QSpacerItem(40, 0))
@@ -116,11 +122,11 @@ class DictsListWidgetItem(Qt.QWidget) :
 			self.dict_direction_label.setText(dict_name_regexp.cap(2))
 
 			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-			self.dict_full_direction_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"info_font\">"
-				"<img src=\"%4\" width=\"%2\" height=\"%3\"> &#187; <img src=\"%5\" width=\"%2\" height=\"%3\">"
-				"&nbsp;&nbsp;&nbsp;%6 &#187; %7</font></body></html>").arg(self.user_style_css).arg(icon_width).arg(icon_height)
+			self.dict_full_direction_label.setText(Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; "
+				"<img src=\"%4\" width=\"%1\" height=\"%2\">&nbsp;&nbsp;&nbsp;%5 &#187; %6").arg(icon_width).arg(icon_height)
 				.arg(IconsDir+"flags/"+dict_name_regexp.cap(3)+".png").arg(IconsDir+"flags/"+dict_name_regexp.cap(4)+".png")
 				.arg(LangsList.langName(dict_name_regexp.cap(3))).arg(LangsList.langName(dict_name_regexp.cap(4))))
+				
 		else :
 			self.dict_caption_label.setText(dict_name)
 
