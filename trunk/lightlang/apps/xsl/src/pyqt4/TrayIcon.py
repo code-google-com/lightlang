@@ -26,7 +26,6 @@ import Const
 import EntitledMenu
 try :
 	import KeysGrabberThread
-	import KeysGrabberThreadSingleton
 except : pass
 
 
@@ -51,7 +50,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		#####
 
 		try :
-			self.keys_grabber_thread_singleton = KeysGrabberThreadSingleton.KeysGrabberThreadSingleton()
+			self.keys_grabber_thread = KeysGrabberThread.KeysGrabberThread()
 		except : pass
 
 		self.tray_menu = EntitledMenu.EntitledMenu(Qt.QIcon(MyIcon), Const.Organization+" "+Const.MyName)
@@ -63,7 +62,7 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.tray_menu.addSeparator()
 
 		try :
-			self.keys_grabber_thread_singleton.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
+			self.keys_grabber_thread.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
 				self.visibleChangeRequestSignal)
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window")+"\tWin+L", self.visibleChangeRequestSignal)
 		except :

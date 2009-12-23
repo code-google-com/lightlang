@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import UserStyleCss
+from UserStyleCssCollectionBase import *
 
 
 #####
@@ -32,104 +32,11 @@ def tr(str) :
 
 
 #####
-class UserStyleCssCollection(Qt.QObject) :
-	def __init__(self, parent = None) :
-		Qt.QObject.__init__(self, parent)
+class UserStyleCssCollection(UserStyleCssCollectionBase) :
+	user_style_css_collection_base_object = None
 
-		#####
-
-		self.user_style_css = UserStyleCss.userStyleCss()
-
-		#####
-
-		self.dict_header_font_bold_flag = None
-		self.dict_header_font_italic_flag = None
-		self.dict_header_font_large_flag = None
-		self.dict_header_font_color = None
-
-		###
-
-		self.dict_header_background_color = None
-
-		###
-
-		self.red_alert_background_color = None
-
-		#####
-
-		self.parseUserStyleCss()
-
-
-	### Public ###
-
-	def dictHeaderFontBoldFlag(self) :
-		return self.dict_header_font_bold_flag
-
-	def dictHeaderFontItalicFlag(self) :
-		return self.dict_header_font_italic_flag
-
-	def dictHeaderFontLargeFlag(self) :
-		return self.dict_header_font_large_flag
-
-	def dictHeaderFontColor(self) :
-		return ( Qt.QColor(self.dict_header_font_color) if self.dict_header_font_color != None else None )
-
-	###
-
-	def dictHeaderBackgroundColor(self) :
-		return ( Qt.QColor(self.dict_header_background_color) if self.dict_header_background_color != None else None )
-
-	###
-
-	def redAlertBackgroundColor(self) :
-		return Qt.QColor(self.red_alert_background_color)
-
-
-	### Private ###
-
-	def parseUserStyleCss(self) :
-		self.parseDictHeaderFont()
-		self.parseDictHeaderBackground()
-		self.parseRedAlertBackground()
-
-	###
-
-	def parseDictHeaderFont(self) :
-		dict_header_font_regexp = Qt.QRegExp("\\.dict_header_font\\s+\\{(([^(\\{|\\})])*"
-			"(color:\\s*(#\\w{6});([^(\\{|\\})])*)?)\\}")
-		dict_header_font_regexp.setMinimal(True)
-		dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css)
-		while dict_header_font_pos != -1 :
-			self.dict_header_font_bold_flag = dict_header_font_regexp.cap(1).contains("bold")
-			self.dict_header_font_italic_flag = dict_header_font_regexp.cap(1).contains("italic")
-			self.dict_header_font_large_flag = dict_header_font_regexp.cap(1).contains("large")
-			if not dict_header_font_regexp.cap(4).isEmpty() :
-				self.dict_header_font_color = Qt.QColor(dict_header_font_regexp.cap(4))
-
-			dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css, dict_header_font_pos +
-				dict_header_font_regexp.matchedLength())
-
-	def parseDictHeaderBackground(self) :
-		dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
-			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-		dict_header_background_regexp.setMinimal(True)
-		dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css)
-		while dict_header_background_pos != -1 :
-			if not dict_header_background_regexp.cap(2).isEmpty() :
-				self.dict_header_background_color = Qt.QColor(dict_header_background_regexp.cap(2))
-
-			dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css, dict_header_background_pos +
-				dict_header_background_regexp.matchedLength())
-
-	def parseRedAlertBackground(self) :
-		red_alert_background_regexp = Qt.QRegExp("\\.red_alert_background\\s+\\{([^(\\{|\\})])*"
-			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-		red_alert_background_regexp.setMinimal(True)
-		red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css)
-		while red_alert_background_pos != -1 :
-			if not red_alert_background_regexp.cap(2).isEmpty() :
-				self.red_alert_background_color = Qt.QColor(red_alert_background_regexp.cap(2))
-
-			red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css, red_alert_background_pos +
-				red_alert_background_regexp.matchedLength())
+	def __new__(self, parent = None) :
+		if self.user_style_css_collection_base_object == None :
+			self.user_style_css_collection_base_object = UserStyleCssCollectionBase.__new__(self, parent)
+		return self.user_style_css_collection_base_object
 

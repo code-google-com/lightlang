@@ -23,7 +23,7 @@
 import Qt
 import Config
 import Const
-import UserStyleCssCollectionSingleton
+import UserStyleCssCollection
 import LineEdit
 
 
@@ -85,13 +85,13 @@ class TextSearchFrame(Qt.QFrame) :
 
 		#####
 
-		user_style_css_collection_singleton = UserStyleCssCollectionSingleton.UserStyleCssCollectionSingleton()
+		user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
 
 		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette())
 
 		self.line_edit_red_alert_palette = Qt.QPalette()
-		if user_style_css_collection_singleton.redAlertBackgroundColor() != None :
-			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, user_style_css_collection_singleton.redAlertBackgroundColor())
+		if user_style_css_collection.redAlertBackgroundColor() != None :
+			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, user_style_css_collection.redAlertBackgroundColor())
 
 		#####
 
