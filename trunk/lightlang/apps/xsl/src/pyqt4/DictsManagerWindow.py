@@ -121,8 +121,7 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		#####
 
-		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"),
-			lambda : self.all_dicts_dir_watcher_timer.start())
+		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.planToUpdateDicts)
 		self.connect(self.all_dicts_dir_watcher_timer, Qt.SIGNAL("timeout()"), self.updateDicts)
 
 		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
@@ -211,6 +210,13 @@ class DictsManagerWindow(Qt.QDialog) :
 
 
 	### Private ###
+
+	def planToUpdateDicts(self) :
+		if self.all_dicts_dir_watcher_timer.isActive() :
+			self.all_dicts_dir_watcher_timer.stop()
+		self.all_dicts_dir_watcher_timer.start()
+
+	###
 
 	def allAndLocalDicts(self, local_dicts_list) :
 		all_dicts_dir = Qt.QDir(AllDictsDir)
