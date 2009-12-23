@@ -60,11 +60,10 @@ class EntitledMenu(Qt.QMenu) :
 		fictive_button.setToolButtonStyle(Qt.Qt.ToolButtonTextBesideIcon)
 		fictive_button.click()
 		fictive_action.setDefaultWidget(fictive_button)
+		fictive_action.setEnabled(False)
+		fictive_button.setEnabled(True)
 
 		self.insertAction(before_action, fictive_action)
-
-		self.connect(fictive_button, Qt.SIGNAL("clicked()"), lambda : Qt.QDesktopServices.openUrl(
-			Qt.QUrl("http://lightlang.googlecode.com/svn/img/screenshots/lightlang/we.png")))
 
 		return fictive_action
 
