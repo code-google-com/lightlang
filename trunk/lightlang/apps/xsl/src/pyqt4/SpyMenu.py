@@ -65,8 +65,9 @@ class SpyMenu(Qt.QMenu) :
 		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
 
+		self.addSeparator()
+
 		try :
-			self.addSeparator()
 			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
 			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
 			self.keyboard_modifiers_menu.addRadioButton(tr("No modifier"), Qt.QVariant(KeyboardModifiers.NoModifier))
@@ -87,7 +88,11 @@ class SpyMenu(Qt.QMenu) :
 
 			self.keyboard_modifiers_menu.setIndex(0)
 			self.addMenu(self.keyboard_modifiers_menu)
-		except : pass
+		except :
+			self.fictive_keyboard_modifiers_menu = Qt.QMenu(tr("Keyboard modifiers"))
+			self.fictive_keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+			self.fictive_keyboard_modifiers_menu.setEnabled(False)
+			self.addMenu(self.fictive_keyboard_modifiers_menu)
 
 		#####
 
