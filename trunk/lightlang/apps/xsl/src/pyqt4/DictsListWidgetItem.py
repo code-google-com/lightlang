@@ -80,8 +80,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.dict_name = Qt.QString(dict_name)
 
-		self.user_style_css = UserStyleCss.userStyleCss()
-
 		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name, dict_info)
 
 		#####
@@ -106,16 +104,18 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.dict_full_direction_label = Qt.QLabel()
 		self.dict_details_layout.addWidget(self.dict_full_direction_label)
 
+		user_style_css = UserStyleCss.userStyleCss()
+
 		dict_name_regexp = Qt.QRegExp("([^\\.]+)\\.((..)-(..))")
 		if dict_name_regexp.exactMatch(dict_name) :
 			dict_caption = dict_name_regexp.cap(1)
 			dict_caption.replace("_", " ")
 			dict_caption.replace(".", " ")
 			self.dict_caption_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"text_label_font\">"
-				"%2</font</body></html>").arg(self.user_style_css).arg(dict_caption))
+				"%2</font></body></html>").arg(user_style_css).arg(dict_caption))
 
 			self.dict_direction_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"text_label_font\">"
-				"%2</font</body></html>").arg(self.user_style_css).arg(dict_name_regexp.cap(2)))
+				"%2</font></body></html>").arg(user_style_css).arg(dict_name_regexp.cap(2)))
 
 			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 			self.dict_full_direction_label.setText(Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; "
@@ -124,8 +124,8 @@ class DictsListWidgetItem(Qt.QWidget) :
 				.arg(LangsList.langName(dict_name_regexp.cap(3))).arg(LangsList.langName(dict_name_regexp.cap(4))))
 				
 		else :
-			self.dict_caption_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"text_label_font\">"
-				"%2</font</body></html>").arg(self.user_style_css).arg(dict_name))
+			self.dict_caption_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"red_alert_background\">"
+				"%2</font></body></html>").arg(user_style_css).arg(dict_name))
 
 		###
 
