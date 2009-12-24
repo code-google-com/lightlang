@@ -86,6 +86,10 @@ class TranslateSitesMenu(Qt.QMenu) :
 		translate_sites_files_list = Qt.QStringList()
 		translate_sites_files_list << translate_sites_system_dir_entry_list << translate_sites_user_dir_entry_list
 
+		if translate_sites_files_list.count() == 0 :
+			self.setEnabled(False)
+			return
+
 		count = 0
 		while count < translate_sites_files_list.count() :
 			translate_site_file = Qt.QFile(translate_sites_files_list[count])

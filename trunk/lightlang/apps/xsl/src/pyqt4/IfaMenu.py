@@ -87,6 +87,10 @@ class IfaMenu(Qt.QMenu) :
 		ifa_files_list = Qt.QStringList()
 		ifa_files_list << ifa_system_dir_entry_list << ifa_user_dir_entry_list
 
+		if ifa_files_list.count() == 0 :
+			self.setEnabled(False)
+			return
+
 		count = 0
 		while count < ifa_files_list.count() :
 			ifa_file = Qt.QFile(ifa_files_list[count])
