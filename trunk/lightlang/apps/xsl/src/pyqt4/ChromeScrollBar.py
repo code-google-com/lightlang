@@ -27,6 +27,7 @@ import Const
 
 #####
 DefaultHighlightHeight = 5
+HighlightTransparentAlpha = 100
 MinCharacterDistance = 50
 
 
@@ -47,7 +48,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 		self.highlight_positions_list = []
 
 		self.highlight_color = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
-		self.highlight_color.setAlpha(50)
+		self.highlight_color.setAlpha(HighlightTransparentAlpha)
 
 		self.highlight_pen = Qt.QPen()
 		self.highlight_pen.setColor(self.highlight_color)
