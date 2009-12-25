@@ -45,9 +45,10 @@ def langsList() :
 def langName(short_name) :
 	if LangsCodesDictObject == None :
 		initLangsList()
-	try :
+
+	if LangsCodesDictObject.has_key(str(short_name)) :
 		return Qt.QString(LangsCodesDictObject[str(short_name)])
-	except :
+	else :
 		return Qt.QString(short_name)
 
 
