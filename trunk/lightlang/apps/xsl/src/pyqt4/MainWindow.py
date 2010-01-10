@@ -324,7 +324,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.panels_focus_flags_list.append(False)
 
 	def addSourceObject(self, source_object) :
-		self.source_objects_list.append([source_object, - 1])
+		self.source_objects_list.append([source_object, -1])
 
 		index = len(self.source_objects_list) - 1
 
