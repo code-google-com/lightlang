@@ -90,7 +90,7 @@ def short_stdout(str, static=[""]) :
 def sort_resources_list(resources_list, left = None, right = None) :
 	if left == right == None :
 		left = 0
-		right = len(resources_list) -1
+		right = len(resources_list) - 1
 
 	if left >= right :
 		return
