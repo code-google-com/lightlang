@@ -61,7 +61,7 @@ int install_dict(const char *in_dict_path)
 
 	// Opredelyaem imya slovarya ...
 	if ( (ptr = strrchr(in_dict_path, '/')) == NULL ) dict_name = (char *) in_dict_path;
-	else dict_name = ptr +1;
+	else dict_name = ptr + 1;
 	// dict_name = (char *) in_dict_path;
 	// Eta strochka potencialno opasnaya, poskolku <in_dict_path> - konstanta,
 	// a <dict_name> - net. Tut bylo ispolzovano privedenie tipov, chtoby

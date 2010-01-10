@@ -70,7 +70,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 
 
 	if ( strlen(word) < 1 ) return 0;
-	if ( strnlowcpy_wc(word_wc, word, MAX_WORD_SIZE -1) == NULL )
+	if ( strnlowcpy_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL )
 	{
 		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
 		return -1;
@@ -98,7 +98,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			if ( word_wc[0] != str_wc[0] ) continue;
 			if ( word_wc[0] == str_wc[0] ) break_end_flag = true;
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
+			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
 			{
 				if ( break_end_flag ) break_end_flag = false;
 				continue;
@@ -153,7 +153,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			if ( word_wc[0] != str_wc[0] ) continue;
 			if ( word_wc[0] == str_wc[0] ) break_end_flag = true;
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
+			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
 			{
 				if ( break_end_flag) break_end_flag = false;
 				continue;
@@ -192,7 +192,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		{
 			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
+			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
 				continue;
 
 			for (token_str_wc = wcstok(str_wc, L" -./\\", &state_str_wc); token_str_wc;
@@ -255,7 +255,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			if ( word_wc[0] != str_wc[0] ) continue;
 			if ( word_wc[0] == str_wc[0] ) break_end_flag = true;
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
+			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
 			{
 				if ( break_end_flag ) break_end_flag = false;
 				continue;
@@ -298,7 +298,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 		{
 			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE -1) == NULL )
+			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
 				continue;
 
 			if ( !strcmp_jump_wc(str_wc, word_wc, percent) )
@@ -383,7 +383,7 @@ int find_sound(const char *word)
 			}
 
 			wcscpy(lang_wc, token_word_wc);
-			//wcsncpy(lang_wc, token_word_wc, wcslen(token_word_wc) -1);
+			//wcsncpy(lang_wc, token_word_wc, wcslen(token_word_wc) - 1);
 			//memmove(lang_wc, token_word_wc, lang_wc_len);
 
 			first_token_flag = false;
@@ -838,12 +838,12 @@ static void print_translate(const char *str, const int word_number)
 				continue;
 			}
 
-			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) && (ch_wc == L' ') && !isdigit(*(str +1)) )
+			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) && (ch_wc == L' ') && !isdigit(*(str + 1)) )
 			{
 				putchar('\n');
-				for (count = 0; count < blocks_count +3; count++)
+				for (count = 0; count < blocks_count + 3; count++)
 					putchar(' ');
-				char_count = blocks_count +3;
+				char_count = blocks_count + 3;
 			}
 
 			printf("%lc", ch_wc); // putwchar() - DON'T WORK!

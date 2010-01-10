@@ -139,9 +139,9 @@ wchar_t *strnlowcpy_filter_wc(wchar_t *str_wc, const char *str, size_t count)
 		(*ptr_str_wc) = towlower(*ptr_str_wc);
 
 		if ( ptr_str_wc == str_wc ) continue;
-		if ( ((*(ptr_str_wc -1)) == L' ') && (*(ptr_str_wc) == L' ') )
+		if ( ((*(ptr_str_wc - 1)) == L' ') && (*(ptr_str_wc) == L' ') )
 		{
-			(*(ptr_str_wc -1)) = L'\0';
+			(*(ptr_str_wc - 1)) = L'\0';
 			return str_wc;
 		}
 	}
@@ -220,7 +220,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 		for (; (*str1_wc); str1_wc++, str2_wc++)
 		{
 			if ( (*str1_wc) == (*str2_wc) ) continue;
-			else if ( (*str1_wc) == (*(str2_wc +1)) )
+			else if ( (*str1_wc) == (*(str2_wc + 1)) )
 			{
 				++error_count;
 				++str2_wc;
@@ -240,7 +240,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 		for (; (*str2_wc); str1_wc++, str2_wc++)
 		{
 			if ( (*str1_wc) == (*str2_wc) ) continue;
-			else if ( (*(str1_wc +1)) == (*str2_wc) )
+			else if ( (*(str1_wc + 1)) == (*str2_wc) )
 			{
 				++error_count;
 				++str1_wc;

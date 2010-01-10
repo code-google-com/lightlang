@@ -516,13 +516,13 @@ static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp)
 ********************************************************************************/
 static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list)
 {
-	//////////////////////////////////////////////////////////////////
-	FILE		*dict_fp;					// Ukazatel na slovar
-	char		dict_path[strlen(ALL_DICTS_DIR) + PATH_MAX +16];// Put k slovaryu
-	static char	dicts_list_item[PATH_MAX];			// Elemet spiska
-	static size_t	count1 = 0;					// Schetchik po spisku
-	size_t		count2;						// Schetchik po elementu spiska
-	//////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////
+	FILE		*dict_fp;						// Ukazatel na slovar
+	char		dict_path[strlen(ALL_DICTS_DIR) + PATH_MAX + 16];	// Put k slovaryu
+	static char	dicts_list_item[PATH_MAX];				// Elemet spiska
+	static size_t	count1 = 0;						// Schetchik po spisku
+	size_t		count2;							// Schetchik po elementu spiska
+	//////////////////////////////////////////////////////////////////////////
 
 
 	while ( true )
@@ -537,7 +537,7 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 		}
 		else for (; dicts_list[count1] == '|'; count1++); // Propusk razdeliteley
 
-		for (count2 = 0; dicts_list[count1] && (dicts_list[count1] != '|') && (count2 < PATH_MAX -1); count1++, count2++)
+		for (count2 = 0; dicts_list[count1] && (dicts_list[count1] != '|') && (count2 < PATH_MAX - 1); count1++, count2++)
 			dicts_list_item[count2] = dicts_list[count1]; // Parsim
 		dicts_list_item[count2] = '\0';
 
