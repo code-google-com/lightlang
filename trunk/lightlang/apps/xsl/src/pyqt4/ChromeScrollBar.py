@@ -80,7 +80,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 		if len(self.highlight_positions_list) > 0 :
 			highlight_rects_list = []
 
-			highlight_pass = self.style().pixelMetric(Qt.QStyle.PM_ScrollBarSliderMin) -1
+			highlight_pass = self.style().pixelMetric(Qt.QStyle.PM_ScrollBarSliderMin) - 1
 			highlight_area_height = self.height() - highlight_pass * 3
 
 			for highlight_positions_list_item in self.highlight_positions_list :

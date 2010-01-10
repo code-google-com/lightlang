@@ -117,7 +117,7 @@ class IfaMenu(Qt.QMenu) :
 		action.setStatusTip(app_description)
 
 		self.actions_data_list.append([])
-		index = len(self.actions_data_list) -1
+		index = len(self.actions_data_list) - 1
 		self.actions_data_list[index] = [
 			Qt.QString(app_prog_path), Qt.QString(app_prog_options), Qt.QProcess(),
 			Qt.QString(python_precode), Qt.QString(python_postcode),

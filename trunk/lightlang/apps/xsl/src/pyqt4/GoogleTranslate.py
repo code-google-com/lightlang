@@ -183,7 +183,7 @@ class GoogleTranslate(Qt.QObject) :
 				if self.unicode_char_regexp.cap(1).length() % 2 == 1 :
 					text.replace(unicode_char_regexp_pos, self.unicode_char_regexp.matchedLength(),
 						Qt.QChar(self.unicode_char_regexp.cap(2).toInt(16)[0]))
-					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +1)
+					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
 				else :
 					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +
 						self.unicode_char_regexp.matchedLength())

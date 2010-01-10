@@ -119,7 +119,7 @@ def initLangsList() :
 def sortLangsList(langs_list_object, left = None, right = None) :
 	if left == right == None :
 		left = 0
-		right = len(langs_list_object) -1
+		right = len(langs_list_object) - 1
 
 	if left >= right :
 		return

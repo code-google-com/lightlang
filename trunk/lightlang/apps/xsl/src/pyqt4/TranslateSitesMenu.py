@@ -114,7 +114,7 @@ class TranslateSitesMenu(Qt.QMenu) :
 		action.setStatusTip(site_description)
 
 		self.actions_data_list.append(Qt.QString(site_url))
-		index = len(self.actions_data_list) -1
+		index = len(self.actions_data_list) - 1
 		action.setData(Qt.QVariant(index))
 
 	def openSite(self, action) :

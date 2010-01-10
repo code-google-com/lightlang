@@ -80,7 +80,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 	def findAnchor(self, url) :
 		word = url.toString()
 		if word.startsWith("#s_") :
-			word.remove(0, word.indexOf("_")+1)
+			word.remove(0, word.indexOf("_") + 1)
 			word = word.simplified()
 			if word.isEmpty() :
 				return
@@ -106,7 +106,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 	def setCursorInfo(self, str) :
 		if not str.simplified().isEmpty() :
 			if str.startsWith("#s_") :
-				str.remove(0, str.indexOf("_") +1)
+				str.remove(0, str.indexOf("_") + 1)
 				str = str.simplified()
 				if str.isEmpty() :
 					return

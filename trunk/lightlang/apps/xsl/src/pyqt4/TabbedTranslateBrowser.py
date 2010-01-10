@@ -113,7 +113,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 	def addTab(self) :
 		self.translate_browsers_list.append(TranslateBrowser.TranslateBrowser())
-		index = len(self.translate_browsers_list) -1
+		index = len(self.translate_browsers_list) - 1
 
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
 		self.connect(self.translate_browsers_list[index], Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)

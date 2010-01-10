@@ -58,9 +58,9 @@ class ListBrowser(Qt.QListWidget) :
 		self.caption_item_font.setItalic(user_style_css_collection.dictHeaderFontItalicFlag())
 		if user_style_css_collection.dictHeaderFontLargeFlag() :
 			if self.caption_item_font.pixelSize() > 0 :
-				self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() +1)
+				self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() + 1)
 			elif self.caption_item_font.pointSize() > 0 :
-				self.caption_item_font.setPointSize(self.caption_item_font.pointSize() +1)
+				self.caption_item_font.setPointSize(self.caption_item_font.pointSize() + 1)
 		if user_style_css_collection.dictHeaderFontColor() != None :
 			self.caption_item_foreground_brush.setColor(user_style_css_collection.dictHeaderFontColor())
 

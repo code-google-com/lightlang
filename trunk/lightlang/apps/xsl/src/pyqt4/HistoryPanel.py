@@ -92,7 +92,7 @@ class HistoryPanel(Qt.QDockWidget) :
 
 		count = self.history_browser.count()
 		while count > MaxHistoryCount :
-			self.history_browser.takeItem(count -1)
+			self.history_browser.takeItem(count - 1)
 			count -= 1
 
 		self.clear_history_button.setEnabled(True)

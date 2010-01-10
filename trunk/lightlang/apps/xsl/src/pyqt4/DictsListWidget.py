@@ -129,15 +129,15 @@ class DictsListWidget(Qt.QTableWidget) :
 	def up(self) :
 		index = self.currentRow()
 		if self.isUpAvailable(index) :
-			self.insertDictItem(self.takeDictItem(index), index -1)
-			self.setCurrentCell(index -1, 0)
+			self.insertDictItem(self.takeDictItem(index), index - 1)
+			self.setCurrentCell(index - 1, 0)
 			self.dictsListChangedSignal()
 
 	def down(self) :
 		index = self.currentRow()
 		if self.isDownAvailable(index) :
-			self.insertDictItem(self.takeDictItem(index), index +1)
-			self.setCurrentCell(index +1, 0)
+			self.insertDictItem(self.takeDictItem(index), index + 1)
+			self.setCurrentCell(index + 1, 0)
 			self.dictsListChangedSignal()
 
 	###
@@ -164,7 +164,7 @@ class DictsListWidget(Qt.QTableWidget) :
 	def insertDictItem(self, item, index = -1) :
 		if index < 0 or index > self.rowCount() :
 			self.insertRow(self.rowCount())
-			index = self.rowCount() -1
+			index = self.rowCount() - 1
 		else :
 			self.insertRow(index)
 
@@ -199,7 +199,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		return ( 0 < index < self.rowCount() )
 
 	def isDownAvailable(self, index) :
-		return ( 0 <= index < self.rowCount() -1 )
+		return ( 0 <= index < self.rowCount() - 1 )
 
 	###
 
@@ -219,9 +219,9 @@ class DictsListWidget(Qt.QTableWidget) :
 
 	def dragMoveScroll(self) :
 		if self.last_drag_move_y < self.height() / 10 :
-			self.verticalScrollBar().setValue(self.verticalScrollBar().value() -1)
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() - 1)
 		elif self.height() - self.last_drag_move_y < self.height() / 10 :
-			self.verticalScrollBar().setValue(self.verticalScrollBar().value() +1)
+			self.verticalScrollBar().setValue(self.verticalScrollBar().value() + 1)
 
 
 	### Signals ###
