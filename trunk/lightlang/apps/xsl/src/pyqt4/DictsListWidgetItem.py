@@ -102,6 +102,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.dict_details_layout.addItem(Qt.QSpacerItem(40, 0))
 
 		self.dict_full_direction_label = Qt.QLabel()
+		self.dict_full_direction_label.setTextFormat(Qt.Qt.RichText)
 		self.dict_details_layout.addWidget(self.dict_full_direction_label)
 
 		user_style_css = UserStyleCss.userStyleCss()
@@ -117,10 +118,9 @@ class DictsListWidgetItem(Qt.QWidget) :
 			self.dict_direction_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"text_label_font\">"
 				"%2</font></body></html>").arg(user_style_css).arg(dict_name_regexp.cap(2)))
 
-			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-			self.dict_full_direction_label.setText(Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; "
-				"<img src=\"%4\" width=\"%1\" height=\"%2\">&nbsp;&nbsp;&nbsp;%5 &#187; %6").arg(icon_width).arg(icon_height)
-				.arg(IconsDir+"flags/"+dict_name_regexp.cap(3)+".png").arg(IconsDir+"flags/"+dict_name_regexp.cap(4)+".png")
+			self.dict_details_layout.insertSpacing(0, 10)
+
+			self.dict_full_direction_label.setText(Qt.QString("%1 &#187; %2")
 				.arg(LangsList.langName(dict_name_regexp.cap(3))).arg(LangsList.langName(dict_name_regexp.cap(4))))
 				
 		else :
