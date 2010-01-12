@@ -317,3 +317,6 @@ class DictsListWidget(Qt.QTableWidget) :
 		else :
 			event.ignore()
 
+		if self.scroll_timer.isActive() :
+			self.scroll_timer.stop()
+
