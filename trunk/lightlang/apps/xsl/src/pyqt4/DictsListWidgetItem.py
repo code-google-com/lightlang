@@ -124,7 +124,6 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 			self.dict_full_direction_label.setText(Qt.QString("%1 &#187; %2")
 				.arg(LangsList.langName(dict_name_regexp.cap(3))).arg(LangsList.langName(dict_name_regexp.cap(4))))
-				
 		else :
 			self.dict_caption_label.setText(Qt.QString("<html><head><style>%1</style></head><body><font class=\"red_alert_background\">"
 				"%2</font></body></html>").arg(user_style_css).arg(dict_name))

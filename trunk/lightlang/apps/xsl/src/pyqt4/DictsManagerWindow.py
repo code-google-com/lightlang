@@ -219,7 +219,11 @@ class DictsManagerWindow(Qt.QDialog) :
 	###
 
 	def allAndLocalDicts(self, local_dicts_list) :
+		all_dicts_file_name_filters = Qt.QStringList()
+		all_dicts_file_name_filters << "*.??-??"
+
 		all_dicts_dir = Qt.QDir(AllDictsDir)
+		all_dicts_dir.setNameFilters(all_dicts_file_name_filters)
 		all_dicts_dir.setFilter(Qt.QDir.Files)
 		all_dicts_dir.setSorting(Qt.QDir.Name)
 		all_dicts_dir_entry_list = all_dicts_dir.entryList()
