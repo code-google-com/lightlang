@@ -92,11 +92,13 @@ class DictsListWidgetItem(Qt.QWidget) :
 		###
 
 		self.dict_caption_label = Qt.QLabel()
+		self.dict_caption_label.setTextFormat(Qt.Qt.RichText)
 		self.dict_name_layout.addWidget(self.dict_caption_label)
 
 		self.dict_name_layout.addStretch()
 
 		self.dict_direction_label = Qt.QLabel()
+		self.dict_direction_label.setTextFormat(Qt.Qt.RichText)
 		self.dict_name_layout.addWidget(self.dict_direction_label)
 
 		self.dict_details_layout.addItem(Qt.QSpacerItem(40, 0))

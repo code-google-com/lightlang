@@ -64,7 +64,10 @@ class AboutWindow(Qt.QDialog) :
 		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_64.png"))
 		self.info_label_layout.addWidget(self.icon_label)
 
-		self.text_label = Qt.QLabel(tr("<h3>%1 - the graphical interface for SL</h3>"
+		self.text_label = Qt.QLabel()
+		self.text_label.setTextFormat(Qt.Qt.RichText)
+		self.text_label.setOpenExternalLinks(True)
+		self.text_label.setText(tr("<h3>%1 - the graphical interface for SL</h3>"
 			"All the programs of the <strong>%2</strong> package are distributable, according<br>"
 			"to the license <strong>GPLv2</strong>. For details visit <em>License agreement</em> of the<br>"
 			"<strong>%2</strong> manual.<br>"
@@ -85,7 +88,6 @@ class AboutWindow(Qt.QDialog) :
 			"<br>"
 			"<em>Copyright &copy; 2007-2016 Devaev Maxim (<a href=\"mailto:%3?subject=%2\">%3</a>)</em>")
 				.arg(Const.MyName).arg(Const.Organization).arg(Const.DeveloperMail))
-		self.text_label.setOpenExternalLinks(True)
 		self.info_label_layout.addWidget(self.text_label)
 
 		self.ok_button = Qt.QPushButton(tr("&OK"))

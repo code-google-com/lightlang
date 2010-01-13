@@ -51,6 +51,7 @@ class StatusBar(Qt.QStatusBar) :
 		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 
 		self.message_label = Qt.QLabel()
+		self.message_label.setTextFormat(Qt.Qt.PlainText)
 		self.message_label.setMaximumHeight(label_height)
 		self.addWidget(self.message_label, 1)
 

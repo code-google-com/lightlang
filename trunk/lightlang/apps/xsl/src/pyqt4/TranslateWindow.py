@@ -72,6 +72,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		#####
 
 		self.caption_label = Qt.QLabel()
+		self.caption_label.setTextFormat(Qt.Qt.RichText)
 		self.caption_label.setWordWrap(True)
 		self.caption_frame_layout.addWidget(self.caption_label)
 
