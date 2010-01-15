@@ -338,49 +338,49 @@ int print_index(const char *dict_path)
 static int copy_file(const char *in_file_path, const char *out_file_path)
 {
 	//////////////////////////////////////////
-	int	in_file_des, out_file_des;	// Deskriptory filov
+	int	in_file_fd, out_file_fd;	// Deskriptory filov
 	char	buf[BUFSIZ];			// Razmer buffera
 	ssize_t	rcount, wcount;			// Schetchiki chteniya/zapisi
 	//////////////////////////////////////////
 
-	if ( (in_file_des = open(in_file_path, O_RDONLY)) == -1 )
+	if ( (in_file_fd = open(in_file_path, O_RDONLY)) == -1 )
 	{
 		fprintf(stderr, "%s: cannot open in file \"%s\": %s\n",	MYNAME, in_file_path, strerror(errno));
 		return -1;
 	}
 
-	if ( (out_file_des = open(out_file_path, O_WRONLY|O_CREAT|O_TRUNC, 0644)) == -1 )
+	if ( (out_file_fd = open(out_file_path, O_WRONLY|O_CREAT|O_TRUNC, 0644)) == -1 )
 	{
 		fprintf(stderr, "%s: cannot open out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
-		if ( close(in_file_des) != 0 )
+		if ( close(in_file_fd) != 0 )
 			fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
 		return -1;
 	}
 
-	while ( (rcount = read(in_file_des, (char *) buf, sizeof(buf) )) > 0 )
+	while ( (rcount = read(in_file_fd, (char *) buf, sizeof(buf) )) > 0 )
 	{
-		wcount = write(out_file_des, (char *) buf, rcount );
+		wcount = write(out_file_fd, (char *) buf, rcount );
 
 		if (rcount != wcount)
 		{
 			fprintf(stderr, "%s: read/write error: %s\n", MYNAME, strerror(errno));
 
-			if ( close(in_file_des) != 0 )
+			if ( close(in_file_fd) != 0 )
 				fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
-			if ( close(out_file_des) != 0 )
+			if ( close(out_file_fd) != 0 )
 				fprintf(stderr, "%s: close error out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
 			return -1;
 		}
 	}
 
-	if ( close(in_file_des) != 0 )
+	if ( close(in_file_fd) != 0 )
 		fprintf(stderr, "%s: close error in file \"%s\": %s\n", MYNAME, in_file_path, strerror(errno));
 
-	if ( close(out_file_des) != 0 )
+	if ( close(out_file_fd) != 0 )
 		fprintf(stderr, "%s: close error out file \"%s\": %s\n", MYNAME, out_file_path, strerror(errno));
 
 	return 0;
