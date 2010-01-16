@@ -167,7 +167,7 @@ void debug(void)
 	putchar('\n');
 
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-	printf("Prefix\t\t\t:\t%s\n", PREFIX)
+	printf("Prefix\t\t\t:\t%s\n", PREFIX);
 
 	putchar('\n');
 }
