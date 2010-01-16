@@ -43,9 +43,8 @@
 ********************************************************************************/
 void help(void)
 {
-	puts("------------------------------------------------------------------------");
 	version();
-	puts("------------------------------------------------------------------------");
+	putchar('\n');
 	printf("Search options:\n");
 	printf("\t-u <word> | --%s <word>\n", OPT_SEARCH_USUALLY);
 	printf("\t-f <word> | --%s <word>\n", OPT_SEARCH_FIRST_CONCURRENCE);
@@ -76,12 +75,12 @@ void help(void)
 	printf("Environment:\n");
 	printf("\tHOME\n");
 	printf("\tCOLUMNS\n");
-	puts("------------------------------------------------------------------------");
+	putchar('\n');
 	printf("Develper e-mail:\t\"%s\"\n", DEVELOPER_MAIL);
 	printf("Bugtrack e-mail:\t\"%s\"\n", BUGTRACK_MAIL);
 	printf("Offers e-mail:\t\t\"%s\"\n", OFFERS_MAIL);
 	printf("Home page address:\t\"%s\"\n", HOME_PAGE_ADDRESS);
-	puts("------------------------------------------------------------------------");
+	putchar('\n');
 }
 
 /********************************************************************************
@@ -102,8 +101,6 @@ void version(void)
 ********************************************************************************/
 void debug(void)
 {
-	puts("--------------------------------------------------------------------------------");
-
 	printf("Program name\t\t:\t%s\n", MYNAME);
 	printf("Program version\t\t:\t%s\n", VERSION);
 	printf("Package version\t\t:\t%s\n", PACKAGE_VERSION);
@@ -116,7 +113,7 @@ void debug(void)
 	printf("Time of compilation\t:\t%s\n", __TIME__);
 #endif
 
-	puts("--------------------------------------------------------------------------------");
+	putchar('\n');
 
 #ifdef __VERSION__
 	printf("GCC version\t\t:\t%s\n", __VERSION__);
@@ -167,10 +164,12 @@ void debug(void)
 	puts("Architecture\t\t:\tOther");
 #endif
 
-	puts("--------------------------------------------------------------------------------");
+	putchar('\n');
+
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-	printf("Prefix\t\t\t:\t%s\n", PREFIX);
-	puts("--------------------------------------------------------------------------------");
+	printf("Prefix\t\t\t:\t%s\n", PREFIX)
+
+	putchar('\n');
 }
 
 /********************************************************************************
