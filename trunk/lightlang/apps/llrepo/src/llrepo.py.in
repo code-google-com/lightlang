@@ -20,6 +20,9 @@
 
 import sys
 import os
+import struct
+import fcntl
+import termios
 import tempfile
 import ftplib
 
@@ -81,10 +84,18 @@ class Resource(object) :
 
 
 #####
-def short_stdout(str, static=[""]) :
+def short_stdout(str, static = [""]) :
 	sys.stdout.write(" "*len(static[0])+"\r"+str+"\r")
 	sys.stdout.flush()
 	static[0] = str
+
+def get_terminal_width(fd = 1) :
+	winsize_struct_packed = struct.pack("HHHH", 0, 0, 0, 0)
+	try :
+		winsize_struct_packed = fcntl.ioctl(fd, termios.TIOCGWINSZ, winsize_struct_packed)
+	except : pass
+	winsize_struct_unpacked = struct.unpack("HHHH", winsize_struct_packed)
+	return ( winsize_struct_unpacked[1] if winsize_struct_unpacked[1] > 80 else 80 )
 
 ###
 def sort_resources_list(resources_list, left = None, right = None) :
@@ -253,11 +264,11 @@ def print_resources_list(resources_type, repositories_type) :
 
 	###
 
-	print "="*80
+	print "="*get_terminal_width()
 	print "\tList of available %s %s resources" % (repositories_type, resources_type)
-	print "="*80
-	print "%4s  %-58s %4s %6s" % ("Num", "Name", "Stat", "Size")
-	print "-"*80
+	print "="*get_terminal_width()
+	print ("%4s  %-"+str(int(get_terminal_width() * 0.72))+"s %4s %6s") % ("Num", "Name", "Stat", "Size")
+	print "-"*get_terminal_width()
 
 	past_resources_names_list = []
 	resources_count = 0
@@ -271,10 +282,10 @@ def print_resources_list(resources_type, repositories_type) :
 
 		resource_installed_flag = ( True if requested_resources_list_item.resource_name in installed_resources_names_list else False )
 
-		print "%4d  %-59s %3s %6d Kb" % ( resources_count, requested_resources_list_item.resource_name,
+		print ("%4d  %-"+str(int(get_terminal_width() * 0.72))+"s %4s %6d Kb") % ( resources_count, requested_resources_list_item.resource_name,
 			( "ins" if resource_installed_flag else "---" ), requested_resources_list_item.file_size/1024 )
 
-	print "="*80+"\n"
+	print "="*get_terminal_width()+"\n"
 
 	return 0
 
@@ -616,9 +627,8 @@ def remove_resources(requested_resources_names_list, resources_type) :
 
 #####
 def help() :
-	print "-"*80
 	version()
-	print "-"*80
+	print
 	print "Remote repository commands:"
 	print "\t%s %s %s" % (MyName, RemoteListCommand, DictsResourcesType)
 	print "\t%s %s %s" % (MyName, RemoteListCommand, SoundsResourcesType)
@@ -632,7 +642,7 @@ def help() :
 	print "Information commands:"
 	print "\t%s %s" % (MyName, HelpCommand)
 	print "\t%s %s" % (MyName, VersionCommand)
-	print "-"*80
+	print
 
 def version() :
 	print "%s-%s, Copyright (C) 2007-2016 Devaev Maxim, %s" % (MyName, Version, DeveloperMail)
