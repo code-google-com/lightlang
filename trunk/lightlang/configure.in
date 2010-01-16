@@ -196,6 +196,30 @@ else
 	echo "ok"
 fi
 
+printf "python-test: importing \"struct\" module... "
+$PYTHON_PROG -c "import struct"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"fcntl\" module... "
+$PYTHON_PROG -c "import fcntl"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"termios\" module... "
+$PYTHON_PROG -c "import termios"
+if [[ "$?" != "0" ]]; then
+	AC_MSG_ERROR([Python modules error])
+else
+	echo "ok"
+fi
+
 if [[ "$GUI_FLAG" = "yes" ]]; then
 
 	printf "python-test: importing \"Xlib\" module... "

@@ -6885,6 +6885,36 @@ else
 	echo "ok"
 fi
 
+printf "python-test: importing \"struct\" module... "
+$PYTHON_PROG -c "import struct"
+if [ "$?" != "0" ]; then
+	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
+$as_echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"fcntl\" module... "
+$PYTHON_PROG -c "import fcntl"
+if [ "$?" != "0" ]; then
+	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
+$as_echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
+fi
+
+printf "python-test: importing \"termios\" module... "
+$PYTHON_PROG -c "import termios"
+if [ "$?" != "0" ]; then
+	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
+$as_echo "$as_me: error: Python modules error" >&2;}
+   { (exit 1); exit 1; }; }
+else
+	echo "ok"
+fi
+
 if [ "$GUI_FLAG" = "yes" ]; then
 
 	printf "python-test: importing \"Xlib\" module... "
