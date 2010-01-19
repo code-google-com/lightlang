@@ -23,4 +23,10 @@
 
 
 Prefix = "@prefix@"
+ExecPrefix = "@exec_prefix@"
+BinsDir = "@bindir@"
+LibsDir = "@libdir@"
+DataRootDir = "@datarootdir@"
+MansDir = "@mandir@"
+DocsDir = "@docdir@"
 

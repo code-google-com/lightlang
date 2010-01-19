@@ -30,7 +30,7 @@ import getopt
 #####
 if __name__ == "__main__" :
 	enable_psyco_flag = False
-	libs_dir = "@prefix@/lib/xsl/pyqt4"
+	libs_dir = "@libdir@/xsl/pyqt4"
 
 	#####
 

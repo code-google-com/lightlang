@@ -31,10 +31,10 @@ import TransparentFrame
 
 
 #####
-MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
-HtmlDocsDir = Config.Prefix+"/share/doc/lightlang/html/"
+HtmlDocsDir = Config.DocsDir+"/lightlang/html/"
 
 
 #####

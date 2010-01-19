@@ -30,8 +30,8 @@ import IfaSaxHandler
 
 #####
 IfaSubdir = "ifa/"
-IfaSystemDir = Config.Prefix+"/lib/xsl/"+IfaSubdir
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+IfaSystemDir = Config.DataRootDir+"/xsl/"+IfaSubdir
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

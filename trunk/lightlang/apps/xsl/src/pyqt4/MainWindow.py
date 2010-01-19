@@ -40,8 +40,8 @@ import AboutWindow
 
 
 #####
-MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

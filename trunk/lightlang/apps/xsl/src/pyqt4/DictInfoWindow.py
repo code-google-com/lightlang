@@ -28,11 +28,11 @@ import TextBrowser
 
 
 #####
-MyIcon = Config.Prefix+"/lib/xsl/icons/xsl_16.png"
-WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
+MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
+WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
-AllDictsDir = Config.Prefix+"/share/sl/dicts/"
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+AllDictsDir = Config.DataRootDir+"/sl/dicts/"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

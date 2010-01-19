@@ -28,7 +28,7 @@ import TextSearchFrame
 
 
 #####
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

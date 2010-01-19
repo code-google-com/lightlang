@@ -26,8 +26,8 @@ import Const
 
 
 #####
-Sl = Config.Prefix+"/bin/sl"
-AllSoundsDir = Config.Prefix+"/share/sl/sounds/"
+Sl = Config.BinsDir+"/sl"
+AllSoundsDir = Config.DataRootDir+"/sl/sounds/"
 AudioPostfix = ".ogg"
 
 SoundSearchOption = "-s"

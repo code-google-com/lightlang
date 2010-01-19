@@ -27,7 +27,7 @@ import Const
 
 
 #####
-WaitPicture = Config.Prefix+"/lib/xsl/pictures/circular.gif"
+WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
 
 #####

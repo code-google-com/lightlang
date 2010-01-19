@@ -29,8 +29,8 @@ import TranslateSiteSaxHandler
 
 #####
 TranslateSitesSubdir = "trsites/"
-TranslateSitesSystemDir = Config.Prefix+"/lib/xsl/"+TranslateSitesSubdir
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+TranslateSitesSystemDir = Config.DataRootDir+"/xsl/"+TranslateSitesSubdir
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

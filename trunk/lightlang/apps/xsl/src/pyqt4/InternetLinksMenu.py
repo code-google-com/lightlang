@@ -26,7 +26,7 @@ import Const
 
 
 #####
-IconsDir = Config.Prefix+"/lib/xsl/icons/"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####

@@ -32,8 +32,8 @@ import MainWindow
 
 
 #####
-TrDir = Config.Prefix+"/lib/xsl/tr/"
-MySplash = Config.Prefix+"/lib/xsl/pictures/xsl_splash.png"
+TrDir = Config.DataRootDir+"/xsl/tr/"
+MySplash = Config.DataRootDir+"/xsl/pictures/xsl_splash.png"
 
 
 #####

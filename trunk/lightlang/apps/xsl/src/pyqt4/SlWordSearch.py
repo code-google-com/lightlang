@@ -26,8 +26,8 @@ import Const
 
 
 #####
-Sl = Config.Prefix+"/bin/sl"
-AllDictsDir = Config.Prefix+"/share/sl/dicts/"
+Sl = Config.BinsDir+"/sl"
+AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
 UsuallySearchOption = "-u"
 WordCombinationsSearchOption = "-c"

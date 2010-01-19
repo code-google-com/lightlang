@@ -167,7 +167,8 @@ void debug(void)
 	putchar('\n');
 
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-	printf("Prefix\t\t\t:\t%s\n", PREFIX);
+	printf("prefix\t\t\t:\t%s\n", PREFIX);
+	printf("datarootdir\t\t:\t%s\n", DATA_ROOT_DIR);
 
 	putchar('\n');
 }
