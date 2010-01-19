@@ -12,12 +12,17 @@ echo "+---------------------------------------------------------------------+"
 dnl ################# Default settings #################
 
 AC_PREFIX_DEFAULT(/usr)
+exec_prefix=$prefix
+bindir=$exec_prefix/bin
+libdir=$prefix/lib
+datarootdir=$prefix/share
+mandir=$datarootdir/man
+docdir=$datarootdir/doc
 
 dnl ################# Options #################
 
 AC_ARG_WITH(default_config,
-	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal,
-available: normal, console])],
+	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal, available: normal, console])],
 	DEFAULT_CONFIG=$withval, DEFAULT_CONFIG="normal")
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then
 	DEFAULT_AUDIO_PLAYER="play"
@@ -346,8 +351,14 @@ dnl ################# Information #################
 
 echo "+---------------------------------------------------------------------+"
 echo "  Default config : " $DEFAULT_CONFIG
-echo "  Prefix         : " $prefix
-echo "  Audio Player   : " $AUDIO_PLAYER
+echo "  Audio player   : " $AUDIO_PLAYER
+echo "  prefix         : " $prefix
+echo "  exec_prefix    : " $exec_prefix
+echo "  bindir         : " $bindir
+echo "  libdir         : " $libdir
+echo "  datarootdir    : " $datarootdir
+echo "  mandir         : " $mandir
+echo "  docdir         : " $docdir
 echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS         : " $CFLAGS
 echo "  GUI support    : " $GUI_FLAG
