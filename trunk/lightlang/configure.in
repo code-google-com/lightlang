@@ -147,16 +147,6 @@ if [[ "$AUDIO_PLAYER_PROG" = "no" ]]; then
 	AC_MSG_ERROR([$AUDIO_PLAYER is not found])
 fi
 
-dnl ##########################
-dnl ##### Libs checkings #####
-dnl ##########################
-
-AC_SUBST(INS_PKG_LIBS_DIR) # TODO: add normal pkg-config libs checkings
-INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
-
-AC_SUBST(INS_PKG_LIBS64_DIR)
-INS_PKG_LIBS64_DIR="/usr/lib64/pkgconfig"
-
 dnl ####################################
 dnl ##### Python modules checkings #####
 dnl ####################################

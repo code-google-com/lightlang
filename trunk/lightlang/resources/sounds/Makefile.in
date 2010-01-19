@@ -11,7 +11,7 @@ CHMOD=@CHMOD_PROG@
 
 SOUNDS_DIR=sounds
 
-INS_SOUNDS_DIR=@prefix@/share/sl/sounds
+INS_SOUNDS_DIR=@datarootdir@/sl/sounds
 
 #####
 install :

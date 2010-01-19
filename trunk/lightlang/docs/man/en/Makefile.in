@@ -13,7 +13,7 @@ GUI_FLAG=@GUI_FLAG@
 
 EN_MAN_DOC_DIR=man
 
-INS_EN_MAN_DOC_DIR=@prefix@/share/man/en
+INS_EN_MAN_DOC_DIR=@mandir@/en
 # section : man1
 
 #####

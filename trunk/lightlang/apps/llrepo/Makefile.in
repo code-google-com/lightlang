@@ -16,8 +16,8 @@ LLREPO_PROG=llrepo
 LLREPO_MAIN=src/llrepo.py
 LLREPO_LIBS_DIR=src
 
-INS_LLREPO_PROG_DIR=@prefix@/bin
-INS_LLREPO_LIBS_DIR=@prefix@/lib/llrepo
+INS_LLREPO_PROG_DIR=@bindir@
+INS_LLREPO_LIBS_DIR=@libdir@/llrepo
 
 #####
 all : $(LLREPO_MAIN)

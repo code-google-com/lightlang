@@ -13,7 +13,7 @@ GUI_FLAG=@GUI_FLAG@
 
 RU_MAN_DOC_DIR=man
 
-INS_RU_MAN_DOC_DIR=@prefix@/share/man/ru
+INS_RU_MAN_DOC_DIR=@mandir@/ru
 # section : man1
 
 #####

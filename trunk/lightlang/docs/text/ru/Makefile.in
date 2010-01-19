@@ -9,8 +9,8 @@ CP=@CP_PROG@
 
 RU_TEXT_DOC_DIR=text
 
-INS_DOC_DIR=@prefix@/share/doc/lightlang
-INS_RU_TEXT_DOC_DIR=@prefix@/share/doc/lightlang/text/ru
+INS_DOC_DIR=@docdir@/lightlang
+INS_RU_TEXT_DOC_DIR=@docdir@/lightlang/text/ru
 
 #####
 install :

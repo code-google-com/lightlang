@@ -637,8 +637,6 @@ ac_includes_default="\
 
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-INS_PKG_LIBS64_DIR
-INS_PKG_LIBS_DIR
 AUDIO_PLAYER_PROG
 PYTHON_PROG
 BZIP2_PROG
@@ -6832,13 +6830,6 @@ if [ "$AUDIO_PLAYER_PROG" = "no" ]; then
 $as_echo "$as_me: error: $AUDIO_PLAYER is not found" >&2;}
    { (exit 1); exit 1; }; }
 fi
-
-
- # TODO: add normal pkg-config libs checkings
-INS_PKG_LIBS_DIR="/usr/lib/pkgconfig"
-
-
-INS_PKG_LIBS64_DIR="/usr/lib64/pkgconfig"
 
 
 printf "python-test: importing \"sys\" module... "

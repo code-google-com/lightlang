@@ -10,8 +10,8 @@ RM=@RM_PROG@
 
 RU_HTML_DOC_DIR=html
 
-INS_DOC_DIR=@prefix@/share/doc/lightlang
-INS_RU_HTML_DOC_DIR=@prefix@/share/doc/lightlang/html/ru
+INS_DOC_DIR=@docdir@/lightlang
+INS_RU_HTML_DOC_DIR=@docdir@/lightlang/html/ru
 
 #####
 install :

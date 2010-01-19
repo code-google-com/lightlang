@@ -26,10 +26,10 @@ SL_OBJ=src/main.o \
 SL_CONFIG=src/config.h
 SL_PROG=sl
 
-INS_SL_PROG_DIR=@prefix@/bin
-INS_SL_SHARES_DIR=@prefix@/share/sl
-INS_SL_DICTS_DIR=@prefix@/share/sl/dicts
-INS_SL_SOUNDS_DIR=@prefix@/share/sl/sounds
+INS_SL_PROG_DIR=@bindir@
+INS_SL_SHARES_DIR=@datarootdir@/sl
+INS_SL_DICTS_DIR=@datarootdir@/sl/dicts
+INS_SL_SOUNDS_DIR=@datarootdir@/sl/sounds
 
 #####
 .SUFFIXES : .o .c

@@ -10,19 +10,15 @@ RM=@RM_PROG@
 
 PKG_LIBS_DIR=pkg
 
-INS_PKG_LIBS_DIR=@INS_PKG_LIBS_DIR@
-INS_PKG_LIBS64_DIR=@INS_PKG_LIBS64_DIR@
+INS_PKG_LIBS_DIR=@libdir@/pkgconfig
 
 #####
 install :
 	-$(MKDIR) -p $(DESTDIR)$(INS_PKG_LIBS_DIR)
-	-$(MKDIR) -p $(DESTDIR)$(INS_PKG_LIBS64_DIR)
 	-$(CP) -f $(PKG_LIBS_DIR)/lightlang.pc $(DESTDIR)$(INS_PKG_LIBS_DIR)
-	-$(CP) -f $(PKG_LIBS_DIR)/lightlang.pc $(DESTDIR)$(INS_PKG_LIBS64_DIR)
 
 uninstall :
 	$(RM) -f $(DESTDIR)$(INS_PKG_LIBS_DIR)/lightlang.pc
-	$(RM) -f $(DESTDIR)$(INS_PKG_LIBS64_DIR)/lightlang.pc
 
 clean :
 	$(RM) -f $(PKG_LIBS_DIR)/lightlang.pc

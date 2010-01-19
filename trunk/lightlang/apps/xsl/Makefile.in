@@ -27,18 +27,19 @@ XSL_PICTURES_DIR=src/pictures
 XSL_DESKTOP_SCRIPT=src/desktop/xsl.desktop
 XSL_DESKTOP_ICON=src/desktop/xsl.png
 
-INS_XSL_PROG_DIR=@prefix@/bin
-INS_XSL_PROG_ALIAS_DIR=@prefix@/bin
-INS_XSL_LIBS_DIR=@prefix@/lib/xsl
-INS_XSL_PYQT4_DIR=@prefix@/lib/xsl/pyqt4
-INS_XSL_TR_DIR=@prefix@/lib/xsl/tr
-INS_XSL_IFA_DIR=@prefix@/lib/xsl/ifa
-INS_XSL_TRSITES_DIR=@prefix@/lib/xsl/trsites
-INS_XSL_ICONS_DIR=@prefix@/lib/xsl/icons
-INS_XSL_ICONS_FLAGS_DIR=@prefix@/lib/xsl/icons/flags
-INS_XSL_PICTURES_DIR=@prefix@/lib/xsl/pictures
-INS_XSL_DESKTOP_SCRIPT_DIR=@prefix@/share/applications
-INS_XSL_DESKTOP_ICON_DIR=@prefix@/share/icons
+INS_XSL_PROG_DIR=@bindir@
+INS_XSL_PROG_ALIAS_DIR=@bindir@
+INS_XSL_LIBS_DIR=@libdir@/xsl
+INS_XSL_SHARES_DIR=@datarootdir@/xsl
+INS_XSL_PYQT4_DIR=@libdir@/xsl/pyqt4
+INS_XSL_TR_DIR=@datarootdir@/xsl/tr
+INS_XSL_IFA_DIR=@datarootdir@/xsl/ifa
+INS_XSL_TRSITES_DIR=@datarootdir@/xsl/trsites
+INS_XSL_ICONS_DIR=@datarootdir@/xsl/icons
+INS_XSL_ICONS_FLAGS_DIR=@datarootdir@/xsl/icons/flags
+INS_XSL_PICTURES_DIR=@datarootdir@/xsl/pictures
+INS_XSL_DESKTOP_SCRIPT_DIR=@datarootdir@/applications
+INS_XSL_DESKTOP_ICON_DIR=@datarootdir@/icons
 
 #####
 all :
@@ -84,6 +85,7 @@ uninstall :
 	$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_ICON_DIR)/xsl.png
 	$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)/xsl.desktop
 	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
+	$(RM) -rf $(DESTDIR)$(INS_XSL_SHARES_DIR)
 	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
 	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_DIR)/$(XSL_PROG)
 

@@ -17,7 +17,7 @@ TMP_FILE=/tmp/tmpdict
 DICTS_SRC_DIR=src
 DICTS_DIR=dicts
 
-INS_DICTS_DIR=@prefix@/share/sl/dicts
+INS_DICTS_DIR=@datarootdir@/sl/dicts
 
 #####
 all :
