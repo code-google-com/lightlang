@@ -640,11 +640,10 @@ LIBOBJS
 AUDIO_PLAYER_PROG
 PYTHON_PROG
 BZIP2_PROG
-TEST_PROG
 TAR_PROG
-CHMOD_PROG
-XARGS_PROG
 FIND_PROG
+TEST_PROG
+CHMOD_PROG
 CD_PROG
 LS_PROG
 CAT_PROG
@@ -669,7 +668,13 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
+PYTHON_XLIB_FLAG
 GUI_FLAG
+AUDIO_PLAYER
+DEFAULT_PYTHON_XLIB_FLAG
+DEFAULT_GUI_FLAG
+DEFAULT_AUDIO_PLAYER
+DEFAULT_CONFIG
 target_alias
 host_alias
 build_alias
@@ -1344,9 +1349,12 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-default-config   set default configuration, default: normal,
                           available: normal, console
-  --with-audio-player     set audio player, default: play
-  --with-gui-flag         enable or disable GUI, default: yes
-  --with-python-xlib-flag enable or disable python-xlib, default: yes
+  --with-audio-player     set audio player, default: play, but must be changed
+                          by default configuration
+  --with-gui-flag         enable or disable GUI, default: yes, but must be
+                          changed by default configuration
+  --with-python-xlib-flag enable or disable python-xlib, default: yes, but
+                          must be changed by default configuration
 
 Some influential environment variables:
   CC          C compiler command
@@ -1804,54 +1812,68 @@ echo "+---------------------------------------------------------------------+"
 
 
 
-exec_prefix=$prefix
-bindir=$exec_prefix/bin
-libdir=$prefix/lib
-datarootdir=$prefix/share
-mandir=$datarootdir/man
-docdir=$datarootdir/doc
+
+
+
+
 
 
 
 # Check whether --with-default_config was given.
 if test "${with_default_config+set}" = set; then
   withval=$with_default_config; DEFAULT_CONFIG=$withval
+
 else
-  DEFAULT_CONFIG="normal"
+  DEFAULT_CONFIG=normal
+
 fi
 
 if [ "$DEFAULT_CONFIG" = "normal" ]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="yes"
-	DEFAULT_PYTHON_XLIB_FLAG="yes"
+	DEFAULT_AUDIO_PLAYER=play
+
+	DEFAULT_GUI_FLAG=yes
+
+	DEFAULT_PYTHON_XLIB_FLAG=yes
+
 elif [ "$DEFAULT_CONFIG" = "console" ]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="no"
-	DEFAULT_PYTHON_XLIB_FLAG="no"
+	DEFAULT_AUDIO_PLAYER=play
+
+	DEFAULT_GUI_FLAG=no
+
+	DEFAULT_PYTHON_XLIB_FLAG=no
+
 else
-	echo "bad argument: " $DEFAULT_CONFIG ": ignored"
-	DEFAULT_CONFIG="normal"
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="yes"
-	DEFAULT_PYTHON_XLIB_FLAG="yes"
+	{ $as_echo "$as_me:$LINENO: WARNING: unknown configure preset $DEFAULT_CONFIG, using preset \"normal\"" >&5
+$as_echo "$as_me: WARNING: unknown configure preset $DEFAULT_CONFIG, using preset \"normal\"" >&2;}
+	DEFAULT_CONFIG=normal
+
+	DEFAULT_AUDIO_PLAYER=play
+
+	DEFAULT_GUI_FLAG=yes
+
+	DEFAULT_PYTHON_XLIB_FLAG=yes
+
 fi
 
 
 # Check whether --with-audio_player was given.
 if test "${with_audio_player+set}" = set; then
   withval=$with_audio_player; AUDIO_PLAYER=$withval
+
 else
   AUDIO_PLAYER=$DEFAULT_AUDIO_PLAYER
-fi
 
+fi
 
 
 
 # Check whether --with-gui_flag was given.
 if test "${with_gui_flag+set}" = set; then
   withval=$with_gui_flag; GUI_FLAG=$withval
+
 else
   GUI_FLAG=$DEFAULT_GUI_FLAG
+
 fi
 
 
@@ -1859,9 +1881,12 @@ fi
 # Check whether --with-python_xlib_flag was given.
 if test "${with_python_xlib_flag+set}" = set; then
   withval=$with_python_xlib_flag; PYTHON_XLIB_FLAG=$withval
+
 else
   PYTHON_XLIB_FLAG=$DEFAULT_PYTHON_XLIB_FLAG
+
 fi
+
 
 
 
@@ -2921,7 +2946,6 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
-
 
 CFLAGS+=" --pedantic --std=c9x"
 
@@ -6000,7 +6024,8 @@ fi
 
 
 
-# Extract the first word of "sh", so it can be a program name with args.
+
+	# Extract the first word of "sh", so it can be a program name with args.
 set dummy sh; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6041,8 +6066,12 @@ $as_echo "no" >&6; }
 fi
 
 
+	if [ "$SH_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: sh is not found" >&5
+$as_echo "$as_me: error: sh is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "$CC", so it can be a program name with args.
+
+	# Extract the first word of "$CC", so it can be a program name with args.
 set dummy $CC; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6083,8 +6112,12 @@ $as_echo "no" >&6; }
 fi
 
 
+	if [ "$CC_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: $CC is not found" >&5
+$as_echo "$as_me: error: $CC is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "make", so it can be a program name with args.
+
+	# Extract the first word of "make", so it can be a program name with args.
 set dummy make; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6125,13 +6158,12 @@ $as_echo "no" >&6; }
 fi
 
 
-if [ "$MAKE_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: make is not found" >&5
+	if [ "$MAKE_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: make is not found" >&5
 $as_echo "$as_me: error: make is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "mkdir", so it can be a program name with args.
+
+	# Extract the first word of "mkdir", so it can be a program name with args.
 set dummy mkdir; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6172,7 +6204,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "cp", so it can be a program name with args.
+	if [ "$MKDIR_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: mkdir is not found" >&5
+$as_echo "$as_me: error: mkdir is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "cp", so it can be a program name with args.
 set dummy cp; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6213,7 +6250,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "ln", so it can be a program name with args.
+	if [ "$CP_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: cp is not found" >&5
+$as_echo "$as_me: error: cp is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "ln", so it can be a program name with args.
 set dummy ln; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6254,7 +6296,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "mv", so it can be a program name with args.
+	if [ "$LN_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: ln is not found" >&5
+$as_echo "$as_me: error: ln is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "mv", so it can be a program name with args.
 set dummy mv; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6295,7 +6342,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "rm", so it can be a program name with args.
+	if [ "$MV_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: mv is not found" >&5
+$as_echo "$as_me: error: mv is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "rm", so it can be a program name with args.
 set dummy rm; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6336,7 +6388,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "cat", so it can be a program name with args.
+	if [ "$RM_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: rm is not found" >&5
+$as_echo "$as_me: error: rm is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "cat", so it can be a program name with args.
 set dummy cat; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6377,7 +6434,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "ls", so it can be a program name with args.
+	if [ "$CAT_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: cat is not found" >&5
+$as_echo "$as_me: error: cat is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "ls", so it can be a program name with args.
 set dummy ls; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6418,7 +6480,12 @@ $as_echo "no" >&6; }
 fi
 
 
-# Extract the first word of "cd", so it can be a program name with args.
+	if [ "$LS_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: ls is not found" >&5
+$as_echo "$as_me: error: ls is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "cd", so it can be a program name with args.
 set dummy cd; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6459,102 +6526,12 @@ $as_echo "no" >&6; }
 fi
 
 
-
-# Extract the first word of "find", so it can be a program name with args.
-set dummy find; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_FIND_PROG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $FIND_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_FIND_PROG="$FIND_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_FIND_PROG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_FIND_PROG" && ac_cv_path_FIND_PROG="no"
-  ;;
-esac
-fi
-FIND_PROG=$ac_cv_path_FIND_PROG
-if test -n "$FIND_PROG"; then
-  { $as_echo "$as_me:$LINENO: result: $FIND_PROG" >&5
-$as_echo "$FIND_PROG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
+	if [ "$CD_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: cd is not found" >&5
+$as_echo "$as_me: error: cd is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
 
 
-if [ "$FIND_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: find is not found" >&5
-$as_echo "$as_me: error: find is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-# Extract the first word of "xargs", so it can be a program name with args.
-set dummy xargs; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_XARGS_PROG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $XARGS_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_XARGS_PROG="$XARGS_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_XARGS_PROG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_XARGS_PROG" && ac_cv_path_XARGS_PROG="no"
-  ;;
-esac
-fi
-XARGS_PROG=$ac_cv_path_XARGS_PROG
-if test -n "$XARGS_PROG"; then
-  { $as_echo "$as_me:$LINENO: result: $XARGS_PROG" >&5
-$as_echo "$XARGS_PROG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-if [ "$XARGS_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: xargs is not found" >&5
-$as_echo "$as_me: error: xargs is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-# Extract the first word of "chmod", so it can be a program name with args.
+	# Extract the first word of "chmod", so it can be a program name with args.
 set dummy chmod; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6595,55 +6572,12 @@ $as_echo "no" >&6; }
 fi
 
 
-
-# Extract the first word of "tar", so it can be a program name with args.
-set dummy tar; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_TAR_PROG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $TAR_PROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_TAR_PROG="$TAR_PROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_TAR_PROG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_TAR_PROG" && ac_cv_path_TAR_PROG="no"
-  ;;
-esac
-fi
-TAR_PROG=$ac_cv_path_TAR_PROG
-if test -n "$TAR_PROG"; then
-  { $as_echo "$as_me:$LINENO: result: $TAR_PROG" >&5
-$as_echo "$TAR_PROG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
+	if [ "$CHMOD_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: chmod is not found" >&5
+$as_echo "$as_me: error: chmod is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
 
 
-if [ "$TAR_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: tar is not found" >&5
-$as_echo "$as_me: error: tar is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
-
-# Extract the first word of "test", so it can be a program name with args.
+	# Extract the first word of "test", so it can be a program name with args.
 set dummy test; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6684,8 +6618,104 @@ $as_echo "no" >&6; }
 fi
 
 
+	if [ "$TEST_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: test is not found" >&5
+$as_echo "$as_me: error: test is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "bzip2", so it can be a program name with args.
+
+	# Extract the first word of "find", so it can be a program name with args.
+set dummy find; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_FIND_PROG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $FIND_PROG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_FIND_PROG="$FIND_PROG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_FIND_PROG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_FIND_PROG" && ac_cv_path_FIND_PROG="no"
+  ;;
+esac
+fi
+FIND_PROG=$ac_cv_path_FIND_PROG
+if test -n "$FIND_PROG"; then
+  { $as_echo "$as_me:$LINENO: result: $FIND_PROG" >&5
+$as_echo "$FIND_PROG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+	if [ "$FIND_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: find is not found" >&5
+$as_echo "$as_me: error: find is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "tar", so it can be a program name with args.
+set dummy tar; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_TAR_PROG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $TAR_PROG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_TAR_PROG="$TAR_PROG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_TAR_PROG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_TAR_PROG" && ac_cv_path_TAR_PROG="no"
+  ;;
+esac
+fi
+TAR_PROG=$ac_cv_path_TAR_PROG
+if test -n "$TAR_PROG"; then
+  { $as_echo "$as_me:$LINENO: result: $TAR_PROG" >&5
+$as_echo "$TAR_PROG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+	if [ "$TAR_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: tar is not found" >&5
+$as_echo "$as_me: error: tar is not found" >&2;}
+   { (exit 1); exit 1; }; }; fi
+
+
+	# Extract the first word of "bzip2", so it can be a program name with args.
 set dummy bzip2; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6726,13 +6756,12 @@ $as_echo "no" >&6; }
 fi
 
 
-if [ "$BZIP2_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: bzip2 is not found" >&5
+	if [ "$BZIP2_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: bzip2 is not found" >&5
 $as_echo "$as_me: error: bzip2 is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "python", so it can be a program name with args.
+
+	# Extract the first word of "python", so it can be a program name with args.
 set dummy python; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6773,13 +6802,12 @@ $as_echo "no" >&6; }
 fi
 
 
-if [ "$PYTHON_PROG" = "no" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: python is not found" >&5
+	if [ "$PYTHON_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: python is not found" >&5
 $as_echo "$as_me: error: python is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
+   { (exit 1); exit 1; }; }; fi
 
-# Extract the first word of "$AUDIO_PLAYER", so it can be a program name with args.
+
+	# Extract the first word of "$AUDIO_PLAYER", so it can be a program name with args.
 set dummy $AUDIO_PLAYER; ac_word=$2
 { $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -6820,197 +6848,831 @@ $as_echo "no" >&6; }
 fi
 
 
-if [ "$AUDIO_PLAYER_PROG" = "no" ]; then
-	echo "+---------------------------------------------------------------------+"
-	echo "| This audio player is not installed. You can use another player by   |"
-	echo "| typing option --with-audio-player, for example:                     |"
-	echo "| ./configure --with-audio-player=mplayer                             |"
-	echo "+---------------------------------------------------------------------+"
-	{ { $as_echo "$as_me:$LINENO: error: $AUDIO_PLAYER is not found" >&5
+	if [ "$AUDIO_PLAYER_PROG" = "no" ]; then { { $as_echo "$as_me:$LINENO: error: $AUDIO_PLAYER is not found" >&5
 $as_echo "$as_me: error: $AUDIO_PLAYER is not found" >&2;}
-   { (exit 1); exit 1; }; }
-fi
+   { (exit 1); exit 1; }; }; fi
 
 
-printf "python-test: importing \"sys\" module... "
-$PYTHON_PROG -c "import sys"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
 
-printf "python-test: importing \"os\" module... "
-$PYTHON_PROG -c "import os"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import sys\"" >&5
+$as_echo_n "checking python \"import sys\"... " >&6; }
+	python -c "import sys"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-printf "python-test: importing \"getopt\" module... "
-$PYTHON_PROG -c "import getopt"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
 
-printf "python-test: importing \"ftplib\" module... "
-$PYTHON_PROG -c "import ftplib"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import os\"" >&5
+$as_echo_n "checking python \"import os\"... " >&6; }
+	python -c "import os"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-printf "python-test: importing \"tempfile\" module... "
-$PYTHON_PROG -c "import tempfile"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
 
-printf "python-test: importing \"struct\" module... "
-$PYTHON_PROG -c "import struct"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import getopt\"" >&5
+$as_echo_n "checking python \"import getopt\"... " >&6; }
+	python -c "import getopt"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-printf "python-test: importing \"fcntl\" module... "
-$PYTHON_PROG -c "import fcntl"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
 
-printf "python-test: importing \"termios\" module... "
-$PYTHON_PROG -c "import termios"
-if [ "$?" != "0" ]; then
-	{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import ftplib\"" >&5
+$as_echo_n "checking python \"import ftplib\"... " >&6; }
+	python -c "import ftplib"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-else
-	echo "ok"
-fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import tempfile\"" >&5
+$as_echo_n "checking python \"import tempfile\"... " >&6; }
+	python -c "import tempfile"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
+   { (exit 1); exit 1; }; }
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import struct\"" >&5
+$as_echo_n "checking python \"import struct\"... " >&6; }
+	python -c "import struct"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
+   { (exit 1); exit 1; }; }
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import fcntl\"" >&5
+$as_echo_n "checking python \"import fcntl\"... " >&6; }
+	python -c "import fcntl"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
+   { (exit 1); exit 1; }; }
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import termios\"" >&5
+$as_echo_n "checking python \"import termios\"... " >&6; }
+	python -c "import termios"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: " >&5
+$as_echo "$as_me: " >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
+   { (exit 1); exit 1; }; }
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
 
 if [ "$GUI_FLAG" = "yes" ]; then
-
-	printf "python-test: importing \"Xlib\" module... "
 	if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
-		$PYTHON_PROG -c "import Xlib, Xlib.display"
-		if [ "$?" != "0" ]; then
-			echo "+---------------------------------------------------------------------+"
-			echo "| Python-xlib library is not installed in your system. Please install |"
-			echo "| it and try again.                                                   |"
-			echo "+---------------------------------------------------------------------+"
-			{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import Xlib\"" >&5
+$as_echo_n "checking python \"import Xlib\"... " >&6; }
+	python -c "import Xlib"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: python-xlib library is not found, please, install it and try again" >&5
+$as_echo "$as_me: python-xlib library is not found, please, install it and try again" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-		else
-			echo "ok"
-		fi
-	else
-		echo "pass"
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
 	fi
 
-	printf "python-test: importing \"PyQt4\" package... "
-	$PYTHON_PROG -c "import PyQt4"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "| In your system not install library PyQt4. You can get it's latest   |"
-		echo "| version from link:                                                  |"
-		echo "|    http://www.riverbankcomputing.co.uk/pyqt/                        |"
-		echo "| For installing PyQt4 requiring library Qt4 and SIP, which you can   |"
-		echo "| get from:                                                           |"
-		echo "|    http://www.qtsoftware.com/                                       |"
-		echo "|    http://www.riverbankcomputing.co.uk/sip/                         |"
-		echo "| Install it, following instructions applied to them. If these        |"
-		echo "| libraries haves in the repositories, you can istall them from       |"
-		echo "| there. Strongly recommended to install last version of these        |"
-		echo "| libraries.                                                          |"
-		echo "+---------------------------------------------------------------------+"
-		{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
-   { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
 
-	printf "python-test: importing \"QtCore\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtCore"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtCore module.                                            |"
-		echo "+---------------------------------------------------------------------+"
-		{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+ 	{ $as_echo "$as_me:$LINENO: checking python \"import PyQt4\"" >&5
+$as_echo_n "checking python \"import PyQt4\"... " >&6; }
+	python -c "import PyQt4"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: PyQt4 library is not found, please, install it and try again" >&5
+$as_echo "$as_me: PyQt4 library is not found, please, install it and try again" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-	printf "python-test: importing \"QtGui\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtGui"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtGui module.                                             |"
-		echo "+---------------------------------------------------------------------+"
-		{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"from PyQt4 import QtCore\"" >&5
+$as_echo_n "checking python \"from PyQt4 import QtCore\"... " >&6; }
+	python -c "from PyQt4 import QtCore"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: You PyQt4 library is buggy, missed module QtCore" >&5
+$as_echo "$as_me: You PyQt4 library is buggy, missed module QtCore" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-	printf "python-test: importing \"QtXml\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtXml"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtXml module.                                             |"
-		echo "+---------------------------------------------------------------------+"
-		{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"from PyQt4 import QtGui\"" >&5
+$as_echo_n "checking python \"from PyQt4 import QtGui\"... " >&6; }
+	python -c "from PyQt4 import QtGui"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: You PyQt4 library is buggy, missed module QtGui" >&5
+$as_echo "$as_me: You PyQt4 library is buggy, missed module QtGui" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-	printf "python-test: importing \"QtNetwork\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtNetwork"
-	if [ "$?" != "0" ]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtNetwork module.                                         |"
-		echo "+---------------------------------------------------------------------+"
-		{ { $as_echo "$as_me:$LINENO: error: Python modules error" >&5
-$as_echo "$as_me: error: Python modules error" >&2;}
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"from PyQt4 import QtXml\"" >&5
+$as_echo_n "checking python \"from PyQt4 import QtXml\"... " >&6; }
+	python -c "from PyQt4 import QtXml"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: You PyQt4 library is buggy, missed module QtXml" >&5
+$as_echo "$as_me: You PyQt4 library is buggy, missed module QtXml" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
    { (exit 1); exit 1; }; }
-	else
-		echo "ok"
-	fi
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
 
-fi # GUI_FLAG
+
+ 	{ $as_echo "$as_me:$LINENO: checking python \"from PyQt4 import QtNetwork\"" >&5
+$as_echo_n "checking python \"from PyQt4 import QtNetwork\"... " >&6; }
+	python -c "from PyQt4 import QtNetwork"
+	if [ "$?" != "0" ]; then { $as_echo "$as_me:$LINENO: You PyQt4 library is buggy, missed module QtNetwork" >&5
+$as_echo "$as_me: You PyQt4 library is buggy, missed module QtNetwork" >&6;}; { { $as_echo "$as_me:$LINENO: error: python command error" >&5
+$as_echo "$as_me: error: python command error" >&2;}
+   { (exit 1); exit 1; }; }
+	else { $as_echo "$as_me:$LINENO: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+
+fi
+
+
+
+cat >confcache <<\_ACEOF
+# This file is a shell script that caches the results of configure
+# tests run on this system so they can be shared between configure
+# scripts and configure runs, see configure's option --config-cache.
+# It is not useful on other systems.  If it contains results you don't
+# want to keep, you may remove or edit it.
+#
+# config.status only pays attention to the cache file if you give it
+# the --recheck option to rerun configure.
+#
+# `ac_cv_env_foo' variables (set or unset) will be overridden when
+# loading this file, other *unset* `ac_cv_foo' will be assigned the
+# following values.
+
+_ACEOF
+
+# The following way of writing the cache mishandles newlines in values,
+# but we know of no workaround that is simple, portable, and efficient.
+# So, we kill variables containing newlines.
+# Ultrix sh set writes to stderr and can't be redirected directly,
+# and sets the high bit in the cache file unless we assign to the vars.
+(
+  for ac_var in `(set) 2>&1 | sed -n 's/^\([a-zA-Z_][a-zA-Z0-9_]*\)=.*/\1/p'`; do
+    eval ac_val=\$$ac_var
+    case $ac_val in #(
+    *${as_nl}*)
+      case $ac_var in #(
+      *_cv_*) { $as_echo "$as_me:$LINENO: WARNING: cache variable $ac_var contains a newline" >&5
+$as_echo "$as_me: WARNING: cache variable $ac_var contains a newline" >&2;} ;;
+      esac
+      case $ac_var in #(
+      _ | IFS | as_nl) ;; #(
+      BASH_ARGV | BASH_SOURCE) eval $ac_var= ;; #(
+      *) $as_unset $ac_var ;;
+      esac ;;
+    esac
+  done
+
+  (set) 2>&1 |
+    case $as_nl`(ac_space=' '; set) 2>&1` in #(
+    *${as_nl}ac_space=\ *)
+      # `set' does not quote correctly, so add quotes (double-quote
+      # substitution turns \\\\ into \\, and sed turns \\ into \).
+      sed -n \
+	"s/'/'\\\\''/g;
+	  s/^\\([_$as_cr_alnum]*_cv_[_$as_cr_alnum]*\\)=\\(.*\\)/\\1='\\2'/p"
+      ;; #(
+    *)
+      # `set' quotes correctly as required by POSIX, so do not add quotes.
+      sed -n "/^[_$as_cr_alnum]*_cv_[_$as_cr_alnum]*=/p"
+      ;;
+    esac |
+    sort
+) |
+  sed '
+     /^ac_cv_env_/b end
+     t clear
+     :clear
+     s/^\([^=]*\)=\(.*[{}].*\)$/test "${\1+set}" = set || &/
+     t end
+     s/^\([^=]*\)=\(.*\)$/\1=${\1=\2}/
+     :end' >>confcache
+if diff "$cache_file" confcache >/dev/null 2>&1; then :; else
+  if test -w "$cache_file"; then
+    test "x$cache_file" != "x/dev/null" &&
+      { $as_echo "$as_me:$LINENO: updating cache $cache_file" >&5
+$as_echo "$as_me: updating cache $cache_file" >&6;}
+    cat confcache >$cache_file
+  else
+    { $as_echo "$as_me:$LINENO: not updating unwritable cache $cache_file" >&5
+$as_echo "$as_me: not updating unwritable cache $cache_file" >&6;}
+  fi
+fi
+rm -f confcache
+
+test "x$prefix" = xNONE && prefix=$ac_default_prefix
+# Let make expand exec_prefix.
+test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
+
+# Transform confdefs.h into DEFS.
+# Protect against shell expansion while executing Makefile rules.
+# Protect against Makefile macro expansion.
+#
+# If the first sed substitution is executed (which looks for macros that
+# take arguments), then branch to the quote section.  Otherwise,
+# look for a macro that doesn't take arguments.
+ac_script='
+:mline
+/\\$/{
+ N
+ s,\\\n,,
+ b mline
+}
+t clear
+:clear
+s/^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 (][^	 (]*([^)]*)\)[	 ]*\(.*\)/-D\1=\2/g
+t quote
+s/^[	 ]*#[	 ]*define[	 ][	 ]*\([^	 ][^	 ]*\)[	 ]*\(.*\)/-D\1=\2/g
+t quote
+b any
+:quote
+s/[	 `~#$^&*(){}\\|;'\''"<>?]/\\&/g
+s/\[/\\&/g
+s/\]/\\&/g
+s/\$/$$/g
+H
+:any
+${
+	g
+	s/^\n//
+	s/\n/ /g
+	p
+}
+'
+DEFS=`sed -n "$ac_script" confdefs.h`
+
+
+ac_libobjs=
+ac_ltlibobjs=
+for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
+  # 1. Remove the extension, and $U if already installed.
+  ac_script='s/\$U\././;s/\.o$//;s/\.obj$//'
+  ac_i=`$as_echo "$ac_i" | sed "$ac_script"`
+  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
+  #    will be set to the directory where LIBOBJS objects are built.
+  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+done
+LIBOBJS=$ac_libobjs
+
+LTLIBOBJS=$ac_ltlibobjs
+
+
+
+: ${CONFIG_STATUS=./config.status}
+ac_write_fail=0
+ac_clean_files_save=$ac_clean_files
+ac_clean_files="$ac_clean_files $CONFIG_STATUS"
+{ $as_echo "$as_me:$LINENO: creating $CONFIG_STATUS" >&5
+$as_echo "$as_me: creating $CONFIG_STATUS" >&6;}
+cat >$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
+#! $SHELL
+# Generated by $as_me.
+# Run this file to recreate the current configuration.
+# Compiler output produced by configure, useful for debugging
+# configure, is in config.log if it exists.
+
+debug=false
+ac_cs_recheck=false
+ac_cs_silent=false
+SHELL=\${CONFIG_SHELL-$SHELL}
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
+## --------------------- ##
+## M4sh Initialization.  ##
+## --------------------- ##
+
+# Be more Bourne compatible
+DUALCASE=1; export DUALCASE # for MKS sh
+if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+  emulate sh
+  NULLCMD=:
+  # Pre-4.2 versions of Zsh do word splitting on ${1+"$@"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '${1+"$@"}'='"$@"'
+  setopt NO_GLOB_SUBST
+else
+  case `(set -o) 2>/dev/null` in
+  *posix*) set -o posix ;;
+esac
+
+fi
+
+
+
+
+# PATH needs CR
+# Avoid depending upon Character Ranges.
+as_cr_letters='abcdefghijklmnopqrstuvwxyz'
+as_cr_LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+as_cr_Letters=$as_cr_letters$as_cr_LETTERS
+as_cr_digits='0123456789'
+as_cr_alnum=$as_cr_Letters$as_cr_digits
+
+as_nl='
+'
+export as_nl
+# Printing a long string crashes Solaris 7 /usr/bin/printf.
+as_echo='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo
+as_echo=$as_echo$as_echo$as_echo$as_echo$as_echo$as_echo
+if (test "X`printf %s $as_echo`" = "X$as_echo") 2>/dev/null; then
+  as_echo='printf %s\n'
+  as_echo_n='printf %s'
+else
+  if test "X`(/usr/ucb/echo -n -n $as_echo) 2>/dev/null`" = "X-n $as_echo"; then
+    as_echo_body='eval /usr/ucb/echo -n "$1$as_nl"'
+    as_echo_n='/usr/ucb/echo -n'
+  else
+    as_echo_body='eval expr "X$1" : "X\\(.*\\)"'
+    as_echo_n_body='eval
+      arg=$1;
+      case $arg in
+      *"$as_nl"*)
+	expr "X$arg" : "X\\(.*\\)$as_nl";
+	arg=`expr "X$arg" : ".*$as_nl\\(.*\\)"`;;
+      esac;
+      expr "X$arg" : "X\\(.*\\)" | tr -d "$as_nl"
+    '
+    export as_echo_n_body
+    as_echo_n='sh -c $as_echo_n_body as_echo'
+  fi
+  export as_echo_body
+  as_echo='sh -c $as_echo_body as_echo'
+fi
+
+# The user is always right.
+if test "${PATH_SEPARATOR+set}" != set; then
+  PATH_SEPARATOR=:
+  (PATH='/bin;/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 && {
+    (PATH='/bin:/bin'; FPATH=$PATH; sh -c :) >/dev/null 2>&1 ||
+      PATH_SEPARATOR=';'
+  }
+fi
+
+# Support unset when possible.
+if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
+  as_unset=unset
+else
+  as_unset=false
+fi
+
+
+# IFS
+# We need space, tab and new line, in precisely that order.  Quoting is
+# there to prevent editors from complaining about space-tab.
+# (If _AS_PATH_WALK were called with IFS unset, it would disable word
+# splitting by setting IFS to empty value.)
+IFS=" ""	$as_nl"
+
+# Find who we are.  Look in the path if we contain no directory separator.
+case $0 in
+  *[\\/]* ) as_myself=$0 ;;
+  *) as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  test -r "$as_dir/$0" && as_myself=$as_dir/$0 && break
+done
+IFS=$as_save_IFS
+
+     ;;
+esac
+# We did not find ourselves, most probably we were run as `sh COMMAND'
+# in which case we are not to be found in the path.
+if test "x$as_myself" = x; then
+  as_myself=$0
+fi
+if test ! -f "$as_myself"; then
+  $as_echo "$as_myself: error: cannot find myself; rerun with an absolute file name" >&2
+  { (exit 1); exit 1; }
+fi
+
+# Work around bugs in pre-3.0 UWIN ksh.
+for as_var in ENV MAIL MAILPATH
+do ($as_unset $as_var) >/dev/null 2>&1 && $as_unset $as_var
+done
+PS1='$ '
+PS2='> '
+PS4='+ '
+
+# NLS nuisances.
+LC_ALL=C
+export LC_ALL
+LANGUAGE=C
+export LANGUAGE
+
+# Required to use basename.
+if expr a : '\(a\)' >/dev/null 2>&1 &&
+   test "X`expr 00001 : '.*\(...\)'`" = X001; then
+  as_expr=expr
+else
+  as_expr=false
+fi
+
+if (basename -- /) >/dev/null 2>&1 && test "X`basename -- / 2>&1`" = "X/"; then
+  as_basename=basename
+else
+  as_basename=false
+fi
+
+
+# Name of the executable.
+as_me=`$as_basename -- "$0" ||
+$as_expr X/"$0" : '.*/\([^/][^/]*\)/*$' \| \
+	 X"$0" : 'X\(//\)$' \| \
+	 X"$0" : 'X\(/\)' \| . 2>/dev/null ||
+$as_echo X/"$0" |
+    sed '/^.*\/\([^/][^/]*\)\/*$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\/\(\/\/\)$/{
+	    s//\1/
+	    q
+	  }
+	  /^X\/\(\/\).*/{
+	    s//\1/
+	    q
+	  }
+	  s/.*/./; q'`
+
+# CDPATH.
+$as_unset CDPATH
+
+
+
+  as_lineno_1=$LINENO
+  as_lineno_2=$LINENO
+  test "x$as_lineno_1" != "x$as_lineno_2" &&
+  test "x`expr $as_lineno_1 + 1`" = "x$as_lineno_2" || {
+
+  # Create $as_me.lineno as a copy of $as_myself, but with $LINENO
+  # uniformly replaced by the line number.  The first 'sed' inserts a
+  # line-number line after each line using $LINENO; the second 'sed'
+  # does the real work.  The second script uses 'N' to pair each
+  # line-number line with the line containing $LINENO, and appends
+  # trailing '-' during substitution so that $LINENO is not a special
+  # case at line end.
+  # (Raja R Harinath suggested sed '=', and Paul Eggert wrote the
+  # scripts with optimization help from Paolo Bonzini.  Blame Lee
+  # E. McMahon (1931-1989) for sed's syntax.  :-)
+  sed -n '
+    p
+    /[$]LINENO/=
+  ' <$as_myself |
+    sed '
+      s/[$]LINENO.*/&-/
+      t lineno
+      b
+      :lineno
+      N
+      :loop
+      s/[$]LINENO\([^'$as_cr_alnum'_].*\n\)\(.*\)/\2\1\2/
+      t loop
+      s/-\n.*//
+    ' >$as_me.lineno &&
+  chmod +x "$as_me.lineno" ||
+    { $as_echo "$as_me: error: cannot create $as_me.lineno; rerun with a POSIX shell" >&2
+   { (exit 1); exit 1; }; }
+
+  # Don't try to exec as it changes $[0], causing all sort of problems
+  # (the dirname of $[0] is not the place where we might find the
+  # original and so on.  Autoconf is especially sensitive to this).
+  . "./$as_me.lineno"
+  # Exit status is that of the last command.
+  exit
+}
+
+
+if (as_dir=`dirname -- /` && test "X$as_dir" = X/) >/dev/null 2>&1; then
+  as_dirname=dirname
+else
+  as_dirname=false
+fi
+
+ECHO_C= ECHO_N= ECHO_T=
+case `echo -n x` in
+-n*)
+  case `echo 'x\c'` in
+  *c*) ECHO_T='	';;	# ECHO_T is single tab character.
+  *)   ECHO_C='\c';;
+  esac;;
+*)
+  ECHO_N='-n';;
+esac
+if expr a : '\(a\)' >/dev/null 2>&1 &&
+   test "X`expr 00001 : '.*\(...\)'`" = X001; then
+  as_expr=expr
+else
+  as_expr=false
+fi
+
+rm -f conf$$ conf$$.exe conf$$.file
+if test -d conf$$.dir; then
+  rm -f conf$$.dir/conf$$.file
+else
+  rm -f conf$$.dir
+  mkdir conf$$.dir 2>/dev/null
+fi
+if (echo >conf$$.file) 2>/dev/null; then
+  if ln -s conf$$.file conf$$ 2>/dev/null; then
+    as_ln_s='ln -s'
+    # ... but there are two gotchas:
+    # 1) On MSYS, both `ln -s file dir' and `ln file dir' fail.
+    # 2) DJGPP < 2.04 has no symlinks; `ln -s' creates a wrapper executable.
+    # In both cases, we have to default to `cp -p'.
+    ln -s conf$$.file conf$$.dir 2>/dev/null && test ! -f conf$$.exe ||
+      as_ln_s='cp -p'
+  elif ln conf$$.file conf$$ 2>/dev/null; then
+    as_ln_s=ln
+  else
+    as_ln_s='cp -p'
+  fi
+else
+  as_ln_s='cp -p'
+fi
+rm -f conf$$ conf$$.exe conf$$.dir/conf$$.file conf$$.file
+rmdir conf$$.dir 2>/dev/null
+
+if mkdir -p . 2>/dev/null; then
+  as_mkdir_p=:
+else
+  test -d ./-p && rmdir ./-p
+  as_mkdir_p=false
+fi
+
+if test -x / >/dev/null 2>&1; then
+  as_test_x='test -x'
+else
+  if ls -dL / >/dev/null 2>&1; then
+    as_ls_L_option=L
+  else
+    as_ls_L_option=
+  fi
+  as_test_x='
+    eval sh -c '\''
+      if test -d "$1"; then
+	test -d "$1/.";
+      else
+	case $1 in
+	-*)set "./$1";;
+	esac;
+	case `ls -ld'$as_ls_L_option' "$1" 2>/dev/null` in
+	???[sx]*):;;*)false;;esac;fi
+    '\'' sh
+  '
+fi
+as_executable_p=$as_test_x
+
+# Sed expression to map a string onto a valid CPP name.
+as_tr_cpp="eval sed 'y%*$as_cr_letters%P$as_cr_LETTERS%;s%[^_$as_cr_alnum]%_%g'"
+
+# Sed expression to map a string onto a valid variable name.
+as_tr_sh="eval sed 'y%*+%pp%;s%[^_$as_cr_alnum]%_%g'"
+
+
+exec 6>&1
+
+# Save the log message, to keep $[0] and so on meaningful, and to
+# report actual input values of CONFIG_FILES etc. instead of their
+# values after options handling.
+ac_log="
+This file was extended by $as_me, which was
+generated by GNU Autoconf 2.63.  Invocation command line was
+
+  CONFIG_FILES    = $CONFIG_FILES
+  CONFIG_HEADERS  = $CONFIG_HEADERS
+  CONFIG_LINKS    = $CONFIG_LINKS
+  CONFIG_COMMANDS = $CONFIG_COMMANDS
+  $ $0 $@
+
+on `(hostname || uname -n) 2>/dev/null | sed 1q`
+"
+
+_ACEOF
+
+
+
+
+cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
+# Files that config.status was made for.
+
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
+ac_cs_usage="\
+\`$as_me' instantiates files from templates according to the
+current configuration.
+
+Usage: $0 [OPTION]... [FILE]...
+
+  -h, --help       print this help, then exit
+  -V, --version    print version number and configuration settings, then exit
+  -q, --quiet, --silent
+                   do not print progress messages
+  -d, --debug      don't remove temporary files
+      --recheck    update $as_me by reconfiguring in the same conditions
+
+Report bugs to <bug-autoconf@gnu.org>."
+
+_ACEOF
+cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
+ac_cs_version="\\
+config.status
+configured by $0, generated by GNU Autoconf 2.63,
+  with options \\"`$as_echo "$ac_configure_args" | sed 's/^ //; s/[\\""\`\$]/\\\\&/g'`\\"
+
+Copyright (C) 2008 Free Software Foundation, Inc.
+This config.status script is free software; the Free Software Foundation
+gives unlimited permission to copy, distribute and modify it."
+
+ac_pwd='$ac_pwd'
+srcdir='$srcdir'
+INSTALL='$INSTALL'
+test -n "\$AWK" || AWK=awk
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
+# The default lists apply if the user does not specify any file.
+ac_need_defaults=:
+while test $# != 0
+do
+  case $1 in
+  --*=*)
+    ac_option=`expr "X$1" : 'X\([^=]*\)='`
+    ac_optarg=`expr "X$1" : 'X[^=]*=\(.*\)'`
+    ac_shift=:
+    ;;
+  *)
+    ac_option=$1
+    ac_optarg=$2
+    ac_shift=shift
+    ;;
+  esac
+
+  case $ac_option in
+  # Handling of the options.
+  -recheck | --recheck | --rechec | --reche | --rech | --rec | --re | --r)
+    ac_cs_recheck=: ;;
+  --version | --versio | --versi | --vers | --ver | --ve | --v | -V )
+    $as_echo "$ac_cs_version"; exit ;;
+  --debug | --debu | --deb | --de | --d | -d )
+    debug=: ;;
+  --he | --h |  --help | --hel | -h )
+    $as_echo "$ac_cs_usage"; exit ;;
+  -q | -quiet | --quiet | --quie | --qui | --qu | --q \
+  | -silent | --silent | --silen | --sile | --sil | --si | --s)
+    ac_cs_silent=: ;;
+
+  # This is an error.
+  -*) { $as_echo "$as_me: error: unrecognized option: $1
+Try \`$0 --help' for more information." >&2
+   { (exit 1); exit 1; }; } ;;
+
+  *) ac_config_targets="$ac_config_targets $1"
+     ac_need_defaults=false ;;
+
+  esac
+  shift
+done
+
+ac_configure_extra_args=
+
+if $ac_cs_silent; then
+  exec 6>/dev/null
+  ac_configure_extra_args="$ac_configure_extra_args --silent"
+fi
+
+_ACEOF
+cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
+if \$ac_cs_recheck; then
+  set X '$SHELL' '$0' $ac_configure_args \$ac_configure_extra_args --no-create --no-recursion
+  shift
+  \$as_echo "running CONFIG_SHELL=$SHELL \$*" >&6
+  CONFIG_SHELL='$SHELL'
+  export CONFIG_SHELL
+  exec "\$@"
+fi
+
+_ACEOF
+cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
+exec 5>>config.log
+{
+  echo
+  sed 'h;s/./-/g;s/^.../## /;s/...$/ ##/;p;x;p;x' <<_ASBOX
+## Running $as_me. ##
+_ASBOX
+  $as_echo "$ac_log"
+} >&5
+
+_ACEOF
+cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
+_ACEOF
+
+cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
+
+# Handling of arguments.
+for ac_config_target in $ac_config_targets
+do
+  case $ac_config_target in
+
+  *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
+$as_echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
+   { (exit 1); exit 1; }; };;
+  esac
+done
+
+
+{ (exit 0); exit 0; }
+_ACEOF
+chmod +x $CONFIG_STATUS
+ac_clean_files=$ac_clean_files_save
+
+test $ac_write_fail = 0 ||
+  { { $as_echo "$as_me:$LINENO: error: write failure creating $CONFIG_STATUS" >&5
+$as_echo "$as_me: error: write failure creating $CONFIG_STATUS" >&2;}
+   { (exit 1); exit 1; }; }
+
+
+# configure is writing to config.log, and then calls config.status.
+# config.status does its own redirection, appending to config.log.
+# Unfortunately, on DOS this fails, as config.log is still kept open
+# by configure, so config.status won't be able to write to it; its
+# output is simply discarded.  So we exec the FD to /dev/null,
+# effectively closing config.log, so it can be properly (re)opened and
+# appended to by config.status.  When coming back to configure, we
+# need to make the FD available again.
+if test "$no_create" != yes; then
+  ac_cs_success=:
+  ac_config_status_args=
+  test "$silent" = yes &&
+    ac_config_status_args="$ac_config_status_args --quiet"
+  exec 5>/dev/null
+  $SHELL $CONFIG_STATUS $ac_config_status_args || ac_cs_success=false
+  exec 5>>config.log
+  # Use ||, not &&, to avoid exiting from the if with $? = 1, which
+  # would make configure fail if this is the last instruction.
+  $ac_cs_success || { (exit 1); exit 1; }
+fi
+if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
+  { $as_echo "$as_me:$LINENO: WARNING: unrecognized options: $ac_unrecognized_opts" >&5
+$as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
+fi
+
+prefix=`eval echo \`echo $prefix\``
+
+exec_prefix=`eval echo \`echo $exec_prefix\``
+
+bindir=`eval echo \`echo $bindir\``
+
+libdir=`eval echo \`echo $libdir\``
+
+datarootdir=`eval echo \`echo $datarootdir\``
+
+mandir=`eval echo \`echo $mandir\``
+
+docdir=`eval echo \`echo $docdir\``
+
+
 
 
 ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
+
+ac_config_commands="$ac_config_commands default"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -7490,6 +8152,7 @@ esac
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 # Files that config.status was made for.
 config_files="$ac_config_files"
+config_commands="$ac_config_commands"
 
 _ACEOF
 
@@ -7511,6 +8174,9 @@ Usage: $0 [OPTION]... [FILE]...
 
 Configuration files:
 $config_files
+
+Configuration commands:
+$config_commands
 
 Report bugs to <bug-autoconf@gnu.org>."
 
@@ -7646,6 +8312,7 @@ do
     "apps/xsl/src/pyqt4/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/pyqt4/xsl.py" ;;
     "apps/llrepo/src/llrepo.py") CONFIG_FILES="$CONFIG_FILES apps/llrepo/src/llrepo.py" ;;
     "pkg/pkg/lightlang.pc") CONFIG_FILES="$CONFIG_FILES pkg/pkg/lightlang.pc" ;;
+    "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 
   *) { { $as_echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 $as_echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -7660,6 +8327,7 @@ done
 # bizarre bug on SunOS 4.1.3.
 if $ac_need_defaults; then
   test "${CONFIG_FILES+set}" = set || CONFIG_FILES=$config_files
+  test "${CONFIG_COMMANDS+set}" = set || CONFIG_COMMANDS=$config_commands
 fi
 
 # Have a temporary directory for convenience.  Make it in the build tree
@@ -7844,7 +8512,7 @@ cat >>$CONFIG_STATUS <<\_ACEOF || ac_write_fail=1
 fi # test -n "$CONFIG_FILES"
 
 
-eval set X "  :F $CONFIG_FILES      "
+eval set X "  :F $CONFIG_FILES      :C $CONFIG_COMMANDS"
 shift
 for ac_tag
 do
@@ -8110,9 +8778,16 @@ $as_echo "$as_me: error: could not create $ac_file" >&2;}
  ;;
 
 
-
+  :C)  { $as_echo "$as_me:$LINENO: executing $ac_file commands" >&5
+$as_echo "$as_me: executing $ac_file commands" >&6;}
+ ;;
   esac
 
+
+  case $ac_file$ac_mode in
+    "default":C) chmod +x download.py ;;
+
+  esac
 done # for ac_tag
 
 
@@ -8153,33 +8828,28 @@ $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
 
-echo "set bit +x: download.py"
-$CHMOD_PROG +x download.py
 
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default config : " $DEFAULT_CONFIG
-echo "  Audio player   : " $AUDIO_PLAYER
-echo "  prefix         : " $prefix
-echo "  exec_prefix    : " $exec_prefix
-echo "  bindir         : " $bindir
-echo "  libdir         : " $libdir
-echo "  datarootdir    : " $datarootdir
-echo "  mandir         : " $mandir
-echo "  docdir         : " $docdir
+echo "  Default config :" $DEFAULT_CONFIG
+echo "  Audio player   :" $AUDIO_PLAYER
+echo "  prefix         :" $prefix
+echo "  exec_prefix    :" $exec_prefix
+echo "  bindir         :" $bindir
+echo "  libdir         :" $libdir
+echo "  datarootdir    :" $datarootdir
+echo "  mandir         :" $mandir
+echo "  docdir         :" $docdir
 echo "+---------------------------------------------------------------------+"
-echo "  CFLAGS         : " $CFLAGS
-echo "  GUI support    : " $GUI_FLAG
+echo "  CFLAGS      :" $CFLAGS
+echo "  GUI support :" $GUI_FLAG
 if [ "$GUI_FLAG" = "yes" ]; then
 	echo "+---------------------------------------------------------------------+"
 	if [ "$PYTHON_XLIB_FLAG" = "yes" ]; then
-		printf "  Xlib version   :  "
-		$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
+		echo "  python-xlib version :" `python -c "import Xlib; print Xlib.__version_string__"`
 	fi
-	printf "  Qt4 version    :  "
-	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"
-	printf "  PyQt4 version  :  "
-	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.PYQT_VERSION_STR"
+	echo "  Qt4 version         :" `python -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"`
+	echo "  PyQt4 version       :" `python -c "from PyQt4 import Qt; print Qt.PYQT_VERSION_STR"`
 fi
 echo "+---------------------------------------------------------------------+"
 echo "  OK. Type \"make\" to compile the package."

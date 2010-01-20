@@ -1,7 +1,10 @@
 dnl configure.in
+dnl
 dnl Copyright (C) 2007-2016 Devaev Maxim
 dnl See file "LICENSE" for details
+dnl
 dnl #####
+
 
 AC_INIT
 
@@ -9,63 +12,61 @@ echo "+---------------------------------------------------------------------+"
 echo "|     Welcome to LightLang - Languages software package for Linux     |"
 echo "+---------------------------------------------------------------------+"
 
-dnl ################# Default settings #################
-
 AC_PREFIX_DEFAULT(/usr)
-exec_prefix=$prefix
-bindir=$exec_prefix/bin
-libdir=$prefix/lib
-datarootdir=$prefix/share
-mandir=$datarootdir/man
-docdir=$datarootdir/doc
 
-dnl ################# Options #################
+AC_DEFUN(AC_PYTHON_COMMAND, [
+ 	AC_MSG_CHECKING([python "$1"])
+	python -c "$1"
+	if [[ "$?" != "0" ]]; then AC_MSG_NOTICE([$2]); AC_MSG_ERROR([python command error], 1)
+	else AC_MSG_RESULT(ok); fi
+])
 
-AC_ARG_WITH(default_config,
-	[AC_HELP_STRING([--with-default-config], [set default configuration, default: normal, available: normal, console])],
-	DEFAULT_CONFIG=$withval, DEFAULT_CONFIG="normal")
+AC_DEFUN(AC_X_PATH_PROG, [
+	AC_PATH_PROG([$1], [$2], [$3], [$4])
+	if [[ "$$1" = "no" ]]; then AC_MSG_ERROR([[$2] is not found], 1); fi
+])
+
+
+dnl ##### Options #####
+
+AC_ARG_WITH(default_config, [AC_HELP_STRING([--with-default-config],
+	[set default configuration, default: normal, available: normal, console])],
+	AC_SUBST(DEFAULT_CONFIG, [$withval]), AC_SUBST(DEFAULT_CONFIG, normal))
 if [[ "$DEFAULT_CONFIG" = "normal" ]]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="yes"
-	DEFAULT_PYTHON_XLIB_FLAG="yes"
+	AC_SUBST(DEFAULT_AUDIO_PLAYER, play)
+	AC_SUBST(DEFAULT_GUI_FLAG, yes)
+	AC_SUBST(DEFAULT_PYTHON_XLIB_FLAG, yes)
 elif [[ "$DEFAULT_CONFIG" = "console" ]]; then
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="no"
-	DEFAULT_PYTHON_XLIB_FLAG="no"
+	AC_SUBST(DEFAULT_AUDIO_PLAYER, play)
+	AC_SUBST(DEFAULT_GUI_FLAG, no)
+	AC_SUBST(DEFAULT_PYTHON_XLIB_FLAG, no)
 else
-	echo "bad argument: " $DEFAULT_CONFIG ": ignored"
-	DEFAULT_CONFIG="normal"
-	DEFAULT_AUDIO_PLAYER="play"
-	DEFAULT_GUI_FLAG="yes"
-	DEFAULT_PYTHON_XLIB_FLAG="yes"
+	AC_MSG_WARN([unknown configure preset [$DEFAULT_CONFIG], using preset "normal"])
+	AC_SUBST(DEFAULT_CONFIG, normal)
+	AC_SUBST(DEFAULT_AUDIO_PLAYER, play)
+	AC_SUBST(DEFAULT_GUI_FLAG, yes)
+	AC_SUBST(DEFAULT_PYTHON_XLIB_FLAG, yes)
 fi
 
-AC_ARG_WITH(audio_player,
-	[AC_HELP_STRING([--with-audio-player], [set audio player, default: play])],
-	AUDIO_PLAYER=$withval, AUDIO_PLAYER=$DEFAULT_AUDIO_PLAYER)
+AC_ARG_WITH(audio_player, [AC_HELP_STRING([--with-audio-player],
+	[set audio player, default: play, but must be changed by default configuration])],
+	AC_SUBST(AUDIO_PLAYER, [$withval]), AC_SUBST(AUDIO_PLAYER, [$DEFAULT_AUDIO_PLAYER]))
 
-AC_SUBST(GUI_FLAG)
-AC_ARG_WITH(gui_flag,
-	[AC_HELP_STRING([--with-gui-flag], [enable or disable GUI, default: yes])],
-	GUI_FLAG=$withval, GUI_FLAG=$DEFAULT_GUI_FLAG)
+AC_ARG_WITH(gui_flag, [AC_HELP_STRING([--with-gui-flag],
+	[enable or disable GUI, default: yes, but must be changed by default configuration])],
+	AC_SUBST(GUI_FLAG, [$withval]), AC_SUBST(GUI_FLAG, [$DEFAULT_GUI_FLAG]))
 
-AC_ARG_WITH(python_xlib_flag,
-	[AC_HELP_STRING([--with-python-xlib-flag], [enable or disable python-xlib, default: yes])],
-	PYTHON_XLIB_FLAG=$withval, PYTHON_XLIB_FLAG=$DEFAULT_PYTHON_XLIB_FLAG)
+AC_ARG_WITH(python_xlib_flag, [AC_HELP_STRING([--with-python-xlib-flag],
+	[enable or disable python-xlib, default: yes, but must be changed by default configuration])],
+	AC_SUBST(PYTHON_XLIB_FLAG, [$withval]), AC_SUBST(PYTHON_XLIB_FLAG, [$DEFAULT_PYTHON_XLIB_FLAG]))
 
-dnl ################# Checkings #################
 
-dnl ##################################
-dnl ##### C Compiler checking... #####
-dnl ##################################
+dnl ##### Checkings #####
+
 AC_PROG_CC
 AC_PROG_INSTALL
-
 CFLAGS+=" --pedantic --std=c9x"
 
-dnl ###############################
-dnl ##### Headers checking... #####
-dnl ###############################
 AC_HEADER_STDC
 AC_CHECK_HEADER(stdio.h)
 AC_CHECK_HEADER(stdlib.h)
@@ -87,281 +88,96 @@ AC_CHECK_HEADER(fcntl.h)
 AC_CHECK_HEADER(locale.h)
 AC_CHECK_HEADER(langinfo.h)
 
-dnl ################################
-dnl ##### Programs checking... #####
-dnl ################################
-AC_PATH_PROG(SH_PROG, sh, sh, $PATH)
+AC_X_PATH_PROG(SH_PROG, sh, sh, [$PATH])
+AC_X_PATH_PROG(CC_PROG, [$CC], [$CC], [$PATH])
+AC_X_PATH_PROG(MAKE_PROG, make, no, [$PATH])
+AC_X_PATH_PROG(MKDIR_PROG, mkdir, mkdir, [$PATH])
+AC_X_PATH_PROG(CP_PROG, cp, cp, [$PATH])
+AC_X_PATH_PROG(LN_PROG, ln, ln, [$PATH])
+AC_X_PATH_PROG(MV_PROG, mv, mv, [$PATH])
+AC_X_PATH_PROG(RM_PROG, rm, rm, [$PATH])
+AC_X_PATH_PROG(CAT_PROG, cat, cat, [$PATH])
+AC_X_PATH_PROG(LS_PROG, ls, ls, [$PATH])
+AC_X_PATH_PROG(CD_PROG, cd, cd, [$PATH])
+AC_X_PATH_PROG(CHMOD_PROG, chmod, chmod, [$PATH])
+AC_X_PATH_PROG(TEST_PROG, test, test, [$PATH])
+AC_X_PATH_PROG(FIND_PROG, find, no, [$PATH])
+AC_X_PATH_PROG(TAR_PROG, tar, no, [$PATH])
+AC_X_PATH_PROG(BZIP2_PROG, bzip2, no, [$PATH])
+AC_X_PATH_PROG(PYTHON_PROG, python, no, [$PATH])
+AC_X_PATH_PROG(AUDIO_PLAYER_PROG, [$AUDIO_PLAYER], no, [$PATH])
 
-AC_PATH_PROG(CC_PROG, $CC, $CC, $PATH)
-
-AC_PATH_PROG(MAKE_PROG, make, no, $PATH)
-if [[ "$MAKE_PROG" = "no" ]]; then
-	AC_MSG_ERROR([make is not found])
-fi
-
-AC_PATH_PROG(MKDIR_PROG, mkdir, mkdir, $PATH)
-AC_PATH_PROG(CP_PROG, cp, cp, $PATH)
-AC_PATH_PROG(LN_PROG, ln, ln, $PATH)
-AC_PATH_PROG(MV_PROG, mv, mv, $PATH)
-AC_PATH_PROG(RM_PROG, rm, rm, $PATH)
-AC_PATH_PROG(CAT_PROG, cat, cat, $PATH)
-AC_PATH_PROG(LS_PROG, ls, ls, $PATH)
-AC_PATH_PROG(CD_PROG, cd, cd, $PATH)
-
-AC_PATH_PROG(FIND_PROG, find, no, $PATH)
-if [[ "$FIND_PROG" = "no" ]]; then
-	AC_MSG_ERROR([find is not found])
-fi
-
-AC_PATH_PROG(XARGS_PROG, xargs, no, $PATH)
-if [[ "$XARGS_PROG" = "no" ]]; then
-	AC_MSG_ERROR([xargs is not found])
-fi
-
-AC_PATH_PROG(CHMOD_PROG, chmod, chmod, $PATH)
-
-AC_PATH_PROG(TAR_PROG, tar, no, $PATH)
-if [[ "$TAR_PROG" = "no" ]]; then
-	AC_MSG_ERROR([tar is not found])
-fi
-
-AC_PATH_PROG(TEST_PROG, test, test, $PATH)
-
-AC_PATH_PROG(BZIP2_PROG, bzip2, no, $PATH)
-if [[ "$BZIP2_PROG" = "no" ]]; then
-	AC_MSG_ERROR([bzip2 is not found])
-fi
-
-AC_PATH_PROG(PYTHON_PROG, python, no, $PATH)
-if [[ "$PYTHON_PROG" = "no" ]]; then
-	AC_MSG_ERROR([python is not found])
-fi
-
-AC_PATH_PROG(AUDIO_PLAYER_PROG, $AUDIO_PLAYER, no, $PATH)
-if [[ "$AUDIO_PLAYER_PROG" = "no" ]]; then
-	echo "+---------------------------------------------------------------------+"
-	echo "| This audio player is not installed. You can use another player by   |"
-	echo "| typing option --with-audio-player, for example:                     |"
-	echo "| ./configure --with-audio-player=mplayer                             |"
-	echo "+---------------------------------------------------------------------+"
-	AC_MSG_ERROR([$AUDIO_PLAYER is not found])
-fi
-
-dnl ####################################
-dnl ##### Python modules checkings #####
-dnl ####################################
-
-printf "python-test: importing \"sys\" module... "
-$PYTHON_PROG -c "import sys"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"os\" module... "
-$PYTHON_PROG -c "import os"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"getopt\" module... "
-$PYTHON_PROG -c "import getopt"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"ftplib\" module... "
-$PYTHON_PROG -c "import ftplib"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"tempfile\" module... "
-$PYTHON_PROG -c "import tempfile"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"struct\" module... "
-$PYTHON_PROG -c "import struct"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"fcntl\" module... "
-$PYTHON_PROG -c "import fcntl"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
-
-printf "python-test: importing \"termios\" module... "
-$PYTHON_PROG -c "import termios"
-if [[ "$?" != "0" ]]; then
-	AC_MSG_ERROR([Python modules error])
-else
-	echo "ok"
-fi
+AC_PYTHON_COMMAND([import sys])
+AC_PYTHON_COMMAND([import os])
+AC_PYTHON_COMMAND([import getopt])
+AC_PYTHON_COMMAND([import ftplib])
+AC_PYTHON_COMMAND([import tempfile])
+AC_PYTHON_COMMAND([import struct])
+AC_PYTHON_COMMAND([import fcntl])
+AC_PYTHON_COMMAND([import termios])
 
 if [[ "$GUI_FLAG" = "yes" ]]; then
-
-	printf "python-test: importing \"Xlib\" module... "
 	if [[ "$PYTHON_XLIB_FLAG" = "yes" ]]; then
-		$PYTHON_PROG -c "import Xlib, Xlib.display"
-		if [[ "$?" != "0" ]]; then
-			echo "+---------------------------------------------------------------------+"
-			echo "| Python-xlib library is not installed in your system. Please install |"
-			echo "| it and try again.                                                   |"
-			echo "+---------------------------------------------------------------------+"
-			AC_MSG_ERROR([Python modules error])
-		else
-			echo "ok"
-		fi
-	else
-		echo "pass"
+		AC_PYTHON_COMMAND([import Xlib], [python-xlib library is not found, please, install it and try again])
 	fi
 
-	printf "python-test: importing \"PyQt4\" package... "
-	$PYTHON_PROG -c "import PyQt4"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "| In your system not install library PyQt4. You can get it's latest   |"
-		echo "| version from link:                                                  |"
-		echo "|    http://www.riverbankcomputing.co.uk/pyqt/                        |"
-		echo "| For installing PyQt4 requiring library Qt4 and SIP, which you can   |"
-		echo "| get from:                                                           |"
-		echo "|    http://www.qtsoftware.com/                                       |"
-		echo "|    http://www.riverbankcomputing.co.uk/sip/                         |"
-		echo "| Install it, following instructions applied to them. If these        |"
-		echo "| libraries haves in the repositories, you can istall them from       |"
-		echo "| there. Strongly recommended to install last version of these        |"
-		echo "| libraries.                                                          |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
+	AC_PYTHON_COMMAND([import PyQt4], [PyQt4 library is not found, please, install it and try again])
+	AC_PYTHON_COMMAND([from PyQt4 import QtCore], [You PyQt4 library is buggy, missed module QtCore])
+	AC_PYTHON_COMMAND([from PyQt4 import QtGui], [You PyQt4 library is buggy, missed module QtGui])
+	AC_PYTHON_COMMAND([from PyQt4 import QtXml], [You PyQt4 library is buggy, missed module QtXml])
+	AC_PYTHON_COMMAND([from PyQt4 import QtNetwork], [You PyQt4 library is buggy, missed module QtNetwork])
+fi
 
-	printf "python-test: importing \"QtCore\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtCore"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtCore module.                                            |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
 
-	printf "python-test: importing \"QtGui\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtGui"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtGui module.                                             |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
+dnl ##### Dog-values hack #####
 
-	printf "python-test: importing \"QtXml\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtXml"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtXml module.                                             |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
+AC_OUTPUT()
+AC_SUBST(prefix, `eval echo \`echo $prefix\``)
+AC_SUBST(exec_prefix, `eval echo \`echo $exec_prefix\``)
+AC_SUBST(bindir, `eval echo \`echo $bindir\``)
+AC_SUBST(libdir, `eval echo \`echo $libdir\``)
+AC_SUBST(datarootdir, `eval echo \`echo $datarootdir\``)
+AC_SUBST(mandir, `eval echo \`echo $mandir\``)
+AC_SUBST(docdir, `eval echo \`echo $docdir\``)
 
-	printf "python-test: importing \"QtNetwork\" from \"PyQt4\" module... "
-	$PYTHON_PROG -c "from PyQt4 import QtNetwork"
-	if [[ "$?" != "0" ]]; then
-		echo "+---------------------------------------------------------------------+"
-		echo "|   Missing QtNetwork module.                                         |"
-		echo "+---------------------------------------------------------------------+"
-		AC_MSG_ERROR([Python modules error])
-	else
-		echo "ok"
-	fi
 
-fi # GUI_FLAG
+dnl ##### Outputs #####
 
-dnl ################# Output #################
+AC_OUTPUT([Makefile
+apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile
+resources/Makefile resources/dicts/Makefile resources/sounds/Makefile
+pkg/Makefile
+docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile
+docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile
+docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile
+download.py
+apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py
+pkg/pkg/lightlang.pc],
+[chmod +x download.py])
 
-AC_OUTPUT(Makefile \
-apps/Makefile \
-apps/sl/Makefile \
-apps/llrepo/Makefile \
-apps/xsl/Makefile \
-\
-resources/Makefile \
-resources/dicts/Makefile \
-resources/sounds/Makefile \
-\
-pkg/Makefile \
-\
-docs/Makefile \
-docs/html/Makefile \
-docs/html/en/Makefile \
-docs/html/ru/Makefile \
-docs/text/Makefile \
-docs/text/en/Makefile \
-docs/text/ru/Makefile \
-docs/man/Makefile \
-docs/man/en/Makefile \
-docs/man/ru/Makefile \
-\
-download.py \
-\
-apps/sl/src/config.h \
-apps/xsl/src/pyqt4/Config.py \
-apps/xsl/src/pyqt4/xsl.py \
-apps/llrepo/src/llrepo.py \
-\
-pkg/pkg/lightlang.pc)
 
-echo "set bit +x: download.py"
-$CHMOD_PROG +x download.py
-
-dnl ################# Information #################
+dnl ##### Information #####
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default config : " $DEFAULT_CONFIG
-echo "  Audio player   : " $AUDIO_PLAYER
-echo "  prefix         : " $prefix
-echo "  exec_prefix    : " $exec_prefix
-echo "  bindir         : " $bindir
-echo "  libdir         : " $libdir
-echo "  datarootdir    : " $datarootdir
-echo "  mandir         : " $mandir
-echo "  docdir         : " $docdir
+echo "  Default config :" $DEFAULT_CONFIG
+echo "  Audio player   :" $AUDIO_PLAYER
+echo "  prefix         :" $prefix
+echo "  exec_prefix    :" $exec_prefix
+echo "  bindir         :" $bindir
+echo "  libdir         :" $libdir
+echo "  datarootdir    :" $datarootdir
+echo "  mandir         :" $mandir
+echo "  docdir         :" $docdir
 echo "+---------------------------------------------------------------------+"
-echo "  CFLAGS         : " $CFLAGS
-echo "  GUI support    : " $GUI_FLAG
+echo "  CFLAGS      :" $CFLAGS
+echo "  GUI support :" $GUI_FLAG
 if [[ "$GUI_FLAG" = "yes" ]]; then
 	echo "+---------------------------------------------------------------------+"
 	if [[ "$PYTHON_XLIB_FLAG" = "yes" ]]; then
-		printf "  Xlib version   :  "
-		$PYTHON_PROG -c "import Xlib; print Xlib.__version_string__"
+		echo "  python-xlib version :" `python -c "import Xlib; print Xlib.__version_string__"`
 	fi
-	printf "  Qt4 version    :  "
-	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"
-	printf "  PyQt4 version  :  "
-	$PYTHON_PROG -c "from PyQt4 import Qt; print Qt.PYQT_VERSION_STR"
+	echo "  Qt4 version         :" `python -c "from PyQt4 import Qt; print Qt.QT_VERSION_STR"`
+	echo "  PyQt4 version       :" `python -c "from PyQt4 import Qt; print Qt.PYQT_VERSION_STR"`
 fi
 echo "+---------------------------------------------------------------------+"
 echo "  OK. Type \"make\" to compile the package."
