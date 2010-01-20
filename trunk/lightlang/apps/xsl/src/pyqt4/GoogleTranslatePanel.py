@@ -137,6 +137,25 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	### Public ###
 
+	def requisites(self) :
+		return [ Qt.QIcon(IconsDir+"web_16.png"), self.windowTitle(), Qt.Qt.LeftDockWidgetArea, Qt.QKeySequence("Ctrl+G") ]
+
+	def translateMethods(self) :
+		return [ [tr("Google Translate"), self.objectName(), "googleTranslate", self.googleTranslateMethod] ]
+
+	###
+
+	def setText(self, text) :
+		self.text_edit.setText(text)
+
+	###
+
+	def googleTranslateMethod(self, text) :
+		self.setText(text)
+		self.translate()
+
+	###
+
 	def saveSettings(self) :
 		settings = Settings.settings()
 		settings.setValue("google_translate_panel/sl_combobox_index", Qt.QVariant(self.sl_combobox.currentIndex()))

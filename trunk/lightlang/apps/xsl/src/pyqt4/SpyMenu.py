@@ -65,8 +65,6 @@ class SpyMenu(Qt.QMenu) :
 		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
 		self.auto_detect_window_menu_action.setCheckable(True)
 
-		self.addSeparator()
-
 		try :
 			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
 			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
@@ -94,9 +92,15 @@ class SpyMenu(Qt.QMenu) :
 			self.fictive_keyboard_modifiers_menu.setEnabled(False)
 			self.addMenu(self.fictive_keyboard_modifiers_menu)
 
+		self.addSeparator()
+
+		self.translate_methods_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Translate methods"))
+		self.translate_methods_menu.setIcon(Qt.QIcon(IconsDir+"search_16.png"))
+		self.addMenu(self.translate_methods_menu)
+
 		#####
 
-		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.uFindRequestSignal)
+		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.translateRequestSignal)
 		self.connect(self.mouse_selector_thread, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
 		try :
@@ -106,6 +110,13 @@ class SpyMenu(Qt.QMenu) :
 
 
 	### Public ###
+
+	def addTranslateMethod(self, label, object_name, method_name) :
+		signal = Qt.QString("%1__%2__translateRequest(const QString &)").arg(object_name).arg(method_name)
+		self.translate_methods_menu.addRadioButton(label, Qt.QVariant(signal))
+		return Qt.QString(signal)
+
+	###
 
 	def startSpy(self) :
 		self.mouse_selector_thread.start()
@@ -134,10 +145,10 @@ class SpyMenu(Qt.QMenu) :
 		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
-
 		try :
 			settings.setValue("spy_menu/keyboard_modifier_index", Qt.QVariant(self.keyboard_modifiers_menu.index()))
 		except : pass
+		settings.setValue("spy_menu/translate_method_index", Qt.QVariant(self.translate_methods_menu.index()))
 
 
 	def loadSettings(self) :
@@ -146,10 +157,10 @@ class SpyMenu(Qt.QMenu) :
 		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag", Qt.QVariant(True)).toBool())
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
 			self.startSpy()
-
 		try :
 			self.keyboard_modifiers_menu.setIndex(settings.value("spy_menu/keyboard_modifier_index", Qt.QVariant(0)).toInt()[0])
 		except : pass
+		self.translate_methods_menu.setIndex(settings.value("spy_menu/translate_method_index", Qt.QVariant(0)).toInt()[0])
 
 
 	### Private ###
@@ -174,8 +185,8 @@ class SpyMenu(Qt.QMenu) :
 	def statusChangedSignal(self, text) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), text)
 
-	def uFindRequestSignal(self, word) :
-		self.emit(Qt.SIGNAL("uFindRequest(const QString &)"), word)
+	def translateRequestSignal(self, text) :
+		self.emit(Qt.SIGNAL(self.translate_methods_menu.data().toString()), text)
 
 	def showTranslateWindowRequestSignal(self) :
 		self.emit(Qt.SIGNAL("showTranslateWindowRequest()"))

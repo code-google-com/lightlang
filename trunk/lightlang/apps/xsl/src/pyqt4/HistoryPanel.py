@@ -80,6 +80,11 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	### Public ###
 
+	def requisites(self) :
+		return [ Qt.QIcon(IconsDir+"history_16.png"), self.windowTitle(), Qt.Qt.LeftDockWidgetArea, Qt.QKeySequence("Ctrl+H") ]
+
+	###
+
 	def addWord(self, word) :
 		self.history_browser.insertItem(0, word)
 

@@ -129,17 +129,16 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 	### Public ###
 
-	def show(self) :
-		Qt.QDockWidget.show(self)
-		self.raise_()
-		self.setFocus()
+	def requisites(self) :
+		return [ Qt.QIcon(IconsDir+"xsl_16.png"), self.windowTitle(), Qt.Qt.LeftDockWidgetArea, Qt.QKeySequence("Ctrl+S") ]
 
-	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.line_edit.setFocus(reason)
-		self.line_edit.selectAll()
+	def translateMethods(self) :
+		return [
+			[tr("SL usually search"), self.objectName(), "uFindTranslateMethod", self.uFindTranslateMethod],
+			[tr("SL expanded search"), self.objectName(), "cFindTranslateMethod", self.cFindTranslateMethod]
+			]
 
-	def hasInternalFocus(self) :
-		return self.line_edit.hasFocus()
+	###
 
 	def setWord(self, word) :
 		self.line_edit.setText(word)
@@ -148,9 +147,6 @@ class SlSearchPanel(Qt.QDockWidget) :
 	def setDictsList(self, dicts_list) :
 		self.internal_word_search.setDictsList(dicts_list)
 		self.external_word_search.setDictsList(dicts_list)
-
-	def clear(self) :
-		self.line_edit.clear()
 
 	###
 
@@ -200,11 +196,38 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 	###
 
+	def uFindTranslateMethod(self, word) :
+		self.setWord(word)
+		self.uFind(word)
+
+	def cFindTranslateMethod(self, word) :
+		self.setWord(word)
+		self.cFind(word)
+
+	###
+
 	def saveSettings(self) :
 		pass
 
 	def loadSettings(self) :
 		pass
+
+	###
+
+	def show(self) :
+		Qt.QDockWidget.show(self)
+		self.raise_()
+		self.setFocus()
+
+	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
+		self.line_edit.setFocus(reason)
+		self.line_edit.selectAll()
+
+	def hasInternalFocus(self) :
+		return self.line_edit.hasFocus()
+
+	def clear(self) :
+		self.line_edit.clear()
 
 
 	### Private ###
