@@ -11,25 +11,15 @@ INS=@INSTALL@
 RM=@RM_PROG@
 CHMOD=@CHMOD_PROG@
 
-SL_SRC=src/main.c \
-	src/manager.c \
-	src/mstring.c \
-	src/settings.c \
-	src/search.c \
-	src/info.c
-SL_OBJ=src/main.o \
-	src/manager.o \
-	src/mstring.o \
-	src/settings.o \
-	src/search.o \
-	src/info.o
+SL_SRC=src/main.c src/manager.c src/mstring.c src/settings.c src/search.c src/info.c
+SL_OBJ=src/main.o src/manager.o src/mstring.o src/settings.o src/search.o src/info.o
 SL_CONFIG=src/config.h
 SL_PROG=sl
 
 INS_SL_PROG_DIR=@bindir@
 INS_SL_SHARES_DIR=@datarootdir@/sl
-INS_SL_DICTS_DIR=@datarootdir@/sl/dicts
-INS_SL_SOUNDS_DIR=@datarootdir@/sl/sounds
+INS_SL_DICTS_DIR=$(INS_SL_SHARES_DIR)/dicts
+INS_SL_SOUNDS_DIR=$(INS_SL_SHARES_DIR)/sounds
 
 #####
 .SUFFIXES : .o .c

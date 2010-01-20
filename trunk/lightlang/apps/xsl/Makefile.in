@@ -31,15 +31,16 @@ INS_XSL_PROG_DIR=@bindir@
 INS_XSL_PROG_ALIAS_DIR=@bindir@
 INS_XSL_LIBS_DIR=@libdir@/xsl
 INS_XSL_SHARES_DIR=@datarootdir@/xsl
-INS_XSL_PYQT4_DIR=@libdir@/xsl/pyqt4
-INS_XSL_TR_DIR=@datarootdir@/xsl/tr
-INS_XSL_IFA_DIR=@datarootdir@/xsl/ifa
-INS_XSL_TRSITES_DIR=@datarootdir@/xsl/trsites
-INS_XSL_ICONS_DIR=@datarootdir@/xsl/icons
-INS_XSL_ICONS_FLAGS_DIR=@datarootdir@/xsl/icons/flags
-INS_XSL_PICTURES_DIR=@datarootdir@/xsl/pictures
-INS_XSL_DESKTOP_SCRIPT_DIR=@datarootdir@/applications
-INS_XSL_DESKTOP_ICON_DIR=@datarootdir@/icons
+INS_XSL_PYQT4_DIR=$(INS_XSL_LIBS_DIR)/pyqt4
+
+INS_XSL_TR_DIR=$(INS_XSL_SHARES_DIR)/tr
+INS_XSL_IFA_DIR=$(INS_XSL_SHARES_DIR)/ifa
+INS_XSL_TRSITES_DIR=$(INS_XSL_SHARES_DIR)/trsites
+INS_XSL_ICONS_DIR=$(INS_XSL_SHARES_DIR)/icons
+INS_XSL_ICONS_FLAGS_DIR=$(INS_XSL_SHARES_DIR)/icons/flags
+INS_XSL_PICTURES_DIR=$(INS_XSL_SHARES_DIR)/pictures
+INS_XSL_DESKTOP_SCRIPT_DIR=$(INS_XSL_SHARES_DIR)/applications
+INS_XSL_DESKTOP_ICON_DIR=$(INS_XSL_SHARES_DIR)/icons
 
 #####
 all :
