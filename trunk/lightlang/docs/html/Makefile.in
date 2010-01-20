@@ -1,8 +1,12 @@
 # HTML-documentation Makefile
-# @configure_input@
+#
 # Copyright (C) 2007-2016 Devaev Maxim
 # See file "LICENSE" for details
-##
+#
+# @configure_input@
+#
+#####
+
 
 MAKE=@MAKE_PROG@
 CD=@CD_PROG@

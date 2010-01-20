@@ -19,6 +19,7 @@
 #
 # @configure_input@
 
+
 import sys
 import os
 import struct
