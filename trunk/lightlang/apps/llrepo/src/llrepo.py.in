@@ -47,7 +47,7 @@ AllRepositoriesTypes = [LocalRepositoriesType, RemoteRepositoriesType]
 DictsResourcesPostfix = ".bz2"
 SoundsResourcesPostfix = ".tar.bz2"
 
-SLSharesDir = "@prefix@/share/sl/"
+SLSharesDir = "@datarootdir@/sl/"
 DictsDir = SLSharesDir+DictsResourcesType+"/"
 SoundsDir = SLSharesDir+SoundsResourcesType+"/"
 
@@ -55,7 +55,7 @@ SoundsDir = SLSharesDir+SoundsResourcesType+"/"
 CatProg = "@CAT_PROG@"
 TarProg = "@TAR_PROG@"
 BZip2Prog = "@BZIP2_PROG@"
-SlProg = "@prefix@/bin/sl"
+SlProg = "@bindir@/sl"
 
 ###
 RemoteListCommand = "remotelist"
