@@ -22,11 +22,11 @@
 # @configure_input@
 
 
-Prefix = "@prefix@"
-ExecPrefix = "@exec_prefix@"
+#Prefix = "@prefix@"
+#ExecPrefix = "@exec_prefix@"
 BinsDir = "@bindir@"
 LibsDir = "@libdir@"
 DataRootDir = "@datarootdir@"
-MansDir = "@mandir@"
+#MansDir = "@mandir@"
 DocsDir = "@docdir@"
 
