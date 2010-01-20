@@ -128,6 +128,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.pages_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"),
 			self.exit, Qt.QKeySequence("Ctrl+Q"))
 
+		### Panels menu
+
+		self.panels_menu = self.main_menu_bar.addMenu(tr("&Panels"))
+
 		### View menu
 
 		self.view_menu = self.main_menu_bar.addMenu(tr("&View"))
@@ -142,10 +146,6 @@ class MainWindow(Qt.QMainWindow) :
 
 		self.spy_menu = SpyMenu.SpyMenu(tr("Sp&y"))
 		self.main_menu_bar.addMenu(self.spy_menu)
-
-		### Panels menu
-
-		self.panels_menu = self.main_menu_bar.addMenu(tr("&Panels"))
 
 		### Tools menu
 
