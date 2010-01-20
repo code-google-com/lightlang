@@ -47,7 +47,7 @@ class RadioButtonsMenu(Qt.QMenu) :
 
 	### Public ###
 
-	def data(index = -1) :
+	def data(self, index = -1) :
 		if index < 0 :
 			index = self.index()
 		return self.actions_list[index].data()
