@@ -45,6 +45,14 @@ class RadioButtonsMenu(Qt.QMenu) :
 		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.dataChangedSignal)
 
 
+	### Public ###
+
+	def data(index = -1) :
+		if index < 0 :
+			index = self.index()
+		return self.actions_list[index].data()
+
+
 	### Private ###
 
 	def index(self) :
