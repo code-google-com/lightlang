@@ -47,14 +47,17 @@ def tr(str) :
 
 #####
 class Main :
-	def __init__(self, argv) :
+	def __init__(self, argv, no_splash_flag = False, no_tray_icon = False) :
 		self.argv = argv
+		self.no_splash_flag = no_splash_flag
+		self.no_tray_icon = no_tray_icon
 
 
 	### Public ###
 
 	def run(self) :
 		self.app = MainApplication.MainApplication(self.argv)
+		self.app.setQuitOnLastWindowClosed(self.no_tray_icon)
 
 		self.lang = Locale.mainLang()
 
@@ -68,10 +71,11 @@ class Main :
 
 		#####
 
-		self.splash_pixmap = Qt.QPixmap(MySplash)
-		self.splash = Qt.QSplashScreen(self.splash_pixmap)
-		if not self.app.isSessionRestored() :
-			self.splash.show()
+		if not self.no_splash_flag :
+			self.splash_pixmap = Qt.QPixmap(MySplash)
+			self.splash = Qt.QSplashScreen(self.splash_pixmap)
+			if not self.app.isSessionRestored() :
+				self.splash.show()
 
 		self.app.processEvents()
 
@@ -94,9 +98,11 @@ class Main :
 		#####
 
 		self.main_window.load()
-		self.tray_icon.show()
+		if not self.no_tray_icon :
+			self.tray_icon.show()
 
-		self.splash.finish(self.main_window)
+		if not self.no_splash_flag :
+			self.splash.finish(self.main_window)
 
 		#####
 

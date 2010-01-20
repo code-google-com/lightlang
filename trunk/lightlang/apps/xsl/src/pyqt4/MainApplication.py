@@ -35,8 +35,6 @@ class MainApplication(Qt.QApplication) :
 	def __init__(self, argv) :
 		Qt.QApplication.__init__(self, argv)
 
-		self.setQuitOnLastWindowClosed(False)
-
 
 	### Private ###
 
