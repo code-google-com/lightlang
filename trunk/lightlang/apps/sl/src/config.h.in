@@ -30,7 +30,7 @@
 # define _GNU_SOURCE
 
 /********************************* Macro ***************************************/
-# define PREFIX			"@prefix@"		// Prefix
+//# define PREFIX			"@prefix@"		// Prefix
 # define DATA_ROOT_DIR		"@datarootdir@"		// Shares
 
 # define CFLAGS			"@CFLAGS@"		// Flagi kompilera
