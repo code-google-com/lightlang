@@ -60,8 +60,8 @@ clean :
 	$(CD) $(RESOURCES_DIR) && $(MAKE) clean
 	$(CD) $(PKG_DIR) && $(MAKE) clean
 
-	$(FIND) . -name *\~ | $(XARGS) $(RM) -f
-	$(FIND) . -name Makefile | $(XARGS) $(RM) -f
+	$(FIND) . -name *\~ -exec $(RM) -f '{}' \;
+	$(FIND) . -name Makefile -exec $(RM) -f '{}' \;
 	$(RM) -f config.log config.status
 	$(RM) -f $(DOWNLOAD_PY)
 
