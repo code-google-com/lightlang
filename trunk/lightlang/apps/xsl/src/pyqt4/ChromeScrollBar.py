@@ -75,51 +75,32 @@ class ChromeScrollBar(Qt.QScrollBar) :
 	### Handlers ###
 
 	def paintEvent(self, event) :
-		if len(self.highlight_positions_list) > 0 :
-			painter = Qt.QPainter(self)
+		Qt.QScrollBar.paintEvent(self, event)
 
-			###
+		if len(self.highlight_positions_list) == 0 :
+			return
 
-			option = Qt.QStyleOptionSlider()
-			self.initStyleOption(option)
-			option.subControls = Qt.QStyle.SC_ScrollBarAddPage|Qt.QStyle.SC_ScrollBarSubPage|Qt.QStyle.SC_ScrollBarGroove
-			self.style().drawComplexControl(Qt.QStyle.CC_ScrollBar, option, painter, self)
-			painter.save()
+		highlight_rects_list = []
 
-			###
+		highlight_pass = self.style().pixelMetric(Qt.QStyle.PM_ScrollBarSliderMin) - 1
+		highlight_area_height = self.height() - highlight_pass * 3
 
-			highlight_rects_list = []
+		for highlight_positions_list_item in self.highlight_positions_list :
+			pos = highlight_area_height * highlight_positions_list_item[0] / highlight_positions_list_item[1] + highlight_pass
 
-			highlight_pass = self.style().pixelMetric(Qt.QStyle.PM_ScrollBarSliderMin) - 1
-			highlight_area_height = self.height() - highlight_pass * 3
+			if len(highlight_rects_list) == 0 or pos > highlight_rects_list[-1].bottom() :
+				highlight_rects_list.append(Qt.QRect(0, pos, self.width(), DefaultHighlightHeight))
+			else :
+				highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() + (DefaultHighlightHeight -
+					highlight_rects_list[-1].bottom() + pos))
 
-			for highlight_positions_list_item in self.highlight_positions_list :
-				pos = highlight_area_height * highlight_positions_list_item[0] / highlight_positions_list_item[1] + highlight_pass
+			if highlight_rects_list[-1].bottom() > highlight_area_height + highlight_pass :
+				highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() - (highlight_rects_list[-1].bottom() -
+					(highlight_area_height + highlight_pass)))
 
-				if len(highlight_rects_list) == 0 or pos > highlight_rects_list[-1].bottom() :
-					highlight_rects_list.append(Qt.QRect(0, pos, self.width(), DefaultHighlightHeight))
-				else :
-					highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() + (DefaultHighlightHeight -
-						highlight_rects_list[-1].bottom() + pos))
-
-				if highlight_rects_list[-1].bottom() > highlight_area_height + highlight_pass :
-					highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() - (highlight_rects_list[-1].bottom() -
-						(highlight_area_height + highlight_pass)))
-
-			painter.setPen(self.highlight_pen)
-			painter.setBrush(self.highlight_color)
-			for highlight_rects_list_item in highlight_rects_list :
-				painter.drawRect(highlight_rects_list_item)
-
-			###
-
-			painter.restore()
-			option = Qt.QStyleOptionSlider()
-			self.initStyleOption(option)
-			option.subControls = ( Qt.QStyle.SC_ScrollBarAddLine|Qt.QStyle.SC_ScrollBarSubLine|
-				Qt.QStyle.SC_ScrollBarFirst|Qt.QStyle.SC_ScrollBarLast|Qt.QStyle.SC_ScrollBarSlider )
-			option.activeSubControls = Qt.QStyle.SC_ScrollBarSlider # FIXME (Issue 79): Add normal active-controls check
-			self.style().drawComplexControl(Qt.QStyle.CC_ScrollBar, option, painter, self)
-		else :
-			Qt.QScrollBar.paintEvent(self, event)
+		painter = Qt.QPainter(self)
+		painter.setPen(self.highlight_pen)
+		painter.setBrush(self.highlight_color)
+		for highlight_rects_list_item in highlight_rects_list :
+			painter.drawRect(highlight_rects_list_item)
 
