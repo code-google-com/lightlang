@@ -80,10 +80,9 @@ class MouseSelectorThread(Qt.QThread) :
 
 	def checkSelection(self) :
 		word = self.clipboard.text(Qt.QClipboard.Selection)
-		word = word.simplified()
+		word = word.simplified().toLower()
 		if word.isEmpty() :
 			return
-		word = word.toLower()
 
 		if word == self.old_selection : # FIXME (Issue 78)
 			return

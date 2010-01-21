@@ -107,10 +107,9 @@ class SlWordSearch(Qt.QObject) :
 	### Private ###
 
 	def find(self, word, option) :
-		word = word.simplified()
+		word = word.simplified().toLower()
 		if word.isEmpty() :
 			return
-		word = word.toLower()
 
 		if self.proc.state() == Qt.QProcess.Starting or self.proc.state() == Qt.QProcess.Running :
 			self.setText()

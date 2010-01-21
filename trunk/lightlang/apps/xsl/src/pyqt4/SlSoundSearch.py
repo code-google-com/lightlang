@@ -64,10 +64,9 @@ class SlSoundSearch(Qt.QObject) :
 	### Public ###
 
 	def find(self, word) :
-		word = word.simplified()
+		word = word.simplified().toLower()
 		if word.isEmpty() :
 			return
-		word = word.toLower()
 
 		if self.proc.state() == Qt.QProcess.Starting or self.proc.state() == Qt.QProcess.Running :
 			self.proc_kill_flag = True
@@ -82,10 +81,9 @@ class SlSoundSearch(Qt.QObject) :
 		self.proc.start(Sl, self.proc_args)
 
 	def checkWord(self, lang, word) :
-		word = word.simplified()
+		word = word.simplified().toLower()
 		if word.isEmpty() :
 			return
-		word = word.toLower()
 
 		return Qt.QFile.exists(AllSoundsDir+lang+"/"+word[0]+"/"+word+AudioPostfix)
 
