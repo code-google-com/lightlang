@@ -116,7 +116,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 			painter.restore()
 			option = Qt.QStyleOptionSlider()
 			self.initStyleOption(option)
-			option.subControls = ( Qt.QStyle.SC_ScrollBarAddLine|Qt.QStyle.SC_ScrollBarSubLine
+			option.subControls = ( Qt.QStyle.SC_ScrollBarAddLine|Qt.QStyle.SC_ScrollBarSubLine|
 				Qt.QStyle.SC_ScrollBarFirst|Qt.QStyle.SC_ScrollBarLast|Qt.QStyle.SC_ScrollBarSlider )
 			option.activeSubControls = Qt.QStyle.SC_ScrollBarSlider # FIXME (Issue 79): Add normal active-controls check
 			self.style().drawComplexControl(Qt.QStyle.CC_ScrollBar, option, painter, self)
