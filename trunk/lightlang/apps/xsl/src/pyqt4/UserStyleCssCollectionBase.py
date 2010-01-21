@@ -55,6 +55,10 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 
 		self.red_alert_background_color = None
 
+		###
+
+		self.search_selection_background_color = None
+
 		#####
 
 		self.parseUserStyleCss()
@@ -84,6 +88,11 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 	def redAlertBackgroundColor(self) :
 		return Qt.QColor(self.red_alert_background_color)
 
+	###
+
+	def searchSelectionBackgroundColor(self) :
+		return Qt.QColor(self.search_selection_background_color)
+
 
 	### Private ###
 
@@ -91,6 +100,7 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 		self.parseDictHeaderFont()
 		self.parseDictHeaderBackground()
 		self.parseRedAlertBackground()
+		self.parseSearchSelectionBackground()
 
 	###
 
@@ -106,8 +116,8 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 			if not dict_header_font_regexp.cap(4).isEmpty() :
 				self.dict_header_font_color = Qt.QColor(dict_header_font_regexp.cap(4))
 
-			dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css, dict_header_font_pos +
-				dict_header_font_regexp.matchedLength())
+			dict_header_font_pos = dict_header_font_regexp.indexIn(self.user_style_css,
+				dict_header_font_pos + dict_header_font_regexp.matchedLength())
 
 	def parseDictHeaderBackground(self) :
 		dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
@@ -118,8 +128,8 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 			if not dict_header_background_regexp.cap(2).isEmpty() :
 				self.dict_header_background_color = Qt.QColor(dict_header_background_regexp.cap(2))
 
-			dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css, dict_header_background_pos +
-				dict_header_background_regexp.matchedLength())
+			dict_header_background_pos = dict_header_background_regexp.indexIn(self.user_style_css,
+				dict_header_background_pos + dict_header_background_regexp.matchedLength())
 
 	def parseRedAlertBackground(self) :
 		red_alert_background_regexp = Qt.QRegExp("\\.red_alert_background\\s+\\{([^(\\{|\\})])*"
@@ -130,6 +140,18 @@ class UserStyleCssCollectionBase(Qt.QObject) :
 			if not red_alert_background_regexp.cap(2).isEmpty() :
 				self.red_alert_background_color = Qt.QColor(red_alert_background_regexp.cap(2))
 
-			red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css, red_alert_background_pos +
-				red_alert_background_regexp.matchedLength())
+			red_alert_background_pos = red_alert_background_regexp.indexIn(self.user_style_css,
+				red_alert_background_pos + red_alert_background_regexp.matchedLength())
+
+	def parseSearchSelectionBackground(self) :
+		search_selection_background_regexp = Qt.QRegExp("\\.search_selection_background\\s+\\{([^(\\{|\\})])*"
+			"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
+		search_selection_background_regexp.setMinimal(True)
+		search_selection_background_pos = search_selection_background_regexp.indexIn(self.user_style_css)
+		while search_selection_background_pos != -1 :
+			if not search_selection_background_regexp.cap(2).isEmpty() :
+				self.search_selection_background_color = Qt.QColor(search_selection_background_regexp.cap(2))
+
+			search_selection_background_pos = search_selection_background_regexp.indexIn(self.user_style_css,
+				search_selection_background_pos + search_selection_background_regexp.matchedLength())
 
