@@ -75,7 +75,13 @@ class ChromeScrollBar(Qt.QScrollBar) :
 	### Handlers ###
 
 	def paintEvent(self, event) :
-		Qt.QScrollBar.paintEvent(self, event)
+		painter = Qt.QPainter(self)
+
+		option = Qt.QStyleOptionSlider()
+		self.initStyleOption(option)
+		option.subControls = Qt.QStyle.SC_ScrollBarAddPage|Qt.QStyle.SC_ScrollBarSubPage
+		self.style().drawComplexControl(Qt.QStyle.CC_ScrollBar, option, painter, self)
+		painter.save()
 
 		if len(self.highlight_positions_list) > 0 :
 			highlight_rects_list = []
@@ -96,9 +102,32 @@ class ChromeScrollBar(Qt.QScrollBar) :
 					highlight_rects_list[-1].setHeight(highlight_rects_list[-1].height() - (highlight_rects_list[-1].bottom() -
 						(highlight_area_height + highlight_pass)))
 
-			painter = Qt.QPainter(self)
 			painter.setPen(self.highlight_pen)
 			painter.setBrush(self.highlight_color)
 			for highlight_rects_list_item in highlight_rects_list :
 				painter.drawRect(highlight_rects_list_item)
+
+		painter.restore()
+		option = Qt.QStyleOptionSlider()
+		self.initStyleOption(option)
+		option.subControls = ( Qt.QStyle.SC_ScrollBarAddLine|Qt.QStyle.SC_ScrollBarSubLine|Qt.QStyle.SC_ScrollBarFirst|
+			Qt.QStyle.SC_ScrollBarLast|Qt.QStyle.SC_ScrollBarSlider|Qt.QStyle.SC_ScrollBarGroove )
+		self.style().drawComplexControl(Qt.QStyle.CC_ScrollBar, option, painter, self)
+
+#void QScrollBar::paintEvent(QPaintEvent *)
+#{
+#    Q_D(QScrollBar);
+#    QPainter p(this);
+#    QStyleOptionSlider opt;
+#    initStyleOption(&opt);
+#    opt.subControls = QStyle::SC_All;
+#    if (d->pressedControl) {
+#        opt.activeSubControls = (QStyle::SubControl)d->pressedControl;
+#        if (!d->pointerOutsidePressedControl)
+#            opt.state |= QStyle::State_Sunken;
+#    } else {
+#        opt.activeSubControls = (QStyle::SubControl)d->hoverControl;
+#    }
+#    style()->drawComplexControl(QStyle::CC_ScrollBar, &opt, &p, this);
+#}
 
