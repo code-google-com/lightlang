@@ -277,7 +277,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	def visibleChange(self) :
 		if not self.isVisible() or self.isMinimized() or not self.isActiveWindow() :
-			self.close() # FIXME: Normal window move to top
+			self.close() # FIXME (Issue 58): Normal window move to top
 			self.showNormal()
 			self.activateFocus()
 		else :
