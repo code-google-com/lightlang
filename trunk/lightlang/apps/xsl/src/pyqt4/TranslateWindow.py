@@ -67,10 +67,6 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 		#####
 
-		self.user_style_css = UserStyleCss.userStyleCss()
-
-		#####
-
 		self.caption_label = Qt.QLabel()
 		self.caption_label.setTextFormat(Qt.Qt.RichText)
 		self.caption_label.setWordWrap(True)
@@ -115,7 +111,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 	def setCaption(self, str) :
 		self.caption_label.setText(Qt.QString("<html><head><style>%1</style></head>"
-			"<body><font class=\"text_label_font\">%2</font></body></html>").arg(self.user_style_css).arg(str))
+			"<body><font class=\"text_label_font\">%2</font></body></html>").arg(UserStyleCss.userStyleCss()).arg(str))
 
 	def setText(self, text) :
 		self.translate_browser.setText(text)

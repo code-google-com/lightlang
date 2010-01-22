@@ -42,10 +42,6 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.lang = Locale.mainLang()
-
-		#####
-
 		self.site_tag_flag = False
 		self.title_tag_flag = False
 		self.description_tag_flag = False
@@ -87,13 +83,13 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 
 		if self.site_tag_flag :
 			if self.title_tag_flag :
-				if self.site_title_lang == self.lang :
+				if self.site_title_lang == Locale.mainLang() :
 					self.site_title = str.simplified()
 				if self.site_title.simplified().isEmpty() and self.site_title_lang.simplified().isEmpty() :
 					self.site_title = str.simplified()
 				return True
 			elif self.description_tag_flag :
-				if self.site_description_lang == self.lang :
+				if self.site_description_lang == Locale.mainLang() :
 					self.site_description = str.simplified()
 				if self.site_description.simplified().isEmpty() and self.site_description_lang.simplified().isEmpty() :
 					self.site_description = str.simplified()

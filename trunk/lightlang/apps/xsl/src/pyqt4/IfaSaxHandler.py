@@ -43,10 +43,6 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.lang = Locale.mainLang()
-
-		#####
-
 		self.app_tag_flag = False
 		self.title_tag_flag = False
 		self.description_tag_flag = False
@@ -99,13 +95,13 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 
 		if self.app_tag_flag :
 			if self.title_tag_flag :
-				if self.app_title_lang == self.lang :
+				if self.app_title_lang == Locale.mainLang() :
 					self.app_title = str.simplified()
 				if self.app_title.simplified().isEmpty() and self.app_title_lang.simplified().isEmpty() :
 					self.app_title = str.simplified()
 				return True
 			elif self.description_tag_flag :
-				if self.app_description_lang == self.lang :
+				if self.app_description_lang == Locale.mainLang() :
 					self.app_description = str.simplified()
 				if self.app_description.simplified().isEmpty() and self.app_description_lang.simplified().isEmpty() :
 					self.app_description = str.simplified()

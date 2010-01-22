@@ -48,7 +48,6 @@ class GoogleTranslate(Qt.QObject) :
 		self.timer = Qt.QTimer()
 		self.timer.setInterval(30000)
 
-		self.lang = Locale.mainLang()
 		self.sl = Qt.QString()
 		self.tl = Qt.QString()
 
@@ -95,7 +94,7 @@ class GoogleTranslate(Qt.QObject) :
 
 		if text.startsWith("http:", Qt.Qt.CaseInsensitive) :
 			site = ( Qt.QString("http://translate.google.com/translate?js=y&prev=_t&hl=%1&ie=UTF-8&sl=%2&tl=%3&u=%4")
-				.arg(self.lang).arg(sl).arg(tl).arg(text) )
+				.arg(Locale.mainLang()).arg(sl).arg(tl).arg(text) )
 			Qt.QDesktopServices.openUrl(Qt.QUrl(site))
 			self.textChangedSignal(tr("<font class=\"word_header_font\">Link of site \"%1\" translation"
 				" was opened in your browser</font><hr><br><a href=\"%2\">%2</a>").arg(text).arg(site))

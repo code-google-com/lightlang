@@ -59,10 +59,8 @@ class Main :
 		self.app = MainApplication.MainApplication(self.argv)
 		self.app.setQuitOnLastWindowClosed(self.no_tray_icon)
 
-		self.lang = Locale.mainLang()
-
 		self.translator = Qt.QTranslator()
-		self.translator.load(TrDir+self.lang)
+		self.translator.load(TrDir+Locale.mainLang())
 		self.app.installTranslator(self.translator)
 
 		self.app.setStyleSheet(UserStyleCss.userStyleCss())

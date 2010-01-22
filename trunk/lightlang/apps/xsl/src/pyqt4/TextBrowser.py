@@ -49,7 +49,6 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self.zoom_count = 0
 
-		self.user_style_css = UserStyleCss.userStyleCss()
 		user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
 
 		self.highlight_color = user_style_css_collection.searchSelectionBackgroundColor()
@@ -75,9 +74,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		index = text.indexOf("</style>")
 		if index >= 0 :
-			text = Qt.QString(text).insert(index, self.user_style_css)
+			text = Qt.QString(text).insert(index, UserStyleCss.userStyleCss())
 		else :
-			text = Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(self.user_style_css).arg(text)
+			text = ( Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>")
+				.arg(UserStyleCss.userStyleCss()).arg(text) )
 		self.setHtml(text)
 
 	def text(self) :

@@ -71,8 +71,6 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		self.google_translate = GoogleTranslate.GoogleTranslate()
 
-		self.lang = Locale.mainLang()
-
 		#####
 
 		self.sl_combobox = Qt.QComboBox()
@@ -97,7 +95,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		for langs_list_item in LangsList.langsList() :
 			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1]+".png"),
 				langs_list_item[0], Qt.QVariant(langs_list_item[1]))
-		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+self.lang+".png"), tr("Your language"), Qt.QVariant(self.lang))
+		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+Locale.mainLang()+".png"), tr("Your language"), Qt.QVariant(Locale.mainLang()))
 		self.langs_layout.addWidget(self.tl_combobox)
 
 		self.text_edit = TextEdit.TextEdit()
