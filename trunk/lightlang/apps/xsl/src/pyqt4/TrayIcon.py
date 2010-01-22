@@ -62,8 +62,8 @@ class TrayIcon(Qt.QSystemTrayIcon) :
 		self.tray_menu.addSeparator()
 
 		try :
-			self.keys_grabber_thread.addHandler(KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier,
-				self.visibleChangeRequestSignal)
+			signal = self.keys_grabber_thread.addHotkey(self.objectName(), KeysGrabberThread.Key_L, KeysGrabberThread.WinModifier)
+			self.connect(self.keys_grabber_thread, Qt.SIGNAL(signal), self.visibleChangeRequestSignal)
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window")+"\tWin+L", self.visibleChangeRequestSignal)
 		except :
 			self.tray_menu.addAction(Qt.QIcon(IconsDir+"window_16.png"), tr("Dictionary window"), self.visibleChangeRequestSignal)
