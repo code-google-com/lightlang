@@ -29,7 +29,7 @@ import ChromeScrollBar
 
 
 #####
-SearchSelectionTransparentAlpha = 70
+HighlightTransparentAlpha = 70
 
 
 #####
@@ -49,8 +49,8 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self.zoom_count = 0
 
-		self.highlight_color = UserStyleCssCollection.searchSelectionBackgroundColor()
-		self.highlight_color.setAlpha(SearchSelectionTransparentAlpha)
+		self.highlight_color = UserStyleCssCollection.highlightBackgroundColor()
+		self.highlight_color.setAlpha(HighlightTransparentAlpha)
 
 		# setSource() dont accept user-style.css
 

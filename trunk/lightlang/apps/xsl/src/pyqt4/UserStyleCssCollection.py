@@ -36,7 +36,7 @@ DictHeaderBackgroundColorObject = None
 
 RedAlertBackgroundColorObject = None
 
-SearchSelectionBackgroundColorObject = None
+HighlightBackgroundColorObject = None
 
 
 #####
@@ -81,10 +81,10 @@ def redAlertBackgroundColor() :
 
 ###
 
-def searchSelectionBackgroundColor() :
-	if SearchSelectionBackgroundColorObject == None :
-		initSearchSelectionBackground()
-	return Qt.QColor(SearchSelectionBackgroundColorObject)
+def highlightBackgroundColor() :
+	if HighlightBackgroundColorObject == None :
+		initHighlightBackground()
+	return Qt.QColor(HighlightBackgroundColorObject)
 
 
 ##### Private #####
@@ -145,19 +145,19 @@ def initRedAlertBackground() :
 		red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css,
 			red_alert_background_pos + red_alert_background_regexp.matchedLength())
 
-def initSearchSelectionBackground() :
-	global SearchSelectionBackgroundColorObject
+def initHighlightBackground() :
+	global HighlightBackgroundColorObject
 
-	SearchSelectionBackgroundColorObject = Qt.QColor()
+	HighlightBackgroundColorObject = Qt.QColor()
 
 	user_style_css = UserStyleCss.userStyleCss()
-	search_selection_background_regexp = Qt.QRegExp("\\.search_selection_background\\s+\\{([^(\\{|\\})])*"
+	highlight_background_regexp = Qt.QRegExp("\\.highlight_background\\s+\\{([^(\\{|\\})])*"
 		"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-	search_selection_background_regexp.setMinimal(True)
-	search_selection_background_pos = search_selection_background_regexp.indexIn(user_style_css)
-	while search_selection_background_pos != -1 :
-		SearchSelectionBackgroundColorObject = Qt.QColor(search_selection_background_regexp.cap(2))
+	highlight_background_regexp.setMinimal(True)
+	highlight_background_pos = highlight_background_regexp.indexIn(user_style_css)
+	while highlight_background_pos != -1 :
+		HighlightBackgroundColorObject = Qt.QColor(highlight_background_regexp.cap(2))
 
-		search_selection_background_pos = search_selection_background_regexp.indexIn(user_style_css,
-			search_selection_background_pos + search_selection_background_regexp.matchedLength())
+		highlight_background_pos = highlight_background_regexp.indexIn(user_style_css,
+			highlight_background_pos + highlight_background_regexp.matchedLength())
 

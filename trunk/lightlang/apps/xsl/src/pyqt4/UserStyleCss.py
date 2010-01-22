@@ -51,6 +51,7 @@ def initUserStyleCss() :
 	global UserStyleCssObject
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
 		".red_alert_background {background-color: #FF6E6E;}\n"
+		".highlight_background {background-color: #FFFF00;}\n"
 		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
 		".word_header_font {font-size: normal; color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"
@@ -61,7 +62,6 @@ def initUserStyleCss() :
 		".underline_font {font-decoration: underline;}\n"
 		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
 		".sound_link_font {font-size: normal;}\n"
-		".search_selection_background {background-color: #FFFF00;}\n"
 		".info_font {font-style: italic;}\n"
 		".text_label_font {font-size: normal; color: #494949; font-weight: bold;}\n")
 

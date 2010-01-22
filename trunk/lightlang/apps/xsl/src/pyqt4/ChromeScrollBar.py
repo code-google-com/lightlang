@@ -48,7 +48,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 
 		self.highlight_positions_list = []
 
-		self.highlight_color = UserStyleCssCollection.searchSelectionBackgroundColor()
+		self.highlight_color = UserStyleCssCollection.highlightBackgroundColor()
 		self.highlight_color.setAlpha(HighlightTransparentAlpha)
 
 		self.highlight_pen = Qt.QPen()
