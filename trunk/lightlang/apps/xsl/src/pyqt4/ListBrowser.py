@@ -52,20 +52,18 @@ class ListBrowser(Qt.QListWidget) :
 		self.caption_item_background_brush = Qt.QListWidgetItem().background()
 		self.caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
 
-		user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
-
-		self.caption_item_font.setBold(user_style_css_collection.dictHeaderFontBoldFlag())
-		self.caption_item_font.setItalic(user_style_css_collection.dictHeaderFontItalicFlag())
-		if user_style_css_collection.dictHeaderFontLargeFlag() :
+		self.caption_item_font.setBold(UserStyleCssCollection.dictHeaderFontBoldFlag())
+		self.caption_item_font.setItalic(UserStyleCssCollection.dictHeaderFontItalicFlag())
+		if UserStyleCssCollection.dictHeaderFontLargeFlag() :
 			if self.caption_item_font.pixelSize() > 0 :
 				self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() + 1)
 			elif self.caption_item_font.pointSize() > 0 :
 				self.caption_item_font.setPointSize(self.caption_item_font.pointSize() + 1)
-		if user_style_css_collection.dictHeaderFontColor() != None :
-			self.caption_item_foreground_brush.setColor(user_style_css_collection.dictHeaderFontColor())
+		if UserStyleCssCollection.dictHeaderFontColor().isValid() :
+			self.caption_item_foreground_brush.setColor(UserStyleCssCollection.dictHeaderFontColor())
 
-		if user_style_css_collection.dictHeaderBackgroundColor() != None :
-			self.caption_item_background_brush.setColor(user_style_css_collection.dictHeaderBackgroundColor())
+		if UserStyleCssCollection.dictHeaderBackgroundColor().isValid() :
+			self.caption_item_background_brush.setColor(UserStyleCssCollection.dictHeaderBackgroundColor())
 
 
 	### Public ###

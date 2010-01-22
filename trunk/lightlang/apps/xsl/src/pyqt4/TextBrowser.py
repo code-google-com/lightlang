@@ -49,9 +49,7 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self.zoom_count = 0
 
-		user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
-
-		self.highlight_color = user_style_css_collection.searchSelectionBackgroundColor()
+		self.highlight_color = UserStyleCssCollection.searchSelectionBackgroundColor()
 		self.highlight_color.setAlpha(SearchSelectionTransparentAlpha)
 
 		# setSource() dont accept user-style.css

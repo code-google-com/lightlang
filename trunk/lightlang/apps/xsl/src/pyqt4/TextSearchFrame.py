@@ -85,13 +85,11 @@ class TextSearchFrame(Qt.QFrame) :
 
 		#####
 
-		user_style_css_collection = UserStyleCssCollection.UserStyleCssCollection()
-
 		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette())
 
 		self.line_edit_red_alert_palette = Qt.QPalette()
-		if user_style_css_collection.redAlertBackgroundColor() != None :
-			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, user_style_css_collection.redAlertBackgroundColor())
+		if UserStyleCssCollection.redAlertBackgroundColor().isValid() :
+			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, UserStyleCssCollection.redAlertBackgroundColor())
 
 		#####
 
