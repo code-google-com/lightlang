@@ -138,6 +138,9 @@ class SpyMenu(Qt.QMenu) :
 
 		self.spyStoppedSignal()
 
+	def isRunning(self) :
+		return self.mouse_selector.isRunning()
+
 	### 
 
 	def saveSettings(self) :
