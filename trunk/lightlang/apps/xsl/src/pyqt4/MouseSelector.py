@@ -65,6 +65,11 @@ class MouseSelector(Qt.QObject) :
 	def stop(self) :
 		self.timer.stop()
 
+	def isRunning(self) :
+		return self.timer.isActive()
+
+	###
+
 	def setModifier(self, modifier) :
 		self.modifier = modifier
 

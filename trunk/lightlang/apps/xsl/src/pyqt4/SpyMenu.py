@@ -144,7 +144,7 @@ class SpyMenu(Qt.QMenu) :
 		settings = Settings.settings()
 		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
 		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
-		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.stop_spy_menu_action.isEnabled()))
+		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.mouse_selector.isRunning()))
 		try :
 			settings.setValue("spy_menu/keyboard_modifier_index", Qt.QVariant(self.keyboard_modifiers_menu.index()))
 		except : pass
