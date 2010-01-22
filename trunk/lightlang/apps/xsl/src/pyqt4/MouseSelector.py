@@ -34,9 +34,9 @@ def tr(str) :
 
 
 #####
-class MouseSelectorThread(Qt.QThread) :
+class MouseSelector(Qt.QObject) :
 	def __init__(self, parent = None) :
-		Qt.QThread.__init__(self, parent)
+		Qt.QObject.__init__(self, parent)
 
 		#####
 
@@ -52,8 +52,6 @@ class MouseSelectorThread(Qt.QThread) :
 
 		#####
 
-		self.connect(Qt.QApplication.instance(), Qt.SIGNAL("aboutToQuit()"), self.stop)
-
 		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.checkSelection)
 
 
@@ -63,20 +61,15 @@ class MouseSelectorThread(Qt.QThread) :
 		self.clipboard.setText(Qt.QString(""), Qt.QClipboard.Selection)
 		self.old_selection.clear()
 		self.timer.start()
-		Qt.QThread.start(self)
 
 	def stop(self) :
 		self.timer.stop()
-		self.exit(0)
 
 	def setModifier(self, modifier) :
 		self.modifier = modifier
 
 
 	### Private ###
-
-	def run(self) :
-		self.exec_()
 
 	def checkSelection(self) :
 		word = self.clipboard.text(Qt.QClipboard.Selection)
