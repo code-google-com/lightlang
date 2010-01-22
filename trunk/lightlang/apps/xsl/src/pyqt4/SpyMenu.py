@@ -112,9 +112,9 @@ class SpyMenu(Qt.QMenu) :
 	### Public ###
 
 	def addTranslateMethod(self, label, object_name, method_name) :
-		signal = Qt.QString("%1__%2__translateRequest(const QString &)").arg(object_name).arg(method_name)
-		self.translate_methods_menu.addRadioButton(label, Qt.QVariant(signal))
-		return Qt.QString(signal)
+		signal_string = Qt.QString("%1__%2__translateRequest(const QString &)").arg(object_name).arg(method_name)
+		self.translate_methods_menu.addRadioButton(label, Qt.QVariant(signal_string))
+		return Qt.QString(signal_string)
 
 	###
 

@@ -71,15 +71,15 @@ class KeysGrabberThreadPrivate(Qt.QThread) :
 
 		key = self.display.keysym_to_keycode(key)
 		modifier = modifier & ~(Xlib.X.AnyModifier << 1)
-		signal = Qt.QString("%1__%2__%3__globalHotkey()").arg(object_name).arg(key).arg(modifier)
+		signal_string = Qt.QString("%1__%2__%3__globalHotkey()").arg(object_name).arg(key).arg(modifier)
 
-		self.hotkeys_list.append([key, modifier, signal])
+		self.hotkeys_list.append([key, modifier, signal_string])
 		self.root.grab_key(key, modifier, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
 
 		self.is_stopped_flag = False
 		self.start()
 
-		return signal
+		return Qt.QString(signal_string)
 
 
 	### Private ###

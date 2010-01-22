@@ -353,10 +353,10 @@ class MainWindow(Qt.QMainWindow) :
 		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("statusChanged(const QString &)"), status_bar_show_status_message)
 
 		for translate_methods_list_item in self.source_objects_list[index][0].translateMethods() :
-			signal = self.spy_menu.addTranslateMethod(translate_methods_list_item[0],
+			signal_string = self.spy_menu.addTranslateMethod(translate_methods_list_item[0],
 				translate_methods_list_item[1], translate_methods_list_item[2])
-			self.connect(self.spy_menu, Qt.SIGNAL(signal), translate_methods_list_item[3])
-			self.connect(self.spy_menu, Qt.SIGNAL(signal), self.source_objects_list[index][0].show)
+			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), translate_methods_list_item[3])
+			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), self.source_objects_list[index][0].show)
 
 	###
 
