@@ -28,7 +28,6 @@ import UserStyleCssCollection
 
 #####
 DefaultHighlightHeight = 5
-HighlightTransparentAlpha = 70
 MinCharacterDistance = 50
 
 
@@ -49,7 +48,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 		self.highlight_positions_list = []
 
 		self.highlight_color = UserStyleCssCollection.highlightBackgroundColor()
-		self.highlight_color.setAlpha(HighlightTransparentAlpha)
+		self.highlight_color.setAlpha(UserStyleCssCollection.highlightBackgroundOpacity())
 
 		self.highlight_pen = Qt.QPen()
 		self.highlight_pen.setColor(self.highlight_color)

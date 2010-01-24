@@ -29,10 +29,6 @@ import ChromeScrollBar
 
 
 #####
-HighlightTransparentAlpha = 70
-
-
-#####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
 
@@ -50,7 +46,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		self.zoom_count = 0
 
 		self.highlight_color = UserStyleCssCollection.highlightBackgroundColor()
-		self.highlight_color.setAlpha(HighlightTransparentAlpha)
+		self.highlight_color.setAlpha(UserStyleCssCollection.highlightBackgroundOpacity())
 
 		# setSource() dont accept user-style.css
 

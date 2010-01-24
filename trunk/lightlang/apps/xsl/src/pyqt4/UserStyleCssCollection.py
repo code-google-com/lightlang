@@ -37,6 +37,7 @@ DictHeaderBackgroundColorObject = None
 RedAlertBackgroundColorObject = None
 
 HighlightBackgroundColorObject = None
+HighlightBackgroundOpacityObject = None
 
 
 #####
@@ -86,6 +87,11 @@ def highlightBackgroundColor() :
 		initUserStyleCssCollection()
 	return Qt.QColor(HighlightBackgroundColorObject)
 
+def highlightBackgroundOpacity() :
+	if HighlightBackgroundOpacityObject == None :
+		initUserStyleCssCollection()
+	return HighlightBackgroundOpacityObject
+
 
 ##### Private #####
 def initUserStyleCssCollection() :
@@ -99,6 +105,7 @@ def initUserStyleCssCollection() :
 	global RedAlertBackgroundColorObject
 
 	global HighlightBackgroundColorObject
+	global HighlightBackgroundOpacityObject
 
 	###
 
@@ -112,6 +119,7 @@ def initUserStyleCssCollection() :
 	RedAlertBackgroundColorObject = Qt.QColor()
 
 	HighlightBackgroundColorObject = Qt.QColor()
+	HighlightBackgroundOpacityObject = 255
 
 	###
 
@@ -154,6 +162,8 @@ def initUserStyleCssCollection() :
 			elif css_class_name == "highlight_background" :
 				if css_option_name == "background-color" :
 					HighlightBackgroundColorObject = Qt.QColor(css_option_value)
+				if css_option_name == "opacity" :
+					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
 
 			css_option_pos = css_option_regexp.indexIn(css_class_body, css_option_pos + css_option_regexp.matchedLength())
 
