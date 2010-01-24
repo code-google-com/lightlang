@@ -47,117 +47,115 @@ def tr(str) :
 ##### Public #####
 def dictHeaderFontBoldFlag() :
 	if DictHeaderFontBoldFlagObject == None :
-		initDictHeaderFont()
+		initUserStyleCssCollection()
 	return DictHeaderFontBoldFlagObject
 
 def dictHeaderFontItalicFlag() :
 	if DictHeaderFontItalicFlagObject == None :
-		initDictHeaderFont()
+		initUserStyleCssCollection()
 	return DictHeaderFontItalicFlagObject
 
 def dictHeaderFontLargeFlag() :
 	if DictHeaderFontLargeFlagObject == None :
-		initDictHeaderFont()
+		initUserStyleCssCollection()
 	return DictHeaderFontLargeFlagObject
 
 def dictHeaderFontColor() :
 	if DictHeaderFontColorObject == None :
-		initDictHeaderFont()
+		initUserStyleCssCollection()
 	return Qt.QColor(DictHeaderFontColorObject)
 
 ###
 
 def dictHeaderBackgroundColor() :
 	if DictHeaderBackgroundColorObject == None :
-		initDictHeaderBackground()
+		initUserStyleCssCollection()
 	return Qt.QColor(DictHeaderBackgroundColorObject)
 
 ###
 
 def redAlertBackgroundColor() :
 	if RedAlertBackgroundColorObject == None :
-		initRedAlertBackground()
+		initUserStyleCssCollection()
 	return Qt.QColor(RedAlertBackgroundColorObject)
 
 ###
 
 def highlightBackgroundColor() :
 	if HighlightBackgroundColorObject == None :
-		initHighlightBackground()
+		initUserStyleCssCollection()
 	return Qt.QColor(HighlightBackgroundColorObject)
 
 
 ##### Private #####
-def initDictHeaderFont() :
+def initUserStyleCssCollection() :
 	global DictHeaderFontBoldFlagObject
 	global DictHeaderFontItalicFlagObject
 	global DictHeaderFontLargeFlagObject
 	global DictHeaderFontColorObject
 
+	global DictHeaderBackgroundColorObject
+
+	global RedAlertBackgroundColorObject
+
+	global HighlightBackgroundColorObject
+
+	###
+
 	DictHeaderFontBoldFlagObject = False
 	DictHeaderFontItalicFlagObject = False
 	DictHeaderFontLargeFlagObject = False
-	DictHeaderFontColorObject = Qt.QColor()
-
-	user_style_css = UserStyleCss.userStyleCss()
-	dict_header_font_regexp = Qt.QRegExp("\\.dict_header_font\\s+\\{(([^(\\{|\\})])*"
-		"(color:\\s*(#\\w{6});([^(\\{|\\})])*)?)\\}")
-	dict_header_font_regexp.setMinimal(True)
-	dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css)
-	while dict_header_font_pos != -1 :
-		DictHeaderFontBoldFlagObject = dict_header_font_regexp.cap(1).contains("bold")
-		DictHeaderFontItalicFlagObject = dict_header_font_regexp.cap(1).contains("italic")
-		DictHeaderFontLargeFlagObject = dict_header_font_regexp.cap(1).contains("large")
-		DictHeaderFontColorObject = Qt.QColor(dict_header_font_regexp.cap(4))
-
-		dict_header_font_pos = dict_header_font_regexp.indexIn(user_style_css,
-			dict_header_font_pos + dict_header_font_regexp.matchedLength())
-
-def initDictHeaderBackground() :
-	global DictHeaderBackgroundColorObject
+	DictHeaderFontColorObject = False
 
 	DictHeaderBackgroundColorObject = Qt.QColor()
 
-	user_style_css = UserStyleCss.userStyleCss()
-	dict_header_background_regexp = Qt.QRegExp("\\.dict_header_background\\s+\\{([^(\\{|\\})])*"
-		"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-	dict_header_background_regexp.setMinimal(True)
-	dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css)
-	while dict_header_background_pos != -1 :
-		DictHeaderBackgroundColorObject = Qt.QColor(dict_header_background_regexp.cap(2))
-
-		dict_header_background_pos = dict_header_background_regexp.indexIn(user_style_css,
-			dict_header_background_pos + dict_header_background_regexp.matchedLength())
-
-def initRedAlertBackground() :
-	global RedAlertBackgroundColorObject
-
 	RedAlertBackgroundColorObject = Qt.QColor()
-
-	user_style_css = UserStyleCss.userStyleCss()
-	red_alert_background_regexp = Qt.QRegExp("\\.red_alert_background\\s+\\{([^(\\{|\\})])*"
-		"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-	red_alert_background_regexp.setMinimal(True)
-	red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css)
-	while red_alert_background_pos != -1 :
-		RedAlertBackgroundColorObject = Qt.QColor(red_alert_background_regexp.cap(2))
-
-		red_alert_background_pos = red_alert_background_regexp.indexIn(user_style_css,
-			red_alert_background_pos + red_alert_background_regexp.matchedLength())
-
-def initHighlightBackground() :
-	global HighlightBackgroundColorObject
 
 	HighlightBackgroundColorObject = Qt.QColor()
 
-	user_style_css = UserStyleCss.userStyleCss()
-	highlight_background_regexp = Qt.QRegExp("\\.highlight_background\\s+\\{([^(\\{|\\})])*"
-		"background-color:\\s*(#\\w{6});([^(\\{|\\})])*\\}")
-	highlight_background_regexp.setMinimal(True)
-	highlight_background_pos = highlight_background_regexp.indexIn(user_style_css)
-	while highlight_background_pos != -1 :
-		HighlightBackgroundColorObject = Qt.QColor(highlight_background_regexp.cap(2))
+	###
 
-		highlight_background_pos = highlight_background_regexp.indexIn(user_style_css,
-			highlight_background_pos + highlight_background_regexp.matchedLength())
+	user_style_css = UserStyleCss.userStyleCss().remove(Qt.QRegExp("\\s"))
+
+	css_class_regexp = Qt.QRegExp("\\.([^(\\{|\\})]*)\\{([^(\\{|\\})]*)\\}")
+	css_class_regexp.setMinimal(True)
+
+	css_option_regexp = Qt.QRegExp("([^(\\{|\\})]*):([^(\\{|\\})]*);")
+	css_option_regexp.setMinimal(True)
+
+	css_class_pos = css_class_regexp.indexIn(user_style_css)
+	while css_class_pos != -1 :
+		css_class_name = css_class_regexp.cap(1)
+		css_class_body = css_class_regexp.cap(2)
+
+		css_option_pos = css_option_regexp.indexIn(css_class_body)
+		while css_option_pos != -1 :
+			css_option_name = css_option_regexp.cap(1)
+			css_option_value = css_option_regexp.cap(2)
+
+			if css_class_name == "dict_header_font" :
+				if css_option_name == "font-weight" :
+					DictHeaderFontBoldFlagObject = ( True if css_option_value == "bold" else False )
+				elif css_option_name == "font-style" :
+					DictHeaderFontItalicFlagObject = ( True if css_option_value == "italic" else False )
+				elif css_option_name == "font-size" :
+					DictHeaderFontLargeFlagObject = ( True if css_option_value == "large" else False )
+				elif css_option_name == "color" :
+					DictHeaderFontColorObject = Qt.QColor(css_option_value)
+
+			elif css_class_name == "dict_header_background" :
+				if css_option_name == "background-color" :
+					DictHeaderBackgroundColorObject = Qt.QColor(css_option_value)
+
+			elif css_class_name == "red_alert_background" :
+				if css_option_name == "background-color" :
+					RedAlertBackgroundColorObject = Qt.QColor(css_option_value)
+
+			elif css_class_name == "highlight_background" :
+				if css_option_name == "background-color" :
+					HighlightBackgroundColorObject = Qt.QColor(css_option_value)
+
+			css_option_pos = css_option_regexp.indexIn(css_class_body, css_option_pos + css_option_regexp.matchedLength())
+
+		css_class_pos = css_class_regexp.indexIn(user_style_css, css_class_pos + css_class_regexp.matchedLength())
 
