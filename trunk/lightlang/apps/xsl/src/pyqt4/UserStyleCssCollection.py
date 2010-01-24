@@ -39,6 +39,8 @@ RedAlertBackgroundColorObject = None
 HighlightBackgroundColorObject = None
 HighlightBackgroundOpacityObject = None
 
+TransparentFrameBackgroundColorObject = None
+TransparentFrameBackgroundOpacityObject = None
 
 #####
 def tr(str) :
@@ -92,6 +94,18 @@ def highlightBackgroundOpacity() :
 		initUserStyleCssCollection()
 	return HighlightBackgroundOpacityObject
 
+###
+
+def transparentFrameBackgroundColor() :
+	if TransparentFrameBackgroundColorObject == None :
+		initUserStyleCssCollection()
+	return TransparentFrameBackgroundColorObject
+
+def transparentFrameBackgroundOpacity() :
+	if TransparentFrameBackgroundOpacityObject == None :
+		initUserStyleCssCollection()
+	return TransparentFrameBackgroundOpacityObject
+
 
 ##### Private #####
 def initUserStyleCssCollection() :
@@ -107,6 +121,9 @@ def initUserStyleCssCollection() :
 	global HighlightBackgroundColorObject
 	global HighlightBackgroundOpacityObject
 
+	global TransparentFrameBackgroundColorObject
+	global TransparentFrameBackgroundOpacityObject
+
 	###
 
 	DictHeaderFontBoldFlagObject = False
@@ -120,6 +137,9 @@ def initUserStyleCssCollection() :
 
 	HighlightBackgroundColorObject = Qt.QColor()
 	HighlightBackgroundOpacityObject = 255
+
+	TransparentFrameBackgroundColorObject = Qt.QColor()
+	TransparentFrameBackgroundOpacityObject = 255
 
 	###
 
@@ -164,6 +184,12 @@ def initUserStyleCssCollection() :
 					HighlightBackgroundColorObject = Qt.QColor(css_option_value)
 				if css_option_name == "opacity" :
 					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
+
+			elif css_class_name == "transparent_frame_background" :
+				if css_option_name == "background-color" :
+					TransparentFrameBackgroundColorObject = Qt.QColor(css_option_value)
+				if css_option_name == "opacity" :
+					TransparentFrameBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
 
 			css_option_pos = css_option_regexp.indexIn(css_class_body, css_option_pos + css_option_regexp.matchedLength())
 

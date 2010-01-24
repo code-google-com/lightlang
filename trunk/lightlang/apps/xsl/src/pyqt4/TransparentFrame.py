@@ -23,16 +23,12 @@
 import Qt
 import Config
 import Const
+import UserStyleCssCollection
 
 
 #####
 def tr(str) :
 	return Qt.QApplication.translate("@default", str)
-
-
-#####
-TransparentAlpha = 180
-NonTransparentAlpha = 255
 
 
 #####
@@ -45,11 +41,15 @@ class TransparentFrame(Qt.QFrame) :
 
 		#####
 
-		self.color = Qt.QApplication.palette().color(Qt.QPalette.Window)
+		if UserStyleCssCollection.transparentFrameBackgroundColor().isValid() :
+			self.color = UserStyleCssCollection.transparentFrameBackgroundColor()
+		else :
+			self.color = Qt.QApplication.palette().color(Qt.QPalette.Window)
+		self.alpha = UserStyleCssCollection.transparentFrameBackgroundOpacity()
 
 		#####
 
-		self.setAlpha(TransparentAlpha)
+		self.setAlpha(self.alpha)
 
 
 	### Private ###
@@ -66,10 +66,10 @@ class TransparentFrame(Qt.QFrame) :
 	### Handlers ###
 
 	def enterEvent(self, event) :
-		self.setAlpha(NonTransparentAlpha)
+		self.setAlpha(255)
 		Qt.QFrame.enterEvent(self, event)
 
 	def leaveEvent(self, event) :
-		self.setAlpha(TransparentAlpha)
+		self.setAlpha(self.alpha)
 		Qt.QFrame.leaveEvent(self, event)
 
