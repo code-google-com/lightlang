@@ -52,7 +52,7 @@ def initUserStyleCss() :
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
 		".red_alert_background {background-color: #FF6E6E;}\n"
 		".highlight_background {background-color: #FFFF00; opacity: 100;}\n"
-		".transparent_frame_background {opacity: 180;}\n"
+		".transparent_frame_background {background-color: from-palette; opacity: 180;}\n"
 		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
 		".word_header_font {font-size: normal; color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"

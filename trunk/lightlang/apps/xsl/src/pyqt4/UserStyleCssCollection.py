@@ -181,13 +181,19 @@ def initUserStyleCssCollection() :
 
 			elif css_class_name == "highlight_background" :
 				if css_option_name == "background-color" :
-					HighlightBackgroundColorObject = Qt.QColor(css_option_value)
+					if css_option_value == "from-palette" :
+						HighlightBackgroundColorObject = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
+					else :
+						HighlightBackgroundColorObject = Qt.QColor(css_option_value)
 				if css_option_name == "opacity" :
 					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
 
 			elif css_class_name == "transparent_frame_background" :
 				if css_option_name == "background-color" :
-					TransparentFrameBackgroundColorObject = Qt.QColor(css_option_value)
+					if css_option_value == "from-palette" :
+						TransparentFrameBackgroundColorObject = Qt.QApplication.palette().color(Qt.QPalette.Window)
+					else :
+						TransparentFrameBackgroundColorObject = Qt.QColor(css_option_value)
 				if css_option_name == "opacity" :
 					TransparentFrameBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
 
