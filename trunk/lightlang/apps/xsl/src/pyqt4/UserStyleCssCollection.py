@@ -129,7 +129,7 @@ def initUserStyleCssCollection() :
 	DictHeaderFontBoldFlagObject = False
 	DictHeaderFontItalicFlagObject = False
 	DictHeaderFontLargeFlagObject = False
-	DictHeaderFontColorObject = False
+	DictHeaderFontColorObject = Qt.QColor()
 
 	DictHeaderBackgroundColorObject = Qt.QColor()
 
