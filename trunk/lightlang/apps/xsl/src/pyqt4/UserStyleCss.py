@@ -53,8 +53,8 @@ def initUserStyleCss() :
 		".red_alert_background {background-color: #FF6E6E;}\n"
 		".highlight_background {background-color: from-palette; opacity: 70;}\n"
 		".transparent_frame_background {background-color: from-palette; opacity: 180;}\n"
-		".dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-		".word_header_font {font-size: normal; color: #494949;}\n"
+		".dict_header_font {font-size: large; font-weight: bold;}\n"
+		".word_header_font {color: #494949;}\n"
 		".list_item_number_font {font-style: italic;}\n"
 		".article_number_font {font-style: italic; font-weight: bold;}\n"
 		".strong_font {font-weight: bold;}\n"
@@ -62,9 +62,9 @@ def initUserStyleCss() :
 		".green_font {color: #0A7700;}\n"
 		".underline_font {font-decoration: underline;}\n"
 		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
-		".sound_link_font {font-size: normal;}\n"
+		".sound_link_font {}\n"
 		".info_font {font-style: italic;}\n"
-		".text_label_font {font-size: normal; color: #494949; font-weight: bold;}\n")
+		".text_label_font {color: #494949; font-weight: bold;}\n")
 
 	my_name = Qt.QString(Const.MyName).toLower()
 
