@@ -173,7 +173,11 @@ class GoogleTranslate(Qt.QObject) :
 		###
 
 		if self.detected_source_language_regexp.indexIn(text) > -1 :
-			self.sl = self.detected_source_language_regexp.cap(1)
+			sl_name = tr("%1 (guessed)").arg(LangsList.langName(self.detected_source_language_regexp.cap(1)))
+		else :
+			sl_name = LangsList.langName(self.sl)
+		tl_name = LangsList.langName(self.tl)
+
 		if self.translated_text_regexp.indexIn(text) > -1 :
 			text = self.translated_text_regexp.cap(1)
 
@@ -189,8 +193,7 @@ class GoogleTranslate(Qt.QObject) :
 
 			text.replace("\\\\", "\\")
 
-			text = ( tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3")
-				.arg(LangsList.langName(self.sl)).arg(LangsList.langName(self.tl)).arg(text) )
+			text = tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3").arg(sl_name).arg(tl_name).arg(text)
 
 		###
 
