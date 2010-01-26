@@ -79,7 +79,7 @@
         <translation>Поиск:</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="86"/>
+        <location filename="GoogleTranslate.py" line="85"/>
         <source>Google Translate</source>
         <translation>Переводчик Google</translation>
     </message>
@@ -194,47 +194,47 @@
         <translation>Японский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="106"/>
+        <location filename="GoogleTranslatePanel.py" line="107"/>
         <source>T&amp;ranslate</source>
         <translation>&amp;Перевести</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="108"/>
+        <location filename="GoogleTranslatePanel.py" line="109"/>
         <source>Ctrl+Enter</source>
         <translation>Ctrl+Enter</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="143"/>
+        <location filename="GoogleTranslate.py" line="142"/>
         <source>Looking up host...</source>
         <translation>Ищем хост...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="145"/>
+        <location filename="GoogleTranslate.py" line="144"/>
         <source>Connecting...</source>
         <translation>Подключение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="147"/>
+        <location filename="GoogleTranslate.py" line="146"/>
         <source>Sending request...</source>
         <translation>Отправка запроса...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="149"/>
+        <location filename="GoogleTranslate.py" line="148"/>
         <source>Reading data...</source>
         <translation>Чтение данных...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="151"/>
+        <location filename="GoogleTranslate.py" line="150"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="153"/>
+        <location filename="GoogleTranslate.py" line="152"/>
         <source>Closing connection...</source>
         <translation>Закрывается соединение...</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="163"/>
+        <location filename="GoogleTranslate.py" line="162"/>
         <source>HTTP error: %1
 Press &quot;Yes&quot; to ignore</source>
         <translation>Ошибка HTTP: %1
@@ -400,22 +400,22 @@ Package version: %2</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="133"/>
+        <location filename="MainWindow.py" line="137"/>
         <source>&amp;View</source>
         <translation>&amp;Вид</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="134"/>
+        <location filename="MainWindow.py" line="138"/>
         <source>Zoom in</source>
         <translation>Увеличить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="136"/>
+        <location filename="MainWindow.py" line="140"/>
         <source>Zoom out</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="143"/>
+        <location filename="MainWindow.py" line="147"/>
         <source>Sp&amp;y</source>
         <translation>Sp&amp;y</translation>
     </message>
@@ -525,7 +525,7 @@ Package version: %2</source>
         <translation>(Без названия)</translation>
     </message>
     <message>
-        <location filename="TextBrowser.py" line="140"/>
+        <location filename="TextBrowser.py" line="142"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
@@ -635,22 +635,12 @@ Package version: %2</source>
         <translation>Вьетнамский</translation>
     </message>
     <message>
-        <location filename="GoogleTranslatePanel.py" line="84"/>
-        <source>I don&apos;t know...</source>
-        <translation>Я не знаю...</translation>
-    </message>
-    <message>
-        <location filename="GoogleTranslatePanel.py" line="100"/>
-        <source>Your language</source>
-        <translation>Ваш язык</translation>
-    </message>
-    <message>
         <location filename="SlSearchPanel.py" line="177"/>
         <source>Enter the word, please</source>
         <translation>Пожалуйста, введите слово</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="138"/>
+        <location filename="MainWindow.py" line="142"/>
         <source>Zoom normal</source>
         <translation>Нормальный размер</translation>
     </message>
@@ -665,32 +655,32 @@ Package version: %2</source>
         <translation>Окно словаря</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="138"/>
+        <location filename="SlWordSearch.py" line="137"/>
         <source>An error occured when creating the search process</source>
         <translation>Ошибка при создании поискового процесса</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="164"/>
+        <location filename="SlWordSearch.py" line="163"/>
         <source>Error of the search process</source>
         <translation>Ошибка поискового процесса</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="146"/>
+        <location filename="SlWordSearch.py" line="145"/>
         <source>Connection lost with search process</source>
         <translation>Связь с поисковым процессом потеряна</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="158"/>
+        <location filename="SlWordSearch.py" line="157"/>
         <source>Unknown error occured while executing the search process</source>
         <translation>При выполнении поискового процесса произошла неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="150"/>
+        <location filename="SlWordSearch.py" line="149"/>
         <source>Error while writing data into the search process</source>
         <translation>Ошибка при записи данных в поисковый процесс</translation>
     </message>
     <message>
-        <location filename="SlWordSearch.py" line="154"/>
+        <location filename="SlWordSearch.py" line="153"/>
         <source>Error while reading data from the search process</source>
         <translation>Ошибка при чтении данных из поискового процесса</translation>
     </message>
@@ -789,12 +779,12 @@ Spy-сервис работает</translation>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Нет подключенных словарей&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="87"/>
+        <location filename="GoogleTranslate.py" line="86"/>
         <source>&lt;font class=&quot;info_font&quot;&gt;Please wait...&lt;/font&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="134"/>
+        <location filename="GoogleTranslate.py" line="133"/>
         <source>&lt;font class=&quot;info_font&quot;&gt;Aborted&lt;/font&gt;</source>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Прервано&lt;/font&gt;</translation>
     </message>
@@ -809,7 +799,7 @@ Spy-сервис работает</translation>
         <translation>&lt;font class=&quot;info_font&quot;&gt;Пусто&lt;/font&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="100"/>
+        <location filename="GoogleTranslate.py" line="99"/>
         <source>&lt;font class=&quot;word_header_font&quot;&gt;Link of site &quot;%1&quot; translation was opened in your browser&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</source>
         <translation>&lt;font class=&quot;word_header_font&quot;&gt;Перевод сайта &quot;%1&quot; открыт в вашем браузере&lt;/font&gt;&lt;hr&gt;&lt;br&gt;&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;</translation>
     </message>
@@ -856,12 +846,12 @@ If not, remove lock file &quot;%2&quot;</source>
         <translation>&lt;h3&gt;%1 - графический интерфейс для SL&lt;/h3&gt;Все программы пакета &lt;strong&gt;%2&lt;/strong&gt; распространяются по лицензии&lt;br&gt;&lt;strong&gt;GPLv2&lt;/strong&gt;. Подробнее смотрите в разделе &lt;em&gt;Лицензионное соглашение&lt;/em&gt;&lt;br&gt; руководства &lt;strong&gt;%2&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Автор пакета &lt;strong&gt;%2&lt;/strong&gt;:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Деваев Максим&lt;/em&gt;&lt;br&gt;Спасибо:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Бабуриной Елизавете&lt;/em&gt;&lt;br&gt;Помогали:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Владимир Фомкин&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Тихонов Сергей&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ренат Насыров&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Доу Винх&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Алексей Юм&lt;/em&gt;&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Ольга Полякова&lt;/em&gt;&lt;br&gt;Переводчики:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;em&gt;Кирилл Небогин&lt;/em&gt;&lt;br&gt;&lt;br&gt;&lt;em&gt;Copyright &amp;copy; 2007-2016 Devaev Maxim (&lt;a href=&quot;mailto:%3?subject=%2&quot;&gt;%3&lt;/a&gt;)&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="GoogleTranslate.py" line="193"/>
+        <location filename="GoogleTranslate.py" line="196"/>
         <source>&lt;font class=&quot;word_header_font&quot;&gt;Translated: %1 &amp;#187; %2&lt;/font&gt;&lt;hr&gt;%3</source>
         <translation>&lt;font class=&quot;word_header_font&quot;&gt;Текст переведен: %1 &amp;#187; %2&lt;/font&gt;&lt;hr&gt;%3</translation>
     </message>
     <message>
-        <location filename="MainWindow.py" line="148"/>
+        <location filename="MainWindow.py" line="133"/>
         <source>&amp;Panels</source>
         <translation>Пане&amp;ли</translation>
     </message>
@@ -879,6 +869,16 @@ If not, remove lock file &quot;%2&quot;</source>
         <location filename="SpyMenu.py" line="97"/>
         <source>Translate methods</source>
         <translation>Методы перевода</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslatePanel.py" line="79"/>
+        <source>Guess</source>
+        <translation>Угадать</translation>
+    </message>
+    <message>
+        <location filename="GoogleTranslate.py" line="176"/>
+        <source>%1 (guessed)</source>
+        <translation>%1 (угадано)</translation>
     </message>
 </context>
 </TS>
