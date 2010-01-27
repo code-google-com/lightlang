@@ -30,3 +30,5 @@ DataRootDir = "@datarootdir@"
 #MansDir = "@mandir@"
 DocsDir = "@docdir@"
 
+QtTrDir = "@QT_TR_DIR@"
+

@@ -32,6 +32,8 @@ import MainWindow
 
 
 #####
+TrPostfix = ".qm"
+
 TrDir = Config.DataRootDir+"/xsl/tr/"
 MySplash = Config.DataRootDir+"/xsl/pictures/xsl_splash.png"
 
@@ -59,9 +61,17 @@ class Main :
 		self.app = MainApplication.MainApplication(self.argv)
 		self.app.setQuitOnLastWindowClosed(self.no_tray_icon)
 
-		self.translator = Qt.QTranslator()
-		self.translator.load(TrDir+Locale.mainLang())
-		self.app.installTranslator(self.translator)
+		tr_file_path = Qt.QString("%1/%2%3").arg(TrDir).arg(Locale.mainLang()).arg(TrPostfix)
+		if Qt.QFile.exists(tr_file_path) :
+			self.translator = Qt.QTranslator()
+			self.translator.load(tr_file_path)
+			self.app.installTranslator(self.translator)
+
+		qt_tr_file_path = Qt.QString("%1/qt_%2%3").arg(Config.QtTrDir).arg(Locale.mainLang()).arg(TrPostfix)
+		if Qt.QFile.exists(qt_tr_file_path) :
+			self.qt_translator = Qt.QTranslator()
+			self.qt_translator.load(qt_tr_file_path)
+			self.app.installTranslator(self.qt_translator)
 
 		self.app.setStyleSheet(UserStyleCss.userStyleCss())
 

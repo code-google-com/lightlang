@@ -635,7 +635,8 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='LTLIBOBJS
+ac_subst_vars='QT_TR_DIR
+LTLIBOBJS
 LIB@&t@OBJS
 AUDIO_PLAYER_PROG
 PYTHON_PROG
@@ -7670,6 +7671,13 @@ docdir=`eval echo \`echo $docdir\``
 
 
 
+if [ "$GUI_FLAG" = "yes" ]; then
+	QT_TR_DIR=`pkg-config Qt --variable=translationdir`
+
+fi
+
+
+
 ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
 
 ac_config_commands="$ac_config_commands default"
@@ -8831,15 +8839,18 @@ fi
 
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default config :" $DEFAULT_CONFIG
-echo "  Audio player   :" $AUDIO_PLAYER
-echo "  prefix         :" $prefix
-echo "  exec_prefix    :" $exec_prefix
-echo "  bindir         :" $bindir
-echo "  libdir         :" $libdir
-echo "  datarootdir    :" $datarootdir
-echo "  mandir         :" $mandir
-echo "  docdir         :" $docdir
+echo "  Default config     :" $DEFAULT_CONFIG
+echo "  Audio player       :" $AUDIO_PLAYER
+echo "  prefix             :" $prefix
+echo "  exec_prefix        :" $exec_prefix
+echo "  bindir             :" $bindir
+echo "  libdir             :" $libdir
+echo "  datarootdir        :" $datarootdir
+echo "  mandir             :" $mandir
+echo "  docdir             :" $docdir
+if [ "$GUI_FLAG" = "yes" ]; then
+	echo "  Qt translations dir :" $QT_TR_DIR
+fi
 echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS      :" $CFLAGS
 echo "  GUI support :" $GUI_FLAG

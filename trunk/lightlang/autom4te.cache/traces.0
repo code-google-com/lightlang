@@ -373,7 +373,10 @@ m4trace:configure.in:140: -1- m4_pattern_allow([^mandir$])
 m4trace:configure.in:141: -1- AC_SUBST([docdir], [`eval echo \`echo $docdir\``])
 m4trace:configure.in:141: -1- AC_SUBST_TRACE([docdir])
 m4trace:configure.in:141: -1- m4_pattern_allow([^docdir$])
-m4trace:configure.in:146: -1- AC_CONFIG_FILES([Makefile
+m4trace:configure.in:147: -1- AC_SUBST([QT_TR_DIR], [`pkg-config Qt --variable=translationdir`])
+m4trace:configure.in:147: -1- AC_SUBST_TRACE([QT_TR_DIR])
+m4trace:configure.in:147: -1- m4_pattern_allow([^QT_TR_DIR$])
+m4trace:configure.in:153: -1- AC_CONFIG_FILES([Makefile
 apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile
 resources/Makefile resources/dicts/Makefile resources/sounds/Makefile
 pkg/Makefile
@@ -383,21 +386,21 @@ docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile
 download.py
 apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py
 pkg/pkg/lightlang.pc])
-m4trace:configure.in:146: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
+m4trace:configure.in:153: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
 You should run autoupdate.], [])
-m4trace:configure.in:146: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
-m4trace:configure.in:146: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.in:146: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([LTLIBOBJS])
-m4trace:configure.in:146: -1- m4_pattern_allow([^LTLIBOBJS$])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([top_builddir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([top_build_prefix])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([srcdir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([abs_srcdir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([top_srcdir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([abs_top_srcdir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([builddir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([abs_builddir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([abs_top_builddir])
-m4trace:configure.in:146: -1- AC_SUBST_TRACE([INSTALL])
+m4trace:configure.in:153: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([LIB@&t@OBJS])
+m4trace:configure.in:153: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.in:153: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([LTLIBOBJS])
+m4trace:configure.in:153: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([top_builddir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([top_build_prefix])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([srcdir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([abs_srcdir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([top_srcdir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([abs_top_srcdir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([builddir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([abs_builddir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([abs_top_builddir])
+m4trace:configure.in:153: -1- AC_SUBST_TRACE([INSTALL])

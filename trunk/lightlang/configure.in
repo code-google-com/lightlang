@@ -129,7 +129,7 @@ if [[ "$GUI_FLAG" = "yes" ]]; then
 fi
 
 
-dnl ##### Dog-values hack #####
+dnl ##### Values hack #####
 
 AC_OUTPUT()
 AC_SUBST(prefix, `eval echo \`echo $prefix\``)
@@ -139,6 +139,13 @@ AC_SUBST(libdir, `eval echo \`echo $libdir\``)
 AC_SUBST(datarootdir, `eval echo \`echo $datarootdir\``)
 AC_SUBST(mandir, `eval echo \`echo $mandir\``)
 AC_SUBST(docdir, `eval echo \`echo $docdir\``)
+
+
+dnl ##### Pkg-config values #####
+
+if [[ "$GUI_FLAG" = "yes" ]]; then
+	AC_SUBST(QT_TR_DIR, `pkg-config Qt --variable=translationdir`)
+fi
 
 
 dnl ##### Outputs #####
@@ -159,15 +166,18 @@ pkg/pkg/lightlang.pc],
 dnl ##### Information #####
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default config :" $DEFAULT_CONFIG
-echo "  Audio player   :" $AUDIO_PLAYER
-echo "  prefix         :" $prefix
-echo "  exec_prefix    :" $exec_prefix
-echo "  bindir         :" $bindir
-echo "  libdir         :" $libdir
-echo "  datarootdir    :" $datarootdir
-echo "  mandir         :" $mandir
-echo "  docdir         :" $docdir
+echo "  Default config     :" $DEFAULT_CONFIG
+echo "  Audio player       :" $AUDIO_PLAYER
+echo "  prefix             :" $prefix
+echo "  exec_prefix        :" $exec_prefix
+echo "  bindir             :" $bindir
+echo "  libdir             :" $libdir
+echo "  datarootdir        :" $datarootdir
+echo "  mandir             :" $mandir
+echo "  docdir             :" $docdir
+if [[ "$GUI_FLAG" = "yes" ]]; then
+	echo "  Qt translations dir :" $QT_TR_DIR
+fi
 echo "+---------------------------------------------------------------------+"
 echo "  CFLAGS      :" $CFLAGS
 echo "  GUI support :" $GUI_FLAG
