@@ -166,21 +166,21 @@ pkg/pkg/lightlang.pc],
 dnl ##### Information #####
 
 echo "+---------------------------------------------------------------------+"
-echo "  Default config     :" $DEFAULT_CONFIG
-echo "  Audio player       :" $AUDIO_PLAYER
-echo "  prefix             :" $prefix
-echo "  exec_prefix        :" $exec_prefix
-echo "  bindir             :" $bindir
-echo "  libdir             :" $libdir
-echo "  datarootdir        :" $datarootdir
-echo "  mandir             :" $mandir
-echo "  docdir             :" $docdir
+echo "  Default config      :" $DEFAULT_CONFIG
+echo "  Audio player        :" $AUDIO_PLAYER
+echo "  prefix              :" $prefix
+echo "  exec_prefix         :" $exec_prefix
+echo "  bindir              :" $bindir
+echo "  libdir              :" $libdir
+echo "  datarootdir         :" $datarootdir
+echo "  mandir              :" $mandir
+echo "  docdir              :" $docdir
 if [[ "$GUI_FLAG" = "yes" ]]; then
 	echo "  Qt translations dir :" $QT_TR_DIR
 fi
 echo "+---------------------------------------------------------------------+"
-echo "  CFLAGS      :" $CFLAGS
-echo "  GUI support :" $GUI_FLAG
+echo "  CFLAGS              :" $CFLAGS
+echo "  GUI support         :" $GUI_FLAG
 if [[ "$GUI_FLAG" = "yes" ]]; then
 	echo "+---------------------------------------------------------------------+"
 	if [[ "$PYTHON_XLIB_FLAG" = "yes" ]]; then
