@@ -36,6 +36,7 @@ all :
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_DICTS_DIR)
 	-$(CHMOD) 777 $(DESTDIR)$(INS_DICTS_DIR)
+	-$(CHMOD) +t $(DESTDIR)$(INS_DICTS_DIR)
 	-$(CP) -f $(DICTS_DIR)/*.??-?? $(DESTDIR)$(INS_DICTS_DIR)
 
 uninstall :
