@@ -83,6 +83,7 @@ class AboutWindow(Qt.QDialog) :
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Du Vinh</em><br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Aleksey Yum</em><br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Olga Polyakova</em><br>"
+			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Vitaly Lipatov</em><br>"
 			"Translators:<br>"
 			"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>Kirill Nebogin</em><br>"
 			"<br>"
