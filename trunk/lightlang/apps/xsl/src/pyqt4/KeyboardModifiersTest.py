@@ -58,8 +58,7 @@ def checkModifier(modifier) :
 
 	keymap = DisplayObject.query_keymap()
 	keycode = DisplayObject.keysym_to_keycode(modifier)
-
-	return 1 & (keymap[keycode / 8] >> (keycode & 7))
+	return bool(1 & (keymap[keycode / 8] >> (keycode & 7)))
 
 
 #####

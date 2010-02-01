@@ -24,7 +24,8 @@ import Qt
 import Config
 import Const
 try : # Optional python-xlib requires
-	import KeyboardModifiers
+	import MouseButtonsTest
+	import KeyboardModifiersTest
 except : pass
 
 
@@ -47,7 +48,7 @@ class MouseSelector(Qt.QObject) :
 		self.timer.setInterval(300)
 
 		try :
-			self.modifier = KeyboardModifiers.NoModifier
+			self.modifier = KeyboardModifiersTest.NoModifier
 		except : pass
 
 		#####
@@ -77,6 +78,11 @@ class MouseSelector(Qt.QObject) :
 	### Private ###
 
 	def checkSelection(self) :
+		try :
+			if MouseButtonsTest.checkMainButtons() :
+				return
+		except : pass
+
 		word = self.clipboard.text(Qt.QClipboard.Selection)
 		word = word.simplified().toLower()
 		if word.isEmpty() :
@@ -86,10 +92,8 @@ class MouseSelector(Qt.QObject) :
 			return
 		self.old_selection = word
 
-		# TODO (Issue 80): add mouse-buttons checks here
-
 		try :
-			if not KeyboardModifiers.checkModifier(self.modifier) :
+			if not KeyboardModifiersTest.checkModifier(self.modifier) :
 				return
 		except : pass
 
