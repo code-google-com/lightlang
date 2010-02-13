@@ -102,75 +102,71 @@ void version(void)
 ********************************************************************************/
 void debug(void)
 {
-	printf("Program name\t\t:\t%s\n", MYNAME);
-	printf("Program version\t\t:\t%s\n", VERSION);
-	printf("Package version\t\t:\t%s\n", PACKAGE_VERSION);
+	printf("Program name: %s\n", MYNAME);
+	printf("Program version: %s\n", VERSION);
+	printf("Package version: %s\n", PACKAGE_VERSION);
 
 #ifdef __DATE__
-	printf("Date of compilation\t:\t%s\n", __DATE__);
+	printf("Date of compilation: %s\n", __DATE__);
 #endif
 
 #ifdef __TIME__
-	printf("Time of compilation\t:\t%s\n", __TIME__);
+	printf("Time of compilation: %s\n", __TIME__);
 #endif
 
-	putchar('\n');
-
 #ifdef __VERSION__
-	printf("GCC version\t\t:\t%s\n", __VERSION__);
+	printf("GCC version: %s\n", __VERSION__);
 #endif
 
 #if __STDC_VERSION__ == 199901L
-	puts("C standard\t\t:\tC99");
+	puts("C standard: C99");
 #else
-	puts("C standard\t\t:\tNot C99");
+	puts("C standard: Not C99");
 #endif
 
 #ifdef __OPTIMIZE__
-	puts("Optimize\t\t:\tYes");
+	puts("Optimize: Yes");
 #else
-	puts("Optimize\t\t:\tNo");
+	puts("Optimize: No");
 #endif
 
 #ifdef __CFLAGS
-	printf("CFLAGS\t\t\t:\t%s\n", CFLAGS);
+	printf("CFLAGS: %s\n", CFLAGS);
 #endif
 
 #if defined(linux) || defined(__linux) || defined(__linux__)
-	puts("System\t\t\t:\tLinux");
+	puts("System: Linux");
 #elif defined(__FreeBSD__)
-	puts("System\t\t\t:\tFreeBSD");
+	puts("System: FreeBSD");
 #elif defined(__NetBSD__)
-	puts("System\t\t\t:\tNetBSD");
+	puts("System: NetBSD");
 #elif defined(__OpenBSD__)
-	puts("System\t\t\t:\tOpenBSD");
+	puts("System: OpenBSD");
 #elif defined(__DragonFly__)
-	puts("System\t\t\t:\tDragonFlyBSD");
+	puts("System: DragonFlyBSD");
 #elif defined(sun) || defined(__sun)
-	puts("System\t\t\t:\tSolaris");
+	puts("System: Solaris");
 #elif defined(__CYGWIN__)
-	puts("System\t\t\t:\tCygwin o_O ?!?");
+	puts("System: Cygwin o_O ?!?");
 #else
-	puts("System\t\t\t:\tOther");
+	puts("System: Other");
 #endif
 
 #if defined(__i386) || defined(__i386__)
-	puts("Architecture\t\t:\ti386");
+	puts("Architecture: i386");
 #elif defined(__x86_64) || defined(__x86_64__)
-	puts("Architecture\t\t:\tx86_64");
+	puts("Architecture: x86_64");
 # if defined(__amd64) || defined(__amd64__)
-	puts("Architecture\t\t:\tAMD64");
+	puts("Architecture: AMD64");
 # endif
 #else
-	puts("Architecture\t\t:\tOther");
+	puts("Architecture: Other");
 #endif
 
 	putchar('\n');
 
 	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
 	printf("datarootdir\t\t:\t%s\n", DATA_ROOT_DIR);
-
-	putchar('\n');
 }
 
 /********************************************************************************
