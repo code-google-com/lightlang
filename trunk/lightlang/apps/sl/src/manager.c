@@ -61,8 +61,10 @@ int install_dict(const char *in_dict_path)
 
 
 	// Opredelyaem imya slovarya ...
-	if ( (ptr = strrchr(in_dict_path, '/')) == NULL ) dict_name = (char *) in_dict_path;
-	else dict_name = ptr + 1;
+	if ( (ptr = strrchr(in_dict_path, '/')) == NULL )
+		dict_name = (char *) in_dict_path;
+	else
+		dict_name = ptr + 1;
 	// dict_name = (char *) in_dict_path;
 	// Eta strochka potencialno opasnaya, poskolku <in_dict_path> - konstanta,
 	// a <dict_name> - net. Tut bylo ispolzovano privedenie tipov, chtoby
@@ -311,7 +313,8 @@ int print_index(const char *dict_path)
 		if ( (str[0] == '#') || (str[0] == '\n') ) continue;
 
 		// Filtruem ...
-		if ( (ptr = strstr(str, "  ")) != NULL ) (*ptr) = '\0';
+		if ( (ptr = strstr(str, "  ")) != NULL )
+			(*ptr) = '\0';
 		else continue;
 
 		// Sravnivaem predydushiy simvol i tekushiy
