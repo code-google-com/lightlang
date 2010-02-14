@@ -65,7 +65,6 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 	long		pos;				// Smeshenie v file (index)
 	int		translate_count = 0;		// Schetchik kolichestva sovpadeniy
 	bool		break_end_flag = false;		// Flag propuska konca fila
-	bool		first_translate_flag = true;	// Flag pervogo perevoda v file
 	extern settings_t settings;			// Nastroyki sistemy
 	//////////////////////////////////////////////////
 
@@ -113,10 +112,11 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			{
 				++translate_count;
 
-				if ( first_translate_flag )
+				if ( translate_count == 1 )
 				{
 					print_separator();
 					print_header(dict_name);
+					print_separator();
 
 					if ( settings.output_format == html_output_format )
 						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
@@ -124,9 +124,10 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
 
-					first_translate_flag = false;
+					print_separator();
 				}
 				print_translate(str, translate_count);
+				print_separator();
 
 				if ( translate_count >= settings.max_translate_count ) break;
 			}
@@ -171,10 +172,11 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			{
 				++translate_count;
 
-				if ( first_translate_flag )
+				if ( translate_count == 1 )
 				{
 					print_separator();
 					print_header(dict_name);
+					print_separator();
 
 					if ( settings.output_format == html_output_format )
 						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
@@ -182,9 +184,10 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
 
-					first_translate_flag = false;
+					print_separator();
 				}
 				print_translate(str, translate_count);
+				print_separator();
 
 				break;
 			}
@@ -210,10 +213,11 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				{
 					++translate_count;
 
-					if ( first_translate_flag )
+					if ( translate_count == 1 )
 					{
 						print_separator();
 						print_header(dict_name);
+						print_separator();
 
 						if ( settings.output_format == html_output_format )
 							printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
@@ -221,9 +225,10 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 							printf("\n\t<< %ls >>\n", word_wc);
 						// native format pass
 
-						first_translate_flag = false;
+						print_separator();
 					}
 					print_translate(str, translate_count);
+					print_separator();
 
 					if ( translate_count >= settings.max_translate_count ) goto external_loop_break_label;
 
@@ -273,7 +278,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			{
 				++translate_count;
 
-				if ( first_translate_flag )
+				if ( translate_count == 1 )
 				{
 					print_separator();
 					print_header(dict_name);
@@ -285,7 +290,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
 
-					first_translate_flag = false;
+					print_separator();
 				}
 				print_list_item(str_wc, translate_count);
 
@@ -312,7 +317,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 			{
 				++translate_count;
 
-				if ( first_translate_flag )
+				if ( translate_count == 1 )
 				{
 					print_separator();
 					print_header(dict_name);
@@ -324,7 +329,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 						printf("\n\t<< %ls >>\n", word_wc);
 					// native format pass
 
-					first_translate_flag = false;
+					print_separator();
 				}
 				print_list_item(str_wc, translate_count);
 
@@ -412,8 +417,8 @@ int find_sound(const char *word)
 			return -1;
 		}
 
-		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc, token_word_wc[0],
-			token_word_wc, AUDIO_POSTFIX);
+		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc,
+			token_word_wc[0], token_word_wc, AUDIO_POSTFIX);
 
 		system(play_command);
 
@@ -560,7 +565,7 @@ static void print_separator(void)
 
 	if ( settings.output_format == html_output_format )
 	{
-		fputs("\t<hr>\n", stdout);
+		puts("\t<hr>");
 	}
 	else if ( settings.output_format == text_output_format )
 	{
@@ -686,9 +691,6 @@ static void print_translate(const char *str, const int word_number)
 	extern settings_t	settings;		// Parametry sistemy
 	//////////////////////////////////////////////////
 
-
-	if ( word_number == 1 )
-		print_separator();
 
 	if ( settings.output_format == html_output_format )
 	{
@@ -997,7 +999,6 @@ static void print_translate(const char *str, const int word_number)
 	}
 
 	putchar('\n');
-	print_separator();
 }
 
 /********************************************************************************
