@@ -91,8 +91,7 @@ void help(void)
 ********************************************************************************/
 void version(void)
 {
-	printf("%s-%s, Copyright (C) 2007-2016 Devaev Maxim, %s\n",
-		MYNAME, VERSION, DEVELOPER_MAIL);
+	printf("%s-%s, Copyright (C) 2007-2016 Devaev Maxim, %s\n", MYNAME, VERSION, DEVELOPER_MAIL);
 }
 
 /********************************************************************************
