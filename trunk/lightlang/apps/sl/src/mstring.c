@@ -141,6 +141,7 @@ wchar_t *strnlowcpy_filter_wc(wchar_t *str_wc, const char *str, size_t count)
 		(*ptr_str_wc) = towlower(*ptr_str_wc);
 
 		if ( ptr_str_wc == str_wc ) continue;
+
 		if ( ((*(ptr_str_wc - 1)) == L' ') && (*(ptr_str_wc) == L' ') )
 		{
 			(*(ptr_str_wc - 1)) = L'\0';

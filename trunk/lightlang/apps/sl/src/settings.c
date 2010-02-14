@@ -64,9 +64,10 @@ int init_settings(void)
 
 	if ( init_locale() != 0 ) return -1;
 	if ( init_user_dicts_dir() != 0 ) return -1;
-	if ( init_locale_encoding() != 0 ) {}
-	if ( init_max_terminal_line_len() != 0 ) {}
-	if ( init_use_terminal_escapes_flag() != 0 ) {}
+
+	init_locale_encoding();
+	init_max_terminal_line_len();
+	init_use_terminal_escapes_flag();
 
 	settings.max_translate_count = DEFAULT_MAX_TRANSLATE_COUNT;
 	settings.output_format = text_output_format;
@@ -148,12 +149,14 @@ static int init_user_dicts_dir(void)
 	sprintf(settings.user_dicts_dir, "%s/%s", home_dir, USER_DICTS_SUBDIR);
 
 	if ( access(settings.user_dicts_dir, F_OK) != 0 )
+	{
 		if ( mkdir(settings.user_dicts_dir, 0755) != 0 )
 		{
 			fprintf(stderr, "%s: cannot create user dicts folder \"%s\": %s\n",
 				MYNAME, settings.user_dicts_dir, strerror(errno));
 			return -1;
 		}
+	}
 
 	return 0;
 }
@@ -193,8 +196,10 @@ static int init_max_terminal_line_len(void)
 	// Bez kommentariev :)
 
 	if ( (max_terminal_line_len_str = getenv("COLUMNS")) != NULL )
+	{
 		if ( (settings.max_terminal_line_len = atoi(max_terminal_line_len_str)) != 0 )
 			return 0;
+	}
 
 	if ( ioctl(1, TIOCGWINSZ, &win_size) == 0 )
 	{
