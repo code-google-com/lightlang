@@ -47,11 +47,13 @@
 void del_nl(char *str)
 {
 	for(; (*str); str++)
+	{
 		if ( (*str) == '\n' )
 		{
 			(*str) = '\0';
 			break;
 		}
+	}
 }
 
 /********************************************************************************
@@ -104,8 +106,7 @@ wchar_t *strnlowcpy_wc(wchar_t *str_wc, const char *str, size_t count)
 
 	memset(&mbstate, 0, sizeof(mbstate));
 
-	for (; ((str_offset = mbrtowc(ptr_str_wc, str, sizeof(wchar_t), &mbstate)) > 0) && count;
-		++ptr_str_wc, str += str_offset, --count)
+	for (; ((str_offset = mbrtowc(ptr_str_wc, str, sizeof(wchar_t), &mbstate)) > 0) && count; ++ptr_str_wc, str += str_offset, --count)
 		(*ptr_str_wc) = towlower(*ptr_str_wc);
 
 	(*ptr_str_wc) = L'\0';
@@ -114,7 +115,8 @@ wchar_t *strnlowcpy_wc(wchar_t *str_wc, const char *str, size_t count)
 		str_wc[0] = L'\0';
 		return NULL;
 	}
-	else return str_wc;
+
+	return str_wc;
 }
 
 /********************************************************************************
@@ -134,8 +136,7 @@ wchar_t *strnlowcpy_filter_wc(wchar_t *str_wc, const char *str, size_t count)
 
 	memset(&mbstate, 0, sizeof(mbstate));
 
-	for (; ((str_offset = mbrtowc(ptr_str_wc, str, sizeof(wchar_t), &mbstate)) > 0) && count;
-		++ptr_str_wc, str += str_offset, --count)
+	for (; ((str_offset = mbrtowc(ptr_str_wc, str, sizeof(wchar_t), &mbstate)) > 0) && count; ++ptr_str_wc, str += str_offset, --count)
 	{
 		(*ptr_str_wc) = towlower(*ptr_str_wc);
 
@@ -209,7 +210,8 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 	{
 		for (; (*str1_wc); str1_wc++, str2_wc++)
 		{
-			if ( (*str1_wc) != (*str2_wc) ) ++error_count;
+			if ( (*str1_wc) != (*str2_wc) )
+				++error_count;
 
 			if ( error_count > search_exact ) return 1;
 		}
@@ -226,7 +228,10 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 				++error_count;
 				++str2_wc;
 			}
-			else ++error_count;
+			else
+			{
+				++error_count;
+			}
 
 			if ( (error_count + (str2_wc_len - str1_wc_len)) > search_exact )
 				return 1;
@@ -234,7 +239,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 
 		if ( (error_count + (str2_wc_len - str1_wc_len)) <= search_exact )
 			return 0;
-		else return 1;
+		return 1;
 	}
 	else
 	{
@@ -246,7 +251,10 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 				++error_count;
 				++str1_wc;
 			}
-			else ++error_count;
+			else
+			{
+				++error_count;
+			}
 
 			if ( (error_count + (str1_wc_len - str2_wc_len)) > search_exact )
 				return 1;
@@ -254,7 +262,7 @@ int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int per
 
 		if ( (error_count + (str1_wc_len - str2_wc_len)) <= search_exact )
 			return 0;
-		else return 1;
+		return 1;
 	}
 }
 
