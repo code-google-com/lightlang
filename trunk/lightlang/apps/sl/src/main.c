@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 
 	while ( (ch = getopt_long(argc, argv, ":u:f:c:l:i:s:m:p:thvd", long_options, NULL)) != -1 )
 	{
-		switch (ch)
+		switch ( ch )
 		{
 			case 'u' : ec += xfind_word(optarg, usually_regimen, 0, dicts_list);
 				use_default_function_flag = false;
@@ -217,7 +217,9 @@ int main(int argc, char **argv)
 	}
 
 	if ( (argc == 2) && use_default_function_flag )
+	{
 		xfind_word(argv[1], usually_regimen, 0, NULL);
+	}
 	else if ( (argc != 2) && use_default_function_flag )
 	{
 		fprintf(stderr, "%s: bad usage, try \"%s --help\"\n", MYNAME, MYNAME);
@@ -303,7 +305,8 @@ static void set_output_format(const char *str)
 		settings.output_format = text_output_format;
 	else if ( !strcmp(str, NATIVE_OUTPUT_FORMAT) )
 		settings.output_format = native_output_format;
-	else fprintf(stderr, "%s: unknown format \"%s\": ignored\n", MYNAME, str);
+	else
+		fprintf(stderr, "%s: unknown format \"%s\": ignored\n", MYNAME, str);
 }
 
 /********************************************************************************
@@ -322,7 +325,8 @@ static void set_use_terminal_escapes_flag(const char *str)
 		settings.use_terminal_escapes_flag = true;
 	else if ( !strcmp(str, "no") )
 		settings.use_terminal_escapes_flag = false;
-	else fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
+	else
+		fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
 }
 
 /********************************************************************************
@@ -340,7 +344,8 @@ static void set_use_css_flag(const char *str)
 		settings.use_css_flag = true;
 	else if ( !strcmp(str, "no") )
 		settings.use_css_flag = false;
-	else fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
+	else
+		fprintf(stderr, "%s: unknown replay \"%s\", use \"yes\" or \"no\": ignored\n", MYNAME, str);
 }
 
 /********************************************************************************
@@ -425,16 +430,20 @@ static int xfind_word(const char *word, const regimen_t regimen, const int perce
 	}
 
 	if ( no_translate_flag )
+	{
 		if ( settings.output_format == html_output_format )
 			puts("\t<font class=\"info_font\">This word is not found</font><br>");
 		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
 			printf("%s: this word is not found\n", MYNAME);
+	}
 
 	if ( no_dicts_flag )
+	{
 		if ( settings.output_format == html_output_format )
 			puts("\t<font class=\"info_font\">No dict is connected</font><br>");
 		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
 			printf("%s: no dict is connected\n", MYNAME);
+	}
 
 	print_end_page();
 
@@ -463,8 +472,7 @@ static FILE *get_next_dict_fp_from_dir(char **dict_name, DIR *dicts_dp)
 	{
 		if ( dicts_dp_ent->d_name[0] == '.' ) continue;
 
-		dict_path_len = (strlen(settings.user_dicts_dir) +
-			strlen(dicts_dp_ent->d_name) + 16) * sizeof(char);
+		dict_path_len = (strlen(settings.user_dicts_dir) + strlen(dicts_dp_ent->d_name) + 16) * sizeof(char);
 
 		if ( (dict_path = (char *) malloc(dict_path_len)) == NULL )
 		{
@@ -536,7 +544,8 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 			count1 = 0;
 			return NULL;
 		}
-		else for (; dicts_list[count1] == '|'; count1++); // Propusk razdeliteley
+		else
+			for (; dicts_list[count1] == '|'; count1++); // Propusk razdeliteley
 
 		for (count2 = 0; dicts_list[count1] && (dicts_list[count1] != '|') && (count2 < PATH_MAX - 1); count1++, count2++)
 			dicts_list_item[count2] = dicts_list[count1]; // Parsim
