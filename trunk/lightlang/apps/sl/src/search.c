@@ -113,19 +113,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				++translate_count;
 
 				if ( translate_count == 1 )
-				{
-					print_separator();
-					print_header(dict_name);
-					print_separator();
-
-					if ( settings.output_format == html_output_format )
-						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-					else if ( settings.output_format == text_output_format )
-						printf("\n\t<< %ls >>\n", word_wc);
-					// native format pass
-
-					print_separator();
-				}
+					print_header(dict_name, word_wc);
 				print_translate(str, translate_count);
 				print_separator();
 
@@ -173,19 +161,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				++translate_count;
 
 				if ( translate_count == 1 )
-				{
-					print_separator();
-					print_header(dict_name);
-					print_separator();
-
-					if ( settings.output_format == html_output_format )
-						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-					else if ( settings.output_format == text_output_format )
-						printf("\n\t<< %ls >>\n", word_wc);
-					// native format pass
-
-					print_separator();
-				}
+					print_header(dict_name, word_wc);
 				print_translate(str, translate_count);
 				print_separator();
 
@@ -214,19 +190,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 					++translate_count;
 
 					if ( translate_count == 1 )
-					{
-						print_separator();
-						print_header(dict_name);
-						print_separator();
-
-						if ( settings.output_format == html_output_format )
-							printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-						else if ( settings.output_format == text_output_format )
-							printf("\n\t<< %ls >>\n", word_wc);
-						// native format pass
-
-						print_separator();
-					}
+						print_header(dict_name, word_wc);
 					print_translate(str, translate_count);
 					print_separator();
 
@@ -279,19 +243,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				++translate_count;
 
 				if ( translate_count == 1 )
-				{
-					print_separator();
-					print_header(dict_name);
-					print_separator();
-
-					if ( settings.output_format == html_output_format )
-						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-					else if ( settings.output_format == text_output_format )
-						printf("\n\t<< %ls >>\n", word_wc);
-					// native format pass
-
-					print_separator();
-				}
+					print_header(dict_name, word_wc);
 				print_list_item(str_wc, translate_count);
 
 				if ( translate_count >= settings.max_translate_count ) break;
@@ -318,19 +270,7 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				++translate_count;
 
 				if ( translate_count == 1 )
-				{
-					print_separator();
-					print_header(dict_name);
-					print_separator();
-
-					if ( settings.output_format == html_output_format )
-						printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-					else if ( settings.output_format == text_output_format )
-						printf("\n\t<< %ls >>\n", word_wc);
-					// native format pass
-
-					print_separator();
-				}
+					print_header(dict_name, word_wc);
 				print_list_item(str_wc, translate_count);
 
 				if ( translate_count >= settings.max_translate_count ) break;
@@ -581,13 +521,15 @@ static void print_separator(void)
 *	print_header() - pechataet vyrovnennyy po centru zagolovok.		*
 *										*
 ********************************************************************************/
-static void print_header(const char *dict_name)
+static void print_header(const char *dict_name, const wchar_t *word_wc)
 {
 	//////////////////////////////////
 	int	count;			// Schetchik
 	extern settings_t settings;	// Parametry sistemy
 	//////////////////////////////////
 
+
+	print_separator();
 
 	if ( settings.output_format == html_output_format )
 	{
@@ -636,6 +578,16 @@ static void print_header(const char *dict_name)
 		}
 	}
 	// native format pass
+
+	print_separator();
+
+	if ( settings.output_format == html_output_format )
+		printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
+	else if ( settings.output_format == text_output_format )
+		printf("\n\t<< %ls >>\n", word_wc);
+	// native format pass
+
+	print_separator();
 }
 
 /********************************************************************************

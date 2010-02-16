@@ -57,7 +57,7 @@ static long read_index(const wchar_t ch_wc, FILE *dict_fp);
 void print_begin_page(const char *word);
 void print_end_page(void);
 static void print_separator(void);
-static void print_header(const char *dict_name);
+static void print_header(const char *dict_name, const wchar_t *word_wc);
 
 static void print_list_item(const wchar_t *word_wc, const int word_number);
 static void print_translate(const char *str, const int number);
