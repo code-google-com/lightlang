@@ -48,8 +48,8 @@ AllRepositoriesTypes = [LocalRepositoriesType, RemoteRepositoriesType]
 DictsResourcesPostfix = ".bz2"
 SoundsResourcesPostfix = ".tar.bz2"
 
-DictsDir = "resources/dicts/src"
-SoundsDir = "resources/sounds/sounds"
+DictsDir = "resources/dicts/src/"
+SoundsDir = "resources/sounds/sounds/"
 
 ###
 TarProg = "@TAR_PROG@"
@@ -65,20 +65,6 @@ VersionCommand = "version"
 AllCommands = [RemoteListCommand, LocalListCommand,
 	InstallCommand, RemoveCommand,
 	HelpCommand, VersionCommand]
-
-
-#####
-class Resource(object) :
-	def __init__(self, resource_name, resource_type, file_path, file_size,
-		server = None, port = None, user = None, passwd = None) :
-		self.resource_name = resource_name
-		self.resource_type = resource_type
-		self.file_path = file_path
-		self.file_size = file_size
-		self.server = server
-		self.port = port
-		self.user = user
-		self.passwd = passwd
 
 
 #####
@@ -106,7 +92,7 @@ def sort_resources_list(resources_list, left = None, right = None) :
 
 	i = j = left
 	while j <= right :
-		if resources_list[j].resource_name <= resources_list[right].resource_name :
+		if resources_list[j]["resource_name"] <= resources_list[right]["resource_name"] :
 			resources_list[i], resources_list[j] = resources_list[j], resources_list[i]
 			i += 1
 		j += 1
@@ -162,8 +148,16 @@ def get_remote_resources_list(resources_type) :
 				print >> sys.stderr, "--- resource \"%s\" :: warning, error while getting size: %s" % (resource_name, str(err1))
 				continue
 
-			remote_resources_list.append(Resource(resource_name, resources_type, resources_files_list_item, resource_file_size,
-				repos_item["server"], int(repos_item["port"]), repos_item["user"], repos_item["passwd"]))
+			remote_resources_list.append({
+					"resource_name" : resource_name,
+					"resource_type" : resources_type,
+					"file_path" : resources_files_list_item,
+					"file_size" : resource_file_size,
+					"server" : repos_item["server"],
+					"port" : int(repos_item["port"]),
+					"user" : repos_item["user"],
+					"passwd" : repos_item["passwd"]
+				})
 
 			resources_count += 1
 
@@ -229,7 +223,12 @@ def get_local_resources_list(resources_type) :
 				print >> sys.stderr, "--- resource \"%s\" :: warning, error while getting size: %s" % (resource_name, str(err1))
 				continue
 
-		local_resources_list.append(Resource(resource_name, resources_type, resources_files_list_item, resource_file_size))
+		local_resources_list.append({
+				"resource_name" : resource_name,
+				"resource_type" : resources_type,
+				"file_path" : resources_files_list_item,
+				"file_size" : resource_file_size
+			})
 
 		resources_count += 1
 
@@ -251,10 +250,10 @@ def print_resources_list(resources_type, repositories_type) :
 
 	if repositories_type == RemoteRepositoriesType :
 		requested_resources_list = get_remote_resources_list(resources_type)
-		installed_resources_names_list = [ item.resource_name for item in get_local_resources_list(resources_type) ]
+		installed_resources_names_list = [ item["resource_name"] for item in get_local_resources_list(resources_type) ]
 	elif repositories_type == LocalRepositoriesType :
 		requested_resources_list = get_local_resources_list(resources_type)
-		installed_resources_names_list = [ item.resource_name for item in requested_resources_list ]
+		installed_resources_names_list = [ item["resource_name"] for item in requested_resources_list ]
 
 	if len(requested_resources_list) == 0 :
 		print >> sys.stderr, "No resources :-(\n"
@@ -272,16 +271,17 @@ def print_resources_list(resources_type, repositories_type) :
 	resources_count = 0
 
 	for requested_resources_list_item in requested_resources_list :
-		if requested_resources_list_item.resource_name in past_resources_names_list :
+		if requested_resources_list_item["resource_name"] in past_resources_names_list :
 			continue
 
-		past_resources_names_list.append(requested_resources_list_item.resource_name)
+		past_resources_names_list.append(requested_resources_list_item["resource_name"])
 		resources_count += 1
 
-		resource_installed_flag = ( True if requested_resources_list_item.resource_name in installed_resources_names_list else False )
+		resource_installed_flag = ( True if requested_resources_list_item["resource_name"] in installed_resources_names_list else False )
 
-		print ("%4d  %-"+str(int(get_terminal_width() * 0.72))+"s %4s %6d Kb") % ( resources_count, requested_resources_list_item.resource_name,
-			( "ins" if resource_installed_flag else "---" ), requested_resources_list_item.file_size/1024 )
+		print ("%4d  %-"+str(int(get_terminal_width() * 0.72))+"s %4s %6d Kb") % ( resources_count,
+			requested_resources_list_item["resource_name"], ( "ins" if resource_installed_flag else "---" ),
+			requested_resources_list_item["file_size"]/1024 )
 
 	print "="*get_terminal_width()+"\n"
 
@@ -301,53 +301,53 @@ def make_download_handler(out_file, out_file_size) :
 	return download_handler
 
 def download_resource(remote_resource, resource_file_path) :
-	short_stdout("--- resource \"%s\" :: downloading..." % (remote_resource.resource_name))
+	short_stdout("--- resource \"%s\" :: downloading..." % (remote_resource["resource_name"]))
 
 	try :
 		resource_file = open(resource_file_path, "wb")
 	except Exception, err1 :
 		print >> sys.stderr, "--- resource \"%s\" :: error while opening file \"%s\": %s" % (
-			remote_resource.resource_name, resource_file_path, str(err1) )
+			remote_resource["resource_name"], resource_file_path, str(err1) )
 		return -1
 
 	try :
 		ftp = ftplib.FTP()
-		short_stdout("--- server \"%s\" -> %s" % (remote_resource.server, ftp.connect(remote_resource.server, remote_resource.port)))
-		short_stdout("--- server \"%s\" -> %s" % (remote_resource.server, ftp.login(remote_resource.user, remote_resource.passwd)))
-		ftp.retrbinary("RETR %s" % (remote_resource.file_path), make_download_handler(resource_file, remote_resource.file_size))
+		short_stdout("--- server \"%s\" -> %s" % (remote_resource["server"], ftp.connect(remote_resource["server"], remote_resource["port"])))
+		short_stdout("--- server \"%s\" -> %s" % (remote_resource["server"], ftp.login(remote_resource["user"], remote_resource["passwd"])))
+		ftp.retrbinary("RETR %s" % (remote_resource["file_path"]), make_download_handler(resource_file, remote_resource["file_size"]))
 	except Exception, err1 :
 		try :
 			resource_file.close()
 		except Exception, err2 :
 			print >> sys.stderr, "--- resource \"%s\" :: warning, error while closing file \"%s\": %s" % (
-				remote_resource.resource_name, resource_file_path, str(err2) )
+				remote_resource["resource_name"], resource_file_path, str(err2) )
 
 		try :
 			os.remove(resource_file_path)
 		except Exception, err2 :
 			print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
-				remote_resource.resource_name, resource_file_path, str(err2) )
+				remote_resource["resource_name"], resource_file_path, str(err2) )
 
 		try :
-			short_stdout("--- server \"%s\" -> %s" % (remote_resource.server, ftp.quit()))
+			short_stdout("--- server \"%s\" -> %s" % (remote_resource["server"], ftp.quit()))
 		except Exception, err2 :
-			print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource.server, str(err2))
+			print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource["server"], str(err2))
 
-		print >> sys.stderr, "--- resource \"%s\" :: error while downloading: %s" % (remote_resource.resource_name, str(err1))
+		print >> sys.stderr, "--- resource \"%s\" :: error while downloading: %s" % (remote_resource["resource_name"], str(err1))
 		return -1
 
 	try :
 		resource_file.close()
 	except Exception, err1 :
 		print >> sys.stderr, "--- resource \"%s\" :: warning, error while closing file \"%s\": %s" % (
-			remote_resource.resource_name, resource_file_path, str(err1) )
+			remote_resource["resource_name"], resource_file_path, str(err1) )
 
 	try :
-		short_stdout("--- server \"%s\" -> %s" % (remote_resource.server, ftp.quit()))
+		short_stdout("--- server \"%s\" -> %s" % (remote_resource["server"], ftp.quit()))
 	except Exception, err1 :
-		print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource.server, str(err1))
+		print >> sys.stderr, "--- server \"%s\" :: warning, error while closing ftp: %s" % (remote_resource["server"], str(err1))
 
-	short_stdout("--- resource \"%s\" :: downloading complete" % (remote_resource.resource_name))
+	short_stdout("--- resource \"%s\" :: downloading complete" % (remote_resource["resource_name"]))
 
 	return 0
 
@@ -414,7 +414,7 @@ def install_resources(requested_resources_names_list, resources_type) :
 		print >> sys.stderr, "No resources :-(\n"
 		return -1
 
-	local_resources_names_list = [ local_resources_list_item.resource_name
+	local_resources_names_list = [ local_resources_list_item["resource_name"]
 		for local_resources_list_item in get_local_resources_list(resources_type) ]
 
 	###
@@ -427,17 +427,17 @@ def install_resources(requested_resources_names_list, resources_type) :
 
 	count = 0
 	while count < len(remote_resources_list) :
-		if remote_resources_list[count].resource_name in local_resources_names_list :
+		if remote_resources_list[count]["resource_name"] in local_resources_names_list :
 			remote_resources_list.pop(count)
 			continue
 
-		if remote_resources_list[count].resource_name in past_resources_names_list :
+		if remote_resources_list[count]["resource_name"] in past_resources_names_list :
 			count += 1
 			continue
 
-		if remote_resources_list[count].resource_name in requested_resources_names_list or "all" in requested_resources_names_list :
-			past_resources_names_list.append(remote_resources_list[count].resource_name)
-			requested_resources_size += remote_resources_list[count].file_size
+		if remote_resources_list[count]["resource_name"] in requested_resources_names_list or "all" in requested_resources_names_list :
+			past_resources_names_list.append(remote_resources_list[count]["resource_name"])
+			requested_resources_size += remote_resources_list[count]["file_size"]
 			requested_resources_count += 1
 
 		count += 1
@@ -464,35 +464,35 @@ def install_resources(requested_resources_names_list, resources_type) :
 	past_resources_names_list = []
 
 	for remote_resources_list_item in remote_resources_list :
-		if remote_resources_list_item.resource_name in past_resources_names_list :
+		if remote_resources_list_item["resource_name"] in past_resources_names_list :
 			continue
 
-		if remote_resources_list_item.resource_name in requested_resources_names_list or "all" in requested_resources_names_list :
-			short_stdout("--- resource \"%s\" :: begining installation..." % (remote_resources_list_item.resource_name))
+		if remote_resources_list_item["resource_name"] in requested_resources_names_list or "all" in requested_resources_names_list :
+			short_stdout("--- resource \"%s\" :: begining installation..." % (remote_resources_list_item["resource_name"]))
 
 			if resources_type == DictsResourcesType :
-				compressed_resource_file_path = os.path.join(DictsDir, os.path.basename(remote_resources_list_item.file_path))
+				compressed_resource_file_path = os.path.join(DictsDir, os.path.basename(remote_resources_list_item["file_path"]))
 				resource_file_path = compressed_resource_file_path[0:-len(DictsResourcesPostfix)]
 			elif resources_type == SoundsResourcesType :
-				compressed_resource_file_path = os.path.join(SoundsDir, os.path.basename(remote_resources_list_item.file_path))
+				compressed_resource_file_path = os.path.join(SoundsDir, os.path.basename(remote_resources_list_item["file_path"]))
 				resource_file_path = compressed_resource_file_path[0:-len(SoundsResourcesPostfix)]
 
 			if download_resource(remote_resources_list_item, compressed_resource_file_path) != 0 :
-				print >> sys.stderr, "--- resource \"%s\" :: installation failure" % (remote_resources_list_item.resource_name)
+				print >> sys.stderr, "--- resource \"%s\" :: installation failure" % (remote_resources_list_item["resource_name"])
 				continue
 
-			if uncompress_resource(remote_resources_list_item.resource_name, resources_type, compressed_resource_file_path) != 0 :
+			if uncompress_resource(remote_resources_list_item["resource_name"], resources_type, compressed_resource_file_path) != 0 :
 				try :
 					os.remove(compressed_resource_file_path)
 				except Exception, err1 :
 					print >> sys.stderr, "--- resource \"%s\" :: warning, error while removing file \"%s\": %s" % (
-						remote_resources_list_item.resource_name, compressed_resource_file_path, str(err1) )
+						remote_resources_list_item["resource_name"], compressed_resource_file_path, str(err1) )
 
-				print >> sys.stderr, "--- resource \"%s\" :: installation failure" % (remote_resources_list_item.resource_name)
+				print >> sys.stderr, "--- resource \"%s\" :: installation failure" % (remote_resources_list_item["resource_name"])
 
-			past_resources_names_list.append(remote_resources_list_item.resource_name)
+			past_resources_names_list.append(remote_resources_list_item["resource_name"])
 
-			print "--- resource \"%s\" :: installation complete" % (remote_resources_list_item.resource_name)
+			print "--- resource \"%s\" :: installation complete" % (remote_resources_list_item["resource_name"])
 
 	return 0
 
@@ -502,7 +502,7 @@ def remove_resources(requested_resources_names_list, resources_type) :
 
 	###
 
-	local_resources_names_list = [ local_resources_list_item.resource_name
+	local_resources_names_list = [ local_resources_list_item["resource_name"]
 		for local_resources_list_item in get_local_resources_list(resources_type) ]
 
 	print "Analysis of the request..."
