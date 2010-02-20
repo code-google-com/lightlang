@@ -58,8 +58,8 @@ class ChromeScrollBar(Qt.QScrollBar) :
 	### Public ###
 
 	def addHighlight(self, pos, count) :
-		if len(self.highlight_positions_list) == 0 or abs(self.highlight_positions_list[-1][0] - pos) > MinCharacterDistance :
-			self.highlight_positions_list.append([pos, count])
+		if len(self.highlight_positions_list) == 0 or abs(self.highlight_positions_list[-1]["pos"] - pos) > MinCharacterDistance :
+			self.highlight_positions_list.append({"pos" : pos, "count" : count})
 
 	def drawHighlight(self) :
 		self.update()
@@ -86,7 +86,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 		highlight_area_height = self.height() - highlight_pass * 3
 
 		for highlight_positions_list_item in self.highlight_positions_list :
-			pos = highlight_area_height * highlight_positions_list_item[0] / highlight_positions_list_item[1] + highlight_pass
+			pos = highlight_area_height * highlight_positions_list_item["pos"] / highlight_positions_list_item["count"] + highlight_pass
 
 			if len(highlight_rects_list) == 0 or pos > highlight_rects_list[-1].bottom() :
 				highlight_rects_list.append(Qt.QRect(0, pos, self.width(), DefaultHighlightHeight))
