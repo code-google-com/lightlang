@@ -79,8 +79,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("Guess"), Qt.QVariant(""))
 		self.sl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1]+".png"),
-				langs_list_item[0], Qt.QVariant(langs_list_item[1]))
+			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item["code"]+".png"),
+				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
 		self.langs_layout.addWidget(self.sl_combobox)
 
 		self.invert_langs_button = Qt.QToolButton()
@@ -97,8 +97,8 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 			Qt.QVariant(Locale.mainLang()))
 		self.tl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item[1]+".png"),
-				langs_list_item[0], Qt.QVariant(langs_list_item[1]))
+			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item["code"]+".png"),
+				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
 		self.langs_layout.addWidget(self.tl_combobox)
 
 		self.text_edit = TextEdit.TextEdit()

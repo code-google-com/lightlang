@@ -56,64 +56,64 @@ def langName(short_name) :
 def initLangsList() :
 	global LangsListObject
 	LangsListObject = [
-		[ tr("Afrikaans"),	Qt.QString("af") ],
-		[ tr("Albanian"),	Qt.QString("sq") ],
-		[ tr("Arabic"),		Qt.QString("ar") ],
-		[ tr("Belarusian"),	Qt.QString("be") ],
-		[ tr("Bulgarian"),	Qt.QString("bg") ],
-		[ tr("Catalan"),	Qt.QString("ca") ],
-		[ tr("Chinese"),	Qt.QString("zh") ],
-		[ tr("Croatian"),	Qt.QString("hr") ],
-		[ tr("Czech"),		Qt.QString("cs") ],
-		[ tr("Danish"),		Qt.QString("da") ],
-		[ tr("Dutch"),		Qt.QString("nl") ],
-		[ tr("English"),	Qt.QString("en") ],
-		[ tr("Estonian"),	Qt.QString("et") ],
-		[ tr("Filipino"),	Qt.QString("tl") ],
-		[ tr("Finnish"),	Qt.QString("fi") ],
-		[ tr("French"),		Qt.QString("fr") ],
-		[ tr("Galician"),	Qt.QString("gl") ],
-		[ tr("German"),		Qt.QString("de") ],
-		[ tr("Greek"),		Qt.QString("el") ],
-		[ tr("Hebrew"),		Qt.QString("iw") ],
-		[ tr("Hindi"),		Qt.QString("hi") ],
-		[ tr("Hungarian"),	Qt.QString("hu") ],
-		[ tr("Icelandic"),	Qt.QString("is") ],
-		[ tr("Indonesian"),	Qt.QString("id") ],
-		[ tr("Irish"),		Qt.QString("ga") ],
-		[ tr("Italian"),	Qt.QString("it") ],
-		[ tr("Japanese"),	Qt.QString("ja") ],
-		[ tr("Korean"),		Qt.QString("ko") ],
-		[ tr("Latvian"),	Qt.QString("lv") ],
-		[ tr("Lithuanian"),	Qt.QString("lt") ],
-		[ tr("Macedonian"),	Qt.QString("mk") ],
-		[ tr("Malay"),		Qt.QString("ms") ],
-		[ tr("Maltese"),	Qt.QString("mt") ],
-		[ tr("Norwegian"),	Qt.QString("no") ],
-		[ tr("Persian"),	Qt.QString("fa") ],
-		[ tr("Polish"),		Qt.QString("pl") ],
-		[ tr("Portuguese"),	Qt.QString("pt") ],
-		[ tr("Romanian"),	Qt.QString("ro") ],
-		[ tr("Russian"),	Qt.QString("ru") ],
-		[ tr("Serbian"),	Qt.QString("sr") ],
-		[ tr("Slovak"),		Qt.QString("sk") ],
-		[ tr("Slovenian"),	Qt.QString("sl") ],
-		[ tr("Spanish"),	Qt.QString("es") ],
-		[ tr("Swahili"),	Qt.QString("sw") ],
-		[ tr("Swedish"),	Qt.QString("sv") ],
-		[ tr("Thai"),		Qt.QString("th") ],
-		[ tr("Turkish"),	Qt.QString("tr") ],
-		[ tr("Ukrainian"),	Qt.QString("uk") ],
-		[ tr("Vietnamese"),	Qt.QString("vi") ],
-		[ tr("Welsh"),		Qt.QString("cy") ],
-		[ tr("Yiddish"),	Qt.QString("yi") ]
+			{ "name" : tr("Afrikaans"),	"code" : Qt.QString("af") },
+			{ "name" : tr("Albanian"),	"code" : Qt.QString("sq") },
+			{ "name" : tr("Arabic"),	"code" : Qt.QString("ar") },
+			{ "name" : tr("Belarusian"),	"code" : Qt.QString("be") },
+			{ "name" : tr("Bulgarian"),	"code" : Qt.QString("bg") },
+			{ "name" : tr("Catalan"),	"code" : Qt.QString("ca") },
+			{ "name" : tr("Chinese"),	"code" : Qt.QString("zh") },
+			{ "name" : tr("Croatian"),	"code" : Qt.QString("hr") },
+			{ "name" : tr("Czech"),		"code" : Qt.QString("cs") },
+			{ "name" : tr("Danish"),	"code" : Qt.QString("da") },
+			{ "name" : tr("Dutch"),		"code" : Qt.QString("nl") },
+			{ "name" : tr("English"),	"code" : Qt.QString("en") },
+			{ "name" : tr("Estonian"),	"code" : Qt.QString("et") },
+			{ "name" : tr("Filipino"),	"code" : Qt.QString("tl") },
+			{ "name" : tr("Finnish"),	"code" : Qt.QString("fi") },
+			{ "name" : tr("French"),	"code" : Qt.QString("fr") },
+			{ "name" : tr("Galician"),	"code" : Qt.QString("gl") },
+			{ "name" : tr("German"),	"code" : Qt.QString("de") },
+			{ "name" : tr("Greek"),		"code" : Qt.QString("el") },
+			{ "name" : tr("Hebrew"),	"code" : Qt.QString("iw") },
+			{ "name" : tr("Hindi"),		"code" : Qt.QString("hi") },
+			{ "name" : tr("Hungarian"),	"code" : Qt.QString("hu") },
+			{ "name" : tr("Icelandic"),	"code" : Qt.QString("is") },
+			{ "name" : tr("Indonesian"),	"code" : Qt.QString("id") },
+			{ "name" : tr("Irish"),		"code" : Qt.QString("ga") },
+			{ "name" : tr("Italian"),	"code" : Qt.QString("it") },
+			{ "name" : tr("Japanese"),	"code" : Qt.QString("ja") },
+			{ "name" : tr("Korean"),	"code" : Qt.QString("ko") },
+			{ "name" : tr("Latvian"),	"code" : Qt.QString("lv") },
+			{ "name" : tr("Lithuanian"),	"code" : Qt.QString("lt") },
+			{ "name" : tr("Macedonian"),	"code" : Qt.QString("mk") },
+			{ "name" : tr("Malay"),		"code" : Qt.QString("ms") },
+			{ "name" : tr("Maltese"),	"code" : Qt.QString("mt") },
+			{ "name" : tr("Norwegian"),	"code" : Qt.QString("no") },
+			{ "name" : tr("Persian"),	"code" : Qt.QString("fa") },
+			{ "name" : tr("Polish"),	"code" : Qt.QString("pl") },
+			{ "name" : tr("Portuguese"),	"code" : Qt.QString("pt") },
+			{ "name" : tr("Romanian"),	"code" : Qt.QString("ro") },
+			{ "name" : tr("Russian"),	"code" : Qt.QString("ru") },
+			{ "name" : tr("Serbian"),	"code" : Qt.QString("sr") },
+			{ "name" : tr("Slovak"),	"code" : Qt.QString("sk") },
+			{ "name" : tr("Slovenian"),	"code" : Qt.QString("sl") },
+			{ "name" : tr("Spanish"),	"code" : Qt.QString("es") },
+			{ "name" : tr("Swahili"),	"code" : Qt.QString("sw") },
+			{ "name" : tr("Swedish"),	"code" : Qt.QString("sv") },
+			{ "name" : tr("Thai"),		"code" : Qt.QString("th") },
+			{ "name" : tr("Turkish"),	"code" : Qt.QString("tr") },
+			{ "name" : tr("Ukrainian"),	"code" : Qt.QString("uk") },
+			{ "name" : tr("Vietnamese"),	"code" : Qt.QString("vi") },
+			{ "name" : tr("Welsh"),		"code" : Qt.QString("cy") },
+			{ "name" : tr("Yiddish"),	"code" : Qt.QString("yi") }
 		]
 	sortLangsList(LangsListObject)
 
 	global LangsCodesDictObject
 	LangsCodesDictObject = {}
 	for langs_list_object_item in LangsListObject :
-		LangsCodesDictObject[str(langs_list_object_item[1])] = langs_list_object_item[0]
+		LangsCodesDictObject[str(langs_list_object_item["code"])] = langs_list_object_item["name"]
 
 
 def sortLangsList(langs_list_object, left = None, right = None) :
@@ -126,7 +126,7 @@ def sortLangsList(langs_list_object, left = None, right = None) :
 
 	i = j = left
 	while j <= right :
-		if langs_list_object[j][0] <= langs_list_object[right][0] :
+		if langs_list_object[j]["name"] <= langs_list_object[right]["name"] :
 			langs_list_object[i], langs_list_object[j] = langs_list_object[j], langs_list_object[i]
 			i += 1
 		j += 1
