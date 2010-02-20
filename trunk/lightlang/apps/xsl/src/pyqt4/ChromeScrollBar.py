@@ -59,7 +59,7 @@ class ChromeScrollBar(Qt.QScrollBar) :
 
 	def addHighlight(self, pos, count) :
 		if len(self.highlight_positions_list) == 0 or abs(self.highlight_positions_list[-1]["pos"] - pos) > MinCharacterDistance :
-			self.highlight_positions_list.append({"pos" : pos, "count" : count})
+			self.highlight_positions_list.append({ "pos" : pos, "count" : count })
 
 	def drawHighlight(self) :
 		self.update()
