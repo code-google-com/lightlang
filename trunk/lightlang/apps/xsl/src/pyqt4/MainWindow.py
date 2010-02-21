@@ -316,13 +316,13 @@ class MainWindow(Qt.QMainWindow) :
 		self.panels_focus_flags_list.append(False)
 
 		requisites = panel.requisites()
-		self.addDockWidget(requisites[2], panel)
+		self.addDockWidget(requisites["area"], panel)
 		if len(self.panels_list) > 1 :
 			self.tabifyDockWidget(self.panels_list[-2], self.panels_list[-1])
-		self.panels_menu.addAction(requisites[0], requisites[1], panel.show, requisites[3])
+		self.panels_menu.addAction(requisites["icon"], requisites["title"], panel.show, requisites["hotkey"])
 
 	def addSourceObject(self, source_object) :
-		self.source_objects_list.append([source_object, -1])
+		self.source_objects_list.append({ "object" : source_object, "index" : -1 })
 
 		index = len(self.source_objects_list) - 1
 
@@ -339,24 +339,24 @@ class MainWindow(Qt.QMainWindow) :
 		set_translate_window_text = ( lambda text : self.setTranslateWindowText(text) )
 		clear_translate_window = ( lambda : self.clearTranslateWindow() )
 
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processStarted()"), registrate_stream)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processStarted()"), status_bar_start_wait_movie)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processFinished()"), release_stream)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("processFinished()"), status_bar_stop_wait_movie)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("clearRequest()"), clear_tabbed_translate_browser)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("clearRequest()"), clear_translate_window)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("wordChanged(const QString &)"), set_tabbed_translate_browser_caption)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("wordChanged(const QString &)"), set_translate_window_caption)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("textChanged(const QString &)"), set_tabbed_translate_browser_text)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("textChanged(const QString &)"), set_translate_window_text)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("newTabRequest()"), add_tabbed_translate_browser_tab)
-		self.connect(self.source_objects_list[index][0], Qt.SIGNAL("statusChanged(const QString &)"), status_bar_show_status_message)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("processStarted()"), registrate_stream)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("processStarted()"), status_bar_start_wait_movie)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("processFinished()"), release_stream)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("processFinished()"), status_bar_stop_wait_movie)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("clearRequest()"), clear_tabbed_translate_browser)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("clearRequest()"), clear_translate_window)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("wordChanged(const QString &)"), set_tabbed_translate_browser_caption)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("wordChanged(const QString &)"), set_translate_window_caption)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("textChanged(const QString &)"), set_tabbed_translate_browser_text)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("textChanged(const QString &)"), set_translate_window_text)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("newTabRequest()"), add_tabbed_translate_browser_tab)
+		self.connect(self.source_objects_list[index]["object"], Qt.SIGNAL("statusChanged(const QString &)"), status_bar_show_status_message)
 
-		for translate_methods_list_item in self.source_objects_list[index][0].translateMethods() :
-			signal_string = self.spy_menu.addTranslateMethod(translate_methods_list_item[0],
-				translate_methods_list_item[1], translate_methods_list_item[2])
-			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), translate_methods_list_item[3])
-			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), self.source_objects_list[index][0].show)
+		for translate_methods_list_item in self.source_objects_list[index]["object"].translateMethods() :
+			signal_string = self.spy_menu.addTranslateMethod(translate_methods_list_item["title"],
+				translate_methods_list_item["object_name"], translate_methods_list_item["method_name"])
+			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), translate_methods_list_item["method"])
+			self.connect(self.spy_menu, Qt.SIGNAL(signal_string), self.source_objects_list[index]["object"].show)
 
 	###
 
@@ -364,30 +364,30 @@ class MainWindow(Qt.QMainWindow) :
 		self.tabbed_translate_browser.setShredLock(True)
 		tabbed_translate_browser_index = self.tabbed_translate_browser.currentIndex()
 		for source_objects_list_item in self.source_objects_list :
-			if source_objects_list_item[1] == tabbed_translate_browser_index :
+			if source_objects_list_item["index"] == tabbed_translate_browser_index :
 				self.tabbed_translate_browser.addTab()
 				tabbed_translate_browser_index = self.tabbed_translate_browser.currentIndex()
 				break
-		self.source_objects_list[source_object_index][1] = tabbed_translate_browser_index
+		self.source_objects_list[source_object_index]["index"] = tabbed_translate_browser_index
 
 	def releaseStream(self, source_object_index) :
 		self.tabbed_translate_browser.setShredLock(False)
-		self.source_objects_list[source_object_index][1] = -1
+		self.source_objects_list[source_object_index]["index"] = -1
 
 	def checkBusyStreams(self) :
 		for source_objects_list_item in self.source_objects_list :
-			if source_objects_list_item[1] != -1 :
+			if source_objects_list_item["index"] != -1 :
 				return True
 		return False
 
 	def clearTabbedTranslateBrowser(self, source_object_index) :
-		self.tabbed_translate_browser.clear(self.source_objects_list[source_object_index][1])
+		self.tabbed_translate_browser.clear(self.source_objects_list[source_object_index]["index"])
 
 	def setTabbedTranslateBrowserCaption(self, source_object_index, word) :
-		self.tabbed_translate_browser.setCaption(self.source_objects_list[source_object_index][1], word)
+		self.tabbed_translate_browser.setCaption(self.source_objects_list[source_object_index]["index"], word)
 
 	def setTabbedTranslateBrowserText(self, source_object_index, text) :
-		self.tabbed_translate_browser.setText(self.source_objects_list[source_object_index][1], text)
+		self.tabbed_translate_browser.setText(self.source_objects_list[source_object_index]["index"], text)
 
 	def addTabbedTranslateBrowserTab(self) :
 		self.tabbed_translate_browser.addTab()

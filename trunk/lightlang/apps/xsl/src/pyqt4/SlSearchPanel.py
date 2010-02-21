@@ -130,12 +130,27 @@ class SlSearchPanel(Qt.QDockWidget) :
 	### Public ###
 
 	def requisites(self) :
-		return [ Qt.QIcon(IconsDir+"xsl_16.png"), self.windowTitle(), Qt.Qt.LeftDockWidgetArea, Qt.QKeySequence("Ctrl+S") ]
+		return {
+				"icon" : Qt.QIcon(IconsDir+"xsl_16.png"),
+				"title" : self.windowTitle(),
+				"area" : Qt.Qt.LeftDockWidgetArea,
+				"hotkey" : Qt.QKeySequence("Ctrl+S")
+			}
 
 	def translateMethods(self) :
 		return [
-			[tr("SL usually search"), self.objectName(), "uFindTranslateMethod", self.uFindTranslateMethod],
-			[tr("SL expanded search"), self.objectName(), "cFindTranslateMethod", self.cFindTranslateMethod]
+				{
+					"title" : tr("SL usually search"),
+					"object_name" : self.objectName(),
+					"method_name" : self.uFindTranslateMethod.__name__,
+					"method" : self.uFindTranslateMethod
+				},
+				{
+					"title" : tr("SL expanded search"),
+					"object_name" : self.objectName(),
+					"method_name" : self.cFindTranslateMethod.__name__,
+					"method" : self.cFindTranslateMethod
+				}
 			]
 
 	###

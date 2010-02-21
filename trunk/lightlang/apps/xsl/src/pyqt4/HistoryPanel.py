@@ -81,7 +81,12 @@ class HistoryPanel(Qt.QDockWidget) :
 	### Public ###
 
 	def requisites(self) :
-		return [ Qt.QIcon(IconsDir+"history_16.png"), self.windowTitle(), Qt.Qt.LeftDockWidgetArea, Qt.QKeySequence("Ctrl+H") ]
+		return {
+				"icon" : Qt.QIcon(IconsDir+"history_16.png"),
+				"title" : self.windowTitle(),
+				"area" : Qt.Qt.LeftDockWidgetArea,
+				"hotkey" : Qt.QKeySequence("Ctrl+H")
+			}
 
 	###
 
