@@ -73,10 +73,10 @@ class SlWordSearch(Qt.QObject) :
 
 		#####
 
-		self.replaces_list = [
-			["<font class=\"info_font\">This word is not found</font>", tr("<font class=\"info_font\">This word is not found</font>")],
-			["<font class=\"info_font\">No dict is connected</font>", tr("<font class=\"info_font\">No dict is connected</font>")]
-			]
+		self.replaces_dict = {
+				"<font class=\"info_font\">This word is not found</font>" : tr("<font class=\"info_font\">This word is not found</font>"),
+				"<font class=\"info_font\">No dict is connected</font>" : tr("<font class=\"info_font\">No dict is connected</font>")
+			}
 
 		#####
 
@@ -173,8 +173,8 @@ class SlWordSearch(Qt.QObject) :
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
 
-		for replaces_list_item in self.replaces_list :
-			text.replace(replaces_list_item[0], replaces_list_item[1])
+		for replaces_dict_key_item in self.replaces_dict.keys() :
+			text.replace(replaces_dict_key_item, self.replaces_dict[replaces_dict_key_item])
 
 		if self.proc_args[3] == UsuallySearchOption or self.proc_args[3] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
