@@ -73,7 +73,7 @@ class KeysGrabberThreadPrivate(Qt.QThread) :
 		modifier = modifier & ~(Xlib.X.AnyModifier << 1)
 		signal_string = Qt.QString("%1__%2__%3__globalHotkey()").arg(object_name).arg(key).arg(modifier)
 
-		self.hotkeys_list.append([key, modifier, signal_string])
+		self.hotkeys_list.append({ "key" : key, "modifier" : modifier, "signal_string" : signal_string })
 		self.root.grab_key(key, modifier, True, Xlib.X.GrabModeAsync, Xlib.X.GrabModeAsync)
 
 		self.is_stopped_flag = False
@@ -91,8 +91,9 @@ class KeysGrabberThreadPrivate(Qt.QThread) :
 				continue
 
 			for hotkeys_list_item in self.hotkeys_list :
-				if event.detail == hotkeys_list_item[0] and (event.state & hotkeys_list_item[1]) == hotkeys_list_item[1] :
-					self.emit(Qt.SIGNAL(hotkeys_list_item[2]))
+				if ( (event.state & hotkeys_list_item["modifier"]) == hotkeys_list_item["modifier"] and
+					event.detail == hotkeys_list_item["key"] ) :
+					self.emit(Qt.SIGNAL(hotkeys_list_item["signal_string"]))
 
 	def stop(self) :
 		self.is_stopped_flag = True
@@ -100,7 +101,7 @@ class KeysGrabberThreadPrivate(Qt.QThread) :
 			self.terminate()
 
 		for hotkeys_list_item in self.hotkeys_list :
-			self.root.ungrab_key(hotkeys_list_item[0], hotkeys_list_item[1])
+			self.root.ungrab_key(hotkeys_list_item["key"], hotkeys_list_item["modifier"])
 
 
 ##### Public #####
