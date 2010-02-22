@@ -173,8 +173,8 @@ class SlWordSearch(Qt.QObject) :
 
 		text = Qt.QString.fromLocal8Bit(str(self.proc_output))
 
-		for replaces_dict_key_item in self.replaces_dict.keys() :
-			text.replace(replaces_dict_key_item, self.replaces_dict[replaces_dict_key_item])
+		for replaces_dict_key in self.replaces_dict.keys() :
+			text.replace(replaces_dict_key, self.replaces_dict[replaces_dict_key])
 
 		if self.proc_args[3] == UsuallySearchOption or self.proc_args[3] == WordCombinationsSearchOption :
 			self.textChangedSignal(text)
