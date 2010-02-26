@@ -76,10 +76,6 @@ class MainWindow(Qt.QMainWindow) :
 
 		#####
 
-		#self.printer = Qt.QPrinter()
-		#self.print_dialog = Qt.QPrintDialog(self.printer)
-		#self.print_dialog.setWindowTitle(tr("Print page"))
-
 		self.tabbed_translate_browser = TabbedTranslateBrowser.TabbedTranslateBrowser()
 		self.main_layout.addWidget(self.tabbed_translate_browser)
 
@@ -435,12 +431,16 @@ class MainWindow(Qt.QMainWindow) :
 		if self.checkBusyStreams() :
 			return
 
-		if self.print_dialog.exec_() != Qt.QDialog.Accepted :
+		printer = Qt.QPrinter()
+		print_dialog = Qt.QPrintDialog(printer)
+		print_dialog.setWindowTitle(tr("Print page"))
+
+		if print_dialog.exec_() != Qt.QDialog.Accepted :
 			return
 
 		index = self.tabbed_translate_browser.currentIndex()
 		text_document = self.tabbed_translate_browser.document(index)
-		text_document.print_(self.printer)
+		text_document.print_(printer)
 
 		self.status_bar.showStatusMessage(tr("Printing..."))
 
