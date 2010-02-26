@@ -52,7 +52,7 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 		self.site_title_lang = Qt.QString()
 		self.site_description = Qt.QString()
 		self.site_description_lang = Qt.QString()
-		self.site_icon_path = Qt.QString()
+		self.site_icon_name = Qt.QString()
 		self.site_url = Qt.QString()
 
 
@@ -95,7 +95,7 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 					self.site_description = str.simplified()
 				return True
 			elif self.icon_tag_flag :
-				self.site_icon_path = str.simplified()
+				self.site_icon_name = str.simplified()
 				return True
 			elif self.url_tag_flag :
 				self.site_url = str.simplified()
@@ -104,13 +104,13 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 
 	def endElement(self, namespace_uri, local_name, name) :
 		if name == "site" :
-			self.new_site_handler(self.site_title, self.site_description, self.site_icon_path, self.site_url)
+			self.new_site_handler(self.site_title, self.site_description, self.site_icon_name, self.site_url)
 
 			self.site_title.clear()
 			self.site_title_lang.clear()
 			self.site_description.clear()
 			self.site_description_lang.clear()
-			self.site_icon_path.clear()
+			self.site_icon_name.clear()
 			self.site_url.clear()
 
 			self.site_tag_flag = False

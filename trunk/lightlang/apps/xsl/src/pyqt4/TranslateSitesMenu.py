@@ -24,13 +24,13 @@ import Qt
 import Config
 import Const
 import Settings
+import IconsLoader
 import TranslateSiteSaxHandler
 
 
 #####
 TranslateSitesSubdir = "trsites/"
 TranslateSitesSystemDir = Config.DataRootDir+"/xsl/"+TranslateSitesSubdir
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -101,16 +101,11 @@ class TranslateSitesMenu(Qt.QMenu) :
 			xml_reader.parse(xml_input_source)
 			count += 1
 
-	def addSite(self, site_title, site_description, site_icon_path, site_url) :
+	def addSite(self, site_title, site_description, site_icon_name, site_url) :
 		if site_title.simplified().isEmpty() or site_url.simplified().isEmpty() :
 			return
 
-		if site_icon_path.simplified().isEmpty() :
-			site_icon_path = IconsDir+"web_16.png"
-		elif not Qt.QFile.exists(site_icon_path) :
-			site_icon_path = IconsDir+"web_16.png"
-
-		action = self.addAction(Qt.QIcon(site_icon_path), site_title)
+		action = self.addAction(IconsLoader.icon(site_icon_name, "applications-internet"), site_title)
 		action.setStatusTip(site_description)
 
 		self.actions_data_list.append(Qt.QUrl(site_url))

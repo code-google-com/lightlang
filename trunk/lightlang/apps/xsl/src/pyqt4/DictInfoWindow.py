@@ -23,16 +23,15 @@
 import Qt
 import Config
 import Const
+import IconsLoader
 import LangsList
 import TextBrowser
 
 
 #####
-MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
 WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
 AllDictsDir = Config.DataRootDir+"/sl/dicts/"
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -46,7 +45,7 @@ class DictInfoWindow(Qt.QDialog) :
 		Qt.QDialog.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dict Information"))
-		self.setWindowIcon(Qt.QIcon(MyIcon))
+		self.setWindowIcon(IconsLoader.icon("xsl"))
 
 		self.setMinimumSize(550, 400)
 		self.resize(550, 400)
@@ -99,10 +98,10 @@ class DictInfoWindow(Qt.QDialog) :
 
 		self.control_buttons_layout.addStretch()
 
-		self.update_info_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
+		self.update_info_button = Qt.QPushButton(IconsLoader.icon("view-refresh"), tr("&Update"))
 		self.control_buttons_layout.addWidget(self.update_info_button)
 
-		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
+		self.ok_button = Qt.QPushButton(IconsLoader.icon("dialog-ok-apply"), tr("&OK"))
 		self.ok_button.setDefault(True)
 		self.control_buttons_layout.addWidget(self.ok_button)
 
@@ -184,7 +183,8 @@ class DictInfoWindow(Qt.QDialog) :
 			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 			return ( Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; <img src=\"%4\" width=\"%1\" height=\"%2\">"
 				"&nbsp;&nbsp;&nbsp;%5 &#187; %6 (%7)").arg(icon_width).arg(icon_height)
-				.arg(IconsDir+"flags/"+self.dict_name_regexp.cap(3)+".png").arg(IconsDir+"flags/"+self.dict_name_regexp.cap(4)+".png")
+				.arg(IconsLoader.iconPath("flags/"+self.dict_name_regexp.cap(3)))
+				.arg(IconsLoader.iconPath("flags/"+self.dict_name_regexp.cap(4)))
 				.arg(LangsList.langName(self.dict_name_regexp.cap(3))).arg(LangsList.langName(self.dict_name_regexp.cap(4)))
 				.arg(self.dict_name_regexp.cap(2)) )
 		else :

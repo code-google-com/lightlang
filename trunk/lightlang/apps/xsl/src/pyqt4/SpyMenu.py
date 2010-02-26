@@ -24,15 +24,12 @@ import Qt
 import Config
 import Const
 import Settings
+import IconsLoader
 import MouseSelector
 import RadioButtonsMenu
 try :
 	import KeyboardModifiersTest
 except : pass
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -53,8 +50,8 @@ class SpyMenu(Qt.QMenu) :
 
 		#####
 
-		self.start_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"start_spy_16.png"), tr("Start Spy"), self.startSpy)
-		self.stop_spy_menu_action = self.addAction(Qt.QIcon(IconsDir+"stop_spy_16.png"), tr("Stop Spy"), self.stopSpy)
+		self.start_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-start"), tr("Start Spy"), self.startSpy)
+		self.stop_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-stop"), tr("Stop Spy"), self.stopSpy)
 		self.stop_spy_menu_action.setEnabled(False)
 
 		self.addSeparator()
@@ -67,7 +64,7 @@ class SpyMenu(Qt.QMenu) :
 
 		try :
 			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
-			self.keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+			self.keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
 			self.keyboard_modifiers_menu.addRadioButton(tr("No modifier"), Qt.QVariant(KeyboardModifiersTest.NoModifier))
 
 			self.keyboard_modifiers_menu.addSeparator()
@@ -88,14 +85,14 @@ class SpyMenu(Qt.QMenu) :
 			self.addMenu(self.keyboard_modifiers_menu)
 		except :
 			self.fictive_keyboard_modifiers_menu = Qt.QMenu(tr("Keyboard modifiers"))
-			self.fictive_keyboard_modifiers_menu.setIcon(Qt.QIcon(IconsDir+"keys_16.png"))
+			self.fictive_keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
 			self.fictive_keyboard_modifiers_menu.setEnabled(False)
 			self.addMenu(self.fictive_keyboard_modifiers_menu)
 
 		self.addSeparator()
 
 		self.translate_methods_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Translate methods"))
-		self.translate_methods_menu.setIcon(Qt.QIcon(IconsDir+"search_16.png"))
+		self.translate_methods_menu.setIcon(IconsLoader.icon("configure"))
 		self.addMenu(self.translate_methods_menu)
 
 		#####

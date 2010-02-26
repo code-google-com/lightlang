@@ -23,13 +23,10 @@
 import Qt
 import Config
 import Const
+import IconsLoader
 import LineEdit
 import SlWordSearch
 import SlListBrowser
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -131,7 +128,7 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 	def requisites(self) :
 		return {
-				"icon" : Qt.QIcon(IconsDir+"xsl_16.png"),
+				"icon" : IconsLoader.icon("xsl"),
 				"title" : self.windowTitle(),
 				"area" : Qt.Qt.LeftDockWidgetArea,
 				"hotkey" : Qt.QKeySequence("Ctrl+S")

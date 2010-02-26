@@ -25,13 +25,13 @@ import sys
 import Config
 import Const
 import Settings
+import IconsLoader
 import IfaSaxHandler
 
 
 #####
 IfaSubdir = "ifa/"
 IfaSystemDir = Config.DataRootDir+"/xsl/"+IfaSubdir
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -102,18 +102,13 @@ class IfaMenu(Qt.QMenu) :
 			xml_reader.parse(xml_input_source)
 			count += 1
 
-	def addApp(self, app_title, app_description, app_icon_path, app_prog_path,
+	def addApp(self, app_title, app_description, app_icon_name, app_prog_path,
 		app_prog_options, python_precode, python_postcode) :
 
 		if app_title.simplified().isEmpty() or app_prog_path.simplified().isEmpty() :
 			return
 
-		if app_icon_path.simplified().isEmpty() :
-			app_icon_path = IconsDir+"exec_16.png"
-		elif not Qt.QFile.exists(app_icon_path) :
-			app_icon_path = IconsDir+"exec_16.png"
-
-		action = self.addAction(Qt.QIcon(app_icon_path), app_title)
+		action = self.addAction(IconsLoader.icon(app_icon_name, "system-run"), app_title)
 		action.setStatusTip(app_description)
 
 		index = len(self.actions_data_list)

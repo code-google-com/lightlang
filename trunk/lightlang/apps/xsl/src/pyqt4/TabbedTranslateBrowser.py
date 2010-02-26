@@ -23,12 +23,9 @@
 import Qt
 import Config
 import Const
+import IconsLoader
 import TranslateBrowser
 import TextSearchFrame
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -64,14 +61,14 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		self.main_layout.addWidget(self.tab_widget)
 
 		self.add_tab_button = Qt.QToolButton()
-		self.add_tab_button.setIcon(Qt.QIcon(IconsDir+"add_22.png"))
+		self.add_tab_button.setIcon(IconsLoader.icon("tab-new"))
 		self.add_tab_button.setIconSize(Qt.QSize(16, 16))
 		self.add_tab_button.setCursor(Qt.Qt.ArrowCursor)
 		self.add_tab_button.setAutoRaise(True)
 		self.tab_widget.setCornerWidget(self.add_tab_button, Qt.Qt.TopLeftCorner)
 
 		self.remove_tab_button = Qt.QToolButton()
-		self.remove_tab_button.setIcon(Qt.QIcon(IconsDir+"remove_22.png"))
+		self.remove_tab_button.setIcon(IconsLoader.icon("tab-close"))
 		self.remove_tab_button.setIconSize(Qt.QSize(16, 16))
 		self.remove_tab_button.setCursor(Qt.Qt.ArrowCursor)
 		self.remove_tab_button.setAutoRaise(True)

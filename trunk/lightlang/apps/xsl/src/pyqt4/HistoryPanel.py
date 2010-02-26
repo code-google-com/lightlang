@@ -24,12 +24,11 @@ import Qt
 import Config
 import Const
 import Settings
+import IconsLoader
 import LineEdit
 
 
 #####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
-
 MaxHistoryCount = 100
 
 #####
@@ -82,7 +81,7 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def requisites(self) :
 		return {
-				"icon" : Qt.QIcon(IconsDir+"history_16.png"),
+				"icon" : IconsLoader.icon("view-history"),
 				"title" : self.windowTitle(),
 				"area" : Qt.Qt.LeftDockWidgetArea,
 				"hotkey" : Qt.QKeySequence("Ctrl+H")

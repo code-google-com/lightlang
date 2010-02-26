@@ -25,15 +25,13 @@ import Config
 import Const
 import Locale
 import Settings
+import IconsLoader
 import TextBrowser
 import TextSearchFrame
 import TransparentFrame
 
 
 #####
-MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
-IconsDir = Config.DataRootDir+"/xsl/icons/"
-
 HtmlDocsDir = Config.DocsDir+"/lightlang/html/"
 
 
@@ -50,7 +48,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.setObjectName("help_browser_window")
 
 		self.setWindowTitle(tr("%1 Manual").arg(Const.Organization))
-		self.setWindowIcon(Qt.QIcon(MyIcon))
+		self.setWindowIcon(IconsLoader.icon("xsl"))
 
 		#####
 
@@ -83,7 +81,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.text_browser_layout.addWidget(self.control_buttons_frame)
 
 		self.backward_button = Qt.QToolButton()
-		self.backward_button.setIcon(Qt.QIcon(IconsDir+"left_22.png"))
+		self.backward_button.setIcon(IconsLoader.icon("go-previous"))
 		self.backward_button.setIconSize(Qt.QSize(22, 22))
 		self.backward_button.setCursor(Qt.Qt.ArrowCursor)
 		self.backward_button.setAutoRaise(True)
@@ -92,7 +90,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.control_buttons_frame_layout.addWidget(self.backward_button)
 
 		self.forward_button = Qt.QToolButton()
-		self.forward_button.setIcon(Qt.QIcon(IconsDir+"right_22.png"))
+		self.forward_button.setIcon(IconsLoader.icon("go-next"))
 		self.forward_button.setIconSize(Qt.QSize(22, 22))
 		self.forward_button.setCursor(Qt.Qt.ArrowCursor)
 		self.forward_button.setAutoRaise(True)
@@ -104,7 +102,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.control_buttons_frame_layout.addWidget(self.vertical_frame1)
 
 		self.home_button = Qt.QToolButton()
-		self.home_button.setIcon(Qt.QIcon(IconsDir+"home_22.png"))
+		self.home_button.setIcon(IconsLoader.icon("go-home"))
 		self.home_button.setIconSize(Qt.QSize(22, 22))
 		self.home_button.setCursor(Qt.Qt.ArrowCursor)
 		self.home_button.setAutoRaise(True)
@@ -121,7 +119,7 @@ class HelpBrowserWindow(Qt.QDialog) :
 		self.text_browser_layout.addWidget(self.tools_buttons_frame)
 
 		self.show_text_search_frame_button = Qt.QToolButton()
-		self.show_text_search_frame_button.setIcon(Qt.QIcon(IconsDir+"search_22.png"))
+		self.show_text_search_frame_button.setIcon(IconsLoader.icon("edit-find"))
 		self.show_text_search_frame_button.setIconSize(Qt.QSize(22, 22))
 		self.show_text_search_frame_button.setCursor(Qt.Qt.ArrowCursor)
 		self.show_text_search_frame_button.setAutoRaise(True)

@@ -23,11 +23,7 @@
 import Qt
 import Config
 import Const
-
-
-#####
-MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
-IconsDir = Config.DataRootDir+"/xsl/icons/"
+import IconsLoader
 
 
 #####
@@ -43,7 +39,7 @@ class AboutWindow(Qt.QDialog) :
 		self.setModal(True)
 
 		self.setWindowTitle(tr("About %1").arg(Const.MyName))
-		self.setWindowIcon(Qt.QIcon(MyIcon))
+		self.setWindowIcon(IconsLoader.icon("xsl"))
 
 		#####
 
@@ -61,7 +57,7 @@ class AboutWindow(Qt.QDialog) :
 
 		self.icon_label = Qt.QLabel()
 		self.icon_label.setAlignment(Qt.Qt.AlignTop)
-		self.icon_label.setPixmap(Qt.QPixmap(IconsDir+"xsl_64.png"))
+		self.icon_label.setPixmap(IconsLoader.icon("xsl_64").pixmap(Qt.QSize(64, 64)))
 		self.info_label_layout.addWidget(self.icon_label)
 
 		self.text_label = Qt.QLabel()

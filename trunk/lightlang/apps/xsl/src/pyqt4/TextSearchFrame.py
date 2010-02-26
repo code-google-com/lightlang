@@ -24,11 +24,8 @@ import Qt
 import Config
 import Const
 import UserStyleCssCollection
+import IconsLoader
 import LineEdit
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -52,7 +49,7 @@ class TextSearchFrame(Qt.QFrame) :
 		#####
 
 		self.close_button = Qt.QToolButton()
-		self.close_button.setIcon(Qt.QIcon(IconsDir+"close_22.png"))
+		self.close_button.setIcon(IconsLoader.icon("dialog-cancel"))
 		self.close_button.setIconSize(Qt.QSize(16, 16))
 		self.main_layout.addWidget(self.close_button)
 
@@ -72,13 +69,13 @@ class TextSearchFrame(Qt.QFrame) :
 		self.main_layout.addWidget(self.vertical_frame2)
 
 		self.next_button = Qt.QToolButton()
-		self.next_button.setIcon(Qt.QIcon(IconsDir+"down_22.png"))
+		self.next_button.setIcon(IconsLoader.icon("go-down"))
 		self.next_button.setIconSize(Qt.QSize(16, 16))
 		self.next_button.setEnabled(False)
 		self.main_layout.addWidget(self.next_button)
 
 		self.previous_button = Qt.QToolButton()
-		self.previous_button.setIcon(Qt.QIcon(IconsDir+"up_22.png"))
+		self.previous_button.setIcon(IconsLoader.icon("go-up"))
 		self.previous_button.setIconSize(Qt.QSize(16, 16))
 		self.previous_button.setEnabled(False)
 		self.main_layout.addWidget(self.previous_button)

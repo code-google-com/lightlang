@@ -23,10 +23,7 @@
 import Qt
 import Config
 import Const
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
+import IconsLoader
 
 
 #####
@@ -41,17 +38,17 @@ class InternetLinksMenu(Qt.QMenu) :
 
 		#####
 
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Developer e-mail"), "mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Offers e-mail"), "mailto:"+Const.OffersMail+"?subject="+Const.Organization)
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Bugtrack e-mail"), "mailto:"+Const.BugtrackMail+"?subject="+Const.Organization)
+		self.addLink(IconsLoader.icon("mail-send"), tr("Developer e-mail"), "mailto:"+Const.DeveloperMail+"?subject="+Const.Organization)
+		self.addLink(IconsLoader.icon("mail-send"), tr("Offers e-mail"), "mailto:"+Const.OffersMail+"?subject="+Const.Organization)
+		self.addLink(IconsLoader.icon("mail-send"), tr("Bugtrack e-mail"), "mailto:"+Const.BugtrackMail+"?subject="+Const.Organization)
 
 		self.addSeparator()
 
-		self.addLink(Qt.QIcon(IconsDir+"web_16.png"), tr("Home page"), Const.HomePageAddress)
+		self.addLink(IconsLoader.icon("applications-internet"), tr("Home page"), Const.HomePageAddress)
 
 		self.addSeparator()
 
-		self.addLink(Qt.QIcon(IconsDir+"mail_16.png"), tr("Register %1").arg(Const.Organization),
+		self.addLink(IconsLoader.icon("mail-send"), tr("Register %1").arg(Const.Organization),
 			Qt.QString("mailto:"+Const.UserCountMail+"?subject="+Const.Organization+"&body=")+
 			tr("Count me, please :-)\nRegistration date/time: %1\nPackage version: %2")
 			.arg(Qt.QDateTime().currentDateTime().toString()).arg(Const.PackageVersion))

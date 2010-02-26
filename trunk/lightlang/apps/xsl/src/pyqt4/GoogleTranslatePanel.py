@@ -25,13 +25,10 @@ import Config
 import Const
 import Locale
 import Settings
+import IconsLoader
 import GoogleTranslate
 import LangsList
 import TextEdit
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -76,15 +73,15 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.sl_combobox = Qt.QComboBox()
 		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.sl_combobox.setMaxVisibleItems(15)
-		self.sl_combobox.addItem(Qt.QIcon(IconsDir+"question_16.png"), tr("Guess"), Qt.QVariant(""))
+		self.sl_combobox.addItem(IconsLoader.icon("help-hint"), tr("Guess"), Qt.QVariant(""))
 		self.sl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.sl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item["code"]+".png"),
+			self.sl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
 				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
 		self.langs_layout.addWidget(self.sl_combobox)
 
 		self.invert_langs_button = Qt.QToolButton()
-		self.invert_langs_button.setIcon(Qt.QIcon(IconsDir+"invert_16.png"))
+		self.invert_langs_button.setIcon(IconsLoader.icon("go-jump"))
 		self.invert_langs_button.setIconSize(Qt.QSize(16, 16))
 		self.invert_langs_button.setCursor(Qt.Qt.ArrowCursor)
 		self.invert_langs_button.setAutoRaise(True)
@@ -93,11 +90,11 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.tl_combobox = Qt.QComboBox()
 		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
 		self.tl_combobox.setMaxVisibleItems(15)
-		self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+Locale.mainLang()+".png"), LangsList.langName(Locale.mainLang()),
-			Qt.QVariant(Locale.mainLang()))
+		self.tl_combobox.addItem(IconsLoader.icon("flags/"+Locale.mainLang()),
+			LangsList.langName(Locale.mainLang()), Qt.QVariant(Locale.mainLang()))
 		self.tl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.tl_combobox.addItem(Qt.QIcon(IconsDir+"flags/"+langs_list_item["code"]+".png"),
+			self.tl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
 				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
 		self.langs_layout.addWidget(self.tl_combobox)
 
@@ -110,7 +107,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.control_buttons_layout.addWidget(self.translate_button)
 
 		self.abort_button = Qt.QToolButton()
-		self.abort_button.setIcon(Qt.QIcon(IconsDir+"abort_16.png"))
+		self.abort_button.setIcon(IconsLoader.icon("dialog-cancel"))
 		self.abort_button.setIconSize(Qt.QSize(16, 16))
 		self.abort_button.setEnabled(False)
 		self.control_buttons_layout.addWidget(self.abort_button)
@@ -140,7 +137,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def requisites(self) :
 		return {
-				"icon" : Qt.QIcon(IconsDir+"web_16.png"),
+				"icon" : IconsLoader.icon("applications-internet"),
 				"title" : self.windowTitle(),
 				"area" : Qt.Qt.LeftDockWidgetArea,
 				"hotkey" : Qt.QKeySequence("Ctrl+G")

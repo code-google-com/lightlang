@@ -56,7 +56,7 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 		self.app_title_lang = Qt.QString()
 		self.app_description = Qt.QString()
 		self.app_description_lang = Qt.QString()
-		self.app_icon_path = Qt.QString()
+		self.app_icon_name = Qt.QString()
 		self.app_prog_path = Qt.QString()
 		self.app_prog_options = Qt.QString()
 		self.python_precode = Qt.QString()
@@ -107,7 +107,7 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 					self.app_description = str.simplified()
 				return True
 			elif self.icon_tag_flag :
-				self.app_icon_path = str.simplified()
+				self.app_icon_name = str.simplified()
 				return True
 			elif self.path_tag_flag :
 				self.app_prog_path = str.simplified()
@@ -126,14 +126,14 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 	def endElement(self, namespace_uri, local_name, name) :
 		if name == "app" :
 			self.new_app_handler(self.app_title, self.app_description,
-				self.app_icon_path, self.app_prog_path, self.app_prog_options,
+				self.app_icon_name, self.app_prog_path, self.app_prog_options,
 				self.python_precode, self.python_postcode)
 
 			self.app_title.clear()
 			self.app_title_lang.clear()
 			self.app_description.clear()
 			self.app_description_lang.clear()
-			self.app_icon_path.clear()
+			self.app_icon_name.clear()
 			self.app_prog_path.clear()
 			self.app_prog_options.clear()
 			self.python_precode.clear()

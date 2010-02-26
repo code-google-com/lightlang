@@ -24,12 +24,9 @@ import Qt
 import Config
 import Const
 import UserStyleCss
+import IconsLoader
 import LangsList
 import DictInfoWindow
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -131,7 +128,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 		self.dict_details_layout.addStretch()
 
 		self.show_info_button = Qt.QToolButton()
-		self.show_info_button.setIcon(Qt.QIcon(IconsDir+"info_16.png"))
+		self.show_info_button.setIcon(IconsLoader.icon("help-about"))
 		self.show_info_button.setIconSize(Qt.QSize(16, 16))
 		self.show_info_button.setCursor(Qt.Qt.ArrowCursor)
 		self.show_info_button.setAutoRaise(True)

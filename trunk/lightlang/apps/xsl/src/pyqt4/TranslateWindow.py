@@ -25,13 +25,10 @@ import Config
 import Const
 import Settings
 import UserStyleCss
+import IconsLoader
 import PopupWindow
 import TextSearchFrame
 import TranslateBrowser
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -75,7 +72,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.caption_frame_layout.addStretch()
 
 		self.close_button = Qt.QToolButton()
-		self.close_button.setIcon(Qt.QIcon(IconsDir+"close_22.png"))
+		self.close_button.setIcon(IconsLoader.icon("dialog-cancel"))
 		self.close_button.setIconSize(Qt.QSize(16, 16))
 		self.close_button.setFixedSize(Qt.QSize(16, 16))
 		self.close_button.setCursor(Qt.Qt.ArrowCursor)

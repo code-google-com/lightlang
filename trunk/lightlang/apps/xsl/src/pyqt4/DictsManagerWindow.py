@@ -24,16 +24,15 @@ import Qt
 import Config
 import Const
 import Settings
+import IconsLoader
 import LineEdit
 import DictsListWidget
 
 
 #####
-MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
 WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
 AllDictsDir = Config.DataRootDir+"/sl/dicts/"
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -49,7 +48,7 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.setObjectName("dicts_manager_window")
 
 		self.setWindowTitle(tr("Dicts Manager"))
-		self.setWindowIcon(Qt.QIcon(MyIcon))
+		self.setWindowIcon(IconsLoader.icon("xsl"))
 
 		#####
 
@@ -109,12 +108,12 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		self.control_buttons_layout.addStretch()
 
-		self.update_dicts_button = Qt.QPushButton(Qt.QIcon(IconsDir+"update_16.png"), tr("&Update"))
+		self.update_dicts_button = Qt.QPushButton(IconsLoader.icon("view-refresh"), tr("&Update"))
 		self.update_dicts_button.setAutoDefault(False)
 		self.update_dicts_button.setDefault(False)
 		self.control_buttons_layout.addWidget(self.update_dicts_button)
 
-		self.ok_button = Qt.QPushButton(Qt.QIcon(IconsDir+"ok_16.png"), tr("&OK"))
+		self.ok_button = Qt.QPushButton(IconsLoader.icon("dialog-ok-apply"), tr("&OK"))
 		self.ok_button.setAutoDefault(False)
 		self.ok_button.setDefault(False)
 		self.control_buttons_layout.addWidget(self.ok_button)

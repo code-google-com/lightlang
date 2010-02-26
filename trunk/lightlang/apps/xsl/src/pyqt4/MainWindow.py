@@ -24,6 +24,7 @@ import Qt
 import Config
 import Const
 import Settings
+import IconsLoader
 import SlSearchPanel
 import GoogleTranslatePanel
 import HistoryPanel
@@ -37,11 +38,6 @@ import TranslateSitesMenu
 import InternetLinksMenu
 import HelpBrowserWindow
 import AboutWindow
-
-
-#####
-MyIcon = Config.DataRootDir+"/xsl/icons/xsl_16.png"
-IconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
 #####
@@ -59,7 +55,7 @@ class MainWindow(Qt.QMainWindow) :
 		self.setDockOptions(self.dockOptions()|Qt.QMainWindow.VerticalTabs)
 
 		self.setWindowTitle(Const.Organization+" "+Const.MyName)
-		self.setWindowIcon(Qt.QIcon(MyIcon))
+		self.setWindowIcon(IconsLoader.icon("xsl"))
 
 		#####
 
@@ -80,9 +76,9 @@ class MainWindow(Qt.QMainWindow) :
 
 		#####
 
-		self.printer = Qt.QPrinter()
-		self.print_dialog = Qt.QPrintDialog(self.printer)
-		self.print_dialog.setWindowTitle(tr("Print page"))
+		#self.printer = Qt.QPrinter()
+		#self.print_dialog = Qt.QPrintDialog(self.printer)
+		#self.print_dialog.setWindowTitle(tr("Print page"))
 
 		self.tabbed_translate_browser = TabbedTranslateBrowser.TabbedTranslateBrowser()
 		self.main_layout.addWidget(self.tabbed_translate_browser)
@@ -107,25 +103,25 @@ class MainWindow(Qt.QMainWindow) :
 		### Pages menu
 
 		self.pages_menu = self.main_menu_bar.addMenu(tr("&Pages"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"save_16.png"), tr("Save current page"),
+		self.pages_menu.addAction(IconsLoader.icon("document-save-as"), tr("Save current page"),
 			self.saveCurrentTabbedTranslateBrowserPage)
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"print_16.png"), tr("Print current page"),
+		self.pages_menu.addAction(IconsLoader.icon("document-print"), tr("Print current page"),
 			self.printCurrentTabbedTranslateBrowserPage)
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear current page"),
+		self.pages_menu.addAction(IconsLoader.icon("edit-clear"), tr("Clear current page"),
 			self.clearTabbedTranslateBrowserPage, Qt.QKeySequence("Ctrl+E"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"clear_16.png"), tr("Clear all"),
+		self.pages_menu.addAction(IconsLoader.icon("edit-clear"), tr("Clear all"),
 			self.clearAllTabbedTranslateBrowser, Qt.QKeySequence("Ctrl+K"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"search_16.png"), tr("Search in translations"),
+		self.pages_menu.addAction(IconsLoader.icon("edit-find"), tr("Search in translations"),
 			self.tabbed_translate_browser.showTextSearchFrame, Qt.QKeySequence("Ctrl+F"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"add_16.png"), tr("New tab"),
+		self.pages_menu.addAction(IconsLoader.icon("tab-new"), tr("New tab"),
 			self.addTabbedTranslateBrowserTab, Qt.QKeySequence("Ctrl+T"))
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"remove_16.png"), tr("Close tab"),
+		self.pages_menu.addAction(IconsLoader.icon("tab-close"), tr("Close tab"),
 			self.removeTabbedTranslateBrowserTab, Qt.QKeySequence("Ctrl+W"))
 		self.pages_menu.addSeparator()
-		self.pages_menu.addAction(Qt.QIcon(IconsDir+"exit_16.png"), tr("Quit"),
+		self.pages_menu.addAction(IconsLoader.icon("application-exit"), tr("Quit"),
 			self.exit, Qt.QKeySequence("Ctrl+Q"))
 
 		### Panels menu
@@ -135,11 +131,11 @@ class MainWindow(Qt.QMainWindow) :
 		### View menu
 
 		self.view_menu = self.main_menu_bar.addMenu(tr("&View"))
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_in_16.png"), tr("Zoom in"),
+		self.view_menu.addAction(IconsLoader.icon("zoom-in"), tr("Zoom in"),
 			self.tabbed_translate_browser.zoomIn, Qt.QKeySequence("Ctrl++"))
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_out_16.png"), tr("Zoom out"),
+		self.view_menu.addAction(IconsLoader.icon("zoom-out"), tr("Zoom out"),
 			self.tabbed_translate_browser.zoomOut, Qt.QKeySequence("Ctrl+-"))
-		self.view_menu.addAction(Qt.QIcon(IconsDir+"zoom_normal_16.png"), tr("Zoom normal"),
+		self.view_menu.addAction(IconsLoader.icon("zoom-original"), tr("Zoom normal"),
 			self.tabbed_translate_browser.zoomNormal, Qt.QKeySequence("Ctrl+0"))
 
 		### Spy menu
@@ -150,28 +146,28 @@ class MainWindow(Qt.QMainWindow) :
 		### Tools menu
 
 		self.tools_menu = self.main_menu_bar.addMenu(tr("&Tools"))
-		self.tools_menu.addAction(Qt.QIcon(IconsDir+"dicts_manager_16.png"), tr("Dicts management"),
+		self.tools_menu.addAction(IconsLoader.icon("configure"), tr("Dicts management"),
 			self.dicts_manager_window.show, Qt.QKeySequence("Ctrl+D"))
 		self.tools_menu.addSeparator()
 		self.translate_sites_menu = TranslateSitesMenu.TranslateSitesMenu(tr("Web translate"))
-		self.translate_sites_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
+		self.translate_sites_menu.setIcon(IconsLoader.icon("applications-internet"))
 		self.tools_menu.addMenu(self.translate_sites_menu)
 		self.ifa_menu = IfaMenu.IfaMenu(tr("Applications"))
-		self.ifa_menu.setIcon(Qt.QIcon(IconsDir+"ifa_16.png"))
+		self.ifa_menu.setIcon(IconsLoader.icon("fork"))
 		self.tools_menu.addMenu(self.ifa_menu)
 
 		### Help menu
 
 		self.help_menu = self.main_menu_bar.addMenu(tr("&Help"))
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"help_16.png"), tr("%1 manual").arg(Const.Organization),
+		self.help_menu.addAction(IconsLoader.icon("help-contents"), tr("%1 manual").arg(Const.Organization),
 			self.help_browser_window.show, Qt.QKeySequence("F1"))
 		self.help_menu.addSeparator()
 		self.internet_links_menu = InternetLinksMenu.InternetLinksMenu(tr("Internet links"))
-		self.internet_links_menu.setIcon(Qt.QIcon(IconsDir+"web_16.png"))
+		self.internet_links_menu.setIcon(IconsLoader.icon("applications-internet"))
 		self.help_menu.addMenu(self.internet_links_menu)
 		self.help_menu.addSeparator()
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"xsl_16.png"), tr("About %1").arg(Const.MyName), self.about_window.show)
-		self.help_menu.addAction(Qt.QIcon(IconsDir+"about_16.png"), tr("About Qt4"), lambda : Qt.QMessageBox.aboutQt(None))
+		self.help_menu.addAction(IconsLoader.icon("xsl"), tr("About %1").arg(Const.MyName), self.about_window.show)
+		self.help_menu.addAction(IconsLoader.icon("help-about"), tr("About Qt4"), lambda : Qt.QMessageBox.aboutQt(None))
 
 
 		##### Creating panels #####

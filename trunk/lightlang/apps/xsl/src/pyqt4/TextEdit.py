@@ -23,10 +23,7 @@
 import Qt
 import Config
 import Const
-
-
-#####
-IconsDir = Config.DataRootDir+"/xsl/icons/"
+import IconsLoader
 
 
 #####
@@ -52,7 +49,7 @@ class TextEdit(Qt.QTextEdit) :
 		#####
 
 		self.clear_button = Qt.QToolButton()
-		self.clear_button.setIcon(Qt.QIcon(IconsDir+"clear_22.png"))
+		self.clear_button.setIcon(IconsLoader.icon("edit-clear-locationbar-rtl"))
 		self.clear_button.setIconSize(Qt.QSize(16, 16))
 		self.clear_button.setCursor(Qt.Qt.ArrowCursor)
 		self.clear_button.setAutoRaise(True)
