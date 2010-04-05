@@ -29,6 +29,6 @@ GenericName[ru]=Электронный словарь
 Comment=Lightlang SL-based dictionary system
 Comment[ru]=Система электронных словарей на основе LighLang SL
 Exec=xsl
-Icon=xsl.png
+Icon=xsl
 Terminal=false
 Categories=Office;Utility;Dictionary;
