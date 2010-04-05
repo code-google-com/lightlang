@@ -77,7 +77,7 @@ int connect_dict(const char *dict_name)
 	sprintf(src_dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
 	sprintf(dest_dict_path, "%s/%s", settings.user_dicts_dir, dict_name);
 
-	printf("%s: connecting dict \"%s\"...\n", MYNAME, dict_name);
+	fprintf(stderr, "%s: connecting dict \"%s\"...\n", MYNAME, dict_name);
 	if ( access(src_dict_path, F_OK) != 0 ) {
 		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
@@ -94,7 +94,7 @@ int connect_dict(const char *dict_name)
 
 		return -1;
 	}
-	printf("%s: done\n", MYNAME);
+	fprintf(stderr, "%s: done\n", MYNAME);
 
 	free(src_dict_path);
 	free(dest_dict_path);
@@ -119,7 +119,7 @@ int disconnect_dict(const char *dict_name)
 
 	sprintf(dict_path, "%s/%s", settings.user_dicts_dir, dict_name);
 
-	printf("%s: disconnecting dict \"%s\"...\n", MYNAME, dict_name);
+	fprintf(stderr, "%s: disconnecting dict \"%s\"...\n", MYNAME, dict_name);
 	if ( unlink(dict_path) != 0 ) {
 		fprintf(stderr, "%s: cannot disconnect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
 
@@ -127,7 +127,7 @@ int disconnect_dict(const char *dict_name)
 
 		return -1;
 	}
-	printf("%s: done\n", MYNAME);
+	fprintf(stderr, "%s: done\n", MYNAME);
 
 	free(dict_path);
 
@@ -139,11 +139,11 @@ int print_dicts_list(void)
 	extern settings_t settings;
 
 
-	printf("%s: established dicts:\n", MYNAME);
+	puts("Established dicts:");
 	if ( print_dir(ALL_DICTS_DIR) != 0 )
 		return -1;
 
-	printf("%s: connected dicts:\n", MYNAME);
+	puts("Connected dicts:");
 	if ( print_dir(settings.user_dicts_dir) != 0 )
 		return -1;
 

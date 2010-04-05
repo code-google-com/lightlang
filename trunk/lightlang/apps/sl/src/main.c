@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 		end_time_label = clock();
 
 		if ( begin_time_label != -1 && end_time_label != -1 )
-			printf("%s: search time: %.2f sec\n", MYNAME, ((double) (end_time_label - begin_time_label)) / CLOCKS_PER_SEC);
+			fprintf(stderr, "%s: search time: %.2f sec\n", MYNAME, ((double) (end_time_label - begin_time_label)) / CLOCKS_PER_SEC);
 	}
 
 	return abs(error_count);
