@@ -65,7 +65,7 @@ dnl ##### Checkings #####
 
 AC_PROG_CC
 AC_PROG_INSTALL
-CFLAGS+=" --pedantic --std=c9x"
+CFLAGS+=" --pedantic --std=c9x -Wall"
 
 AC_HEADER_STDC
 AC_CHECK_HEADER(stdio.h)

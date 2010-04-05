@@ -17,62 +17,47 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	info.c - spravochnaya informaciya ob SL.				*
-*										*
-********************************************************************************/
-
 
 #define _GNU_SOURCE
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
 
 #include "config.h"
 #include "const.h"
 #include "options.h"
 
-#include "info.h"
+#include "help.h"
 
-/********************************************************************************
-*										*
-*	help() - vyvodit kratkuyu spravku na ekran.				*
-*										*
-********************************************************************************/
+
 void help(void)
 {
 	version();
 	putchar('\n');
 	printf("Search options:\n");
-	printf("\t-u <word> | --%s <word>\n", OPT_SEARCH_USUALLY);
-	printf("\t-f <word> | --%s <word>\n", OPT_SEARCH_FIRST_CONCURRENCE);
-	printf("\t-c <word> | --%s <word>\n", OPT_SEARCH_WORD_COMBINATIONS);
-	printf("\t-l <word> | --%s <word>\n", OPT_SEARCH_LIST);
-	printf("\t-i <word> | --%s <word>\n", OPT_SEARCH_ILL_DEFINED);
-	printf("\t-s <package:word> | --%s <package:word>\n", OPT_SEARCH_SOUND);
+	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_USUALLY, OPT_SEARCH_USUALLY);
+	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_FIRST_CONCURRENCE, OPT_SEARCH_FIRST_CONCURRENCE);
+	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_WORD_COMBINATIONS, OPT_SEARCH_WORD_COMBINATIONS);
+	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_LIST, OPT_SEARCH_LIST);
+	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_ILL_DEFINED, OPT_SEARCH_ILL_DEFINED);
+	printf("\t-%c <package:word> | --%s <package:word>\n", OPT_SHORT_SEARCH_SOUND, OPT_SEARCH_SOUND);
 	printf("Dict Management options:\n");
 	printf("\t--%s <dict>\n", OPT_DICT_CONNECT);
 	printf("\t--%s <dict>\n", OPT_DICT_DISCONNECT);
-	printf("\t--%s\n", OPT_DICT_PRINT_INFO);
-	printf("\t--%s <file>\n", OPT_DICT_INSTALL);
-	printf("\t--%s <dict>\n", OPT_DICT_REMOVE);
+	printf("\t--%s\n", OPT_DICT_PRINT_DICTS_LIST);
 	printf("\t--%s <list|of|dicts>\n", OPT_DICT_USE_LIST);
 	printf("\t--%s <file>\n", OPT_DICT_PRINT_INDEX);
 	printf("Misc options:\n");
-	printf("\t-m <count> | --%s=<count>\n", OPT_MISC_MAX_TRANSLATE_COUNT);
-	printf("\t-p <percent> | --%s=<percent>\n", OPT_MISC_PERCENT);
-	printf("\t-t | --%s\n", OPT_MISC_SHOW_TIME);
+	printf("\t-%c <count> | --%s=<count>\n", OPT_SHORT_MISC_MAX_TRANSLATE_COUNT, OPT_MISC_MAX_TRANSLATE_COUNT);
+	printf("\t-%c <percent> | --%s=<percent>\n", OPT_SHORT_MISC_ILL_DEFINED_SEARCH_PERCENT, OPT_MISC_ILL_DEFINED_SEARCH_PERCENT);
+	printf("\t-%c | --%s\n", OPT_SHORT_MISC_SHOW_TIME, OPT_MISC_SHOW_TIME);
 	printf("Settings options:\n");
-	printf("\t--%s=<html|text|native>\n", OPT_SETTINGS_OUTPUT_FORMAT);
-	printf("\t--%s=<yes|no>\n", OPT_SETTINGS_USE_ESCS);
-	printf("\t--%s=<yes|no>\n", OPT_SETTINGS_USE_CSS);
+	printf("\t--%s=<%s|%s|%s>\n", OPT_SETTINGS_OUTPUT_FORMAT, OPT_ARG_HTML_OUTPUT_FORMAT, OPT_ARG_TEXT_OUTPUT_FORMAT, OPT_ARG_NATIVE_OUTPUT_FORMAT);
+	printf("\t--%s=<%s|%s>\n", OPT_SETTINGS_USE_ESCS, OPT_ARG_YES, OPT_ARG_NO);
+	printf("\t--%s=<%s|%s>\n", OPT_SETTINGS_USE_CSS, OPT_ARG_YES, OPT_ARG_NO);
 	printf("Information options:\n");
-	printf("\t-h | --%s\n", OPT_INFO_HELP);
-	printf("\t-v | --%s\n", OPT_INFO_VERSION);
-	printf("\t-d | --%s\n", OPT_INFO_DEBUG);
+	printf("\t-%c | --%s\n", OPT_SHORT_INFO_HELP, OPT_INFO_HELP);
+	printf("\t-%c | --%s\n", OPT_SHORT_INFO_VERSION, OPT_INFO_VERSION);
+	printf("\t-%c | --%s\n", OPT_SHORT_INFO_DEBUG, OPT_INFO_DEBUG);
 	printf("Environment:\n");
 	printf("\tHOME\n");
 	printf("\tCOLUMNS\n");
@@ -84,21 +69,11 @@ void help(void)
 	putchar('\n');
 }
 
-/********************************************************************************
-*										*
-*	version() - pechataet versiyu programmy.				*
-*										*
-********************************************************************************/
 void version(void)
 {
 	printf("%s-%s, Copyright (C) 2007-2016 Devaev Maxim, %s\n", MYNAME, VERSION, DEVELOPER_MAIL);
 }
 
-/********************************************************************************
-*										*
-*	debug() - pechataet otladochnuyu informaciyu.				*
-*										*
-********************************************************************************/
 void debug(void)
 {
 	printf("Program name: %s\n", MYNAME);
@@ -168,6 +143,3 @@ void debug(void)
 	printf("datarootdir\t\t:\t%s\n", DATA_ROOT_DIR);
 }
 
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/

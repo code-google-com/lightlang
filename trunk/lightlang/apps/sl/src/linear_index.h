@@ -18,21 +18,21 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-#ifndef CONST_H
-# define CONST_H
+#ifndef LINEAR_INDEX_H
+# define LINEAR_INDEX_H
 
 # define _GNU_SOURCE
 
 
-# define MYNAME "sl"
-# define VERSION "6.7"
-# define PACKAGE_VERSION "0.8.6"
-
-# define DEVELOPER_MAIL "mdevaev@gmail.com"
-# define OFFERS_MAIL "developers@lightlang.org.ru"
-# define BUGTRACK_MAIL "bugtrack@lightlang.org.ru"
-# define HOME_PAGE_ADDRESS "http://lightlang.org.ru"
+# define BEGIN_INDEX_BLOCK "[index]"
+# define END_INDEX_BLOCK "[/index]"
+# define NO_INDEX_BLOCK "[noindex]"
 
 
-#endif // CONST_H
+long get_linear_index_pos(const wchar_t ch_wc, FILE *dict_fp);
+
+int build_linear_index(const char *dict_path);
+
+
+#endif // LINEAR_INDEX_H
 

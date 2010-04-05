@@ -17,15 +17,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	settings.c - nastroyki sistemy poiska.					*
-*										*
-*		Vkluchet tip dlya hraneniya nastroek, globalnuyu peremennuyu	*
-*		s nastroykami i funkcii dlya zagruzki/vygruzki nastroek.	*
-*										*
-********************************************************************************/
-
 
 #ifndef SETTINGS_H
 # define SETTINGS_H
@@ -34,44 +25,38 @@
 
 #include <stdbool.h>
 
-/*********************************** Macro *************************************/
-# define USER_DICTS_SUBDIR		".sl"	// Podkatalog polzovatelya
 
-# define DEFAULT_MAX_TERMINAL_LINE_LEN	80	// Dlina stroki terminala
-# define DEFAULT_MAX_TRANSLATE_COUNT	50	// Kolichestvo perevodov
+# define USER_DICTS_SUBDIR ".sl"
 
-/*********************************** Types *************************************/
-typedef enum {				// Tip formata vyvoda
-	html_output_format,		// HTML-format
-	text_output_format,		// Textovyy format
-	native_output_format		// Nativnyy format
-} output_format_t;
+# define DEFAULT_MAX_TERMINAL_LINE_LEN 80
+# define DEFAULT_MAX_TRANSLATE_COUNT 50
+# define DEFAULT_ILL_DEFINED_SEARCH_PERCENT 40
 
-typedef struct {			// Tip parametrov sistemy
-	char *user_dicts_dir;		// Polzovatelskiy podkatalog slovarey
-	char *locale_encoding;		// Kodirovka
-	int max_terminal_line_len;	// Dlina stroki terminala
-	int max_translate_count;
-	bool use_terminal_escapes_flag;
-	bool use_css_flag;
-	output_format_t output_format;	// Format vyvoda
-} settings_t;
 
-/******************************* Global values *********************************/
-settings_t settings;			// Parametry sistemy
+typedef enum {
+		html_output_format,
+		text_output_format,
+		native_output_format
+	} output_format_t;
 
-/********************************* Functions ***********************************/
-int init_settings(void);	// Inicializiruet parametry sistemy
-int close_settings(void);	// Zakryvaet parametry sistemy
+typedef struct {
+		char *user_dicts_dir;
+		char *locale_encoding;
+		int max_terminal_line_len;
+		int max_translate_count;
+		int ill_defined_search_percent;
+		bool use_terminal_escapes_flag;
+		bool use_css_flag;
+		output_format_t output_format;
+	} settings_t;
 
-static int init_locale(void);
-static int init_user_dicts_dir(void);
-static int init_locale_encoding(void);
-static int init_max_terminal_line_len(void);
-static int init_use_terminal_escapes_flag(void);
 
-#endif
+settings_t settings;
 
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/
+
+int init_settings(void);
+int close_settings(void);
+
+
+#endif // SETTINGS_H
+

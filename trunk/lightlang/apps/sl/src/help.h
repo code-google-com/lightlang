@@ -18,21 +18,16 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-#ifndef CONST_H
-# define CONST_H
+#ifndef HELP_H
+# define HELP_H
 
 # define _GNU_SOURCE
 
 
-# define MYNAME "sl"
-# define VERSION "6.7"
-# define PACKAGE_VERSION "0.8.6"
-
-# define DEVELOPER_MAIL "mdevaev@gmail.com"
-# define OFFERS_MAIL "developers@lightlang.org.ru"
-# define BUGTRACK_MAIL "bugtrack@lightlang.org.ru"
-# define HOME_PAGE_ADDRESS "http://lightlang.org.ru"
+void help(void);
+void version(void);
+void debug(void);
 
 
-#endif // CONST_H
+#endif // HELP_H
 

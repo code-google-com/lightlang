@@ -17,12 +17,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	search.h - funkcii poiskovoy sistemy programmy.				*
-*										*
-********************************************************************************/
-
 
 #ifndef SEARCH_H
 # define SEARCH_H
@@ -31,39 +25,25 @@
 
 # include <stdlib.h>
 # include <stdbool.h>
-# include <wchar.h>
 
-/*********************************** Macro *************************************/
-# define ALL_SOUNDS_DIR		DATA_ROOT_DIR "/sl/sounds"
 
-# define AUDIO_POSTFIX		".ogg"
+# define ALL_SOUNDS_DIR DATA_ROOT_DIR "/sl/sounds"
+# define AUDIO_POSTFIX ".ogg"
+# define MAX_WORD_SIZE 256
 
-# define MAX_WORD_SIZE		256
-/*********************************** Types *************************************/
+
 typedef enum {
-	usually_regimen,
-	first_concurrence_regimen,
-	word_combinations_regimen,
-	list_regimen,
-	ill_defined_regimen
-} regimen_t;
+		usually_regimen,
+		first_concurrence_regimen,
+		word_combinations_regimen,
+		list_regimen,
+		ill_defined_regimen
+	} regimen_t;
 
-/********************************* Functions ***********************************/
-int find_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp);
+
+int find_word(const char *word, const regimen_t regimen, const char *dict_name, FILE *dict_fp);
 int find_sound(const char *word);
 
-static long read_index(const wchar_t ch_wc, FILE *dict_fp);
 
-void print_begin_page(const char *word);
-void print_end_page(void);
-static void print_separator(void);
-static void print_header(const char *dict_name, const wchar_t *word_wc);
+#endif // SEARCH_H
 
-static void print_list_item(const wchar_t *word_wc, const int word_number);
-static void print_translate(const char *str, const int number);
-
-#endif
-
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/

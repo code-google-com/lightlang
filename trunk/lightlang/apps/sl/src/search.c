@@ -17,12 +17,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	search.c - funkcii poiska i vyvoda perevoda v texte ili HTML.		*
-*										*
-********************************************************************************/
-
 
 #define _GNU_SOURCE
 
@@ -40,76 +34,161 @@
 #include "config.h"
 #include "const.h"
 #include "settings.h"
-#include "mstring.h"
+#include "string.h"
+#include "linear_index.h"
+#include "search_output.h"
 
 #include "search.h"
 
-/********************************************************************************
-*										*
-*	find_word() - poisk slov. Prinimaet v kachestve argumentov slovo,	*
-*		rejim poiska (sm. types.h/reg_t), procent simvolov (dlya	*
-*		nechetkogo poiska, v drugih sluchayah = 0), imya slovarya	*
-*		i ukazatel n file slovarya.					*
-*										*
-*		Vozvrashyaet kolichestvo naydennyh slov.			*
-*										*
-********************************************************************************/
-int find_word(const char *word, const regimen_t regimen, const int percent, const char *dict_name, FILE *dict_fp)
+static int find_word_unified(const char *word, const regimen_t regimen, const char *dict_name, FILE *dict_fp);
+static int find_word_combinations(const char *word, const char *dict_name, FILE *dict_fp);
+
+
+int find_word(const char *word, const regimen_t regimen, const char *dict_name, FILE *dict_fp)
 {
-	//////////////////////////////////////////////////
-	wchar_t		word_wc[MAX_WORD_SIZE];		// Rasshirennaya stroka (slovo)
-	wchar_t		str_wc[MAX_WORD_SIZE];		// Filtrovannaya rashirennaya stroka
-	wchar_t		*token_str_wc, *state_str_wc;	// Ukazateli dlya poiska slovosochetaniy
-	char		*str = NULL;			// Chitaemaya iz fila stroka
-	size_t		str_len = 0;			// Dlina chitaemoy stroki
-	long		pos;				// Smeshenie v file (index)
-	int		translate_count = 0;		// Schetchik kolichestva sovpadeniy
-	bool		break_end_flag = false;		// Flag propuska konca fila
-	extern settings_t settings;			// Nastroyki sistemy
-	//////////////////////////////////////////////////
+	switch ( regimen ) {
+		case usually_regimen :
+		case first_concurrence_regimen :
+		case list_regimen :
+		case ill_defined_regimen : return find_word_unified(word, regimen, dict_name, dict_fp);
+		case word_combinations_regimen : return find_word_combinations(word, dict_name, dict_fp);
+	}
+
+	return 0;
+}
+
+int find_sound(const char *word)
+{
+	wchar_t *word_wc;
+	wchar_t *word_token_wc;
+	wchar_t *word_token_wc_state;
+	wchar_t *lang_wc = NULL; // GCC warning fix
+	char *play_command;
+	size_t word_wc_len;
+	size_t lang_wc_len;
+	size_t play_command_len;
+	bool first_token_flag = true;
 
 
-	if ( strlen(word) < 1 ) return 0;
-	if ( strnlowcpy_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL )
-	{
+	if ( (word_wc_len = strlen(word)) < 1 )
+		return 0;
+	word_wc_len = (word_wc_len + 16) * sizeof(wchar_t);
+
+	if ( (word_wc = (wchar_t *) malloc(word_wc_len)) == NULL ) {
+		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+		return -1;
+	}
+
+	strncpy_lower_wc(word_wc, word, word_wc_len);
+
+	for (word_token_wc = wcstok(word_wc, L" -./\\:", &word_token_wc_state); word_token_wc;
+		word_token_wc = wcstok(NULL, L" -./\\:", &word_token_wc_state)) {
+		if ( first_token_flag ) {
+			lang_wc_len = (wcslen(word_token_wc) + 16) * sizeof(wchar_t);
+
+			if ( (lang_wc = (wchar_t *) malloc(lang_wc_len)) == NULL ) {
+				fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
+					MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+
+				free(word_wc);
+
+				return -1;
+			}
+
+			wcscpy(lang_wc, word_token_wc); //wcsncpy, memcpy
+
+			first_token_flag = false;
+			continue;
+		}
+
+		play_command_len = (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) + wcslen(word_token_wc) * sizeof(wchar_t)
+			+ strlen(AUDIO_POSTFIX) + 32) * sizeof(char);
+
+		if ( (play_command = (char *) malloc(play_command_len)) == NULL ) {
+			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
+				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+
+			free(word_wc);
+			if ( !first_token_flag )
+				free(lang_wc);
+
+			return -1;
+		}
+
+		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc,
+			word_token_wc[0], word_token_wc, AUDIO_POSTFIX);
+
+		system(play_command);
+
+		free(play_command);
+	}
+
+	free(word_wc);
+	if ( !first_token_flag )
+		free(lang_wc);
+
+	return 0;
+}
+
+
+static int find_word_unified(const char *word, const regimen_t regimen, const char *dict_name, FILE *dict_fp)
+{
+	wchar_t word_wc[MAX_WORD_SIZE];
+	wchar_t str_wc[MAX_WORD_SIZE];
+	char *str = NULL;
+	size_t str_len = 0;
+	long index_pos = -1;
+	int translate_count = 0;
+	bool break_end_flag = false;
+
+
+	if ( strlen(word) < 1 )
+		return 0;
+
+	if ( strncpy_lower_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL ) {
 		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
-	if ( regimen == usually_regimen )
-	{
-		pos = read_index(word_wc[0], dict_fp);
-		if ( pos == 0 ) return 0;
-		else if ( pos > 0 )
-		{
-			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
-				fprintf(stderr, "%s: cannot seek: bad index \"%lc %ld\": %s: ignored\n", MYNAME, word_wc[0], pos, strerror(errno));
+	if ( regimen == usually_regimen || regimen == first_concurrence_regimen || list_regimen ) {
+		index_pos = get_linear_index_pos(word_wc[0], dict_fp);
+		if ( index_pos == 0 ) {
+			return 0;
 		}
-		else
-		{
+		else if ( index_pos > 0 ) {
+			if ( fseek(dict_fp, index_pos, SEEK_SET) != 0 )
+				fprintf(stderr, "%s: cannot seek: bad index \"%lc %ld\": %s: ignored\n",
+					MYNAME, word_wc[0], index_pos, strerror(errno));
+		}
+		else {
 			rewind(dict_fp);
 		}
+	}
 
-		while ( getline(&str, &str_len, dict_fp) != -1 )
-		{
-			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
+	while ( getline(&str, &str_len, dict_fp) != -1 ) {
+		if ( str[0] == '#' || str[0] == '\n' )
+			continue;
 
-			if ( (str_wc[0] = get_first_low_wc(str)) == L'\0' ) continue;
+		if ( (str_wc[0] = get_first_lower_wc(str)) == L'\0' )
+			continue;
 
-			if ( (word_wc[0] != str_wc[0]) && break_end_flag ) break;
-			if ( word_wc[0] != str_wc[0] ) continue;
-			if ( word_wc[0] == str_wc[0] )
-				break_end_flag = true;
-
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
-			{
-				if ( break_end_flag )
-					break_end_flag = false;
+		if ( regimen == usually_regimen || regimen == first_concurrence_regimen || list_regimen ) {
+			if ( word_wc[0] != str_wc[0] && break_end_flag )
+				break;
+			if ( word_wc[0] != str_wc[0] )
 				continue;
-			}
+			else
+				break_end_flag = true;
+		}
 
-			if ( !strcmp_all_wc(str_wc, word_wc) )
-			{
+		if ( strncpy_lower_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL ) {
+			break_end_flag = false; // ill_defined_regimen not required this
+			continue;
+		}
+
+		if ( regimen == usually_regimen ) {
+			if ( !strcmp_full_wc(str_wc, word_wc) ) {
 				++translate_count;
 
 				if ( translate_count == 1 )
@@ -117,47 +196,12 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				print_translate(str, translate_count);
 				print_separator();
 
-				if ( translate_count >= settings.max_translate_count ) break;
+				if ( translate_count >= settings.max_translate_count )
+					break;
 			}
 		}
-
-		free(str);
-		return translate_count;
-	}
-	else if ( regimen == first_concurrence_regimen ) // Poisk do pervogo sovpadeniya
-	{
-		pos = read_index(word_wc[0], dict_fp);
-		if ( pos == 0 ) return 0;
-		else if ( pos > 0 )
-		{
-			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
-				fprintf(stderr, "%s: cannot seek: bad index \"%lc %ld\": %s: ignored\n", MYNAME, word_wc[0], pos, strerror(errno));
-		}
-		else
-		{
-			rewind(dict_fp);
-		}
-
-		while ( getline(&str, &str_len, dict_fp) != -1 )
-		{
-			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
-
-			if ( (str_wc[0] = get_first_low_wc(str)) == L'\0' ) continue;
-
-			if ( (word_wc[0] != str_wc[0]) && break_end_flag ) break;
-			if ( word_wc[0] != str_wc[0] ) continue;
-			if ( word_wc[0] == str_wc[0] )
-				break_end_flag = true;
-
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
-			{
-				if ( break_end_flag)
-					break_end_flag = false;
-				continue;
-			}
-
-			if ( !strcmp_noend_wc(str_wc, word_wc) )
-			{
+		else if ( regimen == first_concurrence_regimen ) {
+			if ( !strcmp_noend_wc(str_wc, word_wc) ) {
 				++translate_count;
 
 				if ( translate_count == 1 )
@@ -168,791 +212,91 @@ int find_word(const char *word, const regimen_t regimen, const int percent, cons
 				break;
 			}
 		}
+		else if ( regimen == list_regimen ) {
+			if ( !strcmp_noend_wc(str_wc, word_wc) ) {
+				++translate_count;
 
-		free(str);
-		return translate_count;
-	}
-	else if ( regimen == word_combinations_regimen ) // Poisk po slovosochetaniyam
-	{
-		while ( getline(&str, &str_len, dict_fp) != -1 )
-		{
-			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
+				if ( translate_count == 1 )
+					print_header(dict_name, word_wc);
+				print_list_item(str_wc, translate_count);
 
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL ) continue;
-
-			for (token_str_wc = wcstok(str_wc, L" -./\\", &state_str_wc); token_str_wc;
-				token_str_wc = wcstok(NULL, L" -./\\", &state_str_wc))
-			{
-				if ( word_wc[0] != token_str_wc[0] ) continue;
-
-				if ( !strcmp_all_wc(token_str_wc, word_wc) )
-				{
-					++translate_count;
-
-					if ( translate_count == 1 )
-						print_header(dict_name, word_wc);
-					print_translate(str, translate_count);
-					print_separator();
-
-					if ( translate_count >= settings.max_translate_count ) goto external_loop_break_label;
-
+				if ( translate_count >= settings.max_translate_count )
 					break;
-				}
 			}
 		}
-
-		external_loop_break_label :
-
-		free(str);
-		return translate_count;
-	}
-	else if ( regimen == list_regimen )
-	{
-		pos = read_index(word_wc[0], dict_fp);
-		if ( pos == 0 ) return 0;
-		else if ( pos > 0 )
-		{
-			if ( fseek(dict_fp, pos, SEEK_SET) != 0 )
-				fprintf(stderr, "%s: cannot seek: bad index \"%lc %ld\": %s: ignored\n", MYNAME, word_wc[0], pos, strerror(errno));
-		}
-		else
-		{
-			rewind(dict_fp);
-		}
-
-		while ( getline(&str, &str_len, dict_fp) != -1 )
-		{
-			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
-
-			if ( (str_wc[0] = get_first_low_wc(str)) == L'\0' ) continue;
-
-			if ( (word_wc[0] != str_wc[0]) && break_end_flag ) break;
-			if ( word_wc[0] != str_wc[0] ) continue;
-			if ( word_wc[0] == str_wc[0] )
-				break_end_flag = true;
-
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
-			{
-				if ( break_end_flag )
-					break_end_flag = false;
-				continue;
-			}
-
-			if ( !strcmp_noend_wc(str_wc, word_wc) )
-			{
+		else if ( regimen == ill_defined_regimen ) {
+			if ( !strcmp_jump_wc(str_wc, word_wc, settings.ill_defined_search_percent) ) {
 				++translate_count;
 
 				if ( translate_count == 1 )
 					print_header(dict_name, word_wc);
 				print_list_item(str_wc, translate_count);
 
-				if ( translate_count >= settings.max_translate_count ) break;
+				if ( translate_count >= settings.max_translate_count )
+					break;
 			}
 		}
-
-		if ( translate_count != 0 )
-			print_separator();
-
-		free(str);
-		return translate_count;
-
-	}
-	else if ( regimen == ill_defined_regimen ) // Nechetkiy poisk
-	{
-		while ( getline (&str, &str_len, dict_fp) != -1 )
-		{
-			if ( (str[0] == '#') || (str[0] == '\n') ) continue;
-
-			if ( strnlowcpy_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL ) continue;
-
-			if ( !strcmp_jump_wc(str_wc, word_wc, percent) )
-			{
-				++translate_count;
-
-				if ( translate_count == 1 )
-					print_header(dict_name, word_wc);
-				print_list_item(str_wc, translate_count);
-
-				if ( translate_count >= settings.max_translate_count ) break;
-			}
-		}
-
-		if ( translate_count != 0 )
-			print_separator();
-
-		free(str);
-		return translate_count;
 	}
 
-	return -1; // Neizvestnyy metod poiska :)
+	if ( translate_count != 0 && (regimen == list_regimen || regimen == ill_defined_regimen) )
+		print_separator();
+
+	free(str);
+
+	return translate_count;
 }
 
-/********************************************************************************
-*										*
-*	find_sound() - poisk zvuka. Prosto zapuskaet komandu PLAYER_PROG	*
-*		dlya slova.							*
-*										*
-********************************************************************************/
-int find_sound(const char *word)
+static int find_word_combinations(const char *word, const char *dict_name, FILE *dict_fp)
 {
-	//////////////////////////////////////////////////
-	wchar_t	*word_wc;				// Slovo v rasshyrennyh simvolah
-	wchar_t	*token_word_wc, *state_token_word_wc;	// Razbivki
-	wchar_t	*lang_wc;				// Yazyk
-	char	*play_command;				// Komanda
-	size_t	word_wc_len;				// Dlina slova
-	size_t	lang_wc_len;				// Dlina yazyka :-)
-	size_t	play_command_len;			// Dlina komandy
-	bool	first_token_flag = true;		// Flag pervogo tokena
-	//////////////////////////////////////////////////
+	wchar_t word_wc[MAX_WORD_SIZE];
+	wchar_t str_wc[MAX_WORD_SIZE];
+	wchar_t *str_token_wc;
+	wchar_t *str_token_wc_state;
+	char *str = NULL;
+	size_t str_len = 0;
+	int translate_count = 0;
 
 
-	if ( (word_wc_len = strlen(word)) < 1 ) return 0;
-	word_wc_len = (word_wc_len + 16) * sizeof(wchar_t);
+	if ( strlen(word) < 1 )
+		return 0;
 
-	if ( (word_wc = (wchar_t *) malloc(word_wc_len)) == NULL )
-	{
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+	if ( strncpy_lower_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL ) {
+		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
-	strnlowcpy_wc(word_wc, word, word_wc_len);
+	while ( getline(&str, &str_len, dict_fp) != -1 ) {
+		if ( str[0] == '#' || str[0] == '\n' )
+			continue;
 
-	for (token_word_wc = wcstok(word_wc, L" -./\\:", &state_token_word_wc); token_word_wc;
-		token_word_wc = wcstok(NULL, L" -./\\:", &state_token_word_wc))
-	{
-		if ( first_token_flag )
-		{
-			lang_wc_len = (wcslen(token_word_wc) + 16) * sizeof(wchar_t);
+		if ( strncpy_lower_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) == NULL )
+			continue;
 
-			if ( (lang_wc = (wchar_t *) malloc(lang_wc_len)) == NULL )
-			{
-				fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-					MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+		for (str_token_wc = wcstok(str_wc, L" -./\\", &str_token_wc_state); str_token_wc;
+			str_token_wc = wcstok(NULL, L" -./\\", &str_token_wc_state)) {
+			if ( word_wc[0] != str_token_wc[0] )
+				continue;
 
-				free(word_wc);
-				return -1;
+			if ( !strcmp_full_wc(str_token_wc, word_wc) ) {
+				++translate_count;
+
+				if ( translate_count == 1 )
+					print_header(dict_name, word_wc);
+				print_translate(str, translate_count);
+				print_separator();
+
+				if ( translate_count >= settings.max_translate_count )
+					goto external_loop_break_label;
+
+				break;
 			}
-
-			wcscpy(lang_wc, token_word_wc);
-			//wcsncpy(lang_wc, token_word_wc, wcslen(token_word_wc) - 1);
-			//memmove(lang_wc, token_word_wc, lang_wc_len);
-
-			first_token_flag = false;
-			continue;
 		}
-
-		play_command_len = (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) + wcslen(token_word_wc) * sizeof(wchar_t)
-			+ strlen(AUDIO_POSTFIX) + 32) * sizeof(char);
-
-		if ( (play_command = (char *) malloc(play_command_len)) == NULL )
-		{
-			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
-
-			free(word_wc);
-			if ( !first_token_flag )
-				free(lang_wc);
-			return -1;
-		}
-
-		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc,
-			token_word_wc[0], token_word_wc, AUDIO_POSTFIX);
-
-		system(play_command);
-
-		free(play_command);
 	}
 
-	free(word_wc);
-	if ( !first_token_flag )
-		free(lang_wc);
-	return 0;
-}
-
-/********************************************************************************
-*										*
-*	read_index() - chitaet dannye ob indexe iz slovarya i vozvrashyaet	*
-*		index dlya ukazannogo simvola.					*
-*										*
-********************************************************************************/
-static long read_index(const wchar_t ch_wc, FILE *dict_fp)
-{
-	//////////////////////////////////////////
-	char	*str = NULL;			// Chitaemaya stroka
-	wchar_t	ch_str_wc;			// Pervyy rasshirennyy simvol chitaemoy stroki
-	size_t	str_len = 0;			// Dlina chitaemoy stroki
-	long	pos = 0;			// Index
-	bool	begin_read_flag = false;	// Flag nachala chteniya
-	//////////////////////////////////////////
-
-
-	// Chitaem file ...
-	while ( getline(&str, &str_len, dict_fp) != -1 )
-	{
-		if ( (str[0] == '#') || (str[0] == '\n') ) continue;
-
-		del_nl(str);
-
-		if ( !strcmp(str, "[noindex]") )
-		{
-			free(str);
-			return -1;
-		}
-		if ( !strcmp(str, "[index]") )
-		{
-			begin_read_flag = true;
-			continue;
-		}
-		if ( !begin_read_flag ) continue;
-		if ( !strcmp(str, "[/index]") ) break;
-
-		if ( sscanf(str, "%lc %ld", &ch_str_wc, &pos) != 2 )
-		{
-			fprintf(stderr, "%s: warning: bad index: \"%s\": ignored\n", MYNAME, str);
-			continue;
-		}
-
-		if ( towlower(ch_str_wc) == towlower(ch_wc) ) break;
-	}
+	external_loop_break_label :
 
 	free(str);
-	return pos;
+
+	return translate_count;
 }
 
-/********************************************************************************
-*										*
-*	print_begin_page() - pechatat nachalo stranicy.				*
-*										*
-********************************************************************************/
-void print_begin_page(const char *word)
-{
-	//////////////////////////////////
-	extern settings_t settings;	// Parametry sistemy
-	//////////////////////////////////
-
-	if ( settings.output_format == html_output_format )
-	{
-		printf("<html>\n"
-			"<!-- Lisa, I Love You!!! -->\n"
-			"<!--      ___  ___       -->\n"
-			"<!--     /   \\/   \\      -->\n"
-			"<!--    (          )     -->\n"
-			"<!--     \\        /      -->\n"
-			"<!--      \\      /       -->\n"
-			"<!--        \\  /         -->\n"
-			"<!--         \\/          -->\n"
-			"<!-- ******************* -->\n"
-			"<head>\n"
-			"\t<title>%s</title>\n"
-			"\t<meta name=\"GENERATOR\" content=\"SL Engine\">\n"
-			"\t<meta name=\"AUTHOR\" content=\"Devaev Maxim aka Liksys\">\n"
-			"\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=%s\">\n"
-			"\t<style type=\"text/css\">\n", word, settings.locale_encoding);
-		if ( settings.use_css_flag )
-		{
-			puts("\t\t.dict_header_background {background-color: #DFEDFF;}\n"
-				"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
-				"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
-				"\t\t.list_item_number_font {font-style: italic;}\n"
-				"\t\t.article_number_font {font-style: italic; font-weight: bold;}\n"
-				"\t\t.strong_font {font-weight: bold;}\n"
-				"\t\t.italic_font {font-style: italic;}\n"
-				"\t\t.green_font {color: #0A7700;}\n"
-				"\t\t.underline_font {font-decoration: underline;}\n"
-				"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
-				"\t\t.sound_link_font {font-size: normal;}\n"
-				"\t\t.info_font {font-style: italic;}");
-		}
-		puts("\t</style>\n"
-			"</head>\n"
-			"<body>\n"
-			"<!-- translate -->");
-	}
-	// others formats pass
-}
-
-/********************************************************************************
-*										*
-*	print_end_page() - pechataet konec stranicy.				*
-*										*
-********************************************************************************/
-void print_end_page(void)
-{
-	//////////////////////////////////
-	extern settings_t settings;	// Parametry sistemy
-	//////////////////////////////////
-
-
-	if ( settings.output_format == html_output_format )
-		printf("</body>\n</html>\n");
-	// others formats pass
-}
-
-/********************************************************************************
-*										*
-*	print_separator() - pechataet razdelitel.				*
-*										*
-********************************************************************************/
-static void print_separator(void)
-{
-	//////////////////////////////////
-	int	count;			// Schetchik
-	extern settings_t settings;	// Parametry sistemy
-	//////////////////////////////////
-
-
-	if ( settings.output_format == html_output_format )
-	{
-		puts("\t<hr>");
-	}
-	else if ( settings.output_format == text_output_format )
-	{
-		for (count = 0; count < settings.max_terminal_line_len; count++)
-			putchar('-');
-		putchar('\n');
-	}
-	// native format pass
-}
-
-/********************************************************************************
-*										*
-*	print_header() - pechataet vyrovnennyy po centru zagolovok.		*
-*										*
-********************************************************************************/
-static void print_header(const char *dict_name, const wchar_t *word_wc)
-{
-	//////////////////////////////////
-	int	count;			// Schetchik
-	extern settings_t settings;	// Parametry sistemy
-	//////////////////////////////////
-
-
-	print_separator();
-
-	if ( settings.output_format == html_output_format )
-	{
-		printf("\t<table border=\"0\" width=\"100%\"><tr><td align=\"center\""
-			" class=\"dict_header_background\"><font class=\"dict_header_font\">");
-		for (; (*dict_name); dict_name++)
-		{
-			if ( (*dict_name) == '_' )
-				putchar(' ');
-			else
-				putchar(*dict_name);
-		}
-		printf("</font></td></tr></table>\n");
-	}
-	else if ( settings.output_format == text_output_format )
-	{
-		if ( strlen(dict_name) >= settings.max_terminal_line_len )
-		{
-			puts(dict_name);
-		}
-		else
-		{
-			for (count = 0; count < ((settings.max_terminal_line_len - strlen(dict_name)) / 2); count++)
-				putchar('=');
-			putchar(' ');
-
-			if ( settings.use_terminal_escapes_flag )
-				printf("\033[1m");
-
-			for (++count; (*dict_name); dict_name++, count++)
-			{
-				if ( (*dict_name) == '_' )
-					putchar(' ');
-				else
-					putchar(*dict_name);
-			}
-
-			if ( settings.use_terminal_escapes_flag )
-				printf("\033[0m");
-
-			putchar(' ');
-			for (++count; count < settings.max_terminal_line_len; count++)
-				putchar('=');
-
-			putchar('\n');
-		}
-	}
-	// native format pass
-
-	print_separator();
-
-	if ( settings.output_format == html_output_format )
-		printf("\t<font class=\"word_header_font\">&nbsp;&nbsp;&nbsp;%ls</font>\n", word_wc);
-	else if ( settings.output_format == text_output_format )
-		printf("\n\t<< %ls >>\n", word_wc);
-	// native format pass
-
-	print_separator();
-}
-
-/********************************************************************************
-*										*
-*	print_list_item() - pechataet element spiska slov.			*
-*										*
-********************************************************************************/
-static void print_list_item(const wchar_t *word_wc, const int word_number)
-{
-	//////////////////////////////////////////
-	extern settings_t settings;		// Parametry sistemy
-	//////////////////////////////////////////
-
-
-	if ( settings.output_format == html_output_format )
-	{
-		printf("\t(<font class=\"list_item_number_font\">%d</font>) <a href=\"#i_%ls\">%ls</a><br>\n", word_number, word_wc, word_wc);
-	}
-	else if ( settings.output_format == text_output_format )
-	{
-		if ( settings.use_terminal_escapes_flag )
-			printf(" \033[1m(%d)\033[0m %ls\n", word_number, word_wc);
-		else
-			printf(" (%d) %ls\n", word_number, word_wc);
-	}
-	else if ( settings.output_format == native_output_format )
-	{
-		printf("%ls\n", word_wc);
-	}
-}
-
-/********************************************************************************
-*										*
-*	print_translate() - pechataet otformatirovannyy perevod.		*
-*										*
-********************************************************************************/
-static void print_translate(const char *str, const int word_number)
-{
-	//////////////////////////////////////////////////
-	wchar_t		ch_wc;				// Rasshirennyy simvol
-	size_t		str_offset = 0;			// Smeshenie
-	mbstate_t	mbstate;			// Status
-	int		strong_font_count = 0;		// Schetchik jirnogo teksta
-	int		italic_font_count = 0;		// Schetchik kursivnogo teksta
-	int		green_font_count = 0;		// Schetchik zelenogo teksta
-	int		blocks_count = 0;		// Schetchik blokov
-	int		char_count = 0;			// Schetchik simvolov
-	int		count = 0;			// Schetchik
-	bool		underline_font_flag = false;	// Flag podcherknutogo teksta
-	bool		word_link_font_flag = false;	// Flag ssylki-teksta
-	bool		sound_link_font_flag = false;	// Flag ssylki-zvuka
-	bool		shiel_flag = false;		// Flag ekranirovaniya
-	extern settings_t	settings;		// Parametry sistemy
-	//////////////////////////////////////////////////
-
-
-	if ( settings.output_format == html_output_format )
-	{
-		printf("\t<dl><dd>\n\t\t(<font class=\"article_number_font\">%d</font>) ", word_number);
-
-		for (; (*str); str++)
-		{
-			if ( (*str) == '\n' )
-			{
-				shiel_flag = false; // fignya ;-)
-				continue;
-			}
-
-			if ( ((*str) == '\\') && !shiel_flag )
-			{
-				shiel_flag = true;
-				continue;
-			}
-			if ( shiel_flag )
-			{
-				switch (*str)
-				{
-					case '[' : printf("<font class=\"strong_font\">");
-						++strong_font_count;
-						break;
-					case ']' : if ( strong_font_count > 0 )
-						{
-							printf("</font>");
-							--strong_font_count;
-						}
-						break;
-
-					case '(' : printf("<font class=\"italic_font\">");
-						++italic_font_count;
-						break;
-					case ')' : if ( italic_font_count > 0 )
-						{
-							printf("</font>");
-							--italic_font_count;
-						}
-						break;
-
-					case '<' : printf("<font class=\"green_font\">");
-						++green_font_count;
-						break;
-					case '>' : if ( green_font_count > 0 )
-						{
-							printf("</font>");
-							--green_font_count;
-						}
-						break;
-
-					case '{' : printf("<dl><dd>");
-						++blocks_count;
-						break;
-					case '}' : if ( blocks_count > 0 )
-						{
-							printf("</dd></dl>");
-							--blocks_count;
-						}
-						break;
-
-					case '_' : if ( !underline_font_flag )
-						{
-							printf("<font class=\"underline_font\">");
-							underline_font_flag = true;
-						}
-						else
-						{
-							printf("</font>");
-							underline_font_flag = false;
-						}
-						break;
-
-					case '@' : if ( !word_link_font_flag )
-						{
-							printf("<font class\"word_link_font\">");
-							word_link_font_flag = true;
-						}
-						else
-						{
-							printf("</font>");
-							word_link_font_flag = false;
-						}
-						break;
-
-					case 's' : if ( !sound_link_font_flag )
-						{
-							printf("&nbsp;[&nbsp;<a class=\"sound_link_font\"href=\"#s_");
-							sound_link_font_flag = true;
-						}
-						else
-						{
-							printf("\">\u266B</a>&nbsp;]&nbsp;");
-							sound_link_font_flag = false;
-						}
-						break;
-
-					case '\\' : putchar('\\');
-						break;
-
-					case 'n' : printf("<br>");
-						break;
-
-					case 't' : printf("&nbsp;&nbsp;&nbsp;");
-						break;
-
-					default : break;
-				}
-
-				shiel_flag = false;
-				continue;
-			}
-
-			if ( (*str) == '\"' )
-				printf("&quot;");
-			else if ( (*str) == '&' )
-				printf("&amp;");
-			else if ( (*str) == '<' )
-				printf("&lt;");
-			else if ( (*str) == '>' )
-				printf("&gt;");
-			else
-				putchar(*str);
-		}
-
-		for (; strong_font_count > 0; strong_font_count--)
-			printf("</font>");
-		for (; italic_font_count > 0; italic_font_count--)
-			printf("</font>");
-		for (; green_font_count > 0; green_font_count--)
-			printf("</font>");
-		for (; blocks_count > 0; blocks_count--)
-			printf("</dd></dl>");
-		if ( underline_font_flag )
-		{
-			printf("</font>");
-			underline_font_flag = false;
-		}
-		if ( word_link_font_flag )
-		{
-			printf("</font>");
-			word_link_font_flag = false;
-		}
-
-		printf("\n\t</dd></dl>\n");
-	}
-	else if ( settings.output_format == text_output_format )
-	{
-		if ( settings.use_terminal_escapes_flag )
-			printf("   \033[1m(%d)\033[0m ", word_number);
-		else
-			printf("   (%d) ", word_number);
-
-		memset(&mbstate, 0, sizeof(mbstate));
-
-		for (; (str_offset = mbrtowc(&ch_wc, str, sizeof(wchar_t), &mbstate)) > 0; str += str_offset)
-		{
-			if ( ch_wc == L'\n' )
-			{
-				shiel_flag = false; // fignya ;-)
-				continue;
-			}
-
-			if ( (ch_wc == L'\\') && !shiel_flag )
-			{
-				shiel_flag = true;
-				continue;
-			}
-			if ( shiel_flag )
-			{
-				switch (ch_wc)
-				{
-					case L'[' : if ( settings.use_terminal_escapes_flag )
-						{
-							printf("\033[1m");
-							strong_font_count = 1;
-						}
-						break;
-					case L']' : if ( settings.use_terminal_escapes_flag )
-						{
-							printf("\033[0m");
-							if ( green_font_count )
-								printf("\033[32m");
-							if ( underline_font_flag )
-								printf("\033[4m");
-							strong_font_count = 0;
-						}
-						break;
-
-					case L'<' : if ( settings.use_terminal_escapes_flag )
-						{
-							printf("\033[32m");
-							green_font_count = 1;
-						}
-						break;
-					case L'>' : if ( settings.use_terminal_escapes_flag )
-						{
-							printf("\033[0m");
-							if ( strong_font_count )
-								printf("\033[1m");
-							if ( underline_font_flag )
-								printf("\033[4m");
-							green_font_count = 0;
-						}
-						break;
-
-					case L'{' : blocks_count += 3;
-						char_count = blocks_count;
-						putchar('\n');
-						for (count = 0; count < blocks_count; count++)
-							putchar(' ');
-						break;
-					case L'}' : blocks_count -= 3;
-						if ( blocks_count < 0 )
-							blocks_count = 0;
-						char_count = blocks_count;
-						break;
-
-					case L'_' : if ( settings.use_terminal_escapes_flag )
-						{
-							if ( !underline_font_flag )
-							{
-								printf("\033[4m");
-								underline_font_flag = true;
-							}
-							else
-							{
-								printf("\033[24m");
-								underline_font_flag = false;
-							}
-						}
-						break;
-
-					case L'@' : if ( settings.use_terminal_escapes_flag )
-						{
-							if ( !word_link_font_flag )
-							{
-								printf("\033[4m");
-								word_link_font_flag = true;
-							}
-							else
-							{
-								printf("\033[24m");
-								word_link_font_flag = false;
-							}
-						}
-						break;
-
-					case L's' : if ( settings.use_terminal_escapes_flag )
-						{
-							if ( !sound_link_font_flag )
-							{
-								printf("[\033[4msnd:\"");
-								sound_link_font_flag = true;
-							}
-							else
-							{
-								printf("\"\033[24m]");
-								sound_link_font_flag = false;
-							}
-						}
-						break;
-
-					case L'\\' : putchar('\\');
-						break;
-
-					case L'n' : putchar('\n');
-						break;
-
-					case L't' : putchar('\t');
-						break;
-
-					default : break;
-				}
-
-				shiel_flag = false;
-				continue;
-			}
-
-			if ( (char_count > (int)((float)settings.max_terminal_line_len * 0.8)) && (ch_wc == L' ') && !isdigit(*(str + 1)) )
-			{
-				putchar('\n');
-				for (count = 0; count < blocks_count + 3; count++)
-					putchar(' ');
-				char_count = blocks_count + 3;
-			}
-
-			printf("%lc", ch_wc); // putwchar() - DON'T WORK!
-
-			++char_count;
-		}
-
-		if ( settings.use_terminal_escapes_flag )
-			printf("\033[0m"); // Sbros parametrov terminala
-		// Eta posledovatelnost universalmaya, ona vystavlyaet parametry
-		// konsoli na defoltnye parametry. Esli kakoy-to teg okajetsya ne
-		// zakrytym, to eta posledovatelnost pribet vse modifikacii i
-		// sostoyanie konsoli budet vosstanovleno do ishodnogo.
-		// Za podrobnostyami - smotri stranicu "man 4 console_codes".
-	}
-	else if ( settings.output_format == native_output_format )
-	{
-		for (; (*str) && (*str) != '\n'; str++)
-			putchar(*str);
-	}
-
-	putchar('\n');
-}
-
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/

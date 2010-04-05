@@ -18,21 +18,25 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-#ifndef CONST_H
-# define CONST_H
+#ifndef SEARCH_OUTPUT_H
+# define SEARCH_OUTPUT_H
 
 # define _GNU_SOURCE
 
-
-# define MYNAME "sl"
-# define VERSION "6.7"
-# define PACKAGE_VERSION "0.8.6"
-
-# define DEVELOPER_MAIL "mdevaev@gmail.com"
-# define OFFERS_MAIL "developers@lightlang.org.ru"
-# define BUGTRACK_MAIL "bugtrack@lightlang.org.ru"
-# define HOME_PAGE_ADDRESS "http://lightlang.org.ru"
+# include <wchar.h>
 
 
-#endif // CONST_H
+# define TERMINAL_TEXT_PART 0.8
+
+
+void print_begin_page(const char *word);
+void print_end_page(void);
+
+void print_separator(void);
+void print_header(const char *dict_name, const wchar_t *word_wc);
+void print_list_item(const wchar_t *word_wc, const int word_number);
+void print_translate(const char *str, const int number);
+
+
+#endif // SEARCH_OUTPUT_H
 

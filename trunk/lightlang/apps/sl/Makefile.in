@@ -15,8 +15,10 @@ INS=@INSTALL@
 RM=@RM_PROG@
 CHMOD=@CHMOD_PROG@
 
-SL_SRC=src/main.c src/manager.c src/mstring.c src/settings.c src/search.c src/info.c
-SL_OBJ=src/main.o src/manager.o src/mstring.o src/settings.o src/search.o src/info.o
+SL_SRC=src/help.c src/linear_index.c src/main.c src/managed_search.c src/manager.c \
+	src/options.c src/search.c src/search_output.c src/settings.c src/string.c
+SL_OBJ=src/help.o src/linear_index.o src/main.o src/managed_search.o src/manager.o \
+	src/options.o src/search.o src/search_output.o src/settings.o src/string.o
 SL_CONFIG=src/config.h
 SL_PROG=sl
 

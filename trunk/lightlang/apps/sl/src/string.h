@@ -17,25 +17,24 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	info.h - spravochnaya informaciya ob SL.				*
-*										*
-********************************************************************************/
 
-
-#ifndef INFO_H
-# define INFO_H
+#ifndef STRING_H
+# define STRING_H
 
 # define _GNU_SOURCE
 
-/********************************* Functions ***********************************/
-void help(void);
-void version(void);
-void debug(void);
+# include <wchar.h>
 
-#endif
+void delete_newline(char *str);
+void tolower_str_wc(wchar_t *str_wc);
 
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/
+wchar_t get_first_lower_wc(const char *str);
+wchar_t *strncpy_lower_wc(wchar_t *str_wc, const char *str, size_t count);
+wchar_t *strncpy_lower_filter_wc(wchar_t *str_wc, const char *str, size_t count);
+
+int strcmp_full_wc(const wchar_t *str1_wc, const wchar_t *str2_wc);
+int strcmp_noend_wc(const wchar_t *str1_wc, const wchar_t *str2_wc);
+int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int percent);
+
+#endif // STRING_H
+

@@ -17,15 +17,6 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-/********************************************************************************
-*										*
-*	settings.c - nastroyki sistemy poiska.					*
-*										*
-*		Vkluchet tip dlya hraneniya nastroek, globalnuyu peremennuyu	*
-*		s nastroykami i funkcii dlya zagruzki/vygruzki nastroek.	*
-*										*
-********************************************************************************/
-
 
 #define _GNU_SOURCE
 
@@ -45,64 +36,49 @@
 
 #include "settings.h"
 
-/********************************************************************************
-*										*
-*	init_settings() - inicializiruet znacheniyami strukturu <settings>.	*
-*										*
-*		Vozvrashaet 0 v sluche uspeha i -1 pri oshibke.			*
-*										*
-*		Pered zaversheniem raboty programmy neobhodimo vyzvat		*
-*		funkciyu close_settings() dlya ochistki struktury <settings>.	*
-*										*
-********************************************************************************/
+static int init_settings_locale(void);
+static int init_settings_user_dicts_dir(void);
+static int init_settings_locale_encoding(void);
+static int init_settings_max_terminal_line_len(void);
+static int init_settings_use_terminal_escapes_flag(void);
+
+
 int init_settings(void)
 {
-	//////////////////////////////////
-	extern settings_t settings;	// Nastroyki sistemy
-	//////////////////////////////////
+	extern settings_t settings;
 
 
-	if ( init_locale() != 0 ) return -1;
-	if ( init_user_dicts_dir() != 0 ) return -1;
+	if ( init_settings_locale() != 0 )
+		return -1;
+	if ( init_settings_user_dicts_dir() != 0 )
+		return -1;
 
-	init_locale_encoding();
-	init_max_terminal_line_len();
-	init_use_terminal_escapes_flag();
+	init_settings_locale_encoding();
+	init_settings_max_terminal_line_len();
+	init_settings_use_terminal_escapes_flag();
 
 	settings.max_translate_count = DEFAULT_MAX_TRANSLATE_COUNT;
+	settings.ill_defined_search_percent = DEFAULT_ILL_DEFINED_SEARCH_PERCENT;
 	settings.output_format = text_output_format;
 	settings.use_css_flag = true;
 
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	close_settings() - zakryvaet nastroyki sistemy poiska.			*
-*										*
-********************************************************************************/
 int close_settings(void)
 {
-	//////////////////////////////////
-	extern settings_t settings;	// Nastroyki sisteny poiska
-	//////////////////////////////////
+	extern settings_t settings;
 
 
-	// Osvobojdaem pamyat ...
 	free(settings.user_dicts_dir);
 
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	init_locale() - inicializaciya lokali.					*
-*										*
-********************************************************************************/
-static int init_locale(void)
+
+static int init_settings_locale(void)
 {
-	if ( (setlocale(LC_ALL, "") == NULL) && (setlocale(LC_CTYPE, "") == NULL) )
-	{
+	if ( setlocale(LC_ALL, "") == NULL && setlocale(LC_CTYPE, "") == NULL ) {
 		fprintf(stderr, "%s: init: cannot change locale: %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
@@ -110,50 +86,31 @@ static int init_locale(void)
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	init_user_dicts_dir() - poluchenie polzovatelskogo kataloga so		*
-*		slovaryami putem polucheniya znacheniya peremennoy <$HOME>	*
-*		i dobavleniya prefixa.						*
-*										*
-********************************************************************************/
-static int init_user_dicts_dir(void)
+static int init_settings_user_dicts_dir(void)
 {
-	//////////////////////////////////
-	char	*home_dir;		// Domashniy katalog
-	size_t	user_dicts_dir_len;	// Dlina polzovatelskogo kataloga
-	extern settings_t settings;	// Nastroyki sistemy
-	//////////////////////////////////
+	char *home_dir;
+	size_t user_dicts_dir_len;
+	extern settings_t settings;
 
 
-	// Poluchaem domashniy katalog polzovatelya
-	if ( (home_dir = getenv("HOME")) == NULL )
-	{
+	if ( (home_dir = getenv("HOME")) == NULL ) {
 		fprintf(stderr, "%s: cannot \"$HOME\" value: %s\n", MYNAME, strerror(errno));
 		return -1;
 	}
 
-	// Vychislyaem razmer pamyati, neobhodimyy dlya
-	// polzovatelskogo kataloga so slovaryami
 	user_dicts_dir_len = (strlen(home_dir) + strlen(USER_DICTS_SUBDIR) + 16) * sizeof(char);
 
-	// Vydelyaem pamyat ...
-	if ( (settings.user_dicts_dir = (char *) malloc(user_dicts_dir_len)) == NULL )
-	{
+	if ( (settings.user_dicts_dir = (char *) malloc(user_dicts_dir_len)) == NULL ) {
 		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
 			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
 		return -1;
 	}
 
-	// Sozdanie informacii o polzovatelskom kataloge slovarey
 	sprintf(settings.user_dicts_dir, "%s/%s", home_dir, USER_DICTS_SUBDIR);
 
-	if ( access(settings.user_dicts_dir, F_OK) != 0 )
-	{
-		if ( mkdir(settings.user_dicts_dir, 0755) != 0 )
-		{
-			fprintf(stderr, "%s: cannot create user dicts folder \"%s\": %s\n",
-				MYNAME, settings.user_dicts_dir, strerror(errno));
+	if ( access(settings.user_dicts_dir, F_OK) != 0 ) {
+		if ( mkdir(settings.user_dicts_dir, 0755) != 0 ) {
+			fprintf(stderr, "%s: cannot create user dicts folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
 			return -1;
 		}
 	}
@@ -161,16 +118,10 @@ static int init_user_dicts_dir(void)
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	init_locale_encoding() - poluchaet kodirovku sistemy.			*
-*										*
-********************************************************************************/
-static int init_locale_encoding(void)
+static int init_settings_locale_encoding(void)
 {
-	//////////////////////////////////
-	extern settings_t settings;	// Parametry systemy
-	//////////////////////////////////
+	extern settings_t settings;
+
 
 	if ( (settings.locale_encoding = nl_langinfo(CODESET)) == NULL )
 		settings.locale_encoding = "";
@@ -178,31 +129,19 @@ static int init_locale_encoding(void)
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	init_max_terminal_line_len() - poluchaet maximalnuyu dlinu stroki	*
-*		terminala iz peremennoy <$COLUMNS>				*
-*										*
-********************************************************************************/
-static int init_max_terminal_line_len(void)
+static int init_settings_max_terminal_line_len(void)
 {
-	//////////////////////////////////////////////////
-	char		*max_terminal_line_len_str;	// Strokovaya velichina dliny
-	struct winsize	win_size;			// Parametry terminala
-	extern settings_t settings;			// Nastroyki sistemy
-	//////////////////////////////////////////////////
+	char *max_terminal_line_len_str;
+	struct winsize win_size;
+	extern settings_t settings;
 
 
-	// Bez kommentariev :)
-
-	if ( (max_terminal_line_len_str = getenv("COLUMNS")) != NULL )
-	{
+	if ( (max_terminal_line_len_str = getenv("COLUMNS")) != NULL ) {
 		if ( (settings.max_terminal_line_len = atoi(max_terminal_line_len_str)) != 0 )
 			return 0;
 	}
 
-	if ( ioctl(1, TIOCGWINSZ, &win_size) == 0 )
-	{
+	if ( ioctl(1, TIOCGWINSZ, &win_size) == 0 ) {
 		settings.max_terminal_line_len = win_size.ws_col;
 		return 0;
 	}
@@ -212,17 +151,9 @@ static int init_max_terminal_line_len(void)
 	return 0;
 }
 
-/********************************************************************************
-*										*
-*	init_use_terminal_escapes_flag(void) - inicializiruet vozmojnost	*
-*		ispolzovaniya ESC-posledovatelnostay terminala			*
-*										*
-********************************************************************************/
-static int init_use_terminal_escapes_flag(void)
+static int init_settings_use_terminal_escapes_flag(void)
 {
-	//////////////////////////////////
-	extern settings_t settings;	// Nastroyki sistemy
-	//////////////////////////////////
+	extern settings_t settings;
 
 	/**************************************
 	*       _,,,_   _,,,,,,,_   ___       *
@@ -239,11 +170,8 @@ static int init_use_terminal_escapes_flag(void)
 	*               (,,,,),,)             *
 	**************************************/
 
-	settings.use_terminal_escapes_flag = (bool)isatty(1);
+	settings.use_terminal_escapes_flag = (bool) isatty(1);
 
 	return 0;
 }
 
-/********************************************************************************
-*********************************************************************************
-********************************************************************************/
