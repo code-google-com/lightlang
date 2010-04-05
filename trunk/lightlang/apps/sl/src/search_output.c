@@ -68,8 +68,10 @@ void print_begin_page(const char *word)
 	extern settings_t settings;
 
 
-	switch ( settings.output_format )  {
+	switch ( settings.output_format ) {
 		case html_output_format : print_begin_page_html(word); break;
+		case text_output_format : break;
+		case native_output_format : break;
 //		case text_output_format : print_begin_page_text(word); break;
 //		case native_output_format : print_begin_page_native(word); break;
 	}
@@ -82,6 +84,8 @@ void print_end_page(void)
 
 	switch ( settings.output_format ) {
 		case html_output_format : print_end_page_html(); break;
+		case text_output_format : break;
+		case native_output_format : break;
 //		case text_output_format : print_end_page_text(); break;
 //		case native_output_format : print_end_page_native(); break;
 	}
