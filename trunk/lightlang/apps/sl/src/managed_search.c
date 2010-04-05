@@ -88,17 +88,19 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 	}
 
 	if ( no_translate_flag ) {
-		if ( settings.output_format == html_output_format )
-			puts("\t<font class=\"info_font\">This word is not found</font><br>");
-		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
-			printf("%s: this word is not found\n", MYNAME);
+		switch ( settings.output_format ) {
+			case html_output_format : puts("\t<font class=\"info_font\">This word is not found</font><br>"); break;
+			case text_output_format : printf("%s: this word is not found\n", MYNAME); break;
+			case native_output_format : printf("{{%s: this word is not found}}\n", MYNAME); break;
+		}
 	}
 
 	if ( no_dicts_flag ) {
-		if ( settings.output_format == html_output_format )
-			puts("\t<font class=\"info_font\">No dict is connected</font><br>");
-		else if ( settings.output_format == text_output_format || settings.output_format == native_output_format )
-			printf("%s: no dict is connected\n", MYNAME);
+		switch ( settings.output_format ) {
+			case html_output_format : puts("\t<font class=\"info_font\">No dict is connected</font><br>"); break;
+			case text_output_format : printf("%s: no dict is connected\n", MYNAME); break;
+			case native_output_format : printf("{{%s: no dict is connected\n}}", MYNAME); break;
+		}
 	}
 
 	print_end_page();
