@@ -24,8 +24,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-//#include <sys/types.h>
-//#include <sys/stat.h>
 #include <getopt.h>
 #include <ctype.h>
 #include <time.h>
@@ -39,7 +37,6 @@
 #include "search.h"
 #include "managed_search.h"
 #include "manager.h"
-//#include "string.h"
 #include "options.h"
 #include "help.h"
 
