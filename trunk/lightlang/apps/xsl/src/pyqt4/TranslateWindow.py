@@ -54,7 +54,12 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.caption_frame.setMouseTracking(True)
 		self.caption_frame.setFrameShape(Qt.QFrame.Box)
 		self.caption_frame.setFrameShadow(Qt.QFrame.Raised)
-
+		if self.font().pixelSize() > 0 :
+			self.caption_frame.setMaximumHeight((self.font().pixelSize()) * 4)
+		elif self.font().pointSize() > 0 :
+			self.caption_frame.setMaximumHeight((self.font().pointSize()) * 4)
+		else :
+			self.caption_frame.setMaximumHeight(40)
 		self.main_layout.addWidget(self.caption_frame)
 
 		self.caption_frame_layout = Qt.QHBoxLayout()
@@ -68,8 +73,6 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self.caption_label.setTextFormat(Qt.Qt.RichText)
 		self.caption_label.setWordWrap(True)
 		self.caption_frame_layout.addWidget(self.caption_label)
-
-		self.caption_frame_layout.addStretch()
 
 		self.close_button = Qt.QToolButton()
 		self.close_button.setIcon(IconsLoader.icon("dialog-cancel"))
