@@ -9,7 +9,6 @@
 
 
 RM=@RM_PROG@
-CD=@CD_PROG@
 FIND=@FIND_PROG@
 XARGS=@XARGS_PROG@
 DOWNLOAD_PY=download.py
@@ -24,8 +23,8 @@ all :
 	@echo "+---------------------------------------------------------------------+"
 	@echo " Building LightLang..."
 	@echo "+---------------------------------------------------------------------+"
-	$(CD) $(APPS_DIR) && $(MAKE)
-	$(CD) $(RESOURCES_DIR) && $(MAKE)
+	$(MAKE) -C $(APPS_DIR)
+	$(MAKE) -C $(RESOURCES_DIR)
 	@echo "+---------------------------------------------------------------------+"
 	@echo " OK. Type \"make install\" to install."
 	@echo "+---------------------------------------------------------------------+"
@@ -34,10 +33,10 @@ install :
 	@echo "+---------------------------------------------------------------------+"
 	@echo " Installing LightLang..."
 	@echo "+---------------------------------------------------------------------+"
-	$(CD) $(APPS_DIR) && $(MAKE) install
-	$(CD) $(RESOURCES_DIR) && $(MAKE) install
-	$(CD) $(PKG_DIR) && $(MAKE) install
-	$(CD) $(DOCS_DIR) && $(MAKE) install
+	$(MAKE) -C $(APPS_DIR) install
+	$(MAKE) -C $(RESOURCES_DIR) install
+	$(MAKE) -C $(PKG_DIR) install
+	$(MAKE) -C $(DOCS_DIR) install
 	@echo "+---------------------------------------------------------------------+"
 	@echo " OK. Installation complete"
 	@echo
@@ -50,28 +49,27 @@ uninstall :
 	@echo "+---------------------------------------------------------------------+"
 	@echo " Uninstalling LightLang..."
 	@echo "+---------------------------------------------------------------------+"
-	$(CD) $(APPS_DIR) && $(MAKE) uninstall
-	$(CD) $(RESOURCES_DIR) && $(MAKE) uninstall
-	$(CD) $(PKG_DIR) && $(MAKE) uninstall
-	$(CD) $(DOCS_DIR) && $(MAKE) uninstall
+	$(MAKE) -C $(APPS_DIR) uninstall
+	$(MAKE) -C $(RESOURCES_DIR) uninstall
+	$(MAKE) -C $(PKG_DIR) uninstall
+	$(MAKE) -C $(DOCS_DIR) uninstall
 	@echo "+---------------------------------------------------------------------+"
 	@echo " OK. Uninstallation complete"
 	@echo "+---------------------------------------------------------------------+"
 
 clean :
-	$(CD) $(APPS_DIR) && $(MAKE) clean
-	$(CD) $(RESOURCES_DIR) && $(MAKE) clean
-	$(CD) $(PKG_DIR) && $(MAKE) clean
-
+	$(MAKE) -C $(APPS_DIR) clean
+	$(MAKE) -C $(RESOURCES_DIR) clean
+	$(MAKE) -C $(PKG_DIR) clean
 	$(FIND) . -name *\~ -exec $(RM) -f '{}' \;
 	$(FIND) . -name Makefile -exec $(RM) -f '{}' \;
 	$(RM) -f config.log config.status
 	$(RM) -f $(DOWNLOAD_PY)
 
 _release :
-	cd apps/xsl && make -f Makefile.in _create_ru_qm
-	cd docs/text && make -f Makefile.in _create_en_texts
-	cd docs/text && make -f Makefile.in _create_ru_texts
-	cd docs/man && make -f Makefile.in _pack_en_mans
-	cd docs/man && make -f Makefile.in _pack_ru_mans
+	make -C apps/xsl -f Makefile.in _create_ru_qm
+	make -C docs/text -f Makefile.in _create_en_texts
+	make -C docs/text -f Makefile.in _create_ru_texts
+	make -C docs/man -f Makefile.in _pack_en_mans
+	make -C docs/man -f Makefile.in _pack_ru_mans
 

@@ -8,23 +8,21 @@
 #####
 
 
-CD=@CD_PROG@
-
 DICTS_RESOURCES_DIR=dicts
 SOUNDS_RESOURCES_DIR=sounds
 
 #####
 all :
-	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE)
+	$(MAKE) -C $(DICTS_RESOURCES_DIR)
 
 install :
-	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) install
-	$(CD) $(SOUNDS_RESOURCES_DIR) && $(MAKE) install
+	$(MAKE) -C $(DICTS_RESOURCES_DIR) install
+	$(MAKE) -C $(SOUNDS_RESOURCES_DIR) install
 
 uninstall :
-	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) uninstall
-	$(CD) $(SOUNDS_RESOURCES_DIR) && $(MAKE) uninstall
+	$(MAKE) -C $(DICTS_RESOURCES_DIR) uninstall
+	$(MAKE) -C $(SOUNDS_RESOURCES_DIR) uninstall
 
 clean :
-	$(CD) $(DICTS_RESOURCES_DIR) && $(MAKE) clean
+	$(MAKE) -C $(DICTS_RESOURCES_DIR) clean
 

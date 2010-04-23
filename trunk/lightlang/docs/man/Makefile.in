@@ -8,19 +8,17 @@
 #####
 
 
-CD=@CD_PROG@
-
 EN_DIR=en
 RU_DIR=ru
 
 #####
 install :
-	$(CD) $(EN_DIR) && $(MAKE) install
-	$(CD) $(RU_DIR) && $(MAKE) install
+	$(MAKE) -C $(EN_DIR) install
+	$(MAKE) -C $(RU_DIR) install
 
 uninstall :
-	$(CD) $(EN_DIR) && $(MAKE) uninstall
-	$(CD) $(RU_DIR) && $(MAKE) uninstall
+	$(MAKE) -C $(EN_DIR) uninstall
+	$(MAKE) -C $(RU_DIR) uninstall
 
 _pack_en_mans :
 	-for file in `ls en/man/*.?`; do \

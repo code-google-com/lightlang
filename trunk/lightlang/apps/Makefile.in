@@ -8,7 +8,6 @@
 #####
 
 
-CD=@CD_PROG@
 TEST=@TEST_PROG@
 
 GUI_FLAG=@GUI_FLAG@
@@ -19,22 +18,22 @@ XSL_DIR=xsl
 
 #####
 all :
-	$(CD) $(SL_DIR) && $(MAKE)
-	$(CD) $(LLREPO_DIR) && $(MAKE)
-	-$(TEST) $(GUI_FLAG) = "yes" && $(CD) $(XSL_DIR) && $(MAKE)
+	$(MAKE) -C $(SL_DIR)
+	$(MAKE) -C $(LLREPO_DIR)
+	-$(TEST) $(GUI_FLAG) = "yes" && $(MAKE) -C $(XSL_DIR)
 
 install :
-	$(CD) $(SL_DIR) && $(MAKE) install
-	$(CD) $(LLREPO_DIR) && $(MAKE) install
-	-$(TEST) $(GUI_FLAG) = "yes" && $(CD) $(XSL_DIR) && $(MAKE) install
+	$(MAKE) -C $(SL_DIR) install
+	$(MAKE) -C $(LLREPO_DIR) install
+	-$(TEST) $(GUI_FLAG) = "yes" && $(MAKE) -C $(XSL_DIR) install
 
 uninstall :
-	$(CD) $(SL_DIR) && $(MAKE) uninstall
-	$(CD) $(LLREPO_DIR) && $(MAKE) uninstall
-	-$(TEST) $(GUI_FLAG) = "yes" && $(CD) $(XSL_DIR) && $(MAKE) uninstall
+	$(MAKE) -C $(SL_DIR) uninstall
+	$(MAKE) -C $(LLREPO_DIR) uninstall
+	-$(TEST) $(GUI_FLAG) = "yes" && $(MAKE) -C $(XSL_DIR) uninstall
 
 clean :
-	$(CD) $(SL_DIR) && $(MAKE) clean
-	$(CD) $(LLREPO_DIR) && $(MAKE) clean
-	-$(TEST) $(GUI_FLAG) = "yes" && $(CD) $(XSL_DIR) && $(MAKE) clean
+	$(MAKE) -C $(SL_DIR) clean
+	$(MAKE) -C $(LLREPO_DIR) clean
+	-$(TEST) $(GUI_FLAG) = "yes" && $(MAKE) -C $(XSL_DIR) clean
 

@@ -8,20 +8,18 @@
 #####
 
 
-CD=@CD_PROG@
-
 HTML_DOC_DIR=html
 TEXT_DOC_DIR=text
 MAN_DOC_DIR=man
 
 #####
 install :
-	$(CD) $(HTML_DOC_DIR) && $(MAKE) install
-	$(CD) $(TEXT_DOC_DIR) && $(MAKE) install
-	$(CD) $(MAN_DOC_DIR) && $(MAKE) install
+	$(MAKE) -C $(HTML_DOC_DIR) install
+	$(MAKE) -C $(TEXT_DOC_DIR) install
+	$(MAKE) -C $(MAN_DOC_DIR) install
 
 uninstall :
-	$(CD) $(HTML_DOC_DIR) && $(MAKE) uninstall
-	$(CD) $(TEXT_DOC_DIR) && $(MAKE) uninstall
-	$(CD) $(MAN_DOC_DIR) && $(MAKE) uninstall
+	$(MAKE) -C $(HTML_DOC_DIR) uninstall
+	$(MAKE) -C $(TEXT_DOC_DIR) uninstall
+	$(MAKE) -C $(MAN_DOC_DIR) uninstall
 
