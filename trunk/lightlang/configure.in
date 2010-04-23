@@ -7,12 +7,13 @@ dnl #####
 
 
 AC_INIT
+AC_PREFIX_DEFAULT(/usr)
 
 echo "+---------------------------------------------------------------------+"
 echo "|     Welcome to LightLang - Languages software package for Linux     |"
 echo "+---------------------------------------------------------------------+"
 
-AC_PREFIX_DEFAULT(/usr)
+dnl ##### Functions ######
 
 AC_DEFUN(AC_PYTHON_COMMAND, [
  	AC_MSG_CHECKING([python "$1"])
