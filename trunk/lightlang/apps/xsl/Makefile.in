@@ -14,7 +14,9 @@ CP=@CP_PROG@
 LN=@LN_PROG@
 RM=@RM_PROG@
 CHMOD=@CHMOD_PROG@
+CD=@CD_PROG@
 LS=@LS_PROG@
+SED=@SED_PROG@
 PYTHON=@PYTHON_PROG@
 
 XSL_PROG=xsl
@@ -44,11 +46,11 @@ INS_XSL_ICONS_DIR=$(INS_XSL_SHARES_DIR)/icons
 INS_XSL_ICONS_FLAGS_DIR=$(INS_XSL_SHARES_DIR)/icons/flags
 INS_XSL_PICTURES_DIR=$(INS_XSL_SHARES_DIR)/pictures
 INS_XSL_DESKTOP_SCRIPT_DIR=@datarootdir@/applications
-INS_XSL_DESKTOP_ICON_DIR=@datarootdir@/icons
+INS_XSL_DESKTOP_ICONS_DIR=@datarootdir@/icons/hicolor
 
 #####
 all :
-	-for file in `$(LS) $(XSL_PYQT4_DIR)/*.py`; do \
+	-$(CD) $(XSL_PYQT4_DIR) && for file in `$(LS) *.py`; do \
 		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
 	done
 	$(CP) -f $(XSL_MAIN) $(XSL_PROG)
@@ -68,11 +70,13 @@ install :
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_ICONS_FLAGS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PICTURES_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)
-	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_ICON_DIR)
+	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
+		$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps; \
+	done
 	$(INS) $(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_DIR)
 	-$(LN) -s $(INS_XSL_PROG_DIR)/$(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
 	$(CP) -f $(XSL_PYQT4_DIR)/*.py $(DESTDIR)$(INS_XSL_PYQT4_DIR)
-	-for file in `$(LS) $(DESTDIR)$(INS_XSL_PYQT4_DIR)/*.py`; do \
+	-$(CD) $(DESTDIR)$(INS_XSL_PYQT4_DIR) && for file in `$(LS) *.py`; do \
 		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
 	done
 	-$(CP) -f $(XSL_TR_DIR)/*.qm $(DESTDIR)$(INS_XSL_TR_DIR)
@@ -84,10 +88,14 @@ install :
 	$(CP) -f $(XSL_PICTURES_DIR)/*.png $(DESTDIR)$(INS_XSL_PICTURES_DIR)
 	$(CP) -f $(XSL_PICTURES_DIR)/*.gif $(DESTDIR)$(INS_XSL_PICTURES_DIR)
 	$(INS) $(XSL_DESKTOP_SCRIPT) $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)
-	$(INS) $(XSL_DESKTOP_ICON) $(DESTDIR)$(INS_XSL_DESKTOP_ICON_DIR)
+	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
+		$(CP) -f xsl_$$res\.png $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps/xsl.png; \
+	done
 
 uninstall :
-	$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_ICON_DIR)/xsl.png
+	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
+		$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps/xsl.png; \
+	done
 	$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)/xsl.desktop
 	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
 	$(RM) -rf $(DESTDIR)$(INS_XSL_SHARES_DIR)

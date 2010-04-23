@@ -8,7 +8,6 @@
 #####
 
 
-MAKE=@MAKE_PROG@
 CD=@CD_PROG@
 
 DICTS_RESOURCES_DIR=dicts
