@@ -21,12 +21,12 @@ uninstall :
 	$(MAKE) -C $(RU_DIR) uninstall
 
 _pack_en_mans :
-	-for file in `ls en/man/*.?`; do \
+	-cd en/man && for file in `ls *.?`; do \
 		gzip -c $$file > $$file.gz; \
 	done
 
 _pack_ru_mans :
-	-for file in `ls ru/man/*.?`; do \
+	-cd ru/man && for file in `ls *.?`; do \
 		gzip -c $$file > $$file.gz; \
 	done
 

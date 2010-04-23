@@ -12,6 +12,7 @@ MKDIR=@MKDIR_PROG@
 CP=@CP_PROG@
 RM=@RM_PROG@
 CAT=@CAT_PROG@
+CD=@CD_PROG@
 LS=@LS_PROG@
 CHMOD=@CHMOD_PROG@
 SL=../../apps/sl/sl
@@ -25,7 +26,7 @@ INS_DICTS_DIR=@datarootdir@/sl/dicts
 
 #####
 all :
-	for file in `$(LS) $(DICTS_SRC_DIR)/*.??-??`; do \
+	-$(CD) $(DICTS_SRC_DIR) && for file in `$(LS) *.??-??`; do \
 		$(SL) --print-index $$file 1> $(TMP_FILE) && \
 		$(CAT) $$file 1>> $(TMP_FILE) && \
 		$(SL) --print-index $(TMP_FILE) 1> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/} && \
