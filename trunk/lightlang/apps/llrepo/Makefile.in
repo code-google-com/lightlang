@@ -13,6 +13,7 @@ CP=@CP_PROG@
 INS=@INSTALL@
 RM=@RM_PROG@
 CHMOD=@CHMOD_PROG@
+CD=@CD_PROG@
 LS=@LS_PROG@
 PYTHON=@PYTHON_PROG@
 
@@ -25,7 +26,7 @@ INS_LLREPO_LIBS_DIR=@libdir@/llrepo
 
 #####
 all : $(LLREPO_MAIN)
-	-for file in `$(LS) $(LLREPO_LIBS_DIR)/*.py`; do \
+	-$(CD) $(LLREPO_LIBS_DIR) && for file in `$(LS) *.py`; do \
 		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
 	done
 	$(CP) -f $(LLREPO_MAIN) $(LLREPO_PROG)
@@ -36,7 +37,7 @@ install :
 	$(MKDIR) -p $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
 	$(INS) $(LLREPO_PROG) $(DESTDIR)$(INS_LLREPO_PROG_DIR)
 	$(CP) -f $(LLREPO_LIBS_DIR)/*.py $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
-	-for file in `$(LS) $(INS_LLREPO_LIBS_DIR)/*.py`; do \
+	-$(CD) $(DESTDIR)$(INS_LLREPO_LIBS_DIR) && for file in `$(LS) *.py`; do \
 		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
 	done
 
