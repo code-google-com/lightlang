@@ -18,8 +18,8 @@ INS_PKG_LIBS_DIR=@libdir@/pkgconfig
 
 #####
 install :
-	-$(MKDIR) -p $(DESTDIR)$(INS_PKG_LIBS_DIR)
-	-$(CP) -f $(PKG_LIBS_DIR)/lightlang.pc $(DESTDIR)$(INS_PKG_LIBS_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_PKG_LIBS_DIR)
+	$(CP) -f $(PKG_LIBS_DIR)/lightlang.pc $(DESTDIR)$(INS_PKG_LIBS_DIR)
 
 uninstall :
 	$(RM) -f $(DESTDIR)$(INS_PKG_LIBS_DIR)/lightlang.pc
