@@ -62,6 +62,7 @@ int main(int argc, char **argv)
 			{OPT_DICT_CONNECT,			required_argument,	NULL,	'0'}, // -
 			{OPT_DICT_DISCONNECT,			required_argument,	NULL,	'1'}, // -
 			{OPT_DICT_PRINT_DICTS_LIST,		no_argument,		NULL,	'2'}, // -
+			{OPT_DICT_PRINT_DICT_INFO,		required_argument,	NULL,	'3'}, // -
 			{OPT_DICT_USE_LIST,			required_argument,	NULL,	'5'}, // -
 			{OPT_DICT_PRINT_INDEX,			required_argument,	NULL,	'6'}, // -
 
@@ -126,6 +127,12 @@ int main(int argc, char **argv)
 
 			case '2' : {
 				error_count += print_dicts_list();
+				use_default_function_flag = false;
+				break;
+			}
+
+			case '3' : {
+				error_count += print_dict_info(optarg);
 				use_default_function_flag = false;
 				break;
 			}

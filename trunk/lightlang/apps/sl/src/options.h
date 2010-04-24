@@ -34,6 +34,7 @@
 # define OPT_DICT_CONNECT "connect"
 # define OPT_DICT_DISCONNECT "disconnect"
 # define OPT_DICT_PRINT_DICTS_LIST "print-dicts-list"
+# define OPT_DICT_PRINT_DICT_INFO "print-dict-info"
 # define OPT_DICT_USE_LIST "use-list"
 # define OPT_DICT_PRINT_INDEX "print-index"
 

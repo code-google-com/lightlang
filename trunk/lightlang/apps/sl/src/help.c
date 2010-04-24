@@ -40,10 +40,11 @@ void help(void)
 	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_LIST, OPT_SEARCH_LIST);
 	printf("\t-%c <word> | --%s <word>\n", OPT_SHORT_SEARCH_ILL_DEFINED, OPT_SEARCH_ILL_DEFINED);
 	printf("\t-%c <package:word> | --%s <package:word>\n", OPT_SHORT_SEARCH_SOUND, OPT_SEARCH_SOUND);
-	printf("Dict Management options:\n");
+	printf("Dicts Management options:\n");
 	printf("\t--%s <dict>\n", OPT_DICT_CONNECT);
 	printf("\t--%s <dict>\n", OPT_DICT_DISCONNECT);
 	printf("\t--%s\n", OPT_DICT_PRINT_DICTS_LIST);
+	printf("\t--%s <dict>\n", OPT_DICT_PRINT_DICT_INFO);
 	printf("\t--%s <list|of|dicts>\n", OPT_DICT_USE_LIST);
 	printf("\t--%s <file>\n", OPT_DICT_PRINT_INDEX);
 	printf("Misc options:\n");

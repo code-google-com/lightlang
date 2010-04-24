@@ -33,6 +33,7 @@ int connect_dict(const char *dict_name);
 int disconnect_dict(const char *dict_name);
 
 int print_dicts_list(void);
+int print_dict_info(const char *dict_name);
 
 
 #endif // MANAGER_H

@@ -41,6 +41,7 @@
 #include "const.h"
 #include "settings.h"
 #include "string.h"
+#include "search.h"
 
 #include "manager.h"
 
@@ -174,7 +175,7 @@ static int print_dir(const char *dicts_dir)
 
 		if ( (dict_path = (char *) malloc(dict_path_len)) == NULL ) {
 			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
 
 			if ( closedir(dicts_dp) != 0 )
 				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
@@ -210,6 +211,57 @@ static int print_dir(const char *dicts_dir)
 
 	if ( closedir(dicts_dp) != 0 )
 		fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
+
+	return 0;
+}
+
+int print_dict_info(const char *dict_name)
+{
+	FILE *dict_fp;
+	char *dict_path;
+	size_t dict_path_len;
+	char *str = NULL;
+	wchar_t str_wc[MAX_WORD_SIZE];
+	size_t str_len = 0;
+	size_t str_break_count;
+
+
+	dict_path_len = (strlen(ALL_DICTS_DIR) + strlen(dict_name) + 16) * sizeof(char);
+
+	if ( (dict_path = (char *) malloc(dict_path_len)) == NULL ) {
+		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
+			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+
+		return -1;
+	}
+
+	sprintf(dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
+
+	if ( (dict_fp = fopen(dict_path, "r")) == NULL ) {
+		fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
+
+		free(dict_path);
+		return -1;
+	}
+
+	while ( getline(&str, &str_len, dict_fp) != -1 ) {
+		if ( str[0] != '#' && strncpy_lower_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) != NULL )
+			break;
+
+		if ( str[0] != '#' )
+			continue;
+
+		for (str_break_count = 1; (str[str_break_count] == ' ' || str[str_break_count] == '\t') &&
+			str[str_break_count]; ++str_break_count);
+		fputs(str + str_break_count, stdout);
+	}
+
+	free(str);
+
+	if ( fclose(dict_fp) != 0 )
+		fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
+
+	free(dict_path);
 
 	return 0;
 }
