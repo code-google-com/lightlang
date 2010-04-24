@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
+import sys
 import Qt
 import Config
 import Const
@@ -34,6 +34,13 @@ def tr(str) :
 class MainApplication(Qt.QApplication) :
 	def __init__(self, argv) :
 		Qt.QApplication.__init__(self, argv)
+
+
+	### Public ###
+
+	def exit(self, error_code = 0) :
+		#Qt.QApplication.exit(error_code)
+		sys.exit(error_code) # TODO: Remove this hack, when qApp.exit() that will be do run without segfolt
 
 
 	### Private ###
