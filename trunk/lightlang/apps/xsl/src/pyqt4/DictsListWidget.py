@@ -179,10 +179,8 @@ class DictsListWidget(Qt.QTableWidget) :
 
 		dict_state = self.cellWidget(index, 0).dictState()
 		dict_name = self.cellWidget(index, 0).dictName()
-		dict_info = self.cellWidget(index, 0).dictInfo()
-		dict_info = ( None if Qt.QTextDocumentFragment.fromHtml(dict_info).toPlainText().isEmpty() else dict_info )
 
-		item = DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name, dict_info)
+		item = DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name)
 
 		self.removeRow(index)
 

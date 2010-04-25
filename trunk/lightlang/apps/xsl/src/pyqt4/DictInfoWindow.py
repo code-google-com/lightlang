@@ -24,14 +24,12 @@ import Qt
 import Config
 import Const
 import IconsLoader
-import LangsList
 import TextBrowser
+import SlDictsInfoLoader
 
 
 #####
 WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
-
-AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
 
 #####
@@ -41,7 +39,7 @@ def tr(str) :
 
 #####
 class DictInfoWindow(Qt.QDialog) :
-	def __init__(self, dict_name, dict_info = None, parent = None) :
+	def __init__(self, dict_name, parent = None) :
 		Qt.QDialog.__init__(self, parent)
 
 		self.setWindowTitle(tr("Dict Information"))
@@ -73,14 +71,9 @@ class DictInfoWindow(Qt.QDialog) :
 
 		self.is_loaded_flag = False
 
-		self.dict_name_regexp = Qt.QRegExp("([^\\.]+)\\.((..)-(..))")
-
 		#####
 
 		self.dict_info_browser = TextBrowser.TextBrowser()
-		if dict_info != None :
-			self.dict_info_browser.setText(dict_info)
-			self.is_loaded_flag = True
 		self.dict_info_browser_layout.addWidget(self.dict_info_browser)
 
 		self.wait_picture_movie = Qt.QMovie(WaitPicture)
@@ -114,41 +107,8 @@ class DictInfoWindow(Qt.QDialog) :
 	### Public ###
 
 	def updateInfo(self) :
-		if self.dict_name.isEmpty() :
-			return
-
-		self.update_info_button.blockSignals(True)
-		self.update_info_button.setEnabled(False)
-
-		self.wait_picture_movie_label.show()
-		self.wait_picture_movie.start()
-		self.wait_message_label.show()
-
-		###
-
-		dict_info = Qt.QString()
-		dict_info.append(tr("<font class=\"text_label_font\">Caption</font>: %2<hr>").arg(self.dictCaption()))
-		dict_info.append(tr("<font class=\"text_label_font\">Translate direction</font>: %2<hr>").arg(self.dictDirection()))
-		dict_info.append(tr("<font class=\"text_label_font\">File path</font>: %2<hr>").arg(self.dictFilePath()))
-		dict_info.append(tr("<font class=\"text_label_font\">File size (KB)</font>: %2<hr>").arg(self.dictFileSize()))
-		self.dict_info_browser.setText(dict_info)
-
-		dict_description, word_count = self.dictDescriptionAndWordCount()
-		dict_info.append(tr("<font class=\"text_label_font\">Count of words</font>: %2<hr>").arg(word_count))
-		dict_info.append(tr("<font class=\"text_label_font\">Description</font>: %2").arg(dict_description))
-		self.dict_info_browser.setText(dict_info)
-
-		###
-
-		Qt.QCoreApplication.processEvents()
-
-		self.wait_picture_movie_label.hide()
-		self.wait_picture_movie.stop()
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_message_label.hide()
-
-		self.update_info_button.setEnabled(True)
-		self.update_info_button.blockSignals(False)
+		self.clearInfo()
+		self.loadInfo()
 
 	###
 
@@ -163,68 +123,54 @@ class DictInfoWindow(Qt.QDialog) :
 		self.activateWindow()
 
 		if not self.is_loaded_flag :
-			self.updateInfo()
-			self.is_loaded_flag = True
+			self.loadInfo()
 
 
 	### Private ###
 
-	def dictCaption(self) :
-		if self.dict_name_regexp.exactMatch(self.dict_name) :
-			dict_caption = self.dict_name_regexp.cap(1)
-		else :
-			dict_caption = Qt.QString(self.dict_name)
-		dict_caption.replace("_", " ")
-		dict_caption.replace(".", " ")
-		return dict_caption
+	def clearInfo(self) :
+		SlDictsInfoLoader.clearInfo(self.dict_name)
 
-	def dictDirection(self) :
-		if self.dict_name_regexp.exactMatch(self.dict_name) :
-			icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
-			return ( Qt.QString("<img src=\"%3\" width=\"%1\" height=\"%2\"> &#187; <img src=\"%4\" width=\"%1\" height=\"%2\">"
-				"&nbsp;&nbsp;&nbsp;%5 &#187; %6 (%7)").arg(icon_width).arg(icon_height)
-				.arg(IconsLoader.iconPath("flags/"+self.dict_name_regexp.cap(3)))
-				.arg(IconsLoader.iconPath("flags/"+self.dict_name_regexp.cap(4)))
-				.arg(LangsList.langName(self.dict_name_regexp.cap(3))).arg(LangsList.langName(self.dict_name_regexp.cap(4)))
-				.arg(self.dict_name_regexp.cap(2)) )
-		else :
-			return tr("Unavailable")
+	def loadInfo(self) :
+		if self.dict_name.isEmpty() :
+			return
 
-	def dictFilePath(self) :
-		dict_file_path = Qt.QString(AllDictsDir+self.dict_name)
-		return ( dict_file_path if Qt.QFile.exists(dict_file_path) else tr("Unavailable") )
+		self.update_info_button.blockSignals(True)
+		self.update_info_button.setEnabled(False)
 
-	def dictFileSize(self) :
-		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
-		return Qt.QString().setNum(dict_file.size() / 1024) # KB
+		self.wait_picture_movie_label.show()
+		self.wait_picture_movie.start()
+		self.wait_message_label.show()
 
-	def dictDescriptionAndWordCount(self) :
-		dict_description = Qt.QString()
-		word_count = 0
+		###
 
-		dict_file = Qt.QFile(AllDictsDir+self.dict_name)
-		dict_file_stream = Qt.QTextStream(dict_file)
+		dict_info = Qt.QString()
+		dict_info.append(tr("<font class=\"text_label_font\">Caption</font>: %2<hr>").arg(SlDictsInfoLoader.caption(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Translate direction</font>: %2<hr>").arg(SlDictsInfoLoader.direction(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Dictionary group</font>: %2<hr>").arg(SlDictsInfoLoader.group(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Dictionary version</font>: %2<hr>").arg(SlDictsInfoLoader.version(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Count of words</font>: %2<hr>").arg(SlDictsInfoLoader.wordCount(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">File size (KB)</font>: %2<hr>").arg(SlDictsInfoLoader.fileSize(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Author</font>: %2<hr>").arg(SlDictsInfoLoader.author(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Homepage</font>: %2<hr>").arg(SlDictsInfoLoader.url(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">License</font>: %2<hr>").arg(SlDictsInfoLoader.license(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Copyright</font>: %2<hr>").arg(SlDictsInfoLoader.copyright(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Description</font>: %2<hr>").arg(SlDictsInfoLoader.miscInfo(self.dict_name)))
+		self.dict_info_browser.setText(dict_info)
 
-		if dict_file.open(Qt.QIODevice.ReadOnly) :
-			first_comment_flag = False
-			while not dict_file_stream.atEnd() :
-				Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-				str = dict_file_stream.readLine()
-				if str.isEmpty() :
-					continue
-				if str[0] == "#" :
-					str.remove(0, 1)
-					str.remove("\n")
-					str.append("<br>")
-					dict_description.append(str)
-					continue
-				if str.contains("  ") :
-					word_count += 1
-			dict_file.close()
-			dict_description.trimmed()
+		###
 
-		if dict_description.isEmpty() :
-			dict_description = tr("Unavailable")
+		Qt.QCoreApplication.processEvents()
 
-		return dict_description, Qt.QString().setNum(word_count)
+		self.wait_picture_movie_label.hide()
+		self.wait_picture_movie.stop()
+		self.wait_picture_movie.jumpToFrame(0)
+		self.wait_message_label.hide()
+
+		self.update_info_button.setEnabled(True)
+		self.update_info_button.blockSignals(False)
+
+		###
+
+		self.is_loaded_flag = True
 

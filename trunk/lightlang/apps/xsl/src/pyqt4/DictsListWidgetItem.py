@@ -36,7 +36,7 @@ def tr(str) :
 
 #####
 class DictsListWidgetItem(Qt.QWidget) :
-	def __init__(self, dict_state, dict_name, dict_info = None, parent = None) :
+	def __init__(self, dict_state, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
@@ -77,7 +77,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 
 		self.dict_name = Qt.QString(dict_name)
 
-		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name, dict_info)
+		self.dict_info_window = DictInfoWindow.DictInfoWindow(dict_name)
 
 		#####
 
