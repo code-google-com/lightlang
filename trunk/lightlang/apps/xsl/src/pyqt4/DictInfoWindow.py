@@ -155,7 +155,7 @@ class DictInfoWindow(Qt.QDialog) :
 		dict_info.append(tr("<font class=\"text_label_font\">Homepage</font>: %2<hr>").arg(SlDictsInfoLoader.url(self.dict_name)))
 		dict_info.append(tr("<font class=\"text_label_font\">License</font>: %2<hr>").arg(SlDictsInfoLoader.license(self.dict_name)))
 		dict_info.append(tr("<font class=\"text_label_font\">Copyright</font>: %2<hr>").arg(SlDictsInfoLoader.copyright(self.dict_name)))
-		dict_info.append(tr("<font class=\"text_label_font\">Description</font>: %2<hr>").arg(SlDictsInfoLoader.miscInfo(self.dict_name)))
+		dict_info.append(tr("<font class=\"text_label_font\">Description</font>: %2").arg(SlDictsInfoLoader.miscInfo(self.dict_name)))
 		self.dict_info_browser.setText(dict_info)
 
 		###
