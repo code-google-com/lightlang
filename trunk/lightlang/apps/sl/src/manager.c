@@ -221,7 +221,6 @@ int print_dict_info(const char *dict_name)
 	char *dict_path;
 	size_t dict_path_len;
 	char *str = NULL;
-	wchar_t str_wc[MAX_WORD_SIZE];
 	size_t str_len = 0;
 	size_t str_break_count;
 
@@ -245,7 +244,7 @@ int print_dict_info(const char *dict_name)
 	}
 
 	while ( getline(&str, &str_len, dict_fp) != -1 ) {
-		if ( str[0] != '#' && strncpy_lower_filter_wc(str_wc, str, MAX_WORD_SIZE - 1) != NULL )
+		if ( str[0] != '#' && strstr(str, "  ") != NULL )
 			break;
 
 		if ( str[0] != '#' )
