@@ -36,13 +36,6 @@ class MainApplication(Qt.QApplication) :
 		Qt.QApplication.__init__(self, argv)
 
 
-	### Public ###
-
-	def exit(self, error_code = 0) :
-		#Qt.QApplication.exit(error_code)
-		sys.exit(error_code) # TODO: Remove this hack, when qApp.exit() that will be do run without segfolt
-
-
 	### Private ###
 
 	def commitData(self, session_manager) :

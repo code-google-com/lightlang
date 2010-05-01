@@ -298,7 +298,7 @@ class MainWindow(Qt.QMainWindow) :
 
 	def exit(self) :
 		self.save()
-		Qt.QApplication.instance().exit(0)
+		Qt.QApplication.exit(0)
 
 
 	### Private ###
