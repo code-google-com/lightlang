@@ -8,6 +8,7 @@ dnl #####
 
 AC_INIT
 AC_PREFIX_DEFAULT(/usr)
+AC_DEFUN([AC_DATAROOTDIR_CHECKED])
 
 echo "+---------------------------------------------------------------------+"
 echo "|     Welcome to LightLang - Languages software package for Linux     |"
