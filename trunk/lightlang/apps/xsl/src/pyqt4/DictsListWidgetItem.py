@@ -26,6 +26,7 @@ import Const
 import UserStyleCss
 import IconsLoader
 import LangsList
+import HorizontalGrabWidget
 import DictInfoWindow
 
 
@@ -49,9 +50,12 @@ class DictsListWidgetItem(Qt.QWidget) :
 		#####
 
 		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.setContentsMargins(2, 0, 0, 0)
 		self.main_layout.setSpacing(0)
 		self.setLayout(self.main_layout)
+
+		self.horizontal_grab_widget = HorizontalGrabWidget.HorizontalGrabWidget()
+		self.main_layout.addWidget(self.horizontal_grab_widget)
 
 		self.enable_dict_checkbox_layout = Qt.QVBoxLayout()
 		self.enable_dict_checkbox_layout.setContentsMargins(5, 5, 5, 5)
