@@ -19,8 +19,8 @@
 // @configure_input@
 
 
-#ifndef _CONFIG_H
-# define _CONFIG_H
+#ifndef CONFIG_H
+# define CONFIG_H
 
 # define _GNU_SOURCE
 
@@ -31,5 +31,5 @@
 # define AUDIO_PLAYER_PROG "@AUDIO_PLAYER_PROG@"
 
 
-#endif // _CONFIG_H
+#endif // CONFIG_H
 
