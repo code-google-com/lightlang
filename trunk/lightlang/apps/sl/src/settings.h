@@ -34,21 +34,21 @@
 
 
 typedef enum {
-		html_output_format,
-		text_output_format,
-		native_output_format
-	} output_format_t;
+	html_output_format,
+	text_output_format,
+	native_output_format
+} output_format_t;
 
 typedef struct {
-		char *user_dicts_dir;
-		char *locale_encoding;
-		int max_terminal_line_len;
-		int max_translate_count;
-		int ill_defined_search_percent;
-		bool use_terminal_escapes_flag;
-		bool use_css_flag;
-		output_format_t output_format;
-	} settings_t;
+	char *user_dicts_dir;
+	char *locale_encoding;
+	int max_terminal_line_len;
+	int max_translate_count;
+	int ill_defined_search_percent;
+	bool use_terminal_escapes_flag;
+	bool use_css_flag;
+	output_format_t output_format;
+} settings_t;
 
 
 settings_t settings;

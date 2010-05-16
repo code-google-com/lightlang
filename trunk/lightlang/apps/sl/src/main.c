@@ -52,33 +52,33 @@ int main(int argc, char **argv)
 	int error_count = 0;
 
 	struct option long_options[] = {
-			{OPT_SEARCH_USUALLY,			required_argument,	NULL,	'u'}, // +
-			{OPT_SEARCH_FIRST_CONCURRENCE,		required_argument,	NULL,	'f'}, // +
-			{OPT_SEARCH_WORD_COMBINATIONS,		required_argument,	NULL,	'c'}, // +
-			{OPT_SEARCH_LIST,			required_argument,	NULL,	'l'}, // +
-			{OPT_SEARCH_ILL_DEFINED,		required_argument,	NULL,	'i'}, // +
-			{OPT_SEARCH_SOUND,			required_argument,	NULL,	's'}, // +
+		{OPT_SEARCH_USUALLY,			required_argument,	NULL,	'u'}, // +
+		{OPT_SEARCH_FIRST_CONCURRENCE,		required_argument,	NULL,	'f'}, // +
+		{OPT_SEARCH_WORD_COMBINATIONS,		required_argument,	NULL,	'c'}, // +
+		{OPT_SEARCH_LIST,			required_argument,	NULL,	'l'}, // +
+		{OPT_SEARCH_ILL_DEFINED,		required_argument,	NULL,	'i'}, // +
+		{OPT_SEARCH_SOUND,			required_argument,	NULL,	's'}, // +
 
-			{OPT_DICT_CONNECT,			required_argument,	NULL,	'0'}, // -
-			{OPT_DICT_DISCONNECT,			required_argument,	NULL,	'1'}, // -
-			{OPT_DICT_PRINT_DICTS_LIST,		no_argument,		NULL,	'2'}, // -
-			{OPT_DICT_PRINT_DICT_INFO,		required_argument,	NULL,	'3'}, // -
-			{OPT_DICT_USE_LIST,			required_argument,	NULL,	'5'}, // -
-			{OPT_DICT_PRINT_INDEX,			required_argument,	NULL,	'6'}, // -
+		{OPT_DICT_CONNECT,			required_argument,	NULL,	'0'}, // -
+		{OPT_DICT_DISCONNECT,			required_argument,	NULL,	'1'}, // -
+		{OPT_DICT_PRINT_DICTS_LIST,		no_argument,		NULL,	'2'}, // -
+		{OPT_DICT_PRINT_DICT_INFO,		required_argument,	NULL,	'3'}, // -
+		{OPT_DICT_USE_LIST,			required_argument,	NULL,	'5'}, // -
+		{OPT_DICT_PRINT_INDEX,			required_argument,	NULL,	'6'}, // -
 
-			{OPT_MISC_MAX_TRANSLATE_COUNT,		required_argument,	NULL,	'm'}, // +
-			{OPT_MISC_ILL_DEFINED_SEARCH_PERCENT,	required_argument,	NULL,	'p'}, // +
-			{OPT_MISC_SHOW_TIME,			no_argument,		NULL,	't'}, // +
-			{OPT_SETTINGS_OUTPUT_FORMAT,		required_argument,	NULL,	'7'}, // -
-			{OPT_SETTINGS_USE_ESCS,			required_argument,	NULL,	'8'}, // -
-			{OPT_SETTINGS_USE_CSS,			required_argument,	NULL,	'9'}, // -
+		{OPT_MISC_MAX_TRANSLATE_COUNT,		required_argument,	NULL,	'm'}, // +
+		{OPT_MISC_ILL_DEFINED_SEARCH_PERCENT,	required_argument,	NULL,	'p'}, // +
+		{OPT_MISC_SHOW_TIME,			no_argument,		NULL,	't'}, // +
+		{OPT_SETTINGS_OUTPUT_FORMAT,		required_argument,	NULL,	'7'}, // -
+		{OPT_SETTINGS_USE_ESCS,			required_argument,	NULL,	'8'}, // -
+		{OPT_SETTINGS_USE_CSS,			required_argument,	NULL,	'9'}, // -
 
-			{OPT_INFO_HELP,				no_argument,		NULL,	'h'}, // +
-			{OPT_INFO_VERSION,			no_argument,		NULL,	'v'}, // +
-			{OPT_INFO_DEBUG,			no_argument,		NULL,	'd'}, // +
+		{OPT_INFO_HELP,				no_argument,		NULL,	'h'}, // +
+		{OPT_INFO_VERSION,			no_argument,		NULL,	'v'}, // +
+		{OPT_INFO_DEBUG,			no_argument,		NULL,	'd'}, // +
 
-			{0, 0, 0, 0}
-		};
+		{0, 0, 0, 0}
+	};
 
 
 	begin_time_label = clock();

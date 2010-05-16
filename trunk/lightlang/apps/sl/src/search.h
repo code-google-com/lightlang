@@ -33,12 +33,12 @@
 
 
 typedef enum {
-		usually_regimen,
-		first_concurrence_regimen,
-		word_combinations_regimen,
-		list_regimen,
-		ill_defined_regimen
-	} regimen_t;
+	usually_regimen,
+	first_concurrence_regimen,
+	word_combinations_regimen,
+	list_regimen,
+	ill_defined_regimen
+} regimen_t;
 
 
 int find_word(const char *word, const regimen_t regimen, const char *dict_name, FILE *dict_fp);
