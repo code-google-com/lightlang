@@ -37,27 +37,23 @@ if __name__ == "__main__" :
 	#####
 
 	try :
-		opts, args = getopt.getopt(sys.argv[1:], "hs:", ["enable-psyco", "no-splash", "no-tray-icon",
+		(opts_list, args_list) = getopt.getopt(sys.argv[1:], "hs:", ["enable-psyco", "no-splash", "no-tray-icon",
 			"libs-dir=", "help", "session="])
-	except getopt.GetoptError, err1 :
+	except Exception, err1 :
 		print >> sys.stderr, "xsl: "+str(err1)
 		print >> sys.stderr, "usage: xsl [ --enable-psyco | --no-splash | --no-tray-icon | --libs-dir=<dir> | -h | --help ]"
 		sys.exit(1)
 
-	for opt, arg in opts :
-		if opt in ("--enable-psyco") :
+	for (opts_list_item, args_list_item) in opts_list :
+		if opts_list_item in ("--enable-psyco") :
 			enable_psyco_flag = True
-			continue
-		if opt in ("--no-splash") :
+		elif opts_list_item in ("--no-splash") :
 			no_splash_flag = True
-			continue
-		if opt in ("--no-tray-icon") :
+		elif opts_list_item in ("--no-tray-icon") :
 			no_tray_icon_flag = True
-			continue
-		if opt in ("--libs-dir") :
-			libs_dir = arg
-			continue
-		if opt in ("-h", "--help") :
+		elif opts_list_item in ("--libs-dir") :
+			libs_dir = args_list_item
+		elif opts_list_item in ("-h", "--help") :
 			print "usage: xsl [ --enable-psyco | --no-splash | --no-tray-icon | --libs-dir=<dir> | -h | --help ]"
 			sys.exit(0)
 
