@@ -81,11 +81,11 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def requisites(self) :
 		return {
-				"icon" : IconsLoader.icon("view-history"),
-				"title" : self.windowTitle(),
-				"area" : Qt.Qt.LeftDockWidgetArea,
-				"hotkey" : Qt.QKeySequence("Ctrl+H")
-			}
+			"icon" : IconsLoader.icon("view-history"),
+			"title" : self.windowTitle(),
+			"area" : Qt.Qt.LeftDockWidgetArea,
+			"hotkey" : Qt.QKeySequence("Ctrl+H")
+		}
 
 	###
 

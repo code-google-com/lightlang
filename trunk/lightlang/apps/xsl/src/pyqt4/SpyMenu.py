@@ -150,7 +150,6 @@ class SpyMenu(Qt.QMenu) :
 		except : pass
 		settings.setValue("spy_menu/translate_method_index", Qt.QVariant(self.translate_methods_menu.index()))
 
-
 	def loadSettings(self) :
 		settings = Settings.settings()
 		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag", Qt.QVariant(True)).toBool())

@@ -74,9 +74,9 @@ class SlWordSearch(Qt.QObject) :
 		#####
 
 		self.replaces_dict = {
-				"<font class=\"info_font\">This word is not found</font>" : tr("<font class=\"info_font\">This word is not found</font>"),
-				"<font class=\"info_font\">No dict is connected</font>" : tr("<font class=\"info_font\">No dict is connected</font>")
-			}
+			"<font class=\"info_font\">This word is not found</font>" : tr("<font class=\"info_font\">This word is not found</font>"),
+			"<font class=\"info_font\">No dict is connected</font>" : tr("<font class=\"info_font\">No dict is connected</font>")
+		}
 
 		#####
 

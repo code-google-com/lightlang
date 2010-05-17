@@ -137,21 +137,21 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def requisites(self) :
 		return {
-				"icon" : IconsLoader.icon("applications-internet"),
-				"title" : self.windowTitle(),
-				"area" : Qt.Qt.LeftDockWidgetArea,
-				"hotkey" : Qt.QKeySequence("Ctrl+G")
-			}
+			"icon" : IconsLoader.icon("applications-internet"),
+			"title" : self.windowTitle(),
+			"area" : Qt.Qt.LeftDockWidgetArea,
+			"hotkey" : Qt.QKeySequence("Ctrl+G")
+		}
 
 	def translateMethods(self) :
 		return [
-				{
-					"title" : tr("Google Translate"),
-					"object_name" : self.objectName(),
-					"method_name" : self.googleTranslateMethod.__name__,
-					"method" : self.googleTranslateMethod
-				}
-			]
+			{
+				"title" : tr("Google Translate"),
+				"object_name" : self.objectName(),
+				"method_name" : self.googleTranslateMethod.__name__,
+				"method" : self.googleTranslateMethod
+			}
+		]
 
 	###
 
