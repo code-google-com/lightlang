@@ -1,33 +1,40 @@
 %define svn_build 1
 
 %if %{svn_build}
-%define build_version %(date +%%Y%%m%%d)svn%{?dist}
+%define build_release %(date +%%Y%%m%%d)svn%{?dist}
 %else
-%define build_version 1
+%define build_release 1
 %endif
 
 
-Name: lightlang
-Version: 0.8.6
-Release: %{build_version}
-Summary: Powerful system of electronic dictionaries for Linux
-Group: Applications/Office
-License: GPL
-URL: http://code.google.com/p/lightlang
+Name:		lightlang
+Version:	0.8.6
+Release:	%{build_release}
+Summary:	LightLang - universal powerful system of electronic dictionaries for Linux
+Group:		Applications/Office
+License:	GPL
+URL:		http://code.google.com/p/lightlang
 
-Source0: %{name}-%{version}.tar.bz2
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-BuildRequires: PyQt4, python-xlib
-Requires: PyQt4, python-xlib, mplayer
+Source0:	%{name}-%{version}.tar.bz2
+BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+
+BuildRequires:	PyQt4 >= 4.7
+BuildRequires:	python-xlib >= 0.15
+BuildRequires:	autoconf
+
+Requires:	PyQt4 >= 4.7
+Requires:	python-xlib >= 0.15
+Requires:	mplayer
 
 %description
 %{summary}
 
 
 %package devel
-Summary: Devel package for LightLang
-Requires: %{name}, pkgconfig
-Group: Applications/Office
+Summary:	Devel package for LightLang
+Requires:	%{name} = %{version}
+Requires:	pkgconfig
+Group:		Applications/Office
 
 %description devel
 %{summary}
