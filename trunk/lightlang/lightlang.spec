@@ -32,9 +32,9 @@ Requires:	mplayer
 
 %package devel
 Summary:	Devel package for LightLang
+Group:		Applications/Office
 Requires:	%{name} = %{version}
 Requires:	pkgconfig
-Group:		Applications/Office
 
 %description devel
 %{summary}
