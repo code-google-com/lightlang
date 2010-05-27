@@ -1,6 +1,8 @@
 ## This is the README file for html2text          Wed Jan 14 14:35:57 CET 2004
 ## ===========================================================================
 
+Site: http://www.mbayer.de/html2text/
+
 html2text is a command line utility, written in C++, that converts HTML
 documents into plain text. It was written up to version 1.2.2 for and is
 copyrighted by GMRS Software GmbH, Unterschleiﬂheim.
