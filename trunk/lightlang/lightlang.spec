@@ -14,18 +14,10 @@ Summary:	LightLang - universal powerful system of electronic dictionaries for Li
 Group:		Applications/Office
 License:	GPL
 URL:		http://code.google.com/p/lightlang
-
 Source0:	%{name}-%{version}.tar.bz2
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-
-BuildRequires:	PyQt4 >= 4.7
-BuildRequires:	python-xlib >= 0.15
-BuildRequires:	autoconf
-
-Requires:	PyQt4 >= 4.7
-Requires:	python-xlib >= 0.15
-Requires:	mplayer
-
+BuildRequires:	PyQt4 >= 4.7, python-xlib >= 0.15, autoconf
+Requires:	PyQt4 >= 4.7, python-xlib >= 0.15, mplayer
 %description
 %{summary}
 
@@ -35,7 +27,6 @@ Summary:	Devel package for LightLang
 Group:		Applications/Office
 Requires:	%{name} = %{version}
 Requires:	pkgconfig
-
 %description devel
 %{summary}
 
