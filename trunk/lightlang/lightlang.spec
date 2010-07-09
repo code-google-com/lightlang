@@ -58,7 +58,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 
 %files
-%defattr(-,root,root,-)
+%defattr(-, root, root, -)
 %{_bindir}/sl
 %{_bindir}/xsl
 %{_bindir}/llrepo
@@ -86,6 +86,9 @@ rm -rf ${RPM_BUILD_ROOT}
 
 
 %changelog
-* Wed May 26 2010 Devaev Maxim <mdevaev@gmail.com> 1.0-20100526svn
+* Fri Jul 09 2010 Devaev Maxim <mdevaev@gmail.com> 0.8.6-20100709svn
+- Syntax fixes
+
+* Wed May 26 2010 Devaev Maxim <mdevaev@gmail.com> 0.8.6-20100526svn
 - Initial build
 
