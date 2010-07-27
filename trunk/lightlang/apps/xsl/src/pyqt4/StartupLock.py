@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Settings
 import sys
 import os
 
@@ -39,7 +40,7 @@ def tr(str) :
 
 ##### Public #####
 def test() :
-	lock_file_path = Qt.QDir.tempPath()+"/"+Qt.QString(Const.MyName).toLower()+LockFilePostfix
+	lock_file_path = Settings.settingsPath()+"/"+Qt.QString(Const.MyName).toLower()+LockFilePostfix
 	lock_file = Qt.QFile(lock_file_path)
 	lock_file_stream = Qt.QTextStream(lock_file)
 
