@@ -330,7 +330,9 @@ static void print_translate_html(const char *str, const int word_number)
 	bool sound_link_font_flag = false;
 	bool shield_flag = false;
 
+
 	printf("\t<dl><dd>\n\t\t(<font class=\"article_number_font\">%d</font>) ", word_number);
+	++block_count;
 
 	for (; *str; ++str) {
 		if ( *str == '\n' ) {
