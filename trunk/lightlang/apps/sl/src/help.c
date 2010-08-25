@@ -140,7 +140,7 @@ void debug(void)
 
 	putchar('\n');
 
-	printf("Audio player\t\t:\t%s\n", AUDIO_PLAYER_PROG);
-	printf("datarootdir\t\t:\t%s\n", DATA_ROOT_DIR);
+	printf("Audio player: %s\n", AUDIO_PLAYER_PROG);
+	printf("datarootdir: %s\n", DATA_ROOT_DIR);
 }
 
