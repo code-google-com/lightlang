@@ -19,7 +19,7 @@
 
 /********************************************************************************
 *										*
-*	manager.h - funkcii administrirovaniya slovarey.			*
+*	manager.h - dicts management functions					*
 *										*
 ********************************************************************************/
 
@@ -51,9 +51,11 @@ static int print_dir(const char *dicts_dir);
 int connect_dict(const char *dict_name)
 {
 	char *src_dict_path;
-	char *dest_dict_path;
 	size_t src_dict_path_len;
+
+	char *dest_dict_path;
 	size_t dest_dict_path_len;
+
 	extern settings_t settings;
 
 
@@ -61,41 +63,30 @@ int connect_dict(const char *dict_name)
 	dest_dict_path_len = (strlen(settings.user_dicts_dir) + strlen(dict_name) + 16) * sizeof(char);
 
 	if ( (src_dict_path = (char *) malloc(src_dict_path_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		return -1;
 	}
 
 	if ( (dest_dict_path = (char *) malloc(dest_dict_path_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
-
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		free(src_dict_path);
-
 		return -1;
 	}
 
 	sprintf(src_dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
 	sprintf(dest_dict_path, "%s/%s", settings.user_dicts_dir, dict_name);
 
-	fprintf(stderr, "%s: connecting dict \"%s\"...\n", MYNAME, dict_name);
-	if ( access(src_dict_path, F_OK) != 0 ) {
-		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
-
-		free(src_dict_path);
-		free(dest_dict_path);
-
-		return -1;
+	if ( !access(src_dict_path, F_OK) ) {
+		if ( !symlink(src_dict_path, dest_dict_path) ) {
+			fprintf(stderr, "Cannot connect \"%s\": %s\n", dict_name, strerror(errno));
+			free(src_dict_path);
+			free(dest_dict_path);
+			return -1;
+		}
 	}
-	if ( symlink(src_dict_path, dest_dict_path) != 0 ) {
-		fprintf(stderr, "%s: cannot connect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
-
-		free(src_dict_path);
-		free(dest_dict_path);
-
-		return -1;
+	else {
+		fprintf(stderr, "Dictionary \"%s\" does not exists\n", dict_name);
 	}
-	fprintf(stderr, "%s: done\n", MYNAME);
 
 	free(src_dict_path);
 	free(dest_dict_path);
@@ -107,28 +98,24 @@ int disconnect_dict(const char *dict_name)
 {
 	char *dict_path;
 	size_t dict_path_len;
+
 	extern settings_t settings;
 
 
 	dict_path_len = (strlen(settings.user_dicts_dir) + strlen(dict_name) + 16) * sizeof(char);
 
 	if ( (dict_path = (char *) malloc(dict_path_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		return -1;
 	}
 
 	sprintf(dict_path, "%s/%s", settings.user_dicts_dir, dict_name);
 
-	fprintf(stderr, "%s: disconnecting dict \"%s\"...\n", MYNAME, dict_name);
 	if ( unlink(dict_path) != 0 ) {
-		fprintf(stderr, "%s: cannot disconnect dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
-
+		fprintf(stderr, "Cannot disconnect \"%s\": %s\n", dict_name, strerror(errno));
 		free(dict_path);
-
 		return -1;
 	}
-	fprintf(stderr, "%s: done\n", MYNAME);
 
 	free(dict_path);
 
@@ -157,13 +144,15 @@ static int print_dir(const char *dicts_dir)
 	DIR *dicts_dp;
 	struct dirent *dicts_dp_ent;
 	struct stat dict_st;
+
 	char *dict_path;
 	size_t dict_path_len;
+
 	int count = 0;
 
 
 	if ( (dicts_dp = opendir(dicts_dir)) == NULL ) {
-		fprintf(stderr, "%s: cannot open folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
+		fprintf(stderr, "Cannot open dict folder \"%s\": %s\n", dicts_dir, strerror(errno));
 		return -1;
 	}
 
@@ -174,43 +163,30 @@ static int print_dir(const char *dicts_dir)
 		dict_path_len = (strlen(dicts_dir) + strlen(dicts_dp_ent->d_name) + 16) * sizeof(char);
 
 		if ( (dict_path = (char *) malloc(dict_path_len)) == NULL ) {
-			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
-
-			if ( closedir(dicts_dp) != 0 )
-				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
-
-			return -1;
+			fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
+			continue;
 		}
 
 		sprintf(dict_path, "%s/%s", dicts_dir, dicts_dp_ent->d_name);
 
 		if ( lstat(dict_path, &dict_st) != 0 ) {
-			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
-
-			if ( closedir(dicts_dp) != 0 )
-				fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
-
-			free(dict_path);
-
-			return -1;
-		}
-
-		dict_st.st_mode &= S_IFMT;
-		if ( (dict_st.st_mode & S_IFLNK) != S_IFLNK && (dict_st.st_mode & S_IFREG) != S_IFREG ) {
+			fprintf(stderr, "Cannot get information about dict \"%s\": %s\n", dicts_dp_ent->d_name, strerror(errno));
 			free(dict_path);
 			continue;
 		}
 
-		++count;
-
-		printf(" (%d)\t%s\n", count, dicts_dp_ent->d_name);
-
 		free(dict_path);
+
+		dict_st.st_mode &= S_IFMT;
+		if ( (dict_st.st_mode & S_IFLNK) != S_IFLNK && (dict_st.st_mode & S_IFREG) != S_IFREG )
+			continue;
+
+		++count;
+		printf(" (%d)\t%s\n", count, dicts_dp_ent->d_name);
 	}
 
 	if ( closedir(dicts_dp) != 0 )
-		fprintf(stderr, "%s: cannot close folder \"%s\": %s\n", MYNAME, dicts_dir, strerror(errno));
+		fprintf(stderr, "Cannot close dict folder \"%s\": %s\n", dicts_dir, strerror(errno));
 
 	return 0;
 }
@@ -218,27 +194,27 @@ static int print_dir(const char *dicts_dir)
 int print_dict_info(const char *dict_name)
 {
 	FILE *dict_fp;
+
 	char *dict_path;
 	size_t dict_path_len;
+
 	char *str = NULL;
 	size_t str_len = 0;
+
 	size_t str_break_count;
 
 
 	dict_path_len = (strlen(ALL_DICTS_DIR) + strlen(dict_name) + 16) * sizeof(char);
 
 	if ( (dict_path = (char *) malloc(dict_path_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
-
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		return -1;
 	}
 
 	sprintf(dict_path, "%s/%s", ALL_DICTS_DIR, dict_name);
 
 	if ( (dict_fp = fopen(dict_path, "r")) == NULL ) {
-		fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
-
+		fprintf(stderr, "Cannot open dict file \"%s\": %s\n", dict_name, strerror(errno));
 		free(dict_path);
 		return -1;
 	}
@@ -256,11 +232,10 @@ int print_dict_info(const char *dict_name)
 	}
 
 	free(str);
+	free(dict_path);
 
 	if ( fclose(dict_fp) != 0 )
-		fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
-
-	free(dict_path);
+		fprintf(stderr, "Cannot close dict file \"%s\": %s\n", dict_name, strerror(errno));
 
 	return 0;
 }

@@ -47,9 +47,12 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 {
 	FILE *dict_fp;
 	char *dict_name;
+
 	int retcode = 0;
+
 	bool no_translate_flag = true;
 	bool no_dicts_flag = true;
+
 	extern settings_t settings;
 
 
@@ -71,7 +74,7 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		}
 
 		if ( fclose(dict_fp) != 0 )
-			fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
+			fprintf(stderr, "Cannot close dict file \"%s\": %s\n", dict_name, strerror(errno));
 
 		no_dicts_flag = false;
 	}
@@ -90,7 +93,7 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 			}
 
 			if ( fclose(dict_fp) != 0 )
-				fprintf(stderr, "%s: cannot close dict \"%s\": %s\n", MYNAME, dict_name, strerror(errno));
+				fprintf(stderr, "Cannot close dict file \"%s\": %s\n", dict_name, strerror(errno));
 		}
 	}
 
@@ -98,7 +101,7 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		switch ( settings.output_format ) {
 			case html_output_format : fprintf(stderr, "\t<font class=\"info_font\">This word is not found</font><br>\n"); break;
 			case text_output_format :
-			case native_output_format : fprintf(stderr, "%s: this word is not found\n", MYNAME); break;
+			case native_output_format : fprintf(stderr, "This word is not found\n"); break;
 		}
 	}
 
@@ -106,7 +109,7 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		switch ( settings.output_format ) {
 			case html_output_format : fprintf(stderr, "\t<font class=\"info_font\">No dict is connected</font><br>"); break;
 			case text_output_format :
-			case native_output_format : fprintf(stderr, "%s: no dict is connected\n", MYNAME); break;
+			case native_output_format : fprintf(stderr, "No dict is connected\n"); break;
 		}
 	}
 
@@ -120,16 +123,18 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 static FILE *get_next_dict_fp_from_user_dicts_dir(char **dict_name)
 {
 	FILE *dict_fp;
+	char dict_path[strlen(ALL_DICTS_DIR) + PATH_MAX + 16];
+	struct stat dict_st;
+
 	static DIR *dicts_dp = NULL;
 	static struct dirent *dicts_dp_ent;
-	struct stat dict_st;
-	char dict_path[strlen(ALL_DICTS_DIR) + PATH_MAX + 16];
+
 	extern settings_t settings;
 
 
 	if ( dicts_dp == NULL ) {
 		if ( (dicts_dp = opendir(settings.user_dicts_dir)) == NULL ) {
-			fprintf(stderr, "%s: cannot open dict folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
+			fprintf(stderr, "Cannot open dict folder \"%s\": %s\n", settings.user_dicts_dir, strerror(errno));
 			return NULL;
 		}
 	}
@@ -141,7 +146,7 @@ static FILE *get_next_dict_fp_from_user_dicts_dir(char **dict_name)
 		sprintf(dict_path, "%s/%s", settings.user_dicts_dir, dicts_dp_ent->d_name);
 
 		if ( lstat(dict_path, &dict_st) != 0 ) {
-			fprintf(stderr, "%s: cannot get information about dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
+			fprintf(stderr, "Cannot get information about file \"%s\": %s\n", dicts_dp_ent->d_name, strerror(errno));
 			continue;
 		}
 
@@ -150,7 +155,7 @@ static FILE *get_next_dict_fp_from_user_dicts_dir(char **dict_name)
 			continue;
 
 		if ( (dict_fp = fopen(dict_path, "r")) == NULL ) {
-			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dicts_dp_ent->d_name, strerror(errno));
+			fprintf(stderr, "Cannot open dict file \"%s\": %s\n", dicts_dp_ent->d_name, strerror(errno));
 			continue;
 		}
 
@@ -160,7 +165,7 @@ static FILE *get_next_dict_fp_from_user_dicts_dir(char **dict_name)
 	}
 
 	if ( closedir(dicts_dp) == -1 )
-		fprintf(stderr, "%s: cannot close dict folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
+		fprintf(stderr, "Cannot close dict folder \"%s\": %s\n", settings.user_dicts_dir, strerror(errno));
 	else
 		dicts_dp = NULL;
 
@@ -172,6 +177,7 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 	FILE *dict_fp;
 	char dict_path[strlen(ALL_DICTS_DIR) + PATH_MAX + 16];
 	static char dicts_list_item[PATH_MAX];
+
 	static size_t count1 = 0;
 	size_t count2;
 
@@ -192,7 +198,7 @@ static FILE *get_next_dict_fp_from_list(char **dict_name, const char *dicts_list
 		sprintf(dict_path, "%s/%s", ALL_DICTS_DIR, dicts_list_item);
 
 		if ( (dict_fp = fopen(dict_path, "r")) == NULL ) {
-			fprintf(stderr, "%s: cannot open dict \"%s\": %s\n", MYNAME, dicts_list_item, strerror(errno));
+			fprintf(stderr, "Cannot open dict file \"%s\": %s\n", dicts_list_item, strerror(errno));
 			continue;
 		}
 

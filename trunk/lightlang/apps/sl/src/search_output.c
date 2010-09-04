@@ -325,6 +325,7 @@ static void print_translate_html(const char *str, const int word_number)
 	int italic_font_count = 0;
 	int green_font_count = 0;
 	int block_count = 0;
+
 	bool underline_font_flag = false;
 	bool word_link_font_flag = false;
 	bool sound_link_font_flag = false;
@@ -490,15 +491,18 @@ static void print_translate_text(const char *str, const int word_number)
 	wchar_t str_ch_wc;
 	size_t str_offset = 0;
 	mbstate_t mb_state;
+
 	int block_count = 0;
 	int char_count = 0;
 	int count = 0;
+
 	bool strong_font_flag = false;
 	bool green_font_flag = false;
 	bool underline_font_flag = false;
 	bool word_link_font_flag = false;
 	bool sound_link_font_flag = false;
 	bool shield_flag = false;
+
 	extern settings_t settings;
 
 

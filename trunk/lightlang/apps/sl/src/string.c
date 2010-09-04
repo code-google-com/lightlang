@@ -52,7 +52,7 @@ wchar_t get_first_lower_wc(const char *str)
 
 
 	if ( mbrtowc(&str_ch_wc, str, sizeof(wchar_t), NULL) < 0 )
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t)(1): %s\n", MYNAME, strerror(errno));
+		fprintf(stderr, "Cannot convert \"%s\" to (wchar_t): %s\n", str, strerror(errno));
 
 	return towlower(str_ch_wc);
 }
@@ -131,8 +131,7 @@ int strcmp_noend_wc(const wchar_t *str1_wc, const wchar_t *str2_wc)
 
 int strcmp_jump_wc(const wchar_t *str1_wc, const wchar_t *str2_wc, const int percent)
 {
-	size_t str1_wc_len;
-	size_t str2_wc_len;
+	size_t str1_wc_len, str2_wc_len;
 	int error_count = 0;
 	int search_exact;
 

@@ -49,9 +49,9 @@ int init_settings(void)
 
 
 	if ( init_settings_locale() != 0 )
-		return -1;
+		return -1; // Clear previous!
 	if ( init_settings_user_dicts_dir() != 0 )
-		return -1;
+		return -1; // Clear previous!
 
 	init_settings_locale_encoding();
 	init_settings_max_terminal_line_len();
@@ -79,7 +79,7 @@ int close_settings(void)
 static int init_settings_locale(void)
 {
 	if ( setlocale(LC_ALL, "") == NULL && setlocale(LC_CTYPE, "") == NULL ) {
-		fprintf(stderr, "%s: init: cannot change locale: %s\n", MYNAME, strerror(errno));
+		fprintf(stderr, "Cannot change locale LC_ALL and LC_CTYPE: %s\n", strerror(errno));
 		return -1;
 	}
 
@@ -94,15 +94,14 @@ static int init_settings_user_dicts_dir(void)
 
 
 	if ( (home_dir = getenv("HOME")) == NULL ) {
-		fprintf(stderr, "%s: cannot \"$HOME\" value: %s\n", MYNAME, strerror(errno));
+		fprintf(stderr, "Cannot get \"$HOME\" value: %s\n", strerror(errno));
 		return -1;
 	}
 
 	user_dicts_dir_len = (strlen(home_dir) + strlen(USER_DICTS_SUBDIR) + 16) * sizeof(char);
 
 	if ( (settings.user_dicts_dir = (char *) malloc(user_dicts_dir_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL );
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		return -1;
 	}
 
@@ -110,7 +109,7 @@ static int init_settings_user_dicts_dir(void)
 
 	if ( access(settings.user_dicts_dir, F_OK) != 0 ) {
 		if ( mkdir(settings.user_dicts_dir, 0755) != 0 ) {
-			fprintf(stderr, "%s: cannot create user dicts folder \"%s\": %s\n", MYNAME, settings.user_dicts_dir, strerror(errno));
+			fprintf(stderr, "Cannot create user dicts folder \"%s\": %s\n", settings.user_dicts_dir, strerror(errno));
 			return -1;
 		}
 	}

@@ -43,14 +43,10 @@
 
 int main(int argc, char **argv)
 {
-	bool use_default_function_flag = true;
-	bool show_time_flag = false;
 	char *dicts_list = NULL;
-	clock_t begin_time_label, end_time_label;
 	regimen_t regimen = usually_regimen; // GCC warning fix
-	int opt;
-	int error_count = 0;
 
+	int opt;
 	struct option long_options[] = {
 		{OPT_SEARCH_USUALLY,			required_argument,	NULL,	'u'}, // +
 		{OPT_SEARCH_FIRST_CONCURRENCE,		required_argument,	NULL,	'f'}, // +
@@ -80,11 +76,18 @@ int main(int argc, char **argv)
 		{0, 0, 0, 0}
 	};
 
+	int error_count = 0;
+
+	clock_t begin_time_label, end_time_label;
+
+	bool use_default_function_flag = true;
+	bool show_time_flag = false;
+
 
 	begin_time_label = clock();
 
 	if ( init_settings() != 0 ) {
-		fprintf(stderr, "%s: cannot init settings\n", MYNAME);
+		fprintf(stderr, "Cannot initialize default \"%s\" settings\n", MYNAME);
 		return 1;
 	}
 
@@ -204,14 +207,14 @@ int main(int argc, char **argv)
 			}
 
 			case ':' : {
-				fprintf(stderr, "%s: option \"-%c\" requires an argument: ignored\n", MYNAME, optopt);
+				fprintf(stderr, "Option \"-%c\" requires an argument: ignored\n", optopt);
 				--error_count;
 				break;
 			}
 
 			case '?' :
 			default : {
-				fprintf(stderr, "%s: option \"-%c\" is invalid: ignored\n", MYNAME, optopt);
+				fprintf(stderr, "Invalid option \"-%c\": ignored\n", optopt);
 				use_default_function_flag = false;
 				break;
 			}
@@ -222,18 +225,18 @@ int main(int argc, char **argv)
 		error_count += managed_find_word(argv[1], usually_regimen, NULL);
 	}
 	else if ( argc != 2 && use_default_function_flag ) {
-		fprintf(stderr, "%s: bad usage, try \"%s --help\"\n", MYNAME, MYNAME);
+		fprintf(stderr, "Bad options syntax, try \"%s --help\"\n", MYNAME);
 		--error_count;
 	}
 
 	if ( close_settings() != 0 )
-		fprintf(stderr, "%s: warning: cannot close settings\n", MYNAME);
+		fprintf(stderr, "Warning: cannot close \"%s\" settings\n", MYNAME);
 
 	if ( show_time_flag ) {
 		end_time_label = clock();
 
 		if ( begin_time_label != -1 && end_time_label != -1 )
-			fprintf(stderr, "%s: search time: %.2f sec\n", MYNAME, ((double) (end_time_label - begin_time_label)) / CLOCKS_PER_SEC);
+			fprintf(stderr, "Search time: %.2f sec\n", ((double) (end_time_label - begin_time_label)) / CLOCKS_PER_SEC);
 	}
 
 	return abs(error_count);

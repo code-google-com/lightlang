@@ -60,63 +60,49 @@ int find_word(const char *word, const regimen_t regimen, const char *dict_name, 
 int find_sound(const char *word)
 {
 	wchar_t *word_wc;
+	wchar_t *lang_wc_ptr;
+	wchar_t *word_wc_ptr;
 	wchar_t *word_token_wc;
 	wchar_t *word_token_wc_state;
-	wchar_t *lang_wc = NULL; // GCC warning fix
 	char *play_command;
 	size_t word_wc_len;
-	size_t lang_wc_len;
 	size_t play_command_len;
-	bool first_token_flag = true;
 
 
 	if ( (word_wc_len = strlen(word)) < 1 )
 		return 0;
 	word_wc_len = (word_wc_len + 16) * sizeof(wchar_t);
 
+
 	if ( (word_wc = (wchar_t *) malloc(word_wc_len)) == NULL ) {
-		fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-			MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+		fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 		return -1;
 	}
 
 	strncpy_lower_wc(word_wc, word, word_wc_len);
 
-	for (word_token_wc = wcstok(word_wc, L" -./\\:", &word_token_wc_state); word_token_wc;
-		word_token_wc = wcstok(NULL, L" -./\\:", &word_token_wc_state)) {
-		if ( first_token_flag ) {
-			lang_wc_len = (wcslen(word_token_wc) + 16) * sizeof(wchar_t);
+	if ( (word_wc_ptr = wcschr(word_wc, ':')) == NULL ) { // lang:word
+		fprintf(stderr, "A word must be given in the format \"language:word\"\n");
+		free(word_wc);
+		return -1;
+	}
 
-			if ( (lang_wc = (wchar_t *) malloc(lang_wc_len)) == NULL ) {
-				fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-					MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
+	lang_wc_ptr = word_wc;
+	*word_wc_ptr = L'\0';
+	++word_wc_ptr;
 
-				free(word_wc);
+	for (word_token_wc = wcstok(word_wc_ptr, L" -./\\()", &word_token_wc_state); word_token_wc;
+		word_token_wc = wcstok(NULL, L" -./\\()", &word_token_wc_state)) {
 
-				return -1;
-			}
+		play_command_len = ( (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) + strlen(AUDIO_POSTFIX)) * sizeof(char) +
+			(wcslen(lang_wc_ptr) + wcslen(word_token_wc)) * sizeof(wchar_t) + 32 );
 
-			wcscpy(lang_wc, word_token_wc); //wcsncpy, memcpy
-
-			first_token_flag = false;
+		if ( (play_command = (char *) malloc(play_command_len)) == NULL ) {
+			fprintf(stderr, "Cannot allocate memory (%s:%d): %s\n", __FILE__, __LINE__, strerror(errno));
 			continue;
 		}
 
-		play_command_len = (strlen(AUDIO_PLAYER_PROG) + strlen(ALL_SOUNDS_DIR) + wcslen(word_token_wc) * sizeof(wchar_t)
-			+ strlen(AUDIO_POSTFIX) + 32) * sizeof(char);
-
-		if ( (play_command = (char *) malloc(play_command_len)) == NULL ) {
-			fprintf(stderr, "%s: memory error (%s, file %s, line %d), please report to \"%s\"\n",
-				MYNAME, strerror(errno), __FILE__, __LINE__, BUGTRACK_MAIL);
-
-			free(word_wc);
-			if ( !first_token_flag )
-				free(lang_wc);
-
-			return -1;
-		}
-
-		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc,
+		sprintf(play_command, "%s %s/%ls/%lc/%ls%s", AUDIO_PLAYER_PROG, ALL_SOUNDS_DIR, lang_wc_ptr,
 			word_token_wc[0], word_token_wc, AUDIO_POSTFIX);
 
 		system(play_command);
@@ -125,8 +111,6 @@ int find_sound(const char *word)
 	}
 
 	free(word_wc);
-	if ( !first_token_flag )
-		free(lang_wc);
 
 	return 0;
 }
@@ -136,10 +120,13 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 {
 	wchar_t word_wc[MAX_WORD_SIZE];
 	wchar_t str_wc[MAX_WORD_SIZE];
+
 	char *str = NULL;
 	size_t str_len = 0;
+
 	long index_pos = -1;
 	int translate_count = 0;
+
 	bool break_end_flag = false;
 
 
@@ -147,7 +134,7 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 		return 0;
 
 	if ( strncpy_lower_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL ) {
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
+		fprintf(stderr, "Cannot convert \"%s\" to (wchar_t *): %s\n", word, strerror(errno));
 		return -1;
 	}
 
@@ -158,8 +145,7 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 		}
 		else if ( index_pos > 0 ) {
 			if ( fseek(dict_fp, index_pos, SEEK_SET) != 0 )
-				fprintf(stderr, "%s: cannot seek: bad index \"%lc %ld\": %s: ignored\n",
-					MYNAME, word_wc[0], index_pos, strerror(errno));
+				fprintf(stderr, "Seek fail on index \"%lc %ld\": %s: ignored\n", word_wc[0], index_pos, strerror(errno));
 		}
 		else {
 			rewind(dict_fp);
@@ -250,10 +236,13 @@ static int find_word_combinations(const char *word, const char *dict_name, FILE 
 {
 	wchar_t word_wc[MAX_WORD_SIZE];
 	wchar_t str_wc[MAX_WORD_SIZE];
+
 	wchar_t *str_token_wc;
 	wchar_t *str_token_wc_state;
+
 	char *str = NULL;
 	size_t str_len = 0;
+
 	int translate_count = 0;
 
 
@@ -261,7 +250,7 @@ static int find_word_combinations(const char *word, const char *dict_name, FILE 
 		return 0;
 
 	if ( strncpy_lower_wc(word_wc, word, MAX_WORD_SIZE - 1) == NULL ) {
-		fprintf(stderr, "%s: cannot convert (char*) to (wchar_t*): %s\n", MYNAME, strerror(errno));
+		fprintf(stderr, "Cannot convert \"%s\" to (wchar_t *): %s\n", word, strerror(errno));
 		return -1;
 	}
 

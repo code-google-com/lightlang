@@ -39,8 +39,9 @@
 long get_linear_index_pos(const wchar_t ch_wc, FILE *dict_fp)
 {
 	char *str = NULL;
-	wchar_t str_ch_wc;
 	size_t str_len = 0;
+
+	wchar_t str_ch_wc;
 	long index_pos = 0;
 	bool begin_index_block_flag = false;
 
@@ -65,7 +66,7 @@ long get_linear_index_pos(const wchar_t ch_wc, FILE *dict_fp)
 			break;
 
 		if ( sscanf(str, "%lc %ld", &str_ch_wc, &index_pos) != 2 ) {
-			fprintf(stderr, "%s: warning: bad index: \"%s\": ignored\n", MYNAME, str);
+			fprintf(stderr, "Warning: bad index \"%s\": ignored\n", str);
 			continue;
 		}
 
@@ -83,6 +84,7 @@ int build_linear_index(const char *dict_path)
 {
 	char *str = NULL;
 	size_t str_len = 0;
+
 	wchar_t str_ch_wc = L'\0';
 	long index_pos;
 	FILE *dict_fp;
@@ -90,7 +92,7 @@ int build_linear_index(const char *dict_path)
 
 
 	if ( (dict_fp = fopen(dict_path, "r")) == NULL ) {
-		fprintf(stderr, "%s: cannot open file \"%s\": %s\n", MYNAME, dict_path, strerror(errno));
+		fprintf(stderr, "Cannot open dict file \"%s\": %s\n", dict_path, strerror(errno));
 		return -1;
 	}
 
@@ -121,7 +123,7 @@ int build_linear_index(const char *dict_path)
 	free(str);
 
 	if ( fclose(dict_fp) != 0 )
-		fprintf(stderr, "%s: cannot close file \"%s\": %s\n", MYNAME, dict_path, strerror(errno));
+		fprintf(stderr, "Cannot close dict file \"%s\": %s\n", dict_path, strerror(errno));
 
 	return 0;
 }

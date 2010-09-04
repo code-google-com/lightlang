@@ -39,7 +39,7 @@ void set_settings_max_translate_count(const char *str)
 
 
 	if ( !isdigit(str[0]) ) {
-		fprintf(stderr, "%s: bad argument \"%s\": ignored\n", MYNAME, str);
+		fprintf(stderr, "Bad argument \"%s\" (must be digit): ignored\n", str);
 		return;
 	}
 
@@ -53,12 +53,12 @@ void set_settings_ill_defined_search_percent(const char *str)
 
 
 	if ( !isdigit(str[0]) ) {
-		fprintf(stderr, "%s: bad argument \"%s\": ignored\n", MYNAME, str);
+		fprintf(stderr, "Bad argument \"%s\" (must be digit): ignored\n", str);
 		return;
 	}
 
 	if ( (percent = atoi(str)) > 100 ) {
-		fprintf(stderr, "%s: argument \"%s\": 0 <= arg <= 100: ignored\n", MYNAME, str);
+		fprintf(stderr, "Argument \"%s\" not in range 0...100: ignored\n", str);
 		return;
 	}
 
@@ -77,7 +77,7 @@ void set_settings_output_format(const char *str)
 	else if ( !strcmp(str, OPT_ARG_NATIVE_OUTPUT_FORMAT) )
 		settings.output_format = native_output_format;
 	else
-		fprintf(stderr, "%s: unknown format \"%s\": ignored\n", MYNAME, str);
+		fprintf(stderr, "Unknown output format \"%s\": ignored\n", str);
 }
 
 void set_settings_use_terminal_escapes_flag(const char *str)
@@ -90,7 +90,7 @@ void set_settings_use_terminal_escapes_flag(const char *str)
 	else if ( !strcmp(str, OPT_ARG_NO) )
 		settings.use_terminal_escapes_flag = false;
 	else
-		fprintf(stderr, "%s: unknown replay \"%s\", use \"%s\" or \"%s\": ignored\n", MYNAME, str, OPT_ARG_YES, OPT_ARG_NO);
+		fprintf(stderr, "Unknown replay \"%s\", say \"%s\" or \"%s\": ignored\n", str, OPT_ARG_YES, OPT_ARG_NO);
 }
 
 void set_settings_use_css_flag(const char *str)
@@ -102,6 +102,6 @@ void set_settings_use_css_flag(const char *str)
 	else if ( !strcmp(str, OPT_ARG_NO) )
 		settings.use_css_flag = false;
 	else
-		fprintf(stderr, "%s: unknown replay \"%s\", use \"%s\" or \"%s\": ignored\n", MYNAME, str, OPT_ARG_YES, OPT_ARG_NO);
+		fprintf(stderr, "Unknown replay \"%s\", say \"%s\" or \"%s\": ignored\n", str, OPT_ARG_YES, OPT_ARG_NO);
 }
 
