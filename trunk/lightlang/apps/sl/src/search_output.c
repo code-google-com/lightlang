@@ -430,7 +430,7 @@ static void print_translate_html(const char *str, const int word_number)
 						sound_link_font_flag = true;
 					}
 					else {
-						printf("\">\u266B</a>&nbsp;]&nbsp;");
+						printf("\">&#9836;</a>&nbsp;]&nbsp;");
 						sound_link_font_flag = false;
 					}
 					break;
@@ -479,7 +479,7 @@ static void print_translate_html(const char *str, const int word_number)
 	if ( word_link_font_flag )
 		printf("</font>");
 	if ( sound_link_font_flag )
-		printf("\">\u266B</a>&nbsp;]&nbsp;");
+		printf("\">&#9836;</a>&nbsp;]&nbsp;");
 	for (; block_count > 0; --block_count)
 		printf("</dd></dl>");
 
