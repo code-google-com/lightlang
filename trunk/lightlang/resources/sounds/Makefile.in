@@ -8,16 +8,18 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-RM=@RM_PROG@
-CHMOD=@CHMOD_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+RM = @RM_PROG@
+CHMOD = @CHMOD_PROG@
 
-SOUNDS_DIR=sounds
+SOUNDS_DIR = sounds
 
-INS_SOUNDS_DIR=@datarootdir@/sl/sounds
+INS_SOUNDS_DIR = @datarootdir@/sl/sounds
 
-#####
+
+##### Targets #####
+
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_SOUNDS_DIR)
 	-$(CHMOD) 777 $(DESTDIR)$(INS_SOUNDS_DIR)
@@ -26,4 +28,7 @@ install :
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_SOUNDS_DIR)
+
+
+.PHONY : install uninstall
 

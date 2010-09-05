@@ -8,17 +8,18 @@
 #####
 
 
-RM=@RM_PROG@
-FIND=@FIND_PROG@
-XARGS=@XARGS_PROG@
-DOWNLOAD_PY=download.py
+RM = @RM_PROG@
+FIND = @FIND_PROG@
+XARGS = @XARGS_PROG@
 
-APPS_DIR=apps
-RESOURCES_DIR=resources
-PKG_DIR=pkg
-DOCS_DIR=docs
+APPS_DIR = apps
+RESOURCES_DIR = resources
+PKG_DIR = pkg
+DOCS_DIR = docs
 
-#####
+
+##### Targets #####
+
 all :
 	@echo "+---------------------------------------------------------------------+"
 	@echo " Building LightLang..."
@@ -64,12 +65,13 @@ clean :
 	$(FIND) . -name *\~ -exec $(RM) -f '{}' \;
 	$(FIND) . -name Makefile -exec $(RM) -f '{}' \;
 	$(RM) -f config.log config.status
-	$(RM) -f $(DOWNLOAD_PY)
+	$(RM) -f download.py
 
 _release :
-	make -C apps/xsl -f Makefile.in _create_ru_qm
-	make -C docs/text -f Makefile.in _create_en_texts
-	make -C docs/text -f Makefile.in _create_ru_texts
-	make -C docs/man -f Makefile.in _pack_en_mans
-	make -C docs/man -f Makefile.in _pack_ru_mans
+	make -C apps/xsl -f Makefile.in TR_LANG=ru _create_qm
+	make -C docs/text -f Makefile.in TR_LANG=en _create_texts TR_LANG=ru _create_texts
+	make -C docs/man -f Makefile.in MANS_LANG=en _pack_mans MANS_LANG=ru _pack_mans
+
+
+.PHONY : all install uninstall clean _release
 

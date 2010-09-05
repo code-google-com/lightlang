@@ -8,31 +8,33 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-RM=@RM_PROG@
-CAT=@CAT_PROG@
-CD=@CD_PROG@
-LS=@LS_PROG@
-CHMOD=@CHMOD_PROG@
-SL=../../apps/sl/sl
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+RM = @RM_PROG@
+CAT = @CAT_PROG@
+CD = @CD_PROG@
+LS = @LS_PROG@
+CHMOD = @CHMOD_PROG@
+MKTEMP = @MKTEMP_PROG@
+SL = ../../apps/sl/sl
 
-TMP_FILE=/tmp/tmpdict
+DICTS_SRC_DIR = src
+DICTS_DIR = dicts
 
-DICTS_SRC_DIR=src
-DICTS_DIR=dicts
+INS_DICTS_DIR = @datarootdir@/sl/dicts
 
-INS_DICTS_DIR=@datarootdir@/sl/dicts
 
-#####
+##### Targets #####
+
 all :
-	-$(CD) $(DICTS_SRC_DIR) && for file in `$(LS) *.??-??`; do \
-		$(SL) --print-index $$file 1> $(TMP_FILE) && \
-		$(CAT) $$file 1>> $(TMP_FILE) && \
-		$(SL) --print-index $(TMP_FILE) 1> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/} && \
+	-tmp_file=`$(MKTEMP)`; \
+	$(CD) $(DICTS_SRC_DIR) && for file in `$(LS) *.??-??`; do \
+		$(SL) --print-index $$file 1> $$tmp_file && \
+		$(CAT) $$file 1>> $$tmp_file && \
+		$(SL) --print-index $$tmp_file 1> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/} && \
 		$(CAT) $$file 1>> $(DICTS_DIR)/$${file##$(DICTS_SRC_DIR)/}; \
-	done
-	$(RM) -f $(TMP_FILE)
+	done; \
+	$(RM) -f $$tmp_file
 
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_DICTS_DIR)
@@ -45,4 +47,7 @@ uninstall :
 
 clean :
 	$(RM) -f $(DICTS_DIR)/*.??-??
+
+
+.PHONY : all install uninstall clean
 

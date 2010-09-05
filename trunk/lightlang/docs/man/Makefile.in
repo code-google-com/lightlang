@@ -8,10 +8,12 @@
 #####
 
 
-EN_DIR=en
-RU_DIR=ru
+EN_DIR = en
+RU_DIR = ru
 
-#####
+
+##### Targets #####
+
 install :
 	$(MAKE) -C $(EN_DIR) install
 	$(MAKE) -C $(RU_DIR) install
@@ -20,13 +22,11 @@ uninstall :
 	$(MAKE) -C $(EN_DIR) uninstall
 	$(MAKE) -C $(RU_DIR) uninstall
 
-_pack_en_mans :
-	-cd en/man && for file in `ls *.?`; do \
+_pack_mans :
+	-cd $(MANS_LANG)/man && for file in `ls *.?`; do \
 		gzip -c $$file > $$file.gz; \
 	done
 
-_pack_ru_mans :
-	-cd ru/man && for file in `ls *.?`; do \
-		gzip -c $$file > $$file.gz; \
-	done
+
+.PHONY : install uninstall _pack_mans
 

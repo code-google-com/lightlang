@@ -106,6 +106,7 @@ AC_X_PATH_PROG(FIND_PROG, find, no, [$PATH])
 AC_X_PATH_PROG(TAR_PROG, tar, no, [$PATH])
 AC_X_PATH_PROG(BZIP2_PROG, bzip2, no, [$PATH])
 AC_X_PATH_PROG(SED_PROG, sed, no, [$PATH])
+AC_X_PATH_PROG(MKTEMP_PROG, mktemp, no, [$PATH])
 AC_X_PATH_PROG(PYTHON_PROG, python, no, [$PATH])
 AC_X_PATH_PROG(AUDIO_PLAYER_PROG, [$AUDIO_PLAYER], no, [$PATH])
 
@@ -160,7 +161,7 @@ docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile
 docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile
 docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile
 download.py
-apps/sl/src/config.h apps/xsl/src/pyqt4/Config.py apps/xsl/src/pyqt4/xsl.py apps/llrepo/src/llrepo.py
+apps/sl/src/config.h apps/xsl/src/src/Config.py apps/xsl/src/src/xsl.py apps/llrepo/src/llrepo.py
 pkg/pkg/lightlang.pc],
 [chmod +x download.py])
 

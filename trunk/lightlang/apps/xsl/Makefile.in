@@ -8,110 +8,121 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-INS=@INSTALL@
-CP=@CP_PROG@
-LN=@LN_PROG@
-RM=@RM_PROG@
-CHMOD=@CHMOD_PROG@
-CD=@CD_PROG@
-LS=@LS_PROG@
-SED=@SED_PROG@
-PYTHON=@PYTHON_PROG@
+MKDIR = @MKDIR_PROG@
+INS = @INSTALL@
+CP = @CP_PROG@
+LN = @LN_PROG@
+RM = @RM_PROG@
+CHMOD = @CHMOD_PROG@
+CD = @CD_PROG@
+LS = @LS_PROG@
+SED = @SED_PROG@
+PYTHON = @PYTHON_PROG@
 
-XSL_PROG=xsl
-XSL_PROG_ALIAS=lightlang
-XSL_MAIN=src/pyqt4/xsl.py
-XSL_CONFIG=src/pyqt4/Config.py
-XSL_PYQT4_DIR=src/pyqt4
-XSL_TR_DIR=src/tr
-XSL_IFA_DIR=src/ifa
-XSL_TRSITES_DIR=src/trsites
-XSL_ICONS_DIR=src/icons
-XSL_ICONS_FLAGS_DIR=src/icons/flags
-XSL_PICTURES_DIR=src/pictures
-XSL_DESKTOP_SCRIPT=src/desktop/xsl.desktop
-XSL_DESKTOP_ICON=src/desktop/xsl.png
+XSL_COMMON_SRC_DIR = src
+XSL_SRC_DIR = $(XSL_COMMON_SRC_DIR)/src
+XSL_TR_DIR = $(XSL_COMMON_SRC_DIR)/tr
+XSL_IFA_DIR = $(XSL_COMMON_SRC_DIR)/ifa
+XSL_TRSITES_DIR = $(XSL_COMMON_SRC_DIR)/trsites
+XSL_ICONS_DIR = $(XSL_COMMON_SRC_DIR)/icons
+XSL_ICONS_FLAGS_DIR = $(XSL_ICONS_DIR)/flags
+XSL_PICTURES_DIR = $(XSL_COMMON_SRC_DIR)/pictures
+XSL_DESKTOP_DIR = $(XSL_COMMON_SRC_DIR)/desktop
+XSL_SRC = $(shell ls $(XSL_SRC_DIR)/*.py)
+XSL_PYC = $(XSL_SRC:.py=.pyc)
+XSL_PROG = xsl
+XSL_PROG_ALIAS = lightlang
+XSL_MAIN = $(XSL_SRC_DIR)/xsl.py
+XSL_CONFIG = $(XSL_SRC_DIR)/Config.py
+XSL_APP_LIBS_DIR = $(XSL_SRC_DIR)
 
-INS_XSL_PROG_DIR=@bindir@
-INS_XSL_PROG_ALIAS_DIR=@bindir@
-INS_XSL_LIBS_DIR=@libdir@/xsl
-INS_XSL_SHARES_DIR=@datarootdir@/xsl
-INS_XSL_PYQT4_DIR=$(INS_XSL_LIBS_DIR)/pyqt4
+INS_XSL_PROG_DIR = @bindir@
+INS_XSL_PROG_ALIAS_DIR = $(INS_XSL_PROG_DIR)
+INS_XSL_LIBS_DIR = @libdir@/xsl
+INS_XSL_APP_LIBS_DIR = $(INS_XSL_LIBS_DIR)/app
+INS_XSL_SHARES_DIR = @datarootdir@/xsl
+INS_XSL_TR_DIR = $(INS_XSL_SHARES_DIR)/tr
+INS_XSL_IFA_DIR = $(INS_XSL_SHARES_DIR)/ifa
+INS_XSL_TRSITES_DIR = $(INS_XSL_SHARES_DIR)/trsites
+INS_XSL_ICONS_DIR = $(INS_XSL_SHARES_DIR)/icons
+INS_XSL_ICONS_FLAGS_DIR = $(INS_XSL_ICONS_DIR)/flags
+INS_XSL_PICTURES_DIR = $(INS_XSL_SHARES_DIR)/pictures
+INS_XSL_DESKTOP_DIR = @datarootdir@/applications
+INS_XSL_DESKTOP_ICONS_DIR = @datarootdir@/icons/hicolor
 
-INS_XSL_TR_DIR=$(INS_XSL_SHARES_DIR)/tr
-INS_XSL_IFA_DIR=$(INS_XSL_SHARES_DIR)/ifa
-INS_XSL_TRSITES_DIR=$(INS_XSL_SHARES_DIR)/trsites
-INS_XSL_ICONS_DIR=$(INS_XSL_SHARES_DIR)/icons
-INS_XSL_ICONS_FLAGS_DIR=$(INS_XSL_SHARES_DIR)/icons/flags
-INS_XSL_PICTURES_DIR=$(INS_XSL_SHARES_DIR)/pictures
-INS_XSL_DESKTOP_SCRIPT_DIR=@datarootdir@/applications
-INS_XSL_DESKTOP_ICONS_DIR=@datarootdir@/icons/hicolor
 
-#####
-all :
-	-$(CD) $(XSL_PYQT4_DIR) && for file in `$(LS) *.py`; do \
-		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
-	done
+##### Targets #####
+
+.SUFFIXES : .py .pyc
+
+.py.pyc :
+	$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $<
+
+
+all : $(XSL_MAIN) $(XSL_PYC)
 	$(CP) -f $(XSL_MAIN) $(XSL_PROG)
 	$(CHMOD) +x $(XSL_PROG)
 
 install :
-	$(RM) -rf $(DESTDIR)$(INS_XSL_PYQT4_DIR)
+	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
 	$(RM) -rf $(DESTDIR)$(INS_XSL_ICONS_DIR)
 	$(RM) -rf $(DESTDIR)$(INS_XSL_PICTURES_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PROG_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)
-	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PYQT4_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_XSL_LIBS_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_XSL_APP_LIBS_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_XSL_SHARES_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_TR_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_IFA_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_TRSITES_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_ICONS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_ICONS_FLAGS_DIR)
 	$(MKDIR) -p $(DESTDIR)$(INS_XSL_PICTURES_DIR)
-	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_DIR)
+	$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)
 	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
 		$(MKDIR) -p $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps; \
 	done
 	$(INS) $(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_DIR)
-	-$(LN) -s $(INS_XSL_PROG_DIR)/$(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
-	$(CP) -f $(XSL_PYQT4_DIR)/*.py $(DESTDIR)$(INS_XSL_PYQT4_DIR)
-	-$(CD) $(DESTDIR)$(INS_XSL_PYQT4_DIR) && for file in `$(LS) *.py`; do \
-		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
-	done
-	-$(CP) -f $(XSL_TR_DIR)/*.qm $(DESTDIR)$(INS_XSL_TR_DIR)
-	-$(CP) -f $(XSL_IFA_DIR)/*.xml $(DESTDIR)$(INS_XSL_IFA_DIR)
-	-$(CP) -f $(XSL_IFA_DIR)/*.ifa $(DESTDIR)$(INS_XSL_IFA_DIR)
+	-$(LN) -s $(DESTDIR)$(INS_XSL_PROG_DIR)/$(XSL_PROG) $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
+	$(CP) -f $(XSL_APP_LIBS_DIR)/*.py* $(DESTDIR)$(INS_XSL_APP_LIBS_DIR)
+	-$(CP) -f $(XSL_TR_DIR)/*.ts $(XSL_TR_DIR)/*.qm $(DESTDIR)$(INS_XSL_TR_DIR)
+	-$(CP) -f $(XSL_IFA_DIR)/*.xml $(XSL_IFA_DIR)/*.ifa $(DESTDIR)$(INS_XSL_IFA_DIR)
 	-$(CP) -f $(XSL_TRSITES_DIR)/*.xml $(DESTDIR)$(INS_XSL_TRSITES_DIR)
 	$(CP) -f $(XSL_ICONS_DIR)/*.png $(DESTDIR)$(INS_XSL_ICONS_DIR)
 	$(CP) -f $(XSL_ICONS_FLAGS_DIR)/*.png $(DESTDIR)$(INS_XSL_ICONS_FLAGS_DIR)
 	$(CP) -f $(XSL_PICTURES_DIR)/*.png $(DESTDIR)$(INS_XSL_PICTURES_DIR)
 	$(CP) -f $(XSL_PICTURES_DIR)/*.gif $(DESTDIR)$(INS_XSL_PICTURES_DIR)
-	$(INS) $(XSL_DESKTOP_SCRIPT) $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)
+	$(INS) $(XSL_DESKTOP_DIR)/*.desktop $(DESTDIR)$(INS_XSL_DESKTOP_DIR)
 	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
 		$(CP) -f xsl_$$res\.png $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps/xsl.png; \
 	done
 
 uninstall :
+	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_DIR)/$(XSL_PROG)
+	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
+	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
+	$(RM) -rf $(DESTDIR)$(INS_XSL_SHARES_DIR)
+	$(CD) $(XSL_DESKTOP_DIR) && for desktop in `ls *.desktop`; do \
+		$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_DIR)/`basename $$desktop`; \
+	done
 	$(CD) $(XSL_ICONS_DIR) && for res in `ls xsl_*.png | $(SED) -e 's/xsl_\(.*\).png/\1/g'`; do \
 		$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_ICONS_DIR)/$$res\x$$res/apps/xsl.png; \
 	done
-	$(RM) -f $(DESTDIR)$(INS_XSL_DESKTOP_SCRIPT_DIR)/xsl.desktop
-	$(RM) -rf $(DESTDIR)$(INS_XSL_LIBS_DIR)
-	$(RM) -rf $(DESTDIR)$(INS_XSL_SHARES_DIR)
-	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_ALIAS_DIR)/$(XSL_PROG_ALIAS)
-	$(RM) -f $(DESTDIR)$(INS_XSL_PROG_DIR)/$(XSL_PROG)
 
 clean :
-	$(RM) -f $(XSL_PROG) $(XSL_MAIN) $(XSL_CONFIG)
-	$(RM) -f $(XSL_PYQT4_DIR)/*.pyc
+	$(RM) -f $(XSL_PROG) $(XSL_MAIN) $(XSL_PYC) $(XSL_CONFIG)
 
-_update_ru_ts :
-	pylupdate4 -verbose src/pyqt4/*.py -ts src/tr/ru.ts
 
-_update_ru_ts_noobsolete :
-	pylupdate4 -verbose -noobsolete src/pyqt4/*.py -ts src/tr/ru.ts
+_update_ts :
+	pylupdate4 -verbose src/pyqt4/*.py -ts src/tr/$(TR_LANG).ts
 
-_create_ru_qm :
-	lrelease-qt4 -verbose src/tr/ru.ts -qm src/tr/ru.qm
+_update_ts_noobsolete :
+	pylupdate4 -verbose -noobsolete src/pyqt4/*.py -ts src/tr/$(TR_LANG).ts
+
+_create_qm :
+	lrelease-qt4 -verbose src/tr/$(TR_LANG).ts -qm src/tr/$(TR_LANG).qm
+
+
+.PHONY : all install uninstall clean _update_ts _update_ts_noobsolete _create_qm
 

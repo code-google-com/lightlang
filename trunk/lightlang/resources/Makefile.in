@@ -8,10 +8,12 @@
 #####
 
 
-DICTS_RESOURCES_DIR=dicts
-SOUNDS_RESOURCES_DIR=sounds
+DICTS_RESOURCES_DIR = dicts
+SOUNDS_RESOURCES_DIR = sounds
 
-#####
+
+##### Targets #####
+
 all :
 	$(MAKE) -C $(DICTS_RESOURCES_DIR)
 
@@ -25,4 +27,7 @@ uninstall :
 
 clean :
 	$(MAKE) -C $(DICTS_RESOURCES_DIR) clean
+
+
+.PHONY : all install uninstall clean
 

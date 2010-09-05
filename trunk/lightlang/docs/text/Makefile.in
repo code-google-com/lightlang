@@ -11,7 +11,9 @@
 EN_DIR=en
 RU_DIR=ru
 
-#####
+
+##### Targets #####
+
 install :
 	$(MAKE) -C $(EN_DIR) install
 	$(MAKE) -C $(RU_DIR) install
@@ -20,29 +22,20 @@ uninstall :
 	$(MAKE) -C $(EN_DIR) uninstall
 	$(MAKE) -C $(RU_DIR) uninstall
 
-_create_ru_texts :
-	echo > ru/text/README
-	for file in "common_introduction.html" "common_new_features.html" \
-		"common_installation_and_configuration.html" "common_authors.html"; do \
-		iconv -f utf-8 -t koi8-r ../html/ru/html/$$file | html2text -nobs | \
-			iconv -f koi8-r -t utf-8 >> ru/text/README; \
-		echo >> ru/text/README; \
-	done
-	iconv -f utf-8 -t koi8-r ../html/ru/html/common_installation_and_configuration.html \
-		| html2text -nobs | iconv -f koi8-r -t utf-8 > ru/text/INSTALL
-	iconv -f utf-8 -t koi8-r ../html/ru/html/common_new_features.html \
-		| html2text -nobs | iconv -f koi8-r -t utf-8 1> ru/text/VERSION
 
-_create_en_texts :
-	echo > en/text/README
+_create_texts :
+	echo > $(TEXTS_LANG)/text/README
 	for file in "common_introduction.html" "common_new_features.html" \
 		"common_installation_and_configuration.html" "common_authors.html"; do \
-		iconv -f utf-8 -t koi8-r ../html/en/html/$$file | html2text -nobs | \
-			iconv -f koi8-r -t utf-8 >> en/text/README; \
-		echo >> en/text/README; \
+		iconv -f utf-8 -t koi8-r ../html/$(TEXTS_LANG)/html/$$file | html2text -nobs | \
+			iconv -f koi8-r -t utf-8 >> $(TEXTS_LANG)/text/README; \
+		echo >> $(TEXTS_LANG)/text/README; \
 	done
-	iconv -f utf-8 -t koi8-r ../html/en/html/common_installation_and_configuration.html \
-		| html2text -nobs | iconv -f koi8-r -t utf-8 > en/text/INSTALL
-	iconv -f utf-8 -t koi8-r ../html/en/html/common_new_features.html \
-		| html2text -nobs | iconv -f koi8-r -t utf-8 1> en/text/VERSION
+	iconv -f utf-8 -t koi8-r ../html/$(TEXTS_LANG)/html/common_installation_and_configuration.html \
+		| html2text -nobs | iconv -f koi8-r -t utf-8 > $(TEXTS_LANG)/text/INSTALL
+	iconv -f utf-8 -t koi8-r ../html/$(TEXTS_LANG)/html/common_new_features.html \
+		| html2text -nobs | iconv -f koi8-r -t utf-8 1> $(TEXTS_LANG)/text/VERSION
+
+
+.PHONY : install uninstall _create_texts
 

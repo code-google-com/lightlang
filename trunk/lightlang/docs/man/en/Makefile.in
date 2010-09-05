@@ -8,19 +8,21 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-RM=@RM_PROG@
-TEST=@TEST_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+RM = @RM_PROG@
+TEST = @TEST_PROG@
 
-GUI_FLAG=@GUI_FLAG@
+GUI_FLAG = @GUI_FLAG@
 
-EN_MAN_DOC_DIR=man
+EN_MAN_DOC_DIR = man
 
-INS_EN_MAN_DOC_DIR=@mandir@
+INS_EN_MAN_DOC_DIR = @mandir@
 # section : man1
 
-#####
+
+##### Targets #####
+
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
 	$(CP) -f $(EN_MAN_DOC_DIR)/sl.1.gz $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1
@@ -31,4 +33,7 @@ uninstall :
 	$(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/sl.1.gz
 	$(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/llrepo.1.gz
 	-$(TEST) $(GUI_FLAG) = "yes" && $(RM) -f $(DESTDIR)$(INS_EN_MAN_DOC_DIR)/man1/xsl.1.gz
+
+
+.PHONY : install uninstall
 

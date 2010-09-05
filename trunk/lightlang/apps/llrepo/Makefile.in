@@ -8,27 +8,35 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-INS=@INSTALL@
-RM=@RM_PROG@
-CHMOD=@CHMOD_PROG@
-CD=@CD_PROG@
-LS=@LS_PROG@
-PYTHON=@PYTHON_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+INS = @INSTALL@
+RM = @RM_PROG@
+CHMOD = @CHMOD_PROG@
+CD = @CD_PROG@
+LS = @LS_PROG@
+PYTHON = @PYTHON_PROG@
 
-LLREPO_PROG=llrepo
-LLREPO_MAIN=src/llrepo.py
-LLREPO_LIBS_DIR=src
+LLREPO_SRC_DIR = src
+LLREPO_SRC = $(shell ls $(LLREPO_SRC_DIR)/*.py)
+LLREPO_PYC = $(LLREPO_SRC:.py=.pyc)
+LLREPO_PROG = llrepo
+LLREPO_MAIN = $(LLREPO_SRC_DIR)/llrepo.py
+LLREPO_LIBS_DIR = $(LLREPO_SRC_DIR)
 
-INS_LLREPO_PROG_DIR=@bindir@
-INS_LLREPO_LIBS_DIR=@libdir@/llrepo
+INS_LLREPO_PROG_DIR = @bindir@
+INS_LLREPO_LIBS_DIR = @libdir@/llrepo
 
-#####
-all : $(LLREPO_MAIN)
-	-$(CD) $(LLREPO_LIBS_DIR) && for file in `$(LS) *.py`; do \
-		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
-	done
+
+##### Targets #####
+
+.SUFFIXES : .py .pyc
+
+.py.pyc :
+	$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $<
+
+
+all : $(LLREPO_MAIN) $(LLREPO_PYC)
 	$(CP) -f $(LLREPO_MAIN) $(LLREPO_PROG)
 	$(CHMOD) +x $(LLREPO_PROG)
 
@@ -37,15 +45,14 @@ install :
 	$(MKDIR) -p $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
 	$(INS) $(LLREPO_PROG) $(DESTDIR)$(INS_LLREPO_PROG_DIR)
 	$(CP) -f $(LLREPO_LIBS_DIR)/*.py $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
-	-$(CD) $(DESTDIR)$(INS_LLREPO_LIBS_DIR) && for file in `$(LS) *.py`; do \
-		$(PYTHON) -c 'import sys, py_compile; py_compile.compile(sys.argv[1])' $$file; \
-	done
 
 uninstall :
 	$(RM) -f $(DESTDIR)$(INS_LLREPO_PROG_DIR)/$(LLREPO_PROG)
 	$(RM) -rf $(DESTDIR)$(INS_LLREPO_LIBS_DIR)
 
 clean :
-	$(RM) -f $(LLREPO_PROG) $(LLREPO_MAIN)
-	$(RM) -f $(LLREPO_LIBS_DIR)/*.pyc
+	$(RM) -f $(LLREPO_PROG) $(LLREPO_MAIN) $(LLREPO_PYC)
+
+
+.PHONY : all install uninstall clean
 

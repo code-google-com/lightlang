@@ -8,13 +8,14 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-RM=@RM_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+RM = @RM_PROG@
 
-PKG_LIBS_DIR=pkg
+PKG_LIBS_DIR = pkg
 
-INS_PKG_LIBS_DIR=@libdir@/pkgconfig
+INS_PKG_LIBS_DIR = @libdir@/pkgconfig
+
 
 #####
 install :
@@ -26,4 +27,7 @@ uninstall :
 
 clean :
 	$(RM) -f $(PKG_LIBS_DIR)/lightlang.pc
+
+
+.PHONY : install uninstall clean
 

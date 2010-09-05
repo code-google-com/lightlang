@@ -8,16 +8,18 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
-RM=@RM_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
+RM = @RM_PROG@
 
-RU_HTML_DOC_DIR=html
+RU_HTML_DOC_DIR = html
 
-INS_DOC_DIR=@docdir@/lightlang
-INS_RU_HTML_DOC_DIR=$(INS_DOC_DIR)/html/ru
+INS_DOC_DIR = @docdir@/lightlang
+INS_RU_HTML_DOC_DIR = $(INS_DOC_DIR)/html/ru
 
-#####
+
+##### Targets #####
+
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
 	$(CP) -f $(RU_HTML_DOC_DIR)/*.html $(DESTDIR)$(INS_RU_HTML_DOC_DIR)
@@ -25,4 +27,7 @@ install :
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)
+
+
+.PHONY : install uninstall
 

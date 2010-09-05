@@ -8,15 +8,17 @@
 #####
 
 
-TEST=@TEST_PROG@
+TEST = @TEST_PROG@
 
-GUI_FLAG=@GUI_FLAG@
+GUI_FLAG = @GUI_FLAG@
 
-SL_DIR=sl
-LLREPO_DIR=llrepo
-XSL_DIR=xsl
+SL_DIR = sl
+LLREPO_DIR = llrepo
+XSL_DIR = xsl
 
-#####
+
+##### Targets #####
+
 all :
 	$(MAKE) -C $(SL_DIR)
 	$(MAKE) -C $(LLREPO_DIR)
@@ -36,4 +38,7 @@ clean :
 	$(MAKE) -C $(SL_DIR) clean
 	$(MAKE) -C $(LLREPO_DIR) clean
 	-$(TEST) $(GUI_FLAG) = "yes" && $(MAKE) -C $(XSL_DIR) clean
+
+
+.PHONY : all install uninstall clean
 

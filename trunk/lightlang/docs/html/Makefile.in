@@ -8,10 +8,12 @@
 #####
 
 
-EN_DIR=en
-RU_DIR=ru
+EN_DIR = en
+RU_DIR = ru
 
-#####
+
+##### Targets #####
+
 install :
 	$(MAKE) -C $(EN_DIR) install
 	$(MAKE) -C $(RU_DIR) install
@@ -20,3 +22,5 @@ uninstall :
 	$(MAKE) -C $(EN_DIR) uninstall
 	$(MAKE) -C $(EN_DIR) uninstall
 
+
+.PHONY : install uninstall

@@ -8,19 +8,24 @@
 #####
 
 
-MKDIR=@MKDIR_PROG@
-CP=@CP_PROG@
+MKDIR = @MKDIR_PROG@
+CP = @CP_PROG@
 
-RU_TEXT_DOC_DIR=text
+RU_TEXT_DOC_DIR = text
 
-INS_DOC_DIR=@docdir@/lightlang
-INS_RU_TEXT_DOC_DIR=$(INS_DOC_DIR)/text/ru
+INS_DOC_DIR = @docdir@/lightlang
+INS_RU_TEXT_DOC_DIR = $(INS_DOC_DIR)/text/ru
 
-#####
+
+##### Targets #####
+
 install :
 	$(MKDIR) -p $(DESTDIR)$(INS_RU_TEXT_DOC_DIR)
 	$(CP) -f $(RU_TEXT_DOC_DIR)/* $(DESTDIR)$(INS_RU_TEXT_DOC_DIR)
 
 uninstall :
 	$(RM) -rf $(DESTDIR)$(INS_DOC_DIR)
+
+
+.PHONY : install uninstall
 
