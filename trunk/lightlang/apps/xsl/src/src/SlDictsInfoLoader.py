@@ -42,7 +42,11 @@ LicenseInfoTag = "License"
 CopyrightInfoTag = "Copyright"
 MiscInfoTag = "Misc"
 
-
+AllTagsList = [
+	CaptionInfoTag, DirectionInfoTag, GroupInfoTag, VersionInfoTag,
+	WordCountInfoTag, FileSizeInfoTag, AuthorInfoTag, UrlInfoTag,
+	LicenseInfoTag, CopyrightInfoTag, MiscInfoTag
+]
 
 #####
 InfoDictObject = {}
@@ -119,16 +123,8 @@ def loadInfo(dict_name) :
 		return
 
 	InfoDictObject[dict_name] = {}
-	InfoDictObject[dict_name][CaptionInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][DirectionInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][GroupInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][VersionInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][WordCountInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][AuthorInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][UrlInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][LicenseInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][CopyrightInfoTag] = Qt.QString()
-	InfoDictObject[dict_name][MiscInfoTag] = Qt.QString()
+	for all_tags_list_item in AllTagsList :
+		InfoDictObject[dict_name][all_tags_list_item] = Qt.QString()
 
 	while not dict_file_stream.atEnd() :
 		Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)

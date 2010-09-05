@@ -31,6 +31,7 @@ import Const
 #####
 Key_L = Xlib.XK.XK_L
 Key_F1 = Xlib.XK.XK_F1
+
 CtrlModifier = Xlib.X.ControlMask
 AltModifier = Xlib.X.Mod1Mask
 ShiftModifier = Xlib.X.ShiftMask
@@ -111,5 +112,9 @@ class KeysGrabberThread(KeysGrabberThreadPrivate) :
 	def __new__(self, parent = None) :
 		if self.keys_grabber_thread_private_object == None :
 			self.keys_grabber_thread_private_object = KeysGrabberThreadPrivate.__new__(self, parent)
+			KeysGrabberThreadPrivate.__init__(self.keys_grabber_thread_private_object, parent)
 		return self.keys_grabber_thread_private_object
+
+	def __init__(self, parent = None) :
+		pass
 
