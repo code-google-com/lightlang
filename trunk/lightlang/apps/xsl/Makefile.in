@@ -20,7 +20,7 @@ SED = @SED_PROG@
 PYTHON = @PYTHON_PROG@
 
 XSL_COMMON_SRC_DIR = src
-XSL_SRC_DIR = $(XSL_COMMON_SRC_DIR)/src
+XSL_SRC_DIR = $(XSL_COMMON_SRC_DIR)/xsl
 XSL_TR_DIR = $(XSL_COMMON_SRC_DIR)/tr
 XSL_IFA_DIR = $(XSL_COMMON_SRC_DIR)/ifa
 XSL_TRSITES_DIR = $(XSL_COMMON_SRC_DIR)/trsites
@@ -39,7 +39,7 @@ XSL_APP_LIBS_DIR = $(XSL_SRC_DIR)
 INS_XSL_PROG_DIR = @bindir@
 INS_XSL_PROG_ALIAS_DIR = $(INS_XSL_PROG_DIR)
 INS_XSL_LIBS_DIR = @libdir@/xsl
-INS_XSL_APP_LIBS_DIR = $(INS_XSL_LIBS_DIR)/app
+INS_XSL_APP_LIBS_DIR = $(INS_XSL_LIBS_DIR)/xsl
 INS_XSL_SHARES_DIR = @datarootdir@/xsl
 INS_XSL_TR_DIR = $(INS_XSL_SHARES_DIR)/tr
 INS_XSL_IFA_DIR = $(INS_XSL_SHARES_DIR)/ifa
@@ -115,10 +115,10 @@ clean :
 
 
 _update_ts :
-	pylupdate4 -verbose src/pyqt4/*.py -ts src/tr/$(TR_LANG).ts
+	pylupdate4 -verbose src/xsl/*.py -ts src/tr/$(TR_LANG).ts
 
 _update_ts_noobsolete :
-	pylupdate4 -verbose -noobsolete src/pyqt4/*.py -ts src/tr/$(TR_LANG).ts
+	pylupdate4 -verbose -noobsolete src/xsl/*.py -ts src/tr/$(TR_LANG).ts
 
 _create_qm :
 	lrelease-qt4 -verbose src/tr/$(TR_LANG).ts -qm src/tr/$(TR_LANG).qm
