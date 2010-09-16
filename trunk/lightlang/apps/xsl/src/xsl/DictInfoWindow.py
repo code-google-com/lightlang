@@ -33,11 +33,6 @@ WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class DictInfoWindow(Qt.QDialog) :
 	def __init__(self, dict_name, parent = None) :
 		Qt.QDialog.__init__(self, parent)

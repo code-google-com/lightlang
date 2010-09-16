@@ -42,10 +42,6 @@ HighlightBackgroundOpacityObject = None
 TransparentFrameBackgroundColorObject = None
 TransparentFrameBackgroundOpacityObject = None
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
 
 ##### Public #####
 def dictHeaderFontBoldFlag() :

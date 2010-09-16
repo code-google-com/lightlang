@@ -26,11 +26,6 @@ import Const
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class RadioButtonsMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

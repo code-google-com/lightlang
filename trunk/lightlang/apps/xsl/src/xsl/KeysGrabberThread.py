@@ -38,11 +38,6 @@ ShiftModifier = Xlib.X.ShiftMask
 WinModifier = Xlib.X.Mod4Mask
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Private #####
 class KeysGrabberThreadPrivate(Qt.QThread) :
 	def __init__(self, parent = None) :

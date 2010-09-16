@@ -27,11 +27,6 @@ import Locale
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_site_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)

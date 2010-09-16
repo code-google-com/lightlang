@@ -26,11 +26,6 @@ import Const
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class HorizontalGrabWidget(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)

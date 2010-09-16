@@ -32,11 +32,6 @@ import TranslateBrowser
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TranslateWindow(PopupWindow.PopupWindow) :
 	def __init__(self, parent = None) :
 		PopupWindow.PopupWindow.__init__(self, parent)

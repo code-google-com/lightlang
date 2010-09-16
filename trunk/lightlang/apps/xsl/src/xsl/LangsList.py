@@ -30,11 +30,6 @@ LangsListObject = None
 LangsCodesDictObject = None
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def langsList() :
 	if LangsListObject == None :

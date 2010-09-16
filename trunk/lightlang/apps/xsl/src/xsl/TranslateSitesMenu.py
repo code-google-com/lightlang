@@ -34,11 +34,6 @@ TranslateSitesSystemDir = Config.DataRootDir+"/xsl/"+TranslateSitesSubdir
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TranslateSitesMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

@@ -33,11 +33,6 @@ UserStyleCssName = "user-style.css"
 UserStyleCssObject = None
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def userStyleCss() :
 	if UserStyleCssObject == None :

@@ -36,11 +36,6 @@ HtmlDocsDir = Config.DocsDir+"/lightlang/html/"
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class HelpBrowserWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)

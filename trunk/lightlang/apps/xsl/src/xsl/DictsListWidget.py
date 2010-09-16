@@ -27,11 +27,6 @@ import DictsListWidgetItem
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class DictsListWidget(Qt.QTableWidget) :
 	def __init__(self, parent = None) :
 		Qt.QTableWidget.__init__(self, parent)

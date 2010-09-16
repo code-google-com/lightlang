@@ -32,11 +32,6 @@ import LineEdit
 MaxHistoryCount = 100
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class HistoryPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)

@@ -31,11 +31,6 @@ WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class StatusBar(Qt.QStatusBar) :
 	def __init__(self, parent = None) :
 		Qt.QStatusBar.__init__(self, parent)

@@ -29,11 +29,6 @@ import Const
 LocaleObject = None
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def locale() :
 	if LocaleObject == None :

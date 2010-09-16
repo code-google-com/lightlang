@@ -28,11 +28,6 @@ import SlSoundSearch
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TranslateBrowser(TextBrowser.TextBrowser) :
 	def __init__(self, parent = None) :
 		TextBrowser.TextBrowser.__init__(self, parent)

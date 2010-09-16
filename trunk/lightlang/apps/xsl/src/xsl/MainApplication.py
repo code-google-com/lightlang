@@ -26,11 +26,6 @@ import Const
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class MainApplication(Qt.QApplication) :
 	def __init__(self, argv) :
 		Qt.QApplication.__init__(self, argv)

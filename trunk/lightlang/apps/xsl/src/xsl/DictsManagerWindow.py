@@ -36,11 +36,6 @@ AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class DictsManagerWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)

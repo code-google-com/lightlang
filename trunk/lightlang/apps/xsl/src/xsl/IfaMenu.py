@@ -35,11 +35,6 @@ IfaSystemDir = Config.DataRootDir+"/xsl/"+IfaSubdir
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class IfaMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

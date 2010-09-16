@@ -33,11 +33,6 @@ SettingsPostfix = ".conf"
 SettingsObject = None
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def settings() :
 	if SettingsObject == None :

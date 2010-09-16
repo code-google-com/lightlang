@@ -41,11 +41,6 @@ import AboutWindow
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class MainWindow(Qt.QMainWindow) :
 	def __init__(self, parent = None) :
 		Qt.QMainWindow.__init__(self, parent)

@@ -33,11 +33,6 @@ except : pass
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)

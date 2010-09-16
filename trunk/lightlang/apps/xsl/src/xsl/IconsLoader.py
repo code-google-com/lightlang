@@ -31,11 +31,6 @@ IconPostfix = ".png"
 DefaultIconsDir = Config.DataRootDir+"/xsl/icons/"
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def icon(name, fallback_name = None) :
 	try : # FIXME: Qt-4.6 specifics

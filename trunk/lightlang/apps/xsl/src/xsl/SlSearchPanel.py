@@ -30,11 +30,6 @@ import SlListBrowser
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class SlSearchPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)

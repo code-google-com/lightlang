@@ -36,11 +36,6 @@ RootObject = None
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 def checkMainButtons() :
 	if RootObject == None :
 		initRoot()

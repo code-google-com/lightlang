@@ -44,11 +44,6 @@ DisplayObject = None
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 def checkModifier(modifier) :
 	if DisplayObject == None :
 		initDisplay()

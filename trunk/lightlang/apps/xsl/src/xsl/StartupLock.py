@@ -33,11 +33,6 @@ ProcDir = "/proc/"
 LockFilePostfix = ".lock"
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def test() :
 	lock_file_path = Settings.settingsPath()+"/"+Qt.QString(Const.MyName).toLower()+LockFilePostfix

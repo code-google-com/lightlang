@@ -32,11 +32,6 @@ import TextEdit
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class GoogleTranslatePanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)

@@ -52,11 +52,6 @@ AllTagsList = [
 InfoDictObject = {}
 
 
-#####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
 ##### Public #####
 def caption(dict_name) :
 	return Qt.QString(infoByTag(CaptionInfoTag, dict_name))

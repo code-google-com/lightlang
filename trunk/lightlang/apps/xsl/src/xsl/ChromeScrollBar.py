@@ -32,11 +32,6 @@ MinCharacterDistance = 50
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class ChromeScrollBar(Qt.QScrollBar) :
 	def __init__(self, parent = None) :
 		Qt.QScrollBar.__init__(self, parent)

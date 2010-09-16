@@ -27,11 +27,6 @@ import IconsLoader
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class LineEdit(Qt.QLineEdit) :
 	def __init__(self, parent = None) :
 		Qt.QLineEdit.__init__(self, parent)

@@ -29,11 +29,6 @@ import ChromeScrollBar
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TextBrowser(Qt.QTextBrowser) :
 	def __init__(self, parent = None) :
 		Qt.QTextBrowser.__init__(self, parent)

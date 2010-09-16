@@ -27,11 +27,6 @@ import UserStyleCssCollection
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class ListBrowser(Qt.QListWidget) :
 	def __init__(self, parent = None) :
 		Qt.QListWidget.__init__(self, parent)

@@ -27,11 +27,6 @@ import IconsLoader
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class AboutWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)

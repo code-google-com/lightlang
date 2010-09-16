@@ -29,11 +29,6 @@ import LineEdit
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TextSearchFrame(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)

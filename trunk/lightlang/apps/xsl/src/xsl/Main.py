@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
+import __builtin__
+
 import Qt
 import Config
 import Const
@@ -43,11 +45,6 @@ MainObject = None
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class Main(object) :
 	def __init__(self, argv, no_splash_flag = False, no_tray_icon = False) :
 		object.__init__(self)
@@ -57,6 +54,10 @@ class Main(object) :
 		self._argv = argv
 		self._no_splash_flag = no_splash_flag
 		self._no_tray_icon = no_tray_icon
+
+		#####
+
+		__builtin__.__dict__["tr"] = ( lambda str : Qt.QApplication.translate("@default", str) )
 
 
 	### Public ###

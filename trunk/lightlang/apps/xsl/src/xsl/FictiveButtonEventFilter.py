@@ -26,11 +26,6 @@ import Const
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class FictiveButtonEventFilter(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)

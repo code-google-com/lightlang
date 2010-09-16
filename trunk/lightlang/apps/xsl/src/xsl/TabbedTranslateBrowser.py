@@ -29,11 +29,6 @@ import TextSearchFrame
 
 
 #####
-def tr(str) :
-	return Qt.QApplication.translate("@default", str)
-
-
-#####
 class TabbedTranslateBrowser(Qt.QWidget) :
 	def __init__(self, parent = None) :
 		Qt.QWidget.__init__(self, parent)
