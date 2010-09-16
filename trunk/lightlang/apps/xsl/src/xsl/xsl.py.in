@@ -32,7 +32,7 @@ if __name__ == "__main__" :
 	enable_psyco_flag = False
 	no_splash_flag = False
 	no_tray_icon_flag = False
-	libs_dir = "@libdir@/xsl/pyqt4"
+	libs_dir = "@libdir@/xsl/xsl"
 
 	#####
 
