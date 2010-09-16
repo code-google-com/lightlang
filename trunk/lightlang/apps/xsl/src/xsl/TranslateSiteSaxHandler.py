@@ -106,12 +106,9 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 		if name == "site" :
 			self._new_site_handler(self._site_title, self._site_description, self._site_icon_name, self._site_url)
 
-			self._site_title.clear()
-			self._site_title_lang.clear()
-			self._site_description.clear()
-			self._site_description_lang.clear()
-			self._site_icon_name.clear()
-			self._site_url.clear()
+			for item in (self._site_title, self._site_title_lang, self._site_description,
+				self._site_description_lang, self._site_icon_name, self._site_url ) :
+				item.clear()
 
 			self._site_tag_flag = False
 		elif name == "title" :

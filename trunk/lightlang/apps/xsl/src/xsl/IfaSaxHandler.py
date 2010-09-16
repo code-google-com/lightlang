@@ -128,15 +128,9 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 			self._new_app_handler(self._app_title, self._app_description, self._app_icon_name,
 				self._app_prog_path, self._app_prog_options, self._python_precode, self._python_postcode)
 
-			self._app_title.clear()
-			self._app_title_lang.clear()
-			self._app_description.clear()
-			self._app_description_lang.clear()
-			self._app_icon_name.clear()
-			self._app_prog_path.clear()
-			self._app_prog_options.clear()
-			self._python_precode.clear()
-			self._python_postcode.clear()
+			for item in ( self._app_title, self._app_title_lang, self._app_description, self._app_description_lang, self._app_icon_name,
+				self._app_prog_path, self._app_prog_options, self._python_precode, self._python_postcode ) :
+				item.clear()
 
 			self._app_tag_flag = False
 		elif name == "title" :
