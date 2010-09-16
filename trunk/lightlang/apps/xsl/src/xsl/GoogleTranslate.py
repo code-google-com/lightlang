@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
+import json
+
 import Qt
 import Const
 import Config
@@ -45,14 +47,6 @@ class GoogleTranslate(Qt.QObject) :
 
 		self._sl = Qt.QString()
 		self._tl = Qt.QString()
-
-		self._translated_text_regexp = Qt.QRegExp("\"translatedText\"\\s*:\\s*\"(.*)\"")
-		self._translated_text_regexp.setMinimal(True)
-
-		self._detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
-		self._detected_source_language_regexp.setMinimal(True)
-
-		self._unicode_char_regexp = Qt.QRegExp("(\\\\+)u([0-9a-fA-F]{4})")
 
 		#####
 
@@ -162,33 +156,36 @@ class GoogleTranslate(Qt.QObject) :
 
 		###
 
-		codec = Qt.QTextCodec.codecForName("UTF-8")
-		text = codec.toUnicode(self._http_output.data())
+		text = Qt.QTextCodec.codecForName("UTF-8").toUnicode(self._http_output.data())
 
 		###
 
-		if self._detected_source_language_regexp.indexIn(text) > -1 :
-			sl_name = tr("%1 (guessed)").arg(LangsList.langName(self._detected_source_language_regexp.cap(1)))
-		else :
-			sl_name = LangsList.langName(self._sl)
-		tl_name = LangsList.langName(self._tl)
+		try :
+			json_dict = json.loads(unicode(text).encode("utf-8"))
+		except :
+			json_dict = None
 
-		if self._translated_text_regexp.indexIn(text) > -1 :
-			text = self._translated_text_regexp.cap(1)
+		if json_dict != None :
+			if json_dict.has_key("responseData") and json_dict.has_key("responseStatus") and json_dict.has_key("responseDetails") :
+				responce_data = json_dict["responseData"]
+				responce_status = json_dict["responseStatus"]
+				responce_details = json_dict["responseDetails"]
 
-			unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text)
-			while unicode_char_regexp_pos != -1 :
-				if self._unicode_char_regexp.cap(1).length() % 2 == 1 :
-					text.replace(unicode_char_regexp_pos, self._unicode_char_regexp.matchedLength(),
-						Qt.QChar(self._unicode_char_regexp.cap(2).toInt(16)[0]))
-					unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
+				if responce_data != None :
+					if responce_data.has_key("detectedSourceLanguage") :
+						sl_name = tr("%1 (guessed)").arg(LangsList.langName(responce_data["detectedSourceLanguage"]))
+					else :
+						sl_name = LangsList.langName(self._sl)
+					tl_name = LangsList.langName(self._tl)
+
+					text = ( tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3")
+						.arg(sl_name).arg(tl_name).arg(Qt.QString(responce_data["translatedText"])) )
 				else :
-					unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +
-						self._unicode_char_regexp.matchedLength())
-
-			text.replace("\\\\", "\\")
-
-			text = tr("<font class=\"word_header_font\">Translated: %1 &#187; %2</font><hr>%3").arg(sl_name).arg(tl_name).arg(text)
+					text = ( tr("<font class=\"word_header_font\">Invalid server responce</font><hr>Code: %1<br>Message: %2")
+						.arg(responce_status).arg(responce_details) )
+			else :
+				text = ( tr("<font class=\"word_header_font\">Invalid server responce</font><hr>Raw JSON: %1")
+					.arg(Qt.QString(unicode(json_dict).encode("utf-8"))) )
 
 		###
 
@@ -198,7 +195,7 @@ class GoogleTranslate(Qt.QObject) :
 
 
 	### Signals ###
-
+		
 	def processStartedSignal(self) :
 		self.emit(Qt.SIGNAL("processStarted()"))
 
