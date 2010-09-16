@@ -111,7 +111,7 @@ class SlWordSearch(Qt.QObject) :
 		if word.isEmpty() :
 			return
 
-		if self._proc.state() == Qt.QProcess.Starting or self._proc.state() == Qt.QProcess.Running :
+		if self._proc.state() in (Qt.QProcess.Starting, Qt.QProcess.Running) :
 			self.setText()
 			self._proc_kill_flag = True
 			self._proc.kill()
@@ -166,7 +166,7 @@ class SlWordSearch(Qt.QObject) :
 		self.processFinishedSignal()
 
 	def processStateChenged(self, state) :
-		self._proc_block_flag = ( state == Qt.QProcess.Starting or state == Qt.QProcess.Running )
+		self._proc_block_flag = ( state in (Qt.QProcess.Starting, Qt.QProcess.Running) )
 
 	def setText(self) :
 		self._proc_output.append(self._proc.readAllStandardOutput())

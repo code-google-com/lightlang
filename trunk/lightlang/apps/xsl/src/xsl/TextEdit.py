@@ -82,8 +82,7 @@ class TextEdit(Qt.QTextEdit) :
 	### Handlers ###
 
 	def keyPressEvent(self, event) :
-		if ( (event.key() == Qt.Qt.Key_Return or event.key() == Qt.Qt.Key_Enter) and
-			event.modifiers() == Qt.Qt.ControlModifier ) :
+		if event.key() in (Qt.Qt.Key_Return, Qt.Qt.Key_Enter) and event.modifiers() == Qt.Qt.ControlModifier :
 			self.textAppliedSignal()
 		else :
 			Qt.QTextEdit.keyPressEvent(self, event)
