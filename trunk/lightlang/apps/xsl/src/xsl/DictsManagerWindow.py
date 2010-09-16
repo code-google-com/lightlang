@@ -147,8 +147,6 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		###
 
-		Qt.QCoreApplication.processEvents()
-
 		self._wait_message_label.hide()
 		self._stacked_widget.setCurrentIndex(0)
 		self._wait_picture_movie.stop()
@@ -187,8 +185,6 @@ class DictsManagerWindow(Qt.QDialog) :
 		self._dicts_list.setList(self.allAndLocalDicts(local_dicts_list))
 
 		###
-
-		Qt.QCoreApplication.processEvents()
 
 		self._update_dicts_button.setEnabled(True)
 		self._update_dicts_button.blockSignals(False)

@@ -159,7 +159,7 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		cursor.beginEditBlock()
 
-		while (not highlight_cursor.isNull()) and (not highlight_cursor.atEnd()) :
+		while not highlight_cursor.isNull() and not highlight_cursor.atEnd() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 			highlight_cursor = Qt.QTextBrowser.document(self).find(word, highlight_cursor)
 			if not highlight_cursor.isNull() :

@@ -155,8 +155,6 @@ class DictInfoWindow(Qt.QDialog) :
 
 		###
 
-		Qt.QCoreApplication.processEvents()
-
 		self._wait_picture_movie_label.hide()
 		self._wait_picture_movie.stop()
 		self._wait_picture_movie.jumpToFrame(0)
