@@ -59,7 +59,8 @@ def initUserStyleCss() :
 		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
 		".sound_link_font {}\n"
 		".info_font {font-style: italic;}\n"
-		".text_label_font {color: #494949; font-weight: bold;}\n")
+		".text_label_font {color: #494949; font-weight: bold;}\n"
+		".separator {display: none;}\n")
 
 	my_name = Qt.QString(Const.MyName).toLower()
 

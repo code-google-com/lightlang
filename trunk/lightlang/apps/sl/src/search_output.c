@@ -208,7 +208,7 @@ static void print_end_page_html(void)
 
 static void print_separator_html(void)
 {
-	puts("\t<hr>");
+	puts("\t<hr class=\"separator\">");
 }
 
 static void print_separator_text(void)
