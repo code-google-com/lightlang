@@ -36,8 +36,6 @@ class EntitledMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)
 
-		self.fictive_button_event_filter = FictiveButtonEventFilter.FictiveButtonEventFilter()
-
 		if icon != None and text != None :
 			self.addCaption(icon, text)
 
@@ -54,7 +52,7 @@ class EntitledMenu(Qt.QMenu) :
 
 		fictive_action = Qt.QWidgetAction(self)
 		fictive_button = Qt.QToolButton()
-		fictive_button.installEventFilter(self.fictive_button_event_filter)
+		fictive_button.installEventFilter(FictiveButtonEventFilter.FictiveButtonEventFilter(self))
 		fictive_button.setDefaultAction(button_action)
 		fictive_button.setDown(True)
 		fictive_button.setToolButtonStyle(Qt.Qt.ToolButtonTextBesideIcon)

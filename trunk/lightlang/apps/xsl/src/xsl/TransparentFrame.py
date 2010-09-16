@@ -41,19 +41,19 @@ class TransparentFrame(Qt.QFrame) :
 
 		#####
 
-		self.color = UserStyleCssCollection.transparentFrameBackgroundColor()
-		self.alpha = UserStyleCssCollection.transparentFrameBackgroundOpacity()
+		self._color = UserStyleCssCollection.transparentFrameBackgroundColor()
+		self._alpha = UserStyleCssCollection.transparentFrameBackgroundOpacity()
 
 		#####
 
-		self.setAlpha(self.alpha)
+		self.setAlpha(self._alpha)
 
 
 	### Private ###
 
 	def setAlpha(self, alpha) :
 		self.setStyleSheet(Qt.QString("QFrame {border: 1px solid gray; border-radius: 4px; background-color: rgb(%1, %2, %3, %4);}")
-			.arg(self.color.red()).arg(self.color.green()).arg(self.color.blue()).arg(alpha))
+			.arg(self._color.red()).arg(self._color.green()).arg(self._color.blue()).arg(alpha))
 
 
 	### Handlers ###
@@ -63,6 +63,6 @@ class TransparentFrame(Qt.QFrame) :
 		Qt.QFrame.enterEvent(self, event)
 
 	def leaveEvent(self, event) :
-		self.setAlpha(self.alpha)
+		self.setAlpha(self._alpha)
 		Qt.QFrame.leaveEvent(self, event)
 

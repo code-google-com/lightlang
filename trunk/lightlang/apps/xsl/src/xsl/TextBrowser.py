@@ -43,22 +43,22 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		#####
 
-		self.zoom_count = 0
+		self._zoom_count = 0
 
-		self.highlight_color = UserStyleCssCollection.highlightBackgroundColor()
-		self.highlight_color.setAlpha(UserStyleCssCollection.highlightBackgroundOpacity())
+		self._highlight_color = UserStyleCssCollection.highlightBackgroundColor()
+		self._highlight_color.setAlpha(UserStyleCssCollection.highlightBackgroundOpacity())
 
 		# setSource() dont accept user-style.css
 
 		#####
 
-		self.chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar()
-		self.setVerticalScrollBar(self.chrome_scroll_bar)
+		self._chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar()
+		self.setVerticalScrollBar(self._chrome_scroll_bar)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("highlighted(const QString &)"), self.setCursorInfo)
-		self.connect(self, Qt.SIGNAL("sourceChanged(const QUrl &)"), self.chrome_scroll_bar.clearHighlight)
+		self.connect(self, Qt.SIGNAL("sourceChanged(const QUrl &)"), self._chrome_scroll_bar.clearHighlight)
 
 
 	### Public ###
@@ -93,25 +93,25 @@ class TextBrowser(Qt.QTextBrowser) :
 	def clearSpecials(self) :
 		if Qt.QTextBrowser.document(self).isModified() :
 			Qt.QTextBrowser.document(self).undo()
-		self.chrome_scroll_bar.clearHighlight()
+		self._chrome_scroll_bar.clearHighlight()
 
 	###
 
 	def zoomIn(self, range = 1) :
-		if -5 <= self.zoom_count + range <= 5 :
+		if -5 <= self._zoom_count + range <= 5 :
 			Qt.QTextBrowser.zoomIn(self, range)
-			self.zoom_count += range
+			self._zoom_count += range
 
 	def zoomOut(self, range = 1) :
-		if -5 <= self.zoom_count - range <= 5 :
+		if -5 <= self._zoom_count - range <= 5 :
 			Qt.QTextBrowser.zoomOut(self, range)
-			self.zoom_count -= range
+			self._zoom_count -= range
 
 	def zoomNormal(self) :
-		if self.zoom_count > 0 :
-			self.zoomOut(self.zoom_count)
-		elif self.zoom_count < 0 :
-			self.zoomIn(-self.zoom_count)
+		if self._zoom_count > 0 :
+			self.zoomOut(self._zoom_count)
+		elif self._zoom_count < 0 :
+			self.zoomIn(-self._zoom_count)
 
 	###
 
@@ -149,7 +149,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		if Qt.QTextBrowser.document(self).isModified() :
 			Qt.QTextBrowser.document(self).undo()
 			self.setFoundRequestSignal(True)
-		self.chrome_scroll_bar.clearHighlight()
+		self._chrome_scroll_bar.clearHighlight()
 
 		if word.isEmpty() :
 			self.setFoundRequestSignal(True)
@@ -160,7 +160,7 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		plain_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
 		color_format = Qt.QTextCharFormat(highlight_cursor.charFormat())
-		color_format.setBackground(self.highlight_color)
+		color_format.setBackground(self._highlight_color)
 
 		cursor.beginEditBlock()
 
@@ -171,15 +171,15 @@ class TextBrowser(Qt.QTextBrowser) :
 				word_found_flag = True
 				highlight_cursor.movePosition(Qt.QTextCursor.Right, Qt.QTextCursor.KeepAnchor, 0)
 				highlight_cursor.mergeCharFormat(color_format)
-				self.chrome_scroll_bar.addHighlight(highlight_cursor.position(), Qt.QTextBrowser.document(self).characterCount())
+				self._chrome_scroll_bar.addHighlight(highlight_cursor.position(), Qt.QTextBrowser.document(self).characterCount())
 
 		cursor.endEditBlock()
 
 		self.setFoundRequestSignal(word_found_flag)
 		if word_found_flag :
-			self.chrome_scroll_bar.drawHighlight()
+			self._chrome_scroll_bar.drawHighlight()
 		else :
-			self.chrome_scroll_bar.clearHighlight()
+			self._chrome_scroll_bar.clearHighlight()
 
 
 	### Private ###

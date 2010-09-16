@@ -42,63 +42,63 @@ class TextSearchFrame(Qt.QFrame) :
 
 		#####
 
-		self.main_layout = Qt.QHBoxLayout()
-		self.main_layout.setContentsMargins(3, 0, 3, 0)
-		self.setLayout(self.main_layout)
+		self._main_layout = Qt.QHBoxLayout()
+		self._main_layout.setContentsMargins(3, 0, 3, 0)
+		self.setLayout(self._main_layout)
 
 		#####
 
-		self.close_button = Qt.QToolButton()
-		self.close_button.setIcon(IconsLoader.icon("dialog-cancel"))
-		self.close_button.setIconSize(Qt.QSize(16, 16))
-		self.main_layout.addWidget(self.close_button)
+		self._close_button = Qt.QToolButton()
+		self._close_button.setIcon(IconsLoader.icon("dialog-cancel"))
+		self._close_button.setIconSize(Qt.QSize(16, 16))
+		self._main_layout.addWidget(self._close_button)
 
-		self.vertical_frame1 = Qt.QFrame()
-		self.vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
-		self.vertical_frame1.setMinimumSize(22, 22)
-		self.main_layout.addWidget(self.vertical_frame1)
+		self._vertical_frame1 = Qt.QFrame()
+		self._vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self._vertical_frame1.setMinimumSize(22, 22)
+		self._main_layout.addWidget(self._vertical_frame1)
 
-		self.line_edit_label = Qt.QLabel(tr("Search:"))
-		self.main_layout.addWidget(self.line_edit_label)
+		self._line_edit_label = Qt.QLabel(tr("Search:"))
+		self._main_layout.addWidget(self._line_edit_label)
 
-		self.line_edit = LineEdit.LineEdit()
-		self.main_layout.addWidget(self.line_edit)
+		self._line_edit = LineEdit.LineEdit()
+		self._main_layout.addWidget(self._line_edit)
 
-		self.vertical_frame2 = Qt.QFrame()
-		self.vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
-		self.main_layout.addWidget(self.vertical_frame2)
+		self._vertical_frame2 = Qt.QFrame()
+		self._vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
+		self._main_layout.addWidget(self._vertical_frame2)
 
-		self.next_button = Qt.QToolButton()
-		self.next_button.setIcon(IconsLoader.icon("go-down"))
-		self.next_button.setIconSize(Qt.QSize(16, 16))
-		self.next_button.setEnabled(False)
-		self.main_layout.addWidget(self.next_button)
+		self._next_button = Qt.QToolButton()
+		self._next_button.setIcon(IconsLoader.icon("go-down"))
+		self._next_button.setIconSize(Qt.QSize(16, 16))
+		self._next_button.setEnabled(False)
+		self._main_layout.addWidget(self._next_button)
 
-		self.previous_button = Qt.QToolButton()
-		self.previous_button.setIcon(IconsLoader.icon("go-up"))
-		self.previous_button.setIconSize(Qt.QSize(16, 16))
-		self.previous_button.setEnabled(False)
-		self.main_layout.addWidget(self.previous_button)
+		self._previous_button = Qt.QToolButton()
+		self._previous_button.setIcon(IconsLoader.icon("go-up"))
+		self._previous_button.setIconSize(Qt.QSize(16, 16))
+		self._previous_button.setEnabled(False)
+		self._main_layout.addWidget(self._previous_button)
 
 		#####
 
-		self.line_edit_default_palette = Qt.QPalette(self.line_edit.palette())
+		self._line_edit_default_palette = Qt.QPalette(self._line_edit.palette())
 
-		self.line_edit_red_alert_palette = Qt.QPalette()
+		self._line_edit_red_alert_palette = Qt.QPalette()
 		if UserStyleCssCollection.redAlertBackgroundColor().isValid() :
-			self.line_edit_red_alert_palette.setColor(Qt.QPalette.Base, UserStyleCssCollection.redAlertBackgroundColor())
+			self._line_edit_red_alert_palette.setColor(Qt.QPalette.Base, UserStyleCssCollection.redAlertBackgroundColor())
 
 		#####
 
-		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.hide)
+		self.connect(self._close_button, Qt.SIGNAL("clicked()"), self.hide)
 
-		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.next_button.animateClick)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
+		self.connect(self._line_edit, Qt.SIGNAL("returnPressed()"), self._next_button.animateClick)
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.instantSearchRequest)
 
-		self.connect(self.next_button, Qt.SIGNAL("clicked()"), self.findNextRequest)
+		self.connect(self._next_button, Qt.SIGNAL("clicked()"), self.findNextRequest)
 
-		self.connect(self.previous_button, Qt.SIGNAL("clicked()"), self.findPreviousRequest)
+		self.connect(self._previous_button, Qt.SIGNAL("clicked()"), self.findPreviousRequest)
 
 
 	### Public ###
@@ -109,30 +109,30 @@ class TextSearchFrame(Qt.QFrame) :
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.line_edit.setFocus(reason)
-		self.line_edit.selectAll()
+		self._line_edit.setFocus(reason)
+		self._line_edit.selectAll()
 
 	###
 
 	def setFound(self, found_flag) :
-		self.line_edit.setPalette(self.line_edit_default_palette if found_flag else self.line_edit_red_alert_palette)
+		self._line_edit.setPalette(self._line_edit_default_palette if found_flag else self._line_edit_red_alert_palette)
 
 	###
 
 	def clear(self) :
-		self.line_edit.clear()
+		self._line_edit.clear()
 
 
 	### Private ###
 
 	def findNextRequest(self) :
-		word = self.line_edit.text()
+		word = self._line_edit.text()
 		if word.simplified().isEmpty() :
 			return
 		self.findNextRequestSignal(word)
 
 	def findPreviousRequest(self) :
-		word = self.line_edit.text()
+		word = self._line_edit.text()
 		if word.simplified().isEmpty() :
 			return
 		self.findPreviousRequestSignal(word)
@@ -144,8 +144,8 @@ class TextSearchFrame(Qt.QFrame) :
 
 	def setStatusFromLineEdit(self, word) :
 		line_edit_empty_flag = word.simplified().isEmpty()
-		self.next_button.setEnabled(not line_edit_empty_flag)
-		self.previous_button.setEnabled(not line_edit_empty_flag)
+		self._next_button.setEnabled(not line_edit_empty_flag)
+		self._previous_button.setEnabled(not line_edit_empty_flag)
 
 
 	### Signals ###

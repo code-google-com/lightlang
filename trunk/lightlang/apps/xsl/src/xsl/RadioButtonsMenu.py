@@ -37,12 +37,12 @@ class RadioButtonsMenu(Qt.QMenu) :
 
 		#####
 
-		self.actions_list = []
-		self.actions_group = Qt.QActionGroup(self)
+		self._actions_list = []
+		self._actions_group = Qt.QActionGroup(self)
 
 		#####
 
-		self.connect(self.actions_group, Qt.SIGNAL("triggered(QAction *)"), self.dataChangedSignal)
+		self.connect(self._actions_group, Qt.SIGNAL("triggered(QAction *)"), self.dataChangedSignal)
 
 
 	### Public ###
@@ -50,21 +50,21 @@ class RadioButtonsMenu(Qt.QMenu) :
 	def data(self, index = -1) :
 		if index < 0 :
 			index = self.index()
-		return self.actions_list[index].data()
+		return self._actions_list[index].data()
 
 
 	### Private ###
 
 	def index(self) :
 		count = 0
-		while count < len(self.actions_list) :
-			if self.actions_list[count].isChecked() :
+		while count < len(self._actions_list) :
+			if self._actions_list[count].isChecked() :
 				return count
 			count += 1
 
 	def setIndex(self, index) :
-		self.actions_list[index].setChecked(True)
-		self.dataChangedSignal(self.actions_list[index])
+		self._actions_list[index].setChecked(True)
+		self.dataChangedSignal(self._actions_list[index])
 
 	def addRadioButton(self, title, data) :
 		action = Qt.QAction(title, self)
@@ -72,8 +72,8 @@ class RadioButtonsMenu(Qt.QMenu) :
 		action.setData(Qt.QVariant(data))
 
 		self.addAction(action)
-		self.actions_list.append(action)
-		self.actions_group.addAction(action)
+		self._actions_list.append(action)
+		self._actions_group.addAction(action)
 
 
 	### Signals ###

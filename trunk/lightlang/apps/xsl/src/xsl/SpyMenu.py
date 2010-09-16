@@ -46,63 +46,63 @@ class SpyMenu(Qt.QMenu) :
 
 		#####
 
-		self.mouse_selector = MouseSelector.MouseSelector()
+		self._mouse_selector = MouseSelector.MouseSelector()
 
 		#####
 
-		self.start_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-start"), tr("Start Spy"), self.startSpy)
-		self.stop_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-stop"), tr("Stop Spy"), self.stopSpy)
-		self.stop_spy_menu_action.setEnabled(False)
+		self._start_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-start"), tr("Start Spy"), self.startSpy)
+		self._stop_spy_menu_action = self.addAction(IconsLoader.icon("media-playback-stop"), tr("Stop Spy"), self.stopSpy)
+		self._stop_spy_menu_action.setEnabled(False)
 
 		self.addSeparator()
 
-		self.show_translate_window_menu_action = self.addAction(tr("Show popup window"))
-		self.show_translate_window_menu_action.setCheckable(True)
+		self._show_translate_window_menu_action = self.addAction(tr("Show popup window"))
+		self._show_translate_window_menu_action.setCheckable(True)
 
-		self.auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
-		self.auto_detect_window_menu_action.setCheckable(True)
+		self._auto_detect_window_menu_action = self.addAction(tr("Auto-detect window"))
+		self._auto_detect_window_menu_action.setCheckable(True)
 
 		try :
-			self.keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
-			self.keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
-			self.keyboard_modifiers_menu.addRadioButton(tr("No modifier"), Qt.QVariant(KeyboardModifiersTest.NoModifier))
+			self._keyboard_modifiers_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Keyboard modifiers"))
+			self._keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
+			self._keyboard_modifiers_menu.addRadioButton(tr("No modifier"), Qt.QVariant(KeyboardModifiersTest.NoModifier))
 
-			self.keyboard_modifiers_menu.addSeparator()
+			self._keyboard_modifiers_menu.addSeparator()
 
-			self.keyboard_modifiers_menu.addRadioButton(tr("Left Ctrl"), Qt.QVariant(KeyboardModifiersTest.LeftCtrlModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Left Alt"), Qt.QVariant(KeyboardModifiersTest.LeftAltModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Left Shift"), Qt.QVariant(KeyboardModifiersTest.LeftShiftModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Left Win"), Qt.QVariant(KeyboardModifiersTest.LeftWinModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Left Ctrl"), Qt.QVariant(KeyboardModifiersTest.LeftCtrlModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Left Alt"), Qt.QVariant(KeyboardModifiersTest.LeftAltModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Left Shift"), Qt.QVariant(KeyboardModifiersTest.LeftShiftModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Left Win"), Qt.QVariant(KeyboardModifiersTest.LeftWinModifier))
 
-			self.keyboard_modifiers_menu.addSeparator()
+			self._keyboard_modifiers_menu.addSeparator()
 
-			self.keyboard_modifiers_menu.addRadioButton(tr("Right Ctrl"), Qt.QVariant(KeyboardModifiersTest.RightCtrlModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Right Alt"), Qt.QVariant(KeyboardModifiersTest.RightAltModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Right Shift"), Qt.QVariant(KeyboardModifiersTest.RightShiftModifier))
-			self.keyboard_modifiers_menu.addRadioButton(tr("Right Win"), Qt.QVariant(KeyboardModifiersTest.RightWinModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Right Ctrl"), Qt.QVariant(KeyboardModifiersTest.RightCtrlModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Right Alt"), Qt.QVariant(KeyboardModifiersTest.RightAltModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Right Shift"), Qt.QVariant(KeyboardModifiersTest.RightShiftModifier))
+			self._keyboard_modifiers_menu.addRadioButton(tr("Right Win"), Qt.QVariant(KeyboardModifiersTest.RightWinModifier))
 
-			self.keyboard_modifiers_menu.setIndex(0)
-			self.addMenu(self.keyboard_modifiers_menu)
+			self._keyboard_modifiers_menu.setIndex(0)
+			self.addMenu(self._keyboard_modifiers_menu)
 		except :
-			self.fictive_keyboard_modifiers_menu = Qt.QMenu(tr("Keyboard modifiers"))
-			self.fictive_keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
-			self.fictive_keyboard_modifiers_menu.setEnabled(False)
-			self.addMenu(self.fictive_keyboard_modifiers_menu)
+			self._fictive_keyboard_modifiers_menu = Qt.QMenu(tr("Keyboard modifiers"))
+			self._fictive_keyboard_modifiers_menu.setIcon(IconsLoader.icon("configure-shortcuts"))
+			self._fictive_keyboard_modifiers_menu.setEnabled(False)
+			self.addMenu(self._fictive_keyboard_modifiers_menu)
 
 		self.addSeparator()
 
-		self.translate_methods_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Translate methods"))
-		self.translate_methods_menu.setIcon(IconsLoader.icon("configure"))
-		self.addMenu(self.translate_methods_menu)
+		self._translate_methods_menu = RadioButtonsMenu.RadioButtonsMenu(tr("Translate methods"))
+		self._translate_methods_menu.setIcon(IconsLoader.icon("configure"))
+		self.addMenu(self._translate_methods_menu)
 
 		#####
 
-		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.translateRequestSignal)
-		self.connect(self.mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
+		self.connect(self._mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.translateRequestSignal)
+		self.connect(self._mouse_selector, Qt.SIGNAL("selectionChanged(const QString &)"), self.showTranslateWindow)
 
 		try :
-			self.connect(self.keyboard_modifiers_menu, Qt.SIGNAL("dataChanged(const QVariant &)"),
-				lambda data : self.mouse_selector.setModifier(data.toInt()[0]))
+			self.connect(self._keyboard_modifiers_menu, Qt.SIGNAL("dataChanged(const QVariant &)"),
+				lambda data : self._mouse_selector.setModifier(data.toInt()[0]))
 		except : pass
 
 
@@ -110,63 +110,63 @@ class SpyMenu(Qt.QMenu) :
 
 	def addTranslateMethod(self, label, object_name, method_name) :
 		signal_string = Qt.QString("%1__%2__translateRequest(const QString &)").arg(object_name).arg(method_name)
-		self.translate_methods_menu.addRadioButton(label, Qt.QVariant(signal_string))
+		self._translate_methods_menu.addRadioButton(label, Qt.QVariant(signal_string))
 		return Qt.QString(signal_string)
 
 	###
 
 	def startSpy(self) :
-		self.mouse_selector.start()
+		self._mouse_selector.start()
 
-		self.start_spy_menu_action.setEnabled(False)
-		self.stop_spy_menu_action.setEnabled(True)
+		self._start_spy_menu_action.setEnabled(False)
+		self._stop_spy_menu_action.setEnabled(True)
 
 		self.statusChangedSignal(tr("Spy is running"))
 
 		self.spyStartedSignal()
 
 	def stopSpy(self) :
-		self.mouse_selector.stop()
+		self._mouse_selector.stop()
 
-		self.start_spy_menu_action.setEnabled(True)
-		self.stop_spy_menu_action.setEnabled(False)
+		self._start_spy_menu_action.setEnabled(True)
+		self._stop_spy_menu_action.setEnabled(False)
 
 		self.statusChangedSignal(tr("Spy is stopped"))
 
 		self.spyStoppedSignal()
 
 	def isRunning(self) :
-		return self.mouse_selector.isRunning()
+		return self._mouse_selector.isRunning()
 
 	### 
 
 	def saveSettings(self) :
 		settings = Settings.settings()
-		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self.show_translate_window_menu_action.isChecked()))
-		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self.auto_detect_window_menu_action.isChecked()))
-		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self.mouse_selector.isRunning()))
+		settings.setValue("spy_menu/show_translate_window_flag", Qt.QVariant(self._show_translate_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/auto_detect_window_flag", Qt.QVariant(self._auto_detect_window_menu_action.isChecked()))
+		settings.setValue("spy_menu/spy_is_running_flag", Qt.QVariant(self._mouse_selector.isRunning()))
 		try :
-			settings.setValue("spy_menu/keyboard_modifier_index", Qt.QVariant(self.keyboard_modifiers_menu.index()))
+			settings.setValue("spy_menu/keyboard_modifier_index", Qt.QVariant(self._keyboard_modifiers_menu.index()))
 		except : pass
-		settings.setValue("spy_menu/translate_method_index", Qt.QVariant(self.translate_methods_menu.index()))
+		settings.setValue("spy_menu/translate_method_index", Qt.QVariant(self._translate_methods_menu.index()))
 
 	def loadSettings(self) :
 		settings = Settings.settings()
-		self.show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag", Qt.QVariant(True)).toBool())
-		self.auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag", Qt.QVariant(True)).toBool())
+		self._show_translate_window_menu_action.setChecked(settings.value("spy_menu/show_translate_window_flag", Qt.QVariant(True)).toBool())
+		self._auto_detect_window_menu_action.setChecked(settings.value("spy_menu/auto_detect_window_flag", Qt.QVariant(True)).toBool())
 		if settings.value("spy_menu/spy_is_running_flag", Qt.QVariant(False)).toBool() :
 			self.startSpy()
 		try :
-			self.keyboard_modifiers_menu.setIndex(settings.value("spy_menu/keyboard_modifier_index", Qt.QVariant(0)).toInt()[0])
+			self._keyboard_modifiers_menu.setIndex(settings.value("spy_menu/keyboard_modifier_index", Qt.QVariant(0)).toInt()[0])
 		except : pass
-		self.translate_methods_menu.setIndex(settings.value("spy_menu/translate_method_index", Qt.QVariant(0)).toInt()[0])
+		self._translate_methods_menu.setIndex(settings.value("spy_menu/translate_method_index", Qt.QVariant(0)).toInt()[0])
 
 
 	### Private ###
 
 	def showTranslateWindow(self) :
-		if self.show_translate_window_menu_action.isChecked() :
-			if self.auto_detect_window_menu_action.isChecked() :
+		if self._show_translate_window_menu_action.isChecked() :
+			if self._auto_detect_window_menu_action.isChecked() :
 				if Qt.QApplication.activeWindow() == None :
 					self.showTranslateWindowRequestSignal()
 			else :
@@ -185,7 +185,7 @@ class SpyMenu(Qt.QMenu) :
 		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), text)
 
 	def translateRequestSignal(self, text) :
-		self.emit(Qt.SIGNAL(self.translate_methods_menu.data().toString()), text)
+		self.emit(Qt.SIGNAL(self._translate_methods_menu.data().toString()), text)
 
 	def showTranslateWindowRequestSignal(self) :
 		self.emit(Qt.SIGNAL("showTranslateWindowRequest()"))

@@ -59,18 +59,18 @@ class PopupWindow(Qt.QFrame) :
 
 		####
 
-		self.resize_timer = Qt.QTimer()
-		self.resize_timer.setInterval(10)
+		self._resize_timer = Qt.QTimer()
+		self._resize_timer.setInterval(10)
 
-		self.resize_direction = ResizeDirectionNone
+		self._resize_direction = ResizeDirectionNone
 
-		self.move_timer = Qt.QTimer()
-		self.move_timer.setInterval(10)
+		self._move_timer = Qt.QTimer()
+		self._move_timer.setInterval(10)
 
 		#####
 
-		self.connect(self.resize_timer, Qt.SIGNAL("timeout()"), self.doResize)
-		self.connect(self.move_timer, Qt.SIGNAL("timeout()"), self.doMove)
+		self.connect(self._resize_timer, Qt.SIGNAL("timeout()"), self.doResize)
+		self.connect(self._move_timer, Qt.SIGNAL("timeout()"), self.doMove)
 
 
 	### Public ###
@@ -103,35 +103,35 @@ class PopupWindow(Qt.QFrame) :
 	### Private ###
 
 	def startResize(self) :
-		self.resize_timer.start()
+		self._resize_timer.start()
 
 	def stopResize(self) :
-		self.resize_timer.stop()
-		self.resize_direction = ResizeDirectionNone
+		self._resize_timer.stop()
+		self._resize_direction = ResizeDirectionNone
 
 	def doResize(self) :
 		if Qt.QApplication.mouseButtons() == Qt.Qt.NoButton :
 			self.stopResize()
 			return
 
-		if self.resize_direction == ResizeDirectionNone :
+		if self._resize_direction == ResizeDirectionNone :
 			return
 
 		new_geometry = self.frameGeometry()
 
-		if self.resize_direction == ResizeDirectionTop :
+		if self._resize_direction == ResizeDirectionTop :
 			new_geometry.setTop(Qt.QCursor.pos().y())
-		elif self.resize_direction == ResizeDirectionBottom :
+		elif self._resize_direction == ResizeDirectionBottom :
 			new_geometry.setBottom(Qt.QCursor.pos().y())
-		elif self.resize_direction == ResizeDirectionLeft :
+		elif self._resize_direction == ResizeDirectionLeft :
 			new_geometry.setLeft(Qt.QCursor.pos().x())
-		elif self.resize_direction == ResizeDirectionRight :
+		elif self._resize_direction == ResizeDirectionRight :
 			new_geometry.setRight(Qt.QCursor.pos().x())
-		elif self.resize_direction == ResizeDirectionTopRight :
+		elif self._resize_direction == ResizeDirectionTopRight :
 			new_geometry.setTopRight(Qt.QCursor.pos())
-		elif self.resize_direction == ResizeDirectionBottomLeft :
+		elif self._resize_direction == ResizeDirectionBottomLeft :
 			new_geometry.setBottomLeft(Qt.QCursor.pos())
-		elif self.resize_direction == ResizeDirectionBottomRight :
+		elif self._resize_direction == ResizeDirectionBottomRight :
 			new_geometry.setBottomRight(Qt.QCursor.pos())
 
 		if new_geometry.width() < self.size().width() / 2 :
@@ -147,10 +147,10 @@ class PopupWindow(Qt.QFrame) :
 	###
 
 	def startMove(self) :
-		self.move_timer.start()
+		self._move_timer.start()
 
 	def stopMove(self) :
-		self.move_timer.stop()
+		self._move_timer.stop()
 
 	def doMove(self) :
 		if Qt.QApplication.mouseButtons() == Qt.Qt.NoButton :
@@ -181,23 +181,23 @@ class PopupWindow(Qt.QFrame) :
 			return
 
 		if x >= w - c and y < c :
-			self.resize_direction = ResizeDirectionTopRight
+			self._resize_direction = ResizeDirectionTopRight
 		elif x < c and y >= h - c :
-			self.resize_direction = ResizeDirectionBottomLeft
+			self._resize_direction = ResizeDirectionBottomLeft
 		elif x >= w - c and y >= h - c :
-			self.resize_direction = ResizeDirectionBottomRight
+			self._resize_direction = ResizeDirectionBottomRight
 		elif x < f :
-			self.resize_direction = ResizeDirectionLeft
+			self._resize_direction = ResizeDirectionLeft
 		elif x >= w - f :
-			self.resize_direction = ResizeDirectionRight
+			self._resize_direction = ResizeDirectionRight
 		elif y < f :
-			self.resize_direction = ResizeDirectionTop
+			self._resize_direction = ResizeDirectionTop
 		elif y >= h - f :
-			self.resize_direction = ResizeDirectionBottom
+			self._resize_direction = ResizeDirectionBottom
 		else :
-			self.resize_direction = ResizeDirectionNone
+			self._resize_direction = ResizeDirectionNone
 
-		if self.resize_direction != ResizeDirectionNone :
+		if self._resize_direction != ResizeDirectionNone :
 			self.stopMove()
 			self.startResize()
 

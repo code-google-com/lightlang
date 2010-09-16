@@ -49,88 +49,88 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 		#####
 
-		self.main_widget = Qt.QWidget()
-		self.setWidget(self.main_widget)
+		self._main_widget = Qt.QWidget()
+		self.setWidget(self._main_widget)
 
-		self.main_layout = Qt.QVBoxLayout()
-		self.main_widget.setLayout(self.main_layout)
+		self._main_layout = Qt.QVBoxLayout()
+		self._main_widget.setLayout(self._main_layout)
 
-		self.langs_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.langs_layout)
+		self._langs_layout = Qt.QHBoxLayout()
+		self._main_layout.addLayout(self._langs_layout)
 
-		self.text_edit_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.text_edit_layout)
+		self._text_edit_layout = Qt.QHBoxLayout()
+		self._main_layout.addLayout(self._text_edit_layout)
 
-		self.control_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.control_buttons_layout)
-
-		#####
-
-		self.google_translate = GoogleTranslate.GoogleTranslate()
+		self._control_buttons_layout = Qt.QHBoxLayout()
+		self._main_layout.addLayout(self._control_buttons_layout)
 
 		#####
 
-		self.sl_combobox = Qt.QComboBox()
-		self.sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
-		self.sl_combobox.setMaxVisibleItems(15)
-		self.sl_combobox.addItem(IconsLoader.icon("help-hint"), tr("Guess"), Qt.QVariant(""))
-		self.sl_combobox.insertSeparator(1)
+		self._google_translate = GoogleTranslate.GoogleTranslate()
+
+		#####
+
+		self._sl_combobox = Qt.QComboBox()
+		self._sl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
+		self._sl_combobox.setMaxVisibleItems(15)
+		self._sl_combobox.addItem(IconsLoader.icon("help-hint"), tr("Guess"), Qt.QVariant(""))
+		self._sl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.sl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
+			self._sl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
 				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
-		self.langs_layout.addWidget(self.sl_combobox)
+		self._langs_layout.addWidget(self._sl_combobox)
 
-		self.invert_langs_button = Qt.QToolButton()
-		self.invert_langs_button.setIcon(IconsLoader.icon("go-jump"))
-		self.invert_langs_button.setIconSize(Qt.QSize(16, 16))
-		self.invert_langs_button.setCursor(Qt.Qt.ArrowCursor)
-		self.invert_langs_button.setAutoRaise(True)
-		self.langs_layout.addWidget(self.invert_langs_button)
+		self._invert_langs_button = Qt.QToolButton()
+		self._invert_langs_button.setIcon(IconsLoader.icon("go-jump"))
+		self._invert_langs_button.setIconSize(Qt.QSize(16, 16))
+		self._invert_langs_button.setCursor(Qt.Qt.ArrowCursor)
+		self._invert_langs_button.setAutoRaise(True)
+		self._langs_layout.addWidget(self._invert_langs_button)
 
-		self.tl_combobox = Qt.QComboBox()
-		self.tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
-		self.tl_combobox.setMaxVisibleItems(15)
-		self.tl_combobox.addItem(IconsLoader.icon("flags/"+Locale.mainLang()),
+		self._tl_combobox = Qt.QComboBox()
+		self._tl_combobox.setSizeAdjustPolicy(Qt.QComboBox.AdjustToMinimumContentsLength)
+		self._tl_combobox.setMaxVisibleItems(15)
+		self._tl_combobox.addItem(IconsLoader.icon("flags/"+Locale.mainLang()),
 			LangsList.langName(Locale.mainLang()), Qt.QVariant(Locale.mainLang()))
-		self.tl_combobox.insertSeparator(1)
+		self._tl_combobox.insertSeparator(1)
 		for langs_list_item in LangsList.langsList() :
-			self.tl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
+			self._tl_combobox.addItem(IconsLoader.icon("flags/"+langs_list_item["code"]),
 				langs_list_item["name"], Qt.QVariant(langs_list_item["code"]))
-		self.langs_layout.addWidget(self.tl_combobox)
+		self._langs_layout.addWidget(self._tl_combobox)
 
-		self.text_edit = TextEdit.TextEdit()
-		self.text_edit_layout.addWidget(self.text_edit)
+		self._text_edit = TextEdit.TextEdit()
+		self._text_edit_layout.addWidget(self._text_edit)
 
-		self.translate_button = Qt.QPushButton(tr("T&ranslate"))
-		self.translate_button.setEnabled(False)
-		self.translate_button.setToolTip(tr("Ctrl+Enter"))
-		self.control_buttons_layout.addWidget(self.translate_button)
+		self._translate_button = Qt.QPushButton(tr("T&ranslate"))
+		self._translate_button.setEnabled(False)
+		self._translate_button.setToolTip(tr("Ctrl+Enter"))
+		self._control_buttons_layout.addWidget(self._translate_button)
 
-		self.abort_button = Qt.QToolButton()
-		self.abort_button.setIcon(IconsLoader.icon("dialog-cancel"))
-		self.abort_button.setIconSize(Qt.QSize(16, 16))
-		self.abort_button.setEnabled(False)
-		self.control_buttons_layout.addWidget(self.abort_button)
+		self._abort_button = Qt.QToolButton()
+		self._abort_button.setIcon(IconsLoader.icon("dialog-cancel"))
+		self._abort_button.setIconSize(Qt.QSize(16, 16))
+		self._abort_button.setEnabled(False)
+		self._control_buttons_layout.addWidget(self._abort_button)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
 
-		self.connect(self.google_translate, Qt.SIGNAL("processStarted()"), self.processStarted)
-		self.connect(self.google_translate, Qt.SIGNAL("processFinished()"), self.processFinished)
-		self.connect(self.google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
-		self.connect(self.google_translate, Qt.SIGNAL("wordChanged(const QString &)"), self.wordChangedSignal)
-		self.connect(self.google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
-		self.connect(self.google_translate, Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
+		self.connect(self._google_translate, Qt.SIGNAL("processStarted()"), self.processStarted)
+		self.connect(self._google_translate, Qt.SIGNAL("processFinished()"), self.processFinished)
+		self.connect(self._google_translate, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
+		self.connect(self._google_translate, Qt.SIGNAL("wordChanged(const QString &)"), self.wordChangedSignal)
+		self.connect(self._google_translate, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
+		self.connect(self._google_translate, Qt.SIGNAL("statusChanged(const QString &)"), self.statusChangedSignal)
 
-		self.connect(self.invert_langs_button, Qt.SIGNAL("clicked()"), self.invertLangs)
+		self.connect(self._invert_langs_button, Qt.SIGNAL("clicked()"), self.invertLangs)
 
-		self.connect(self.text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
-		self.connect(self.text_edit, Qt.SIGNAL("textApplied()"), self.translate_button.animateClick)
+		self.connect(self._text_edit, Qt.SIGNAL("textChanged()"), self.setStatusFromTextEdit)
+		self.connect(self._text_edit, Qt.SIGNAL("textApplied()"), self._translate_button.animateClick)
 
-		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.translate)
-		self.connect(self.translate_button, Qt.SIGNAL("clicked()"), self.setFocus)
-		self.connect(self.abort_button, Qt.SIGNAL("clicked()"), self.abort)
+		self.connect(self._translate_button, Qt.SIGNAL("clicked()"), self.translate)
+		self.connect(self._translate_button, Qt.SIGNAL("clicked()"), self.setFocus)
+		self.connect(self._abort_button, Qt.SIGNAL("clicked()"), self.abort)
 
 
 	### Public ###
@@ -156,7 +156,7 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 	###
 
 	def setText(self, text) :
-		self.text_edit.setText(text)
+		self._text_edit.setText(text)
 
 	###
 
@@ -168,13 +168,13 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 
 	def saveSettings(self) :
 		settings = Settings.settings()
-		settings.setValue("google_translate_panel/sl_combobox_index", Qt.QVariant(self.sl_combobox.currentIndex()))
-		settings.setValue("google_translate_panel/tl_combobox_index", Qt.QVariant(self.tl_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/sl_combobox_index", Qt.QVariant(self._sl_combobox.currentIndex()))
+		settings.setValue("google_translate_panel/tl_combobox_index", Qt.QVariant(self._tl_combobox.currentIndex()))
 
 	def loadSettings(self) :
 		settings = Settings.settings()
-		self.sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index", Qt.QVariant(0)).toInt()[0])
-		self.tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index", Qt.QVariant(0)).toInt()[0])
+		self._sl_combobox.setCurrentIndex(settings.value("google_translate_panel/sl_combobox_index", Qt.QVariant(0)).toInt()[0])
+		self._tl_combobox.setCurrentIndex(settings.value("google_translate_panel/tl_combobox_index", Qt.QVariant(0)).toInt()[0])
 
 	###
 
@@ -184,66 +184,66 @@ class GoogleTranslatePanel(Qt.QDockWidget) :
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.text_edit.setFocus(reason)
-		self.text_edit.selectAll()
+		self._text_edit.setFocus(reason)
+		self._text_edit.selectAll()
 
 	def hasInternalFocus(self) :
-		return self.text_edit.hasFocus()
+		return self._text_edit.hasFocus()
 
 	def clear(self) :
-		self.text_edit.clear()
+		self._text_edit.clear()
 
 
 	### Private ###
 
 	def invertLangs(self) :
-		sl_index = self.sl_combobox.currentIndex()
-		tl_index = self.tl_combobox.currentIndex()
+		sl_index = self._sl_combobox.currentIndex()
+		tl_index = self._tl_combobox.currentIndex()
 
-		self.sl_combobox.setCurrentIndex(tl_index)
-		self.tl_combobox.setCurrentIndex(sl_index)
+		self._sl_combobox.setCurrentIndex(tl_index)
+		self._tl_combobox.setCurrentIndex(sl_index)
 
 	def translate(self) :
-		text = self.text_edit.toPlainText()
+		text = self._text_edit.toPlainText()
 		if text.simplified().isEmpty() :
 			return
 
-		sl_index = self.sl_combobox.currentIndex()
-		sl = self.sl_combobox.itemData(sl_index).toString()
+		sl_index = self._sl_combobox.currentIndex()
+		sl = self._sl_combobox.itemData(sl_index).toString()
 
-		tl_index = self.tl_combobox.currentIndex()
-		tl = self.tl_combobox.itemData(tl_index).toString()
+		tl_index = self._tl_combobox.currentIndex()
+		tl = self._tl_combobox.itemData(tl_index).toString()
 
-		self.google_translate.translate(sl, tl, text)
+		self._google_translate.translate(sl, tl, text)
 
 	def abort(self) :
-		self.google_translate.abort()
+		self._google_translate.abort()
 
 	###
 
 	def processStarted(self) :
-		self.abort_button.setEnabled(True)
-		self.translate_button.setEnabled(False)
+		self._abort_button.setEnabled(True)
+		self._translate_button.setEnabled(False)
 
 		self.processStartedSignal()
 
 	def processFinished(self) :
-		self.abort_button.setEnabled(False)
-		self.translate_button.setEnabled(not self.text_edit.toPlainText().simplified().isEmpty())
+		self._abort_button.setEnabled(False)
+		self._translate_button.setEnabled(not self._text_edit.toPlainText().simplified().isEmpty())
 
 		self.processFinishedSignal()
 
 	###
 
 	def setStatusFromTextEdit(self) :
-		self.translate_button.setEnabled(not self.text_edit.toPlainText().simplified().isEmpty())
+		self._translate_button.setEnabled(not self._text_edit.toPlainText().simplified().isEmpty())
 
 	###
 
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
-			self.text_edit.setFocus(Qt.Qt.OtherFocusReason)
-			self.text_edit.selectAll()
+			self._text_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self._text_edit.selectAll()
 
 
 	### Signals ###

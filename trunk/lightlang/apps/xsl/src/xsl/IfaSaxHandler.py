@@ -39,121 +39,120 @@ class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.new_app_handler = new_app_handler
+		self._new_app_handler = new_app_handler
 
 		#####
 
-		self.app_tag_flag = False
-		self.title_tag_flag = False
-		self.description_tag_flag = False
-		self.icon_tag_flag = False
-		self.path_tag_flag = False
-		self.options_tag_flag = False
-		self.precode_tag_flag = False
-		self.postcode_tag_flag = False
+		self._app_tag_flag = False
+		self._title_tag_flag = False
+		self._description_tag_flag = False
+		self._icon_tag_flag = False
+		self._path_tag_flag = False
+		self._options_tag_flag = False
+		self._precode_tag_flag = False
+		self._postcode_tag_flag = False
 
-		self.app_title = Qt.QString()
-		self.app_title_lang = Qt.QString()
-		self.app_description = Qt.QString()
-		self.app_description_lang = Qt.QString()
-		self.app_icon_name = Qt.QString()
-		self.app_prog_path = Qt.QString()
-		self.app_prog_options = Qt.QString()
-		self.python_precode = Qt.QString()
-		self.python_postcode = Qt.QString()
+		self._app_title = Qt.QString()
+		self._app_title_lang = Qt.QString()
+		self._app_description = Qt.QString()
+		self._app_description_lang = Qt.QString()
+		self._app_icon_name = Qt.QString()
+		self._app_prog_path = Qt.QString()
+		self._app_prog_options = Qt.QString()
+		self._python_precode = Qt.QString()
+		self._python_postcode = Qt.QString()
 
 
 	### Private ###
 	### Handlers ###
 	def startElement(self, namespace_uri, local_name, name, attributes) :
 		if name == "app" :
-			self.app_tag_flag = True
+			self._app_tag_flag = True
 			return True
 
-		if self.app_tag_flag :
+		if self._app_tag_flag :
 			if name == "title" :
-				self.app_title_lang = attributes.value("lang")
-				self.title_tag_flag = True
+				self._app_title_lang = attributes.value("lang")
+				self._title_tag_flag = True
 			elif name == "description" :
-				self.app_description_lang = attributes.value("lang")
-				self.description_tag_flag = True
+				self._app_description_lang = attributes.value("lang")
+				self._description_tag_flag = True
 			elif name == "icon" :
-				self.icon_tag_flag = True
+				self._icon_tag_flag = True
 			elif name == "path" :
-				self.path_tag_flag = True
+				self._path_tag_flag = True
 			elif name == "options" :
-				self.options_tag_flag = True
+				self._options_tag_flag = True
 			elif name == "precode" and attributes.value("lang") == "python" :
-				self.precode_tag_flag = True
+				self._precode_tag_flag = True
 			elif name == "postcode" and attributes.value("lang") == "python" :
-				self.postcode_tag_flag = True
+				self._postcode_tag_flag = True
 		return True
 
 	def characters(self, str) :
 		if str.simplified().isEmpty() :
 			return True
 
-		if self.app_tag_flag :
-			if self.title_tag_flag :
-				if self.app_title_lang == Locale.mainLang() :
-					self.app_title = str.simplified()
-				if self.app_title.simplified().isEmpty() and self.app_title_lang.simplified().isEmpty() :
-					self.app_title = str.simplified()
+		if self._app_tag_flag :
+			if self._title_tag_flag :
+				if self._app_title_lang == Locale.mainLang() :
+					self._app_title = str.simplified()
+				if self._app_title.simplified().isEmpty() and self._app_title_lang.simplified().isEmpty() :
+					self._app_title = str.simplified()
 				return True
-			elif self.description_tag_flag :
-				if self.app_description_lang == Locale.mainLang() :
-					self.app_description = str.simplified()
-				if self.app_description.simplified().isEmpty() and self.app_description_lang.simplified().isEmpty() :
-					self.app_description = str.simplified()
+			elif self._description_tag_flag :
+				if self._app_description_lang == Locale.mainLang() :
+					self._app_description = str.simplified()
+				if self._app_description.simplified().isEmpty() and self._app_description_lang.simplified().isEmpty() :
+					self._app_description = str.simplified()
 				return True
-			elif self.icon_tag_flag :
-				self.app_icon_name = str.simplified()
+			elif self._icon_tag_flag :
+				self._app_icon_name = str.simplified()
 				return True
-			elif self.path_tag_flag :
-				self.app_prog_path = str.simplified()
+			elif self._path_tag_flag :
+				self._app_prog_path = str.simplified()
 				return True
-			elif self.options_tag_flag :
-				self.app_prog_options = str.simplified()
+			elif self._options_tag_flag :
+				self._app_prog_options = str.simplified()
 				return True
-			elif self.precode_tag_flag :
-				self.python_precode = str.trimmed()
+			elif self._precode_tag_flag :
+				self._python_precode = str.trimmed()
 				return True
-			elif self.postcode_tag_flag :
-				self.python_postcode = str.trimmed()
+			elif self._postcode_tag_flag :
+				self._python_postcode = str.trimmed()
 				return True
 		return True
 
 	def endElement(self, namespace_uri, local_name, name) :
 		if name == "app" :
-			self.new_app_handler(self.app_title, self.app_description,
-				self.app_icon_name, self.app_prog_path, self.app_prog_options,
-				self.python_precode, self.python_postcode)
+			self._new_app_handler(self._app_title, self._app_description, self._app_icon_name,
+				self._app_prog_path, self._app_prog_options, self._python_precode, self._python_postcode)
 
-			self.app_title.clear()
-			self.app_title_lang.clear()
-			self.app_description.clear()
-			self.app_description_lang.clear()
-			self.app_icon_name.clear()
-			self.app_prog_path.clear()
-			self.app_prog_options.clear()
-			self.python_precode.clear()
-			self.python_postcode.clear()
+			self._app_title.clear()
+			self._app_title_lang.clear()
+			self._app_description.clear()
+			self._app_description_lang.clear()
+			self._app_icon_name.clear()
+			self._app_prog_path.clear()
+			self._app_prog_options.clear()
+			self._python_precode.clear()
+			self._python_postcode.clear()
 
-			self.app_tag_flag = False
+			self._app_tag_flag = False
 		elif name == "title" :
-			self.title_tag_flag = False
+			self._title_tag_flag = False
 		elif name == "description" :
-			self.description_tag_flag = False
+			self._description_tag_flag = False
 		elif name == "icon" :
-			self.icon_tag_flag = False
+			self._icon_tag_flag = False
 		elif name == "path" :
-			self.path_tag_flag = False
+			self._path_tag_flag = False
 		elif name == "options" :
-			self.options_tag_flag = False
+			self._options_tag_flag = False
 		elif name == "precode" :
-			self.precode_tag_flag = False
+			self._precode_tag_flag = False
 		elif name == "postcode" :
-			self.postcode_tag_flag = False
+			self._postcode_tag_flag = False
 		return True
 
 	def fatalError(self, exception) :

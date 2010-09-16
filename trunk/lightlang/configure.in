@@ -161,7 +161,7 @@ docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile
 docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile
 docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile
 download.py
-apps/sl/src/config.h apps/xsl/src/src/Config.py apps/xsl/src/src/xsl.py apps/llrepo/src/llrepo.py
+apps/sl/src/config.h apps/xsl/src/xsl/Config.py apps/xsl/src/xsl/xsl.py apps/llrepo/src/llrepo.py
 pkg/pkg/lightlang.pc],
 [chmod +x download.py])
 

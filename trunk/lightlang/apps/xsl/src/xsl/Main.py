@@ -48,69 +48,73 @@ def tr(str) :
 
 
 #####
-class Main :
+class Main(object) :
 	def __init__(self, argv, no_splash_flag = False, no_tray_icon = False) :
-		self.argv = argv
-		self.no_splash_flag = no_splash_flag
-		self.no_tray_icon = no_tray_icon
+		object.__init__(self)
+
+		#####
+
+		self._argv = argv
+		self._no_splash_flag = no_splash_flag
+		self._no_tray_icon = no_tray_icon
 
 
 	### Public ###
 
 	def run(self) :
-		self.app = MainApplication.MainApplication(self.argv)
-		self.app.setQuitOnLastWindowClosed(self.no_tray_icon)
+		self._app = MainApplication.MainApplication(self._argv)
+		self._app.setQuitOnLastWindowClosed(self._no_tray_icon)
 
 		tr_file_path = Qt.QString("%1/%2%3").arg(TrDir).arg(Locale.mainLang()).arg(TrPostfix)
 		if Qt.QFile.exists(tr_file_path) :
-			self.translator = Qt.QTranslator()
-			self.translator.load(tr_file_path)
-			self.app.installTranslator(self.translator)
+			self._translator = Qt.QTranslator()
+			self._translator.load(tr_file_path)
+			self._app.installTranslator(self._translator)
 
 		qt_tr_file_path = Qt.QString("%1/qt_%2%3").arg(Config.QtTrDir).arg(Locale.mainLang()).arg(TrPostfix)
 		if Qt.QFile.exists(qt_tr_file_path) :
-			self.qt_translator = Qt.QTranslator()
-			self.qt_translator.load(qt_tr_file_path)
-			self.app.installTranslator(self.qt_translator)
+			self._qt_translator = Qt.QTranslator()
+			self._qt_translator.load(qt_tr_file_path)
+			self._app.installTranslator(self._qt_translator)
 
-		self.app.setStyleSheet(UserStyleCss.userStyleCss())
+		self._app.setStyleSheet(UserStyleCss.userStyleCss())
 
 		StartupLock.test()
 
 		#####
 
-		if not self.no_splash_flag :
-			self.splash_pixmap = Qt.QPixmap(MySplash)
-			self.splash = Qt.QSplashScreen(self.splash_pixmap)
-			if not self.app.isSessionRestored() :
-				self.splash.show()
+		if not self._no_splash_flag :
+			self._splash_pixmap = Qt.QPixmap(MySplash)
+			self._splash = Qt.QSplashScreen(self._splash_pixmap)
+			if not self._app.isSessionRestored() :
+				self._splash.show()
 
-		self.app.processEvents()
+		self._app.processEvents()
 
-		self.main_window = MainWindow.MainWindow()
-		self.tray_icon = TrayIcon.TrayIcon()
-
-		#####
-
-		Qt.QObject.connect(self.app, Qt.SIGNAL("focusChanged(QWidget *, QWidget*)"), self.main_window.focusChanged)
-		Qt.QObject.connect(self.app, Qt.SIGNAL("saveSettingsRequest()"), self.main_window.exit)
-
-		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStarted()"), self.tray_icon.spyStarted)
-		Qt.QObject.connect(self.main_window, Qt.SIGNAL("spyStopped()"), self.tray_icon.spyStopped)
-
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("startSpyRequest()"), self.main_window.startSpy)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("stopSpyRequest()"), self.main_window.stopSpy)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("visibleChangeRequest()"), self.main_window.visibleChange)
-		Qt.QObject.connect(self.tray_icon, Qt.SIGNAL("exitRequest()"), self.main_window.exit)
+		self._main_window = MainWindow.MainWindow()
+		self._tray_icon = TrayIcon.TrayIcon()
 
 		#####
 
-		self.main_window.load()
-		if not self.no_tray_icon :
-			self.tray_icon.show()
+		Qt.QObject.connect(self._app, Qt.SIGNAL("focusChanged(QWidget *, QWidget*)"), self._main_window.focusChanged)
+		Qt.QObject.connect(self._app, Qt.SIGNAL("saveSettingsRequest()"), self._main_window.exit)
 
-		if not self.no_splash_flag :
-			self.splash.finish(self.main_window)
+		Qt.QObject.connect(self._main_window, Qt.SIGNAL("spyStarted()"), self._tray_icon.spyStarted)
+		Qt.QObject.connect(self._main_window, Qt.SIGNAL("spyStopped()"), self._tray_icon.spyStopped)
+
+		Qt.QObject.connect(self._tray_icon, Qt.SIGNAL("startSpyRequest()"), self._main_window.startSpy)
+		Qt.QObject.connect(self._tray_icon, Qt.SIGNAL("stopSpyRequest()"), self._main_window.stopSpy)
+		Qt.QObject.connect(self._tray_icon, Qt.SIGNAL("visibleChangeRequest()"), self._main_window.visibleChange)
+		Qt.QObject.connect(self._tray_icon, Qt.SIGNAL("exitRequest()"), self._main_window.exit)
+
+		#####
+
+		self._main_window.load()
+		if not self._no_tray_icon :
+			self._tray_icon.show()
+
+		if not self._no_splash_flag :
+			self._splash.finish(self._main_window)
 
 		#####
 
@@ -119,5 +123,5 @@ class Main :
 
 		#####
 
-		self.app.exec_()
+		self._app.exec_()
 

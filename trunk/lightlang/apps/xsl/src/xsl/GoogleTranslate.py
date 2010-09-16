@@ -39,56 +39,56 @@ class GoogleTranslate(Qt.QObject) :
 
 		#####
 
-		self.http = Qt.QHttp()
-		self.http_request_id = -1
-		self.http_abort_flag = False
+		self._http = Qt.QHttp()
+		self._http_request_id = -1
+		self._http_abort_flag = False
 
-		self.http_output = Qt.QByteArray()
+		self._http_output = Qt.QByteArray()
 
-		self.timer = Qt.QTimer()
-		self.timer.setInterval(30000)
+		self._timer = Qt.QTimer()
+		self._timer.setInterval(30000)
 
-		self.sl = Qt.QString()
-		self.tl = Qt.QString()
+		self._sl = Qt.QString()
+		self._tl = Qt.QString()
 
-		self.translated_text_regexp = Qt.QRegExp("\"translatedText\"\\s*:\\s*\"(.*)\"")
-		self.translated_text_regexp.setMinimal(True)
+		self._translated_text_regexp = Qt.QRegExp("\"translatedText\"\\s*:\\s*\"(.*)\"")
+		self._translated_text_regexp.setMinimal(True)
 
-		self.detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
-		self.detected_source_language_regexp.setMinimal(True)
+		self._detected_source_language_regexp = Qt.QRegExp("\"detectedSourceLanguage\"\\s*:\\s*\"(.*)\"")
+		self._detected_source_language_regexp.setMinimal(True)
 
-		self.unicode_char_regexp = Qt.QRegExp("(\\\\+)u([0-9a-fA-F]{4})")
+		self._unicode_char_regexp = Qt.QRegExp("(\\\\+)u([0-9a-fA-F]{4})")
 
 		#####
 
-		self.connect(self.http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
-		self.connect(self.http, Qt.SIGNAL("requestFinished(int, bool)"), self.requestFinished)
-		self.connect(self.http, Qt.SIGNAL("readyRead(const QHttpResponseHeader &)"), self.setText)
+		self.connect(self._http, Qt.SIGNAL("stateChanged(int)"), self.setStatus)
+		self.connect(self._http, Qt.SIGNAL("requestFinished(int, bool)"), self.requestFinished)
+		self.connect(self._http, Qt.SIGNAL("readyRead(const QHttpResponseHeader &)"), self.setText)
 
-		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.abort)
+		self.connect(self._timer, Qt.SIGNAL("timeout()"), self.abort)
 
 
 	### Public ###
 
 	def translate(self, sl, tl, text) :
-		self.http_abort_flag = True
-		self.http.abort()
-		self.http_abort_flag = False
+		self._http_abort_flag = True
+		self._http.abort()
+		self._http_abort_flag = False
 
 		self.processStartedSignal()
 
 		self.clearRequestSignal()
 
-		self.http.clearPendingRequests()
-		self.http_output.clear()
+		self._http.clearPendingRequests()
+		self._http_output.clear()
 
 		self.wordChangedSignal(tr("Google Translate"))
 		self.textChangedSignal(tr("<font class=\"info_font\">Please wait...</font>"))
 
 		text = text.trimmed()
 
-		self.sl = sl
-		self.tl = tl
+		self._sl = sl
+		self._tl = tl
 
 		###
 
@@ -119,15 +119,15 @@ class GoogleTranslate(Qt.QObject) :
 		http_request_header.setContentLength(text.length())
 		http_request_header.setValue("Connection", "close")
 
-		self.http.setHost("ajax.googleapis.com")
-		self.http_request_id = self.http.request(http_request_header, text)
+		self._http.setHost("ajax.googleapis.com")
+		self._http_request_id = self._http.request(http_request_header, text)
 
-		self.timer.start()
+		self._timer.start()
 
 	def abort(self) :
-		self.http_abort_flag = True
-		self.http.abort()
-		self.http_abort_flag = False
+		self._http_abort_flag = True
+		self._http.abort()
+		self._http_abort_flag = False
 
 		self.statusChangedSignal(Qt.QString())
 		self.textChangedSignal(tr("<font class=\"info_font\">Aborted</font>"))
@@ -152,44 +152,44 @@ class GoogleTranslate(Qt.QObject) :
 			self.statusChangedSignal(tr("Closing connection..."))
 
 	def setText(self) :
-		self.http_output.append(self.http.readAll())
+		self._http_output.append(self._http.readAll())
 
 	def requestFinished(self, request_id, error_flag) :
-		if request_id != self.http_request_id :
+		if request_id != self._http_request_id :
 			return
 
-		if error_flag and not self.http_abort_flag :
+		if error_flag and not self._http_abort_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
-				tr("HTTP error: %1\nPress \"Yes\" to ignore").arg(self.http.errorString()),
+				tr("HTTP error: %1\nPress \"Yes\" to ignore").arg(self._http.errorString()),
 				Qt.QMessageBox.Yes)
 
-		self.timer.stop()
+		self._timer.stop()
 
 		###
 
 		codec = Qt.QTextCodec.codecForName("UTF-8")
-		text = codec.toUnicode(self.http_output.data())
+		text = codec.toUnicode(self._http_output.data())
 
 		###
 
-		if self.detected_source_language_regexp.indexIn(text) > -1 :
-			sl_name = tr("%1 (guessed)").arg(LangsList.langName(self.detected_source_language_regexp.cap(1)))
+		if self._detected_source_language_regexp.indexIn(text) > -1 :
+			sl_name = tr("%1 (guessed)").arg(LangsList.langName(self._detected_source_language_regexp.cap(1)))
 		else :
-			sl_name = LangsList.langName(self.sl)
-		tl_name = LangsList.langName(self.tl)
+			sl_name = LangsList.langName(self._sl)
+		tl_name = LangsList.langName(self._tl)
 
-		if self.translated_text_regexp.indexIn(text) > -1 :
-			text = self.translated_text_regexp.cap(1)
+		if self._translated_text_regexp.indexIn(text) > -1 :
+			text = self._translated_text_regexp.cap(1)
 
-			unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text)
+			unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text)
 			while unicode_char_regexp_pos != -1 :
-				if self.unicode_char_regexp.cap(1).length() % 2 == 1 :
-					text.replace(unicode_char_regexp_pos, self.unicode_char_regexp.matchedLength(),
-						Qt.QChar(self.unicode_char_regexp.cap(2).toInt(16)[0]))
-					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
+				if self._unicode_char_regexp.cap(1).length() % 2 == 1 :
+					text.replace(unicode_char_regexp_pos, self._unicode_char_regexp.matchedLength(),
+						Qt.QChar(self._unicode_char_regexp.cap(2).toInt(16)[0]))
+					unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text, unicode_char_regexp_pos + 1)
 				else :
-					unicode_char_regexp_pos = self.unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +
-						self.unicode_char_regexp.matchedLength())
+					unicode_char_regexp_pos = self._unicode_char_regexp.indexIn(text, unicode_char_regexp_pos +
+						self._unicode_char_regexp.matchedLength())
 
 			text.replace("\\\\", "\\")
 

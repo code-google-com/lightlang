@@ -40,7 +40,7 @@ class SlListBrowser(ListBrowser.ListBrowser) :
 
 		#####
 
-		self.last_word = Qt.QString()
+		self._last_word = Qt.QString()
 
 		#####
 
@@ -59,14 +59,14 @@ class SlListBrowser(ListBrowser.ListBrowser) :
 		self.uFindRequestSignal(word)
 
 	def uFindInNewTab(self) :
-		if self.last_word.isEmpty() :
+		if self._last_word.isEmpty() :
 			return
-		self.uFindInNewTabRequestSignal(self.last_word)
+		self.uFindInNewTabRequestSignal(self._last_word)
 
 	def cFindInNewTab(self) :
-		if self.last_word.isEmpty() :
+		if self._last_word.isEmpty() :
 			return
-		self.cFindInNewTabRequestSignal(self.last_word)
+		self.cFindInNewTabRequestSignal(self._last_word)
 
 
 	### Signals ###
@@ -91,8 +91,8 @@ class SlListBrowser(ListBrowser.ListBrowser) :
 		if item.flags() == Qt.Qt.NoItemFlags :
 			return
 
-		self.last_word = item.text().simplified()
-		if not self.last_word.isEmpty() :
+		self._last_word = item.text().simplified()
+		if not self._last_word.isEmpty() :
 			context_menu = Qt.QMenu()
 			context_menu.addAction(tr("Search (in new tab)"), self.uFindInNewTab)
 			context_menu.addAction(tr("Expanded search (in new tab)"), self.cFindInNewTab)

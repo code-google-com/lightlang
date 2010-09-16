@@ -48,7 +48,7 @@ class IfaMenu(Qt.QMenu) :
 
 		#####
 
-		self.actions_data_list = []
+		self._actions_data_list = []
 
 		#####
 
@@ -111,8 +111,8 @@ class IfaMenu(Qt.QMenu) :
 		action = self.addAction(IconsLoader.icon(app_icon_name, "system-run"), app_title)
 		action.setStatusTip(app_description)
 
-		index = len(self.actions_data_list)
-		self.actions_data_list.append({
+		index = len(self._actions_data_list)
+		self._actions_data_list.append({
 				"path" : Qt.QString(app_prog_path),
 				"options" : Qt.QString(app_prog_options),
 				"process" : Qt.QProcess(),
@@ -129,25 +129,25 @@ class IfaMenu(Qt.QMenu) :
 
 		###
 
-		self.connect(self.actions_data_list[index]["process"], Qt.SIGNAL("finished(int, QProcess::ExitStatus)"),
-			self.actions_data_list[index]["exec_postcode"])
+		self.connect(self._actions_data_list[index]["process"], Qt.SIGNAL("finished(int, QProcess::ExitStatus)"),
+			self._actions_data_list[index]["exec_postcode"])
 
 	def launchApp(self, action) :
 		index = action.data().toInt()[0]
 
-		if ( self.actions_data_list[index]["process"].state() == Qt.QProcess.Starting or
-			self.actions_data_list[index]["process"].state() == Qt.QProcess.Running ) :
+		if ( self._actions_data_list[index]["process"].state() == Qt.QProcess.Starting or
+			self._actions_data_list[index]["process"].state() == Qt.QProcess.Running ) :
 			Qt.QMessageBox.information(None, tr("IFA"),
 				tr("This applications is already running"))
 			return
 
-		self.actions_data_list[index]["exec_precode"]()
+		self._actions_data_list[index]["exec_precode"]()
 
-		self.actions_data_list[index]["process"].start(self.actions_data_list[index]["path"]+" "+self.actions_data_list[index]["options"])
+		self._actions_data_list[index]["process"].start(self._actions_data_list[index]["path"]+" "+self._actions_data_list[index]["options"])
 
 	def execPrecode(self, index) :
 		from Main import MainObject as main
-		instructions = self.actions_data_list[index]["python_precode"].split("\n", Qt.QString.SkipEmptyParts)
+		instructions = self._actions_data_list[index]["python_precode"].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :
 			instruction = instructions[count].trimmed()
@@ -160,7 +160,7 @@ class IfaMenu(Qt.QMenu) :
 
 	def execPostcode(self, index) :
 		from Main import MainObject as main
-		instructions = self.actions_data_list[index]["python_postcode"].split("\n", Qt.QString.SkipEmptyParts)
+		instructions = self._actions_data_list[index]["python_postcode"].split("\n", Qt.QString.SkipEmptyParts)
 		count = 0
 		while count < instructions.count() :
 			instruction = instructions[count].trimmed()

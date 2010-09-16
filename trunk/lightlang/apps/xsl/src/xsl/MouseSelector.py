@@ -41,38 +41,38 @@ class MouseSelector(Qt.QObject) :
 
 		#####
 
-		self.clipboard = Qt.QApplication.clipboard()
-		self.old_selection = Qt.QString()
+		self._clipboard = Qt.QApplication.clipboard()
+		self._old_selection = Qt.QString()
 
-		self.timer = Qt.QTimer()
-		self.timer.setInterval(300)
+		self._timer = Qt.QTimer()
+		self._timer.setInterval(300)
 
 		try :
-			self.modifier = KeyboardModifiersTest.NoModifier
+			self._modifier = KeyboardModifiersTest.NoModifier
 		except : pass
 
 		#####
 
-		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.checkSelection)
+		self.connect(self._timer, Qt.SIGNAL("timeout()"), self.checkSelection)
 
 
 	### Public ###
 
 	def start(self) :
-		self.clipboard.setText(Qt.QString(""), Qt.QClipboard.Selection)
-		self.old_selection.clear()
-		self.timer.start()
+		self._clipboard.setText(Qt.QString(""), Qt.QClipboard.Selection)
+		self._old_selection.clear()
+		self._timer.start()
 
 	def stop(self) :
-		self.timer.stop()
+		self._timer.stop()
 
 	def isRunning(self) :
-		return self.timer.isActive()
+		return self._timer.isActive()
 
 	###
 
 	def setModifier(self, modifier) :
-		self.modifier = modifier
+		self._modifier = modifier
 
 
 	### Private ###
@@ -83,17 +83,17 @@ class MouseSelector(Qt.QObject) :
 				return
 		except : pass
 
-		word = self.clipboard.text(Qt.QClipboard.Selection)
+		word = self._clipboard.text(Qt.QClipboard.Selection)
 		word = word.simplified().toLower()
 		if word.isEmpty() :
 			return
 
-		if word == self.old_selection : # FIXME (Issue 78)
+		if word == self._old_selection : # FIXME (Issue 78)
 			return
-		self.old_selection = word
+		self._old_selection = word
 
 		try :
-			if not KeyboardModifiersTest.checkModifier(self.modifier) :
+			if not KeyboardModifiersTest.checkModifier(self._modifier) :
 				return
 		except : pass
 

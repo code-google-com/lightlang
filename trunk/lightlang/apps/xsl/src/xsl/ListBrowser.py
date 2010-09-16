@@ -38,32 +38,32 @@ class ListBrowser(Qt.QListWidget) :
 
 		#####
 
-		self.info_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
-		self.info_item_regexp.setMinimal(True)
+		self._info_item_regexp = Qt.QRegExp("\\{\\{(.*)\\}\\}")
+		self._info_item_regexp.setMinimal(True)
 
-		self.caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\]\\]")
-		self.caption_item_regexp.setMinimal(True)
+		self._caption_item_regexp = Qt.QRegExp("\\[\\[(.*)\\]\\]")
+		self._caption_item_regexp.setMinimal(True)
 
 		###
 
-		self.caption_item_font = Qt.QListWidgetItem().font()
-		self.caption_item_foreground_brush = Qt.QListWidgetItem().foreground()
-		self.caption_item_foreground_brush.setStyle(Qt.Qt.SolidPattern)
-		self.caption_item_background_brush = Qt.QListWidgetItem().background()
-		self.caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
+		self._caption_item_font = Qt.QListWidgetItem().font()
+		self._caption_item_foreground_brush = Qt.QListWidgetItem().foreground()
+		self._caption_item_foreground_brush.setStyle(Qt.Qt.SolidPattern)
+		self._caption_item_background_brush = Qt.QListWidgetItem().background()
+		self._caption_item_background_brush.setStyle(Qt.Qt.SolidPattern)
 
-		self.caption_item_font.setBold(UserStyleCssCollection.dictHeaderFontBoldFlag())
-		self.caption_item_font.setItalic(UserStyleCssCollection.dictHeaderFontItalicFlag())
+		self._caption_item_font.setBold(UserStyleCssCollection.dictHeaderFontBoldFlag())
+		self._caption_item_font.setItalic(UserStyleCssCollection.dictHeaderFontItalicFlag())
 		if UserStyleCssCollection.dictHeaderFontLargeFlag() :
-			if self.caption_item_font.pixelSize() > 0 :
-				self.caption_item_font.setPixelSize(self.caption_item_font.pixelSize() + 1)
-			elif self.caption_item_font.pointSize() > 0 :
-				self.caption_item_font.setPointSize(self.caption_item_font.pointSize() + 1)
+			if self._caption_item_font.pixelSize() > 0 :
+				self._caption_item_font.setPixelSize(self._caption_item_font.pixelSize() + 1)
+			elif self._caption_item_font.pointSize() > 0 :
+				self._caption_item_font.setPointSize(self._caption_item_font.pointSize() + 1)
 		if UserStyleCssCollection.dictHeaderFontColor().isValid() :
-			self.caption_item_foreground_brush.setColor(UserStyleCssCollection.dictHeaderFontColor())
+			self._caption_item_foreground_brush.setColor(UserStyleCssCollection.dictHeaderFontColor())
 
 		if UserStyleCssCollection.dictHeaderBackgroundColor().isValid() :
-			self.caption_item_background_brush.setColor(UserStyleCssCollection.dictHeaderBackgroundColor())
+			self._caption_item_background_brush.setColor(UserStyleCssCollection.dictHeaderBackgroundColor())
 
 
 	### Public ###
@@ -73,16 +73,16 @@ class ListBrowser(Qt.QListWidget) :
 
 		count = 0
 		while count < list.count() :
-			if self.info_item_regexp.exactMatch(list[count]) :
-				info_item = Qt.QListWidgetItem(self.info_item_regexp.cap(1))
+			if self._info_item_regexp.exactMatch(list[count]) :
+				info_item = Qt.QListWidgetItem(self._info_item_regexp.cap(1))
 				info_item.setFlags(Qt.Qt.NoItemFlags)
 				self.addItem(info_item)
-			elif self.caption_item_regexp.exactMatch(list[count]) :
-				caption_item = Qt.QListWidgetItem(self.caption_item_regexp.cap(1))
+			elif self._caption_item_regexp.exactMatch(list[count]) :
+				caption_item = Qt.QListWidgetItem(self._caption_item_regexp.cap(1))
 				caption_item.setFlags(Qt.Qt.NoItemFlags)
-				caption_item.setFont(self.caption_item_font)
-				caption_item.setForeground(self.caption_item_foreground_brush)
-				caption_item.setBackground(self.caption_item_background_brush)
+				caption_item.setFont(self._caption_item_font)
+				caption_item.setForeground(self._caption_item_foreground_brush)
+				caption_item.setBackground(self._caption_item_background_brush)
 				caption_item.setTextAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
 				self.addItem(caption_item)
 			else :

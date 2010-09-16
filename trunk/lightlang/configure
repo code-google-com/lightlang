@@ -5239,7 +5239,7 @@ fi
 
 
 
-ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/config.h apps/xsl/src/src/Config.py apps/xsl/src/src/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
+ac_config_files="$ac_config_files Makefile apps/Makefile apps/sl/Makefile apps/llrepo/Makefile apps/xsl/Makefile resources/Makefile resources/dicts/Makefile resources/sounds/Makefile pkg/Makefile docs/Makefile docs/html/Makefile docs/html/en/Makefile docs/html/ru/Makefile docs/text/Makefile docs/text/en/Makefile docs/text/ru/Makefile docs/man/Makefile docs/man/en/Makefile docs/man/ru/Makefile download.py apps/sl/src/config.h apps/xsl/src/xsl/Config.py apps/xsl/src/xsl/xsl.py apps/llrepo/src/llrepo.py pkg/pkg/lightlang.pc"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -5967,8 +5967,8 @@ do
     "docs/man/ru/Makefile") CONFIG_FILES="$CONFIG_FILES docs/man/ru/Makefile" ;;
     "download.py") CONFIG_FILES="$CONFIG_FILES download.py" ;;
     "apps/sl/src/config.h") CONFIG_FILES="$CONFIG_FILES apps/sl/src/config.h" ;;
-    "apps/xsl/src/src/Config.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/src/Config.py" ;;
-    "apps/xsl/src/src/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/src/xsl.py" ;;
+    "apps/xsl/src/xsl/Config.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/xsl/Config.py" ;;
+    "apps/xsl/src/xsl/xsl.py") CONFIG_FILES="$CONFIG_FILES apps/xsl/src/xsl/xsl.py" ;;
     "apps/llrepo/src/llrepo.py") CONFIG_FILES="$CONFIG_FILES apps/llrepo/src/llrepo.py" ;;
     "pkg/pkg/lightlang.pc") CONFIG_FILES="$CONFIG_FILES pkg/pkg/lightlang.pc" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;

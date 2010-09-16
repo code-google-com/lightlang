@@ -52,9 +52,9 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		#####
 
-		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
-		self.setLayout(self.main_layout)
+		self._main_layout = Qt.QVBoxLayout()
+		self._main_layout.setContentsMargins(0, 0, 0, 0)
+		self.setLayout(self._main_layout)
 
 		left_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutLeftMargin)
 		top_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutTopMargin)
@@ -62,125 +62,125 @@ class DictsManagerWindow(Qt.QDialog) :
 		bottom_margin = self.style().pixelMetric(Qt.QStyle.PM_LayoutBottomMargin)
 		vertical_spacing = self.style().pixelMetric(Qt.QStyle.PM_LayoutVerticalSpacing)
 
-		self.line_edit_layout = Qt.QHBoxLayout()
-		self.line_edit_layout.setContentsMargins(left_margin, top_margin, right_margin, vertical_spacing)
-		self.main_layout.addLayout(self.line_edit_layout)
+		self._line_edit_layout = Qt.QHBoxLayout()
+		self._line_edit_layout.setContentsMargins(left_margin, top_margin, right_margin, vertical_spacing)
+		self._main_layout.addLayout(self._line_edit_layout)
 
-		self.stacked_widget = Qt.QStackedWidget()
-		self.main_layout.addWidget(self.stacked_widget)
+		self._stacked_widget = Qt.QStackedWidget()
+		self._main_layout.addWidget(self._stacked_widget)
 
-		self.control_buttons_layout = Qt.QHBoxLayout()
-		self.control_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, bottom_margin)
-		self.main_layout.addLayout(self.control_buttons_layout)
-
-		#####
-
-		self.item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
-
-		self.all_dicts_dir_watcher = Qt.QFileSystemWatcher(Qt.QStringList() << AllDictsDir)
-		self.all_dicts_dir_watcher_timer = Qt.QTimer()
-		self.all_dicts_dir_watcher_timer.setInterval(5000)
-		self.all_dicts_dir_watcher_timer.setSingleShot(True)
+		self._control_buttons_layout = Qt.QHBoxLayout()
+		self._control_buttons_layout.setContentsMargins(left_margin, vertical_spacing, right_margin, bottom_margin)
+		self._main_layout.addLayout(self._control_buttons_layout)
 
 		#####
 
-		self.filter_label = Qt.QLabel(tr("&Filter:"))
-		self.line_edit_layout.addWidget(self.filter_label)
+		self._item_code_regexp = Qt.QRegExp("\\{(\\d)\\}\\{(.+)\\}")
 
-		self.line_edit = LineEdit.LineEdit()
-		self.filter_label.setBuddy(self.line_edit)
-		self.line_edit_layout.addWidget(self.line_edit)
-
-		self.dicts_list = DictsListWidget.DictsListWidget()
-		self.stacked_widget.addWidget(self.dicts_list)
-
-		self.wait_picture_movie = Qt.QMovie(WaitPicture)
-		self.wait_picture_movie.setScaledSize(Qt.QSize(32, 32))
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_picture_movie_label = Qt.QLabel()
-		self.wait_picture_movie_label.setAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
-		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.stacked_widget.addWidget(self.wait_picture_movie_label)
-
-		self.wait_message_label = Qt.QLabel(tr("Please wait..."))
-		self.wait_message_label.hide()
-		self.control_buttons_layout.addWidget(self.wait_message_label)
-
-		self.control_buttons_layout.addStretch()
-
-		self.update_dicts_button = Qt.QPushButton(IconsLoader.icon("view-refresh"), tr("&Update"))
-		self.update_dicts_button.setAutoDefault(False)
-		self.update_dicts_button.setDefault(False)
-		self.control_buttons_layout.addWidget(self.update_dicts_button)
-
-		self.ok_button = Qt.QPushButton(IconsLoader.icon("dialog-ok-apply"), tr("&OK"))
-		self.ok_button.setAutoDefault(False)
-		self.ok_button.setDefault(False)
-		self.control_buttons_layout.addWidget(self.ok_button)
+		self._all_dicts_dir_watcher = Qt.QFileSystemWatcher(Qt.QStringList() << AllDictsDir)
+		self._all_dicts_dir_watcher_timer = Qt.QTimer()
+		self._all_dicts_dir_watcher_timer.setInterval(5000)
+		self._all_dicts_dir_watcher_timer.setSingleShot(True)
 
 		#####
 
-		self.connect(self.all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.planToUpdateDicts)
-		self.connect(self.all_dicts_dir_watcher_timer, Qt.SIGNAL("timeout()"), self.updateDicts)
+		self._filter_label = Qt.QLabel(tr("&Filter:"))
+		self._line_edit_layout.addWidget(self._filter_label)
 
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.dicts_list.setFilter)
+		self._line_edit = LineEdit.LineEdit()
+		self._filter_label.setBuddy(self._line_edit)
+		self._line_edit_layout.addWidget(self._line_edit)
 
-		self.connect(self.dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
+		self._dicts_list = DictsListWidget.DictsListWidget()
+		self._stacked_widget.addWidget(self._dicts_list)
 
-		self.connect(self.update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
-		self.connect(self.ok_button, Qt.SIGNAL("clicked()"), self.accept)
+		self._wait_picture_movie = Qt.QMovie(WaitPicture)
+		self._wait_picture_movie.setScaledSize(Qt.QSize(32, 32))
+		self._wait_picture_movie.jumpToFrame(0)
+		self._wait_picture_movie_label = Qt.QLabel()
+		self._wait_picture_movie_label.setAlignment(Qt.Qt.AlignHCenter|Qt.Qt.AlignVCenter)
+		self._wait_picture_movie_label.setMovie(self._wait_picture_movie)
+		self._stacked_widget.addWidget(self._wait_picture_movie_label)
+
+		self._wait_message_label = Qt.QLabel(tr("Please wait..."))
+		self._wait_message_label.hide()
+		self._control_buttons_layout.addWidget(self._wait_message_label)
+
+		self._control_buttons_layout.addStretch()
+
+		self._update_dicts_button = Qt.QPushButton(IconsLoader.icon("view-refresh"), tr("&Update"))
+		self._update_dicts_button.setAutoDefault(False)
+		self._update_dicts_button.setDefault(False)
+		self._control_buttons_layout.addWidget(self._update_dicts_button)
+
+		self._ok_button = Qt.QPushButton(IconsLoader.icon("dialog-ok-apply"), tr("&OK"))
+		self._ok_button.setAutoDefault(False)
+		self._ok_button.setDefault(False)
+		self._control_buttons_layout.addWidget(self._ok_button)
+
+		#####
+
+		self.connect(self._all_dicts_dir_watcher, Qt.SIGNAL("directoryChanged(const QString &)"), self.planToUpdateDicts)
+		self.connect(self._all_dicts_dir_watcher_timer, Qt.SIGNAL("timeout()"), self.updateDicts)
+
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self._dicts_list.setFilter)
+
+		self.connect(self._dicts_list, Qt.SIGNAL("dictsListChanged(const QStringList &)"), self.dictsListChangedSignal)
+
+		self.connect(self._update_dicts_button, Qt.SIGNAL("clicked()"), self.updateDicts)
+		self.connect(self._ok_button, Qt.SIGNAL("clicked()"), self.accept)
 
 
 	### Public ###
 
 	def updateDicts(self) :
-		self.all_dicts_dir_watcher.blockSignals(True)
-		self.all_dicts_dir_watcher_timer.stop()
-		self.update_dicts_button.blockSignals(True)
-		self.update_dicts_button.setEnabled(False)
+		self._all_dicts_dir_watcher.blockSignals(True)
+		self._all_dicts_dir_watcher_timer.stop()
+		self._update_dicts_button.blockSignals(True)
+		self._update_dicts_button.setEnabled(False)
 
-		self.line_edit.clear()
-		self.line_edit.setEnabled(False)
+		self._line_edit.clear()
+		self._line_edit.setEnabled(False)
 
-		self.wait_message_label.show()
-		self.stacked_widget.setCurrentIndex(1)
-		self.wait_picture_movie.start()
+		self._wait_message_label.show()
+		self._stacked_widget.setCurrentIndex(1)
+		self._wait_picture_movie.start()
 
 		###
 
-		self.dicts_list.setList(self.allAndLocalDicts(self.dicts_list.list()))
+		self._dicts_list.setList(self.allAndLocalDicts(self._dicts_list.list()))
 
 		###
 
 		Qt.QCoreApplication.processEvents()
 
-		self.wait_message_label.hide()
-		self.stacked_widget.setCurrentIndex(0)
-		self.wait_picture_movie.stop()
-		self.wait_picture_movie.jumpToFrame(0)
+		self._wait_message_label.hide()
+		self._stacked_widget.setCurrentIndex(0)
+		self._wait_picture_movie.stop()
+		self._wait_picture_movie.jumpToFrame(0)
 
-		self.line_edit.setEnabled(True)
+		self._line_edit.setEnabled(True)
 
-		self.update_dicts_button.setEnabled(True)
-		self.update_dicts_button.blockSignals(False)
-		self.all_dicts_dir_watcher.blockSignals(False)
+		self._update_dicts_button.setEnabled(True)
+		self._update_dicts_button.blockSignals(False)
+		self._all_dicts_dir_watcher.blockSignals(False)
 
 		#####
 
-		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
+		self._dicts_list.setFocus(Qt.Qt.OtherFocusReason)
 
 	###
 
 	def saveSettings(self) :
 		settings = Settings.settings()
 		settings.setValue("dicts_manager_window/size", Qt.QVariant(self.size()))
-		settings.setValue("dicts_manager_window/dicts_list", Qt.QVariant(self.dicts_list.list()))
+		settings.setValue("dicts_manager_window/dicts_list", Qt.QVariant(self._dicts_list.list()))
 
 	def loadSettings(self) :
-		self.all_dicts_dir_watcher.blockSignals(True)
-		self.all_dicts_dir_watcher_timer.stop()
-		self.update_dicts_button.blockSignals(True)
-		self.update_dicts_button.setEnabled(False)
+		self._all_dicts_dir_watcher.blockSignals(True)
+		self._all_dicts_dir_watcher_timer.stop()
+		self._update_dicts_button.blockSignals(True)
+		self._update_dicts_button.setEnabled(False)
 
 		###
 
@@ -189,15 +189,15 @@ class DictsManagerWindow(Qt.QDialog) :
 		self.resize(settings.value("dicts_manager_window/size", Qt.QVariant(Qt.QSize(400, 550))).toSize())
 
 		local_dicts_list = settings.value("dicts_manager_window/dicts_list", Qt.QVariant(Qt.QStringList())).toStringList()
-		self.dicts_list.setList(self.allAndLocalDicts(local_dicts_list))
+		self._dicts_list.setList(self.allAndLocalDicts(local_dicts_list))
 
 		###
 
 		Qt.QCoreApplication.processEvents()
 
-		self.update_dicts_button.setEnabled(True)
-		self.update_dicts_button.blockSignals(False)
-		self.all_dicts_dir_watcher.blockSignals(False)
+		self._update_dicts_button.setEnabled(True)
+		self._update_dicts_button.blockSignals(False)
+		self._all_dicts_dir_watcher.blockSignals(False)
 
 	###
 
@@ -205,15 +205,15 @@ class DictsManagerWindow(Qt.QDialog) :
 		Qt.QDialog.show(self)
 		self.raise_()
 		self.activateWindow()
-		self.dicts_list.setFocus(Qt.Qt.OtherFocusReason)
+		self._dicts_list.setFocus(Qt.Qt.OtherFocusReason)
 
 
 	### Private ###
 
 	def planToUpdateDicts(self) :
-		if self.all_dicts_dir_watcher_timer.isActive() :
-			self.all_dicts_dir_watcher_timer.stop()
-		self.all_dicts_dir_watcher_timer.start()
+		if self._all_dicts_dir_watcher_timer.isActive() :
+			self._all_dicts_dir_watcher_timer.stop()
+		self._all_dicts_dir_watcher_timer.start()
 
 	###
 
@@ -235,12 +235,12 @@ class DictsManagerWindow(Qt.QDialog) :
 		while count < local_dicts_list.count() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
-			if not self.item_code_regexp.exactMatch(local_dicts_list[count]) :
+			if not self._item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
 
-			if not all_dicts_dir_entry_list.contains(self.item_code_regexp.cap(2)) :
+			if not all_dicts_dir_entry_list.contains(self._item_code_regexp.cap(2)) :
 				local_dicts_list.removeAt(count)
 				count += 1
 				continue
@@ -250,7 +250,7 @@ class DictsManagerWindow(Qt.QDialog) :
 		###
 
 		tmp_list = Qt.QStringList(local_dicts_list)
-		tmp_list.replaceInStrings(self.item_code_regexp, "\\2")
+		tmp_list.replaceInStrings(self._item_code_regexp, "\\2")
 
 		###
 

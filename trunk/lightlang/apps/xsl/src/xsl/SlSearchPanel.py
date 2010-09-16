@@ -48,80 +48,80 @@ class SlSearchPanel(Qt.QDockWidget) :
 
 		#####
 
-		self.main_widget = Qt.QWidget()
-		self.setWidget(self.main_widget)
+		self._main_widget = Qt.QWidget()
+		self.setWidget(self._main_widget)
 
-		self.main_layout = Qt.QVBoxLayout()
-		self.main_widget.setLayout(self.main_layout)
+		self._main_layout = Qt.QVBoxLayout()
+		self._main_widget.setLayout(self._main_layout)
 
-		self.line_edit_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.line_edit_layout)
+		self._line_edit_layout = Qt.QHBoxLayout()
+		self._main_layout.addLayout(self._line_edit_layout)
 
-		self.list_browser_layout = Qt.QVBoxLayout()
-		self.main_layout.addLayout(self.list_browser_layout)
+		self._list_browser_layout = Qt.QVBoxLayout()
+		self._main_layout.addLayout(self._list_browser_layout)
 
-		self.bottom_search_buttons_layout = Qt.QHBoxLayout()
-		self.main_layout.addLayout(self.bottom_search_buttons_layout)
-
-		#####
-
-		self.delay_timer = Qt.QTimer()
-		self.delay_timer.setInterval(300)
-
-		self.internal_word_search = SlWordSearch.SlWordSearch()
-		self.external_word_search = SlWordSearch.SlWordSearch()
+		self._bottom_search_buttons_layout = Qt.QHBoxLayout()
+		self._main_layout.addLayout(self._bottom_search_buttons_layout)
 
 		#####
 
-		self.line_edit = LineEdit.LineEdit()
-		self.line_edit_layout.addWidget(self.line_edit)
+		self._delay_timer = Qt.QTimer()
+		self._delay_timer.setInterval(300)
 
-		self.u_find_button = Qt.QPushButton(tr("&Search"))
-		self.u_find_button.setEnabled(False)
-		self.line_edit_layout.addWidget(self.u_find_button)
+		self._internal_word_search = SlWordSearch.SlWordSearch()
+		self._external_word_search = SlWordSearch.SlWordSearch()
 
-		self.list_browser = SlListBrowser.SlListBrowser()
-		self.list_browser.setText(tr("Enter the word, please"))
-		self.list_browser_layout.addWidget(self.list_browser)
+		#####
 
-		self.c_find_button = Qt.QPushButton(tr("&Expanded search"))
-		self.c_find_button.setEnabled(False)
-		self.bottom_search_buttons_layout.addWidget(self.c_find_button)
+		self._line_edit = LineEdit.LineEdit()
+		self._line_edit_layout.addWidget(self._line_edit)
 
-		self.i_find_button = Qt.QPushButton(tr("S&imilar words"))
-		self.i_find_button.setEnabled(False)
-		self.bottom_search_buttons_layout.addWidget(self.i_find_button)
+		self._u_find_button = Qt.QPushButton(tr("&Search"))
+		self._u_find_button.setEnabled(False)
+		self._line_edit_layout.addWidget(self._u_find_button)
+
+		self._list_browser = SlListBrowser.SlListBrowser()
+		self._list_browser.setText(tr("Enter the word, please"))
+		self._list_browser_layout.addWidget(self._list_browser)
+
+		self._c_find_button = Qt.QPushButton(tr("&Expanded search"))
+		self._c_find_button.setEnabled(False)
+		self._bottom_search_buttons_layout.addWidget(self._c_find_button)
+
+		self._i_find_button = Qt.QPushButton(tr("S&imilar words"))
+		self._i_find_button.setEnabled(False)
+		self._bottom_search_buttons_layout.addWidget(self._i_find_button)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
 
-		self.connect(self.delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
+		self.connect(self._delay_timer, Qt.SIGNAL("timeout()"), self.lFindAfterDelay)
 
-		self.connect(self.internal_word_search, Qt.SIGNAL("clearRequest()"), self.list_browser.clear)
-		self.connect(self.internal_word_search, Qt.SIGNAL("listChanged(const QStringList &)"), self.list_browser.setList)
+		self.connect(self._internal_word_search, Qt.SIGNAL("clearRequest()"), self._list_browser.clear)
+		self.connect(self._internal_word_search, Qt.SIGNAL("listChanged(const QStringList &)"), self._list_browser.setList)
 
-		self.connect(self.external_word_search, Qt.SIGNAL("processStarted()"), self.processStarted)
-		self.connect(self.external_word_search, Qt.SIGNAL("processFinished()"), self.processFinished)
-		self.connect(self.external_word_search, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
-		self.connect(self.external_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
+		self.connect(self._external_word_search, Qt.SIGNAL("processStarted()"), self.processStarted)
+		self.connect(self._external_word_search, Qt.SIGNAL("processFinished()"), self.processFinished)
+		self.connect(self._external_word_search, Qt.SIGNAL("clearRequest()"), self.clearRequestSignal)
+		self.connect(self._external_word_search, Qt.SIGNAL("textChanged(const QString &)"), self.textChangedSignal)
 
-		self.connect(self.line_edit, Qt.SIGNAL("returnPressed()"), self.u_find_button.animateClick)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.delay_timer.start)
+		self.connect(self._line_edit, Qt.SIGNAL("returnPressed()"), self._u_find_button.animateClick)
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setStatusFromLineEdit)
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self._delay_timer.start)
 
-		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.uFind)
-		self.connect(self.u_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
+		self.connect(self._u_find_button, Qt.SIGNAL("clicked()"), self.uFind)
+		self.connect(self._u_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
-		self.connect(self.list_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFind)
-		self.connect(self.list_browser, Qt.SIGNAL("uFindInNewTabRequest(const QString &)"), self.uFindInNewTab)
-		self.connect(self.list_browser, Qt.SIGNAL("cFindInNewTabRequest(const QString &)"), self.cFindInNewTab)
+		self.connect(self._list_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFind)
+		self.connect(self._list_browser, Qt.SIGNAL("uFindInNewTabRequest(const QString &)"), self.uFindInNewTab)
+		self.connect(self._list_browser, Qt.SIGNAL("cFindInNewTabRequest(const QString &)"), self.cFindInNewTab)
 
-		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.cFind)
-		self.connect(self.c_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
+		self.connect(self._c_find_button, Qt.SIGNAL("clicked()"), self.cFind)
+		self.connect(self._c_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
-		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.iFind)
-		self.connect(self.i_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
+		self.connect(self._i_find_button, Qt.SIGNAL("clicked()"), self.iFind)
+		self.connect(self._i_find_button, Qt.SIGNAL("clicked()"), self.setFocus)
 
 
 	### Public ###
@@ -153,57 +153,57 @@ class SlSearchPanel(Qt.QDockWidget) :
 	###
 
 	def setWord(self, word) :
-		self.line_edit.setText(word)
+		self._line_edit.setText(word)
 		self.setFocus()
 
 	def setDictsList(self, dicts_list) :
-		self.internal_word_search.setDictsList(dicts_list)
-		self.external_word_search.setDictsList(dicts_list)
+		self._internal_word_search.setDictsList(dicts_list)
+		self._external_word_search.setDictsList(dicts_list)
 
 	###
 
 	def uFind(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
-		self.external_word_search.uFind(word)
+		self._external_word_search.uFind(word)
 		self.wordChangedSignal(word)
 
 	def cFind(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
-		self.external_word_search.cFind(word)
+		self._external_word_search.cFind(word)
 		self.wordChangedSignal(word)
 
 	def lFind(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
-			self.list_browser.setText(tr("Enter the word, please"))
+			self._list_browser.setText(tr("Enter the word, please"))
 			return
-		self.internal_word_search.lFind(word)
+		self._internal_word_search.lFind(word)
 
 	def iFind(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
-			self.list_browser.setText(tr("Enter the word, please"))
+			self._list_browser.setText(tr("Enter the word, please"))
 			return
-		self.internal_word_search.iFind(word)
+		self._internal_word_search.iFind(word)
 
 	def uFindInNewTab(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
-		self.external_word_search.uFind(word)
+		self._external_word_search.uFind(word)
 		self.wordChangedSignal(word)
 
 	def cFindInNewTab(self, word = None) :
-		word = ( self.line_edit.text().simplified() if word == None else word.simplified() )
+		word = ( self._line_edit.text().simplified() if word == None else word.simplified() )
 		if word.isEmpty() :
 			return
 		self.newTabRequestSignal()
-		self.external_word_search.cFind(word)
+		self._external_word_search.cFind(word)
 		self.wordChangedSignal(word)
 
 	###
@@ -232,52 +232,52 @@ class SlSearchPanel(Qt.QDockWidget) :
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.line_edit.setFocus(reason)
-		self.line_edit.selectAll()
+		self._line_edit.setFocus(reason)
+		self._line_edit.selectAll()
 
 	def hasInternalFocus(self) :
-		return self.line_edit.hasFocus()
+		return self._line_edit.hasFocus()
 
 	def clear(self) :
-		self.line_edit.clear()
+		self._line_edit.clear()
 
 
 	### Private ###
 
 	def lFindAfterDelay(self) :
-		self.delay_timer.stop()
+		self._delay_timer.stop()
 		self.lFind()
 
 	###
 
 	def processStarted(self) :
-		self.u_find_button.setEnabled(False)
-		self.c_find_button.setEnabled(False)
-		self.i_find_button.setEnabled(False)
+		self._u_find_button.setEnabled(False)
+		self._c_find_button.setEnabled(False)
+		self._i_find_button.setEnabled(False)
 
 		self.processStartedSignal()
 
 	def processFinished(self) :
-		line_edit_empty_flag = self.line_edit.text().simplified().isEmpty()
-		self.u_find_button.setEnabled(not line_edit_empty_flag)
-		self.c_find_button.setEnabled(not line_edit_empty_flag)
-		self.i_find_button.setEnabled(not line_edit_empty_flag)
+		line_edit_empty_flag = self._line_edit.text().simplified().isEmpty()
+		self._u_find_button.setEnabled(not line_edit_empty_flag)
+		self._c_find_button.setEnabled(not line_edit_empty_flag)
+		self._i_find_button.setEnabled(not line_edit_empty_flag)
 
 		self.processFinishedSignal()
 	###
 
 	def setStatusFromLineEdit(self, word) :
 		line_edit_empty_flag = word.simplified().isEmpty()
-		self.u_find_button.setEnabled(not line_edit_empty_flag)
-		self.c_find_button.setEnabled(not line_edit_empty_flag)
-		self.i_find_button.setEnabled(not line_edit_empty_flag)
+		self._u_find_button.setEnabled(not line_edit_empty_flag)
+		self._c_find_button.setEnabled(not line_edit_empty_flag)
+		self._i_find_button.setEnabled(not line_edit_empty_flag)
 
 	###
 
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
-			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
-			self.line_edit.selectAll()
+			self._line_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self._line_edit.selectAll()
 
 
 	### Signals ###

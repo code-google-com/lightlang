@@ -45,79 +45,79 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 		#####
 
-		self.main_layout = Qt.QVBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 0, 0)
-		self.main_layout.setSpacing(0)
-		self.setLayout(self.main_layout)
+		self._main_layout = Qt.QVBoxLayout()
+		self._main_layout.setContentsMargins(0, 0, 0, 0)
+		self._main_layout.setSpacing(0)
+		self.setLayout(self._main_layout)
 
-		self.caption_frame = Qt.QFrame()
-		self.caption_frame.setMouseTracking(True)
-		self.caption_frame.setFrameShape(Qt.QFrame.Box)
-		self.caption_frame.setFrameShadow(Qt.QFrame.Raised)
+		self._caption_frame = Qt.QFrame()
+		self._caption_frame.setMouseTracking(True)
+		self._caption_frame.setFrameShape(Qt.QFrame.Box)
+		self._caption_frame.setFrameShadow(Qt.QFrame.Raised)
 		if self.font().pixelSize() > 0 :
-			self.caption_frame.setMaximumHeight((self.font().pixelSize()) * 4)
+			self._caption_frame.setMaximumHeight((self.font().pixelSize()) * 4)
 		elif self.font().pointSize() > 0 :
-			self.caption_frame.setMaximumHeight((self.font().pointSize()) * 4)
+			self._caption_frame.setMaximumHeight((self.font().pointSize()) * 4)
 		else :
-			self.caption_frame.setMaximumHeight(40)
-		self.main_layout.addWidget(self.caption_frame)
+			self._caption_frame.setMaximumHeight(40)
+		self._main_layout.addWidget(self._caption_frame)
 
-		self.caption_frame_layout = Qt.QHBoxLayout()
-		self.caption_frame_layout.setContentsMargins(20, 1, 2, 1)
-		self.caption_frame_layout.setSpacing(1)
-		self.caption_frame.setLayout(self.caption_frame_layout)
-
-		#####
-
-		self.caption_label = Qt.QLabel()
-		self.caption_label.setTextFormat(Qt.Qt.RichText)
-		self.caption_label.setWordWrap(True)
-		self.caption_frame_layout.addWidget(self.caption_label)
-
-		self.close_button = Qt.QToolButton()
-		self.close_button.setIcon(IconsLoader.icon("dialog-cancel"))
-		self.close_button.setIconSize(Qt.QSize(16, 16))
-		self.close_button.setFixedSize(Qt.QSize(16, 16))
-		self.close_button.setCursor(Qt.Qt.ArrowCursor)
-		self.close_button.setAutoRaise(True)
-		self.caption_frame_layout.addWidget(self.close_button)
-
-		self.translate_browser = TranslateBrowser.TranslateBrowser()
-		self.main_layout.addWidget(self.translate_browser)
-
-		self.text_search_frame = TextSearchFrame.TextSearchFrame()
-		self.text_search_frame.hide()
-		self.main_layout.addWidget(self.text_search_frame)
+		self._caption_frame_layout = Qt.QHBoxLayout()
+		self._caption_frame_layout.setContentsMargins(20, 1, 2, 1)
+		self._caption_frame_layout.setSpacing(1)
+		self._caption_frame.setLayout(self._caption_frame_layout)
 
 		#####
 
-		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
+		self._caption_label = Qt.QLabel()
+		self._caption_label.setTextFormat(Qt.Qt.RichText)
+		self._caption_label.setWordWrap(True)
+		self._caption_frame_layout.addWidget(self._caption_label)
 
-		self.connect(self.translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self.text_search_frame.show)
-		self.connect(self.translate_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self.text_search_frame.hide)
-		self.connect(self.translate_browser, Qt.SIGNAL("setFoundRequest(bool)"), self.text_search_frame.setFound)
-		self.connect(self.translate_browser, Qt.SIGNAL("newTabRequest()"), self.newTabRequestSignal)
-		self.connect(self.translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
-		self.connect(self.translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
+		self._close_button = Qt.QToolButton()
+		self._close_button.setIcon(IconsLoader.icon("dialog-cancel"))
+		self._close_button.setIconSize(Qt.QSize(16, 16))
+		self._close_button.setFixedSize(Qt.QSize(16, 16))
+		self._close_button.setCursor(Qt.Qt.ArrowCursor)
+		self._close_button.setAutoRaise(True)
+		self._caption_frame_layout.addWidget(self._close_button)
 
-		self.connect(self.text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self.translate_browser.findNext)
-		self.connect(self.text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self.translate_browser.findPrevious)
-		self.connect(self.text_search_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self.translate_browser.instantSearch)
+		self._translate_browser = TranslateBrowser.TranslateBrowser()
+		self._main_layout.addWidget(self._translate_browser)
 
-		self.connect(self.close_button, Qt.SIGNAL("clicked()"), self.close)
+		self._text_search_frame = TextSearchFrame.TextSearchFrame()
+		self._text_search_frame.hide()
+		self._main_layout.addWidget(self._text_search_frame)
+
+		#####
+
+		self.connect(self._close_button, Qt.SIGNAL("clicked()"), self.close)
+
+		self.connect(self._translate_browser, Qt.SIGNAL("showTextSearchFrameRequest()"), self._text_search_frame.show)
+		self.connect(self._translate_browser, Qt.SIGNAL("hideTextSearchFrameRequest()"), self._text_search_frame.hide)
+		self.connect(self._translate_browser, Qt.SIGNAL("setFoundRequest(bool)"), self._text_search_frame.setFound)
+		self.connect(self._translate_browser, Qt.SIGNAL("newTabRequest()"), self.newTabRequestSignal)
+		self.connect(self._translate_browser, Qt.SIGNAL("uFindRequest(const QString &)"), self.uFindRequestSignal)
+		self.connect(self._translate_browser, Qt.SIGNAL("cFindRequest(const QString &)"), self.cFindRequestSignal)
+
+		self.connect(self._text_search_frame, Qt.SIGNAL("findNextRequest(const QString &)"), self._translate_browser.findNext)
+		self.connect(self._text_search_frame, Qt.SIGNAL("findPreviousRequest(const QString &)"), self._translate_browser.findPrevious)
+		self.connect(self._text_search_frame, Qt.SIGNAL("instantSearchRequest(const QString &)"), self._translate_browser.instantSearch)
+
+		self.connect(self._close_button, Qt.SIGNAL("clicked()"), self.close)
 
 
 	### Public ###
 
 	def setCaption(self, str) :
-		self.caption_label.setText(Qt.QString("<html><head><style>%1</style></head>"
+		self._caption_label.setText(Qt.QString("<html><head><style>%1</style></head>"
 			"<body><font class=\"text_label_font\">%2</font></body></html>").arg(UserStyleCss.userStyleCss()).arg(str))
 
 	def setText(self, text) :
-		self.translate_browser.setText(text)
+		self._translate_browser.setText(text)
 
 	def clear(self) :
-		self.translate_browser.clear()
+		self._translate_browser.clear()
 
 	###
 
@@ -132,10 +132,10 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 	###
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.translate_browser.setFocus(reason)
+		self._translate_browser.setFocus(reason)
 
 	def show(self) :
-		self.text_search_frame.hide()
+		self._text_search_frame.hide()
 		PopupWindow.PopupWindow.show(self)
 
 

@@ -38,22 +38,22 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 
 		#####
 
-		self.new_site_handler = new_site_handler
+		self._new_site_handler = new_site_handler
 
 		#####
 
-		self.site_tag_flag = False
-		self.title_tag_flag = False
-		self.description_tag_flag = False
-		self.icon_tag_flag = False
-		self.url_tag_flag = False
+		self._site_tag_flag = False
+		self._title_tag_flag = False
+		self._description_tag_flag = False
+		self._icon_tag_flag = False
+		self._url_tag_flag = False
 
-		self.site_title = Qt.QString()
-		self.site_title_lang = Qt.QString()
-		self.site_description = Qt.QString()
-		self.site_description_lang = Qt.QString()
-		self.site_icon_name = Qt.QString()
-		self.site_url = Qt.QString()
+		self._site_title = Qt.QString()
+		self._site_title_lang = Qt.QString()
+		self._site_description = Qt.QString()
+		self._site_description_lang = Qt.QString()
+		self._site_icon_name = Qt.QString()
+		self._site_url = Qt.QString()
 
 
 	### Private ###
@@ -61,67 +61,67 @@ class TranslateSiteSaxHandler(Qt.QXmlDefaultHandler) :
 
 	def startElement(self, namespace_uri, local_name, name, attributes) :
 		if name == "site" :
-			self.site_tag_flag = True
+			self._site_tag_flag = True
 			return True
 
-		if self.site_tag_flag :
+		if self._site_tag_flag :
 			if name == "title" :
-				self.site_title_lang = attributes.value("lang")
-				self.title_tag_flag = True
+				self._site_title_lang = attributes.value("lang")
+				self._title_tag_flag = True
 			elif name == "description" :
-				self.site_description_lang = attributes.value("lang")
-				self.description_tag_flag = True
+				self._site_description_lang = attributes.value("lang")
+				self._description_tag_flag = True
 			elif name == "icon" :
-				self.icon_tag_flag = True
+				self._icon_tag_flag = True
 			elif name == "url" :
-				self.url_tag_flag = True
+				self._url_tag_flag = True
 		return True
 
 	def characters(self, str) :
 		if str.simplified().isEmpty() :
 			return True
 
-		if self.site_tag_flag :
-			if self.title_tag_flag :
-				if self.site_title_lang == Locale.mainLang() :
-					self.site_title = str.simplified()
-				if self.site_title.simplified().isEmpty() and self.site_title_lang.simplified().isEmpty() :
-					self.site_title = str.simplified()
+		if self._site_tag_flag :
+			if self._title_tag_flag :
+				if self._site_title_lang == Locale.mainLang() :
+					self._site_title = str.simplified()
+				if self._site_title.simplified().isEmpty() and self._site_title_lang.simplified().isEmpty() :
+					self._site_title = str.simplified()
 				return True
-			elif self.description_tag_flag :
-				if self.site_description_lang == Locale.mainLang() :
-					self.site_description = str.simplified()
-				if self.site_description.simplified().isEmpty() and self.site_description_lang.simplified().isEmpty() :
-					self.site_description = str.simplified()
+			elif self._description_tag_flag :
+				if self._site_description_lang == Locale.mainLang() :
+					self._site_description = str.simplified()
+				if self._site_description.simplified().isEmpty() and self._site_description_lang.simplified().isEmpty() :
+					self._site_description = str.simplified()
 				return True
-			elif self.icon_tag_flag :
-				self.site_icon_name = str.simplified()
+			elif self._icon_tag_flag :
+				self._site_icon_name = str.simplified()
 				return True
-			elif self.url_tag_flag :
-				self.site_url = str.simplified()
+			elif self._url_tag_flag :
+				self._site_url = str.simplified()
 				return True
 		return True
 
 	def endElement(self, namespace_uri, local_name, name) :
 		if name == "site" :
-			self.new_site_handler(self.site_title, self.site_description, self.site_icon_name, self.site_url)
+			self._new_site_handler(self._site_title, self._site_description, self._site_icon_name, self._site_url)
 
-			self.site_title.clear()
-			self.site_title_lang.clear()
-			self.site_description.clear()
-			self.site_description_lang.clear()
-			self.site_icon_name.clear()
-			self.site_url.clear()
+			self._site_title.clear()
+			self._site_title_lang.clear()
+			self._site_description.clear()
+			self._site_description_lang.clear()
+			self._site_icon_name.clear()
+			self._site_url.clear()
 
-			self.site_tag_flag = False
+			self._site_tag_flag = False
 		elif name == "title" :
-			self.title_tag_flag = False
+			self._title_tag_flag = False
 		elif name == "description" :
-			self.description_tag_flag = False
+			self._description_tag_flag = False
 		elif name == "icon" :
-			self.icon_tag_flag = False
+			self._icon_tag_flag = False
 		elif name == "url" :
-			self.url_tag_flag = False
+			self._url_tag_flag = False
 		return True
 
 	def fatalError(self, exception) :

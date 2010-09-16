@@ -42,59 +42,59 @@ class StatusBar(Qt.QStatusBar) :
 
 		#####
 
-		self.activation_semaphore = 0
+		self._activation_semaphore = 0
 
-		self.timer = Qt.QTimer()
+		self._timer = Qt.QTimer()
 
 		#####
 
 		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 
-		self.message_label = Qt.QLabel()
-		self.message_label.setTextFormat(Qt.Qt.PlainText)
-		self.message_label.setMaximumHeight(label_height)
-		self.addWidget(self.message_label, 1)
+		self._message_label = Qt.QLabel()
+		self._message_label.setTextFormat(Qt.Qt.PlainText)
+		self._message_label.setMaximumHeight(label_height)
+		self.addWidget(self._message_label, 1)
 
-		self.wait_picture_movie = Qt.QMovie(WaitPicture)
-		self.wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
-		self.wait_picture_movie.jumpToFrame(0)
-		self.wait_picture_movie_label = Qt.QLabel()
-		self.wait_picture_movie_label.setMovie(self.wait_picture_movie)
-		self.wait_picture_movie_label.hide()
-		self.addWidget(self.wait_picture_movie_label)
+		self._wait_picture_movie = Qt.QMovie(WaitPicture)
+		self._wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
+		self._wait_picture_movie.jumpToFrame(0)
+		self._wait_picture_movie_label = Qt.QLabel()
+		self._wait_picture_movie_label.setMovie(self._wait_picture_movie)
+		self._wait_picture_movie_label.hide()
+		self.addWidget(self._wait_picture_movie_label)
 
 		#####
 
-		self.connect(self.timer, Qt.SIGNAL("timeout()"), self.clearStatusMessage)
+		self.connect(self._timer, Qt.SIGNAL("timeout()"), self.clearStatusMessage)
 
 
 	### Public ###
 
 	def startWaitMovie(self) :
-		if self.activation_semaphore != 0 :
-			self.activation_semaphore += 1
+		if self._activation_semaphore != 0 :
+			self._activation_semaphore += 1
 			return
 
-		self.wait_picture_movie_label.show()
-		self.wait_picture_movie.start()
+		self._wait_picture_movie_label.show()
+		self._wait_picture_movie.start()
 
 	def stopWaitMovie(self) :
-		if self.activation_semaphore > 1 :
+		if self._activation_semaphore > 1 :
 			return
-		if self.activation_semaphore > 0 :
-			self.activation_semaphore -= 1
+		if self._activation_semaphore > 0 :
+			self._activation_semaphore -= 1
 
-		self.wait_picture_movie_label.hide()
-		self.wait_picture_movie.stop()
-		self.wait_picture_movie.jumpToFrame(0)
+		self._wait_picture_movie_label.hide()
+		self._wait_picture_movie.stop()
+		self._wait_picture_movie.jumpToFrame(0)
 
 	###
 
 	def showStatusMessage(self, text, timeout = 2000) :
-		self.message_label.setText(text)
+		self._message_label.setText(text)
 		if timeout != 0 :
-			self.timer.start(timeout)
+			self._timer.start(timeout)
 
 	def clearStatusMessage(self) :
-		self.message_label.clear()
+		self._message_label.clear()
 

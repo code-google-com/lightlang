@@ -49,32 +49,32 @@ class HistoryPanel(Qt.QDockWidget) :
 
 		#####
 
-		self.main_widget = Qt.QWidget()
-		self.setWidget(self.main_widget)
+		self._main_widget = Qt.QWidget()
+		self.setWidget(self._main_widget)
 
-		self.main_layout = Qt.QVBoxLayout()
-		self.main_widget.setLayout(self.main_layout)
+		self._main_layout = Qt.QVBoxLayout()
+		self._main_widget.setLayout(self._main_layout)
 
 		#####
 
-		self.line_edit = LineEdit.LineEdit()
-		self.main_layout.addWidget(self.line_edit)
+		self._line_edit = LineEdit.LineEdit()
+		self._main_layout.addWidget(self._line_edit)
 
-		self.history_browser = Qt.QListWidget()
-		self.main_layout.addWidget(self.history_browser)
+		self._history_browser = Qt.QListWidget()
+		self._main_layout.addWidget(self._history_browser)
 
-		self.clear_history_button = Qt.QPushButton(tr("Clear history"))
-		self.clear_history_button.setEnabled(False)
-		self.main_layout.addWidget(self.clear_history_button)
+		self._clear_history_button = Qt.QPushButton(tr("Clear history"))
+		self._clear_history_button.setEnabled(False)
+		self._main_layout.addWidget(self._clear_history_button)
 
 		#####
 
 		self.connect(self, Qt.SIGNAL("visibilityChanged(bool)"), self.activateDockWidget)
 
-		self.connect(self.line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
+		self.connect(self._line_edit, Qt.SIGNAL("textChanged(const QString &)"), self.setFilter)
 
-		self.connect(self.history_browser, Qt.SIGNAL("itemActivated(QListWidgetItem *)"), self.wordChangedSignal)
-		self.connect(self.clear_history_button, Qt.SIGNAL("clicked()"), self.clearHistory)
+		self.connect(self._history_browser, Qt.SIGNAL("itemActivated(QListWidgetItem *)"), self.wordChangedSignal)
+		self.connect(self._clear_history_button, Qt.SIGNAL("clicked()"), self.clearHistory)
 
 
 	### Public ###
@@ -90,21 +90,21 @@ class HistoryPanel(Qt.QDockWidget) :
 	###
 
 	def addWord(self, word) :
-		self.history_browser.insertItem(0, word)
+		self._history_browser.insertItem(0, word)
 
 		count = 1
-		while count < self.history_browser.count() and count < MaxHistoryCount :
-			if self.history_browser.item(count).text() == word :
-				self.history_browser.takeItem(count)
+		while count < self._history_browser.count() and count < MaxHistoryCount :
+			if self._history_browser.item(count).text() == word :
+				self._history_browser.takeItem(count)
 				break
 			count += 1
 
-		count = self.history_browser.count()
+		count = self._history_browser.count()
 		while count > MaxHistoryCount :
-			self.history_browser.takeItem(count - 1)
+			self._history_browser.takeItem(count - 1)
 			count -= 1
 
-		self.clear_history_button.setEnabled(True)
+		self._clear_history_button.setEnabled(True)
 
 	###
 
@@ -124,14 +124,14 @@ class HistoryPanel(Qt.QDockWidget) :
 		self.setFocus()
 
 	def setFocus(self, reason = Qt.Qt.OtherFocusReason) :
-		self.line_edit.setFocus(reason)
-		self.line_edit.selectAll()
+		self._line_edit.setFocus(reason)
+		self._line_edit.selectAll()
 
 	def hasInternalFocus(self) :
-		return self.line_edit.hasFocus()
+		return self._line_edit.hasFocus()
 
 	def clear(self) :
-		self.line_edit.clear()
+		self._line_edit.clear()
 
 
 	### Private ###
@@ -139,34 +139,34 @@ class HistoryPanel(Qt.QDockWidget) :
 	def historyList(self) :
 		list = Qt.QStringList()
 		count = 0
-		while count < self.history_browser.count() :
-			list << self.history_browser.item(count).text()
+		while count < self._history_browser.count() :
+			list << self._history_browser.item(count).text()
 			count += 1
 		return list
 
 	def setHistoryList(self, list) :
-		self.history_browser.addItems(list)
+		self._history_browser.addItems(list)
 
 		if list.count() > 0 :
-			self.clear_history_button.setEnabled(True)
+			self._clear_history_button.setEnabled(True)
 
 	def setFilter(self, word) :
 		word = word.simplified()
 		count = 0
-		while count < self.history_browser.count() :
-			item = self.history_browser.item(count)
+		while count < self._history_browser.count() :
+			item = self._history_browser.item(count)
 			item_word = item.text();
 			item.setHidden(not item_word.startsWith(word, Qt.Qt.CaseInsensitive))
 			count += 1
 
 	def clearHistory(self) :
-		self.history_browser.clear()
-		self.clear_history_button.setEnabled(False)
+		self._history_browser.clear()
+		self._clear_history_button.setEnabled(False)
 
 	def activateDockWidget(self, activate_flag) :
 		if activate_flag :
-			self.line_edit.setFocus(Qt.Qt.OtherFocusReason)
-			self.line_edit.selectAll()
+			self._line_edit.setFocus(Qt.Qt.OtherFocusReason)
+			self._line_edit.selectAll()
 
 
 	### Signals ###

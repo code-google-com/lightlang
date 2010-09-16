@@ -45,20 +45,20 @@ class SlSoundSearch(Qt.QObject) :
 
 		#####
 
-		self.proc = Qt.QProcess()
+		self._proc = Qt.QProcess()
 
-		self.proc_block_flag = False
-		self.proc_kill_flag = False
+		self._proc_block_flag = False
+		self._proc_kill_flag = False
 
-		self.proc_args = Qt.QStringList()
+		self._proc_args = Qt.QStringList()
 
-		self.all_sounds_dir = Qt.QDir(AllSoundsDir)
+		self._all_sounds_dir = Qt.QDir(AllSoundsDir)
 
 		#####
 
-		self.connect(self.proc, Qt.SIGNAL("error(QProcess::ProcessError)"), self.processError)
-		self.connect(self.proc, Qt.SIGNAL("finished(int, QProcess::ExitStatus)"), self.processFinished)
-		self.connect(self.proc, Qt.SIGNAL("stateChanged(QProcess::ProcessState)"), self.processStateChenged)
+		self.connect(self._proc, Qt.SIGNAL("error(QProcess::ProcessError)"), self.processError)
+		self.connect(self._proc, Qt.SIGNAL("finished(int, QProcess::ExitStatus)"), self.processFinished)
+		self.connect(self._proc, Qt.SIGNAL("stateChanged(QProcess::ProcessState)"), self.processStateChenged)
 
 
 	### Public ###
@@ -68,17 +68,17 @@ class SlSoundSearch(Qt.QObject) :
 		if word.isEmpty() :
 			return
 
-		if self.proc.state() == Qt.QProcess.Starting or self.proc.state() == Qt.QProcess.Running :
-			self.proc_kill_flag = True
-			self.proc.kill()
+		if self._proc.state() == Qt.QProcess.Starting or self._proc.state() == Qt.QProcess.Running :
+			self._proc_kill_flag = True
+			self._proc.kill()
 
-		self.proc_args.clear()
-		self.proc_args << SoundSearchOption << word
+		self._proc_args.clear()
+		self._proc_args << SoundSearchOption << word
 
-		while self.proc_block_flag :
-			self.proc.waitForFinished()
-		self.proc_kill_flag = False
-		self.proc.start(Sl, self.proc_args)
+		while self._proc_block_flag :
+			self._proc.waitForFinished()
+		self._proc_kill_flag = False
+		self._proc.start(Sl, self._proc_args)
 
 	def checkWord(self, lang, word) :
 		word = word.simplified().toLower()
@@ -91,29 +91,29 @@ class SlSoundSearch(Qt.QObject) :
 	### Private ###
 
 	def processError(self, error_code) :
-		if error_code == Qt.QProcess.FailedToStart and not self.proc_kill_flag :
+		if error_code == Qt.QProcess.FailedToStart and not self._proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("An error occured when creating the search process"),
 				Qt.QMessageBox.Yes)
-		elif error_code == Qt.QProcess.Crashed and not self.proc_kill_flag :
+		elif error_code == Qt.QProcess.Crashed and not self._proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Error of the search process"),
 				Qt.QMessageBox.Yes)
-		elif error_code == Qt.QProcess.Timedout and not self.proc_kill_flag :
+		elif error_code == Qt.QProcess.Timedout and not self._proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Connection lost with search process"),
 				Qt.QMessageBox.Yes)
-		elif not self.proc_kill_flag :
+		elif not self._proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Unknown error occured while executing the search process"),
 				Qt.QMessageBox.Yes)
 
 	def processFinished(self, exit_code) :
-		if exit_code and not self.proc_kill_flag :
+		if exit_code and not self._proc_kill_flag :
 			Qt.QMessageBox.warning(None, Const.MyName,
 				tr("Error of the search process"),
 				Qt.QMessageBox.Yes)
 
 	def processStateChenged(self, state) :
-		self.proc_block_flag = ( state == Qt.QProcess.Starting or state == Qt.QProcess.Running )
+		self._proc_block_flag = ( state == Qt.QProcess.Starting or state == Qt.QProcess.Running )
 
