@@ -180,7 +180,6 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 				if ( translate_count == 1 )
 					print_header(dict_name, word_wc);
 				print_translate(str, translate_count);
-				print_separator();
 
 				if ( translate_count >= settings.max_translate_count )
 					break;
@@ -193,7 +192,6 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 				if ( translate_count == 1 )
 					print_header(dict_name, word_wc);
 				print_translate(str, translate_count);
-				print_separator();
 
 				break;
 			}
@@ -223,9 +221,6 @@ static int find_word_unified(const char *word, const regimen_t regimen, const ch
 			}
 		}
 	}
-
-	if ( translate_count != 0 && (regimen == list_regimen || regimen == ill_defined_regimen) )
-		print_separator();
 
 	free(str);
 
@@ -269,10 +264,10 @@ static int find_word_combinations(const char *word, const char *dict_name, FILE 
 			if ( !strcmp_full_wc(str_token_wc, word_wc) ) {
 				++translate_count;
 
-				if ( translate_count == 1 )
-					print_header(dict_name, word_wc);
+				//if ( translate_count == 1 )
+				//	print_header(dict_name, word_wc);
 				print_translate(str, translate_count);
-				print_separator();
+				//print_separator();
 
 				if ( translate_count >= settings.max_translate_count )
 					goto external_loop_break_label;

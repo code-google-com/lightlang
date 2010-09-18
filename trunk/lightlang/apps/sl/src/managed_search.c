@@ -67,8 +67,9 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		if ( dict_fp == NULL )
 			break;
 
-		retcode = find_word(word, regimen, dict_name, dict_fp);
-		if ( retcode > 0 ) {
+		if ( !no_translate_flag )
+			print_newline();
+		if ( (retcode = find_word(word, regimen, dict_name, dict_fp)) > 0 ) {
 			no_translate_flag = false;
 			retcode = 0;
 		}
@@ -79,15 +80,19 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		no_dicts_flag = false;
 	}
 
-	if ( no_translate_flag && regimen == usually_regimen ) {
-		if ( dicts_list == NULL )
-			dict_fp = get_next_dict_fp_from_user_dicts_dir(&dict_name);
-		else
-			dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list);
+	if ( no_translate_flag && regimen == usually_regimen && !no_dicts_flag ) {
+		while ( true ) {
+			if ( dicts_list == NULL )
+				dict_fp = get_next_dict_fp_from_user_dicts_dir(&dict_name);
+			else
+				dict_fp = get_next_dict_fp_from_list(&dict_name, dicts_list);
 
-		if ( dict_fp != NULL ) {
-			retcode = find_word(word, first_concurrence_regimen, dict_name, dict_fp);
-			if ( retcode > 0 ) {
+			if ( dict_fp == NULL )
+				break;
+
+			if ( !no_translate_flag )
+				print_newline();
+			if ( (retcode = find_word(word, first_concurrence_regimen, dict_name, dict_fp)) > 0 ) {
 				no_translate_flag = false;
 				retcode = 0;
 			}
@@ -113,6 +118,8 @@ int managed_find_word(const char *word, const regimen_t regimen, const char *dic
 		}
 	}
 
+	if ( !no_translate_flag && !no_dicts_flag )
+		print_separator();
 	print_end_page();
 
 	return retcode;
