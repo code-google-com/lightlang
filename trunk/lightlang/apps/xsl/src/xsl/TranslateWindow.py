@@ -31,7 +31,7 @@ import TextSearchFrame
 import TranslateBrowser
 
 
-#####
+##### Public classes #####
 class TranslateWindow(PopupWindow.PopupWindow) :
 	def __init__(self, parent = None) :
 		PopupWindow.PopupWindow.__init__(self, parent)

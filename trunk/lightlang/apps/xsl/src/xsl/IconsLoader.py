@@ -25,7 +25,7 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 ImagePostfix = ".png"
 GifPostfix = ".gif"
 
@@ -34,7 +34,7 @@ PicturesDir = Config.DataRootDir+"/xsl/pictures/"
 GifsDir = Config.DataRootDir+"/xsl/pictures/"
 
 
-##### Public #####
+##### Public methods #####
 def icon(name, fallback_name = None) :
 	try : # FIXME: Qt-4.6 specifics
 		fallback_icon = Qt.QIcon(IconsDir+name+ImagePostfix)
@@ -47,6 +47,8 @@ def icon(name, fallback_name = None) :
 
 def iconPath(name) :
 	return Qt.QString(IconsDir+name+ImagePostfix)
+
+###
 
 def pixmap(name) :
 	return Qt.QPixmap(PicturesDir+name+ImagePostfix)

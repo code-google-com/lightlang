@@ -26,7 +26,7 @@ import Const
 import IconsLoader
 
 
-#####
+##### Public classes #####
 class AboutWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)

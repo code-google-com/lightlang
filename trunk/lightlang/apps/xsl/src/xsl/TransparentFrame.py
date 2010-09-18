@@ -26,7 +26,7 @@ import Const
 import UserStyleCssCollection
 
 
-#####
+##### Public classes #####
 class TransparentFrame(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)

@@ -25,15 +25,15 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 UserStyleCssName = "user-style.css"
 
 
-#####
+##### Private objects #####
 UserStyleCssObject = None
 
 
-##### Public #####
+##### Public methods #####
 def userStyleCss() :
 	if UserStyleCssObject == None :
 		initUserStyleCss()
@@ -41,7 +41,7 @@ def userStyleCss() :
 	return Qt.QString(UserStyleCssObject)
 
 
-##### Private #####
+##### Private methods #####
 def initUserStyleCss() :
 	global UserStyleCssObject
 	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"

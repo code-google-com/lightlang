@@ -26,12 +26,12 @@ import Const
 import UserStyleCssCollection
 
 
-#####
+##### Private constants #####
 DefaultHighlightHeight = 5
 MinCharacterDistance = 50
 
 
-#####
+##### Public classes #####
 class ChromeScrollBar(Qt.QScrollBar) :
 	def __init__(self, parent = None) :
 		Qt.QScrollBar.__init__(self, parent)

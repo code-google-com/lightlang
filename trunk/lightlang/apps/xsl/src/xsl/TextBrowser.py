@@ -28,7 +28,7 @@ import UserStyleCssCollection
 import ChromeScrollBar
 
 
-#####
+##### Public classes #####
 class TextBrowser(Qt.QTextBrowser) :
 	def __init__(self, parent = None) :
 		Qt.QTextBrowser.__init__(self, parent)

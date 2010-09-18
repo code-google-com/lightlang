@@ -26,7 +26,7 @@ import Const
 import ListBrowser
 
 
-#####
+##### Public classes #####
 class SlListBrowser(ListBrowser.ListBrowser) :
 	def __init__(self, parent = None) :
 		ListBrowser.ListBrowser.__init__(self, parent)

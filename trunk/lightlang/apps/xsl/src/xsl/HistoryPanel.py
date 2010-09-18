@@ -28,10 +28,11 @@ import IconsLoader
 import LineEdit
 
 
-#####
+##### Private constants #####
 MaxHistoryCount = 100
 
-#####
+
+##### Public classes #####
 class HistoryPanel(Qt.QDockWidget) :
 	def __init__(self, parent = None) :
 		Qt.QDockWidget.__init__(self, parent)

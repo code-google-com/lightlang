@@ -25,7 +25,7 @@ import Config
 import Const
 
 
-#####
+##### Public classes #####
 class RadioButtonsMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

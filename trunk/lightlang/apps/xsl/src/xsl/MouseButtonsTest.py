@@ -20,22 +20,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
 import Xlib.display
 import Xlib.X
+
+import Qt
 import Config
 import Const
 
 
-#####
+##### Private constants #####
 MainButtons = Xlib.X.Button1Mask|Xlib.X.Button2Mask
 
 
-#####
+##### Private objects #####
 RootObject = None
 
 
-#####
+##### Public methods #####
 def checkMainButtons() :
 	if RootObject == None :
 		initRoot()
@@ -43,7 +44,8 @@ def checkMainButtons() :
 	mask = RootObject.query_pointer()._data["mask"]
 	return bool(mask & MainButtons)
 
-#####
+
+##### Private methods #####
 def initRoot() :
 	global RootObject
 	RootObject = Xlib.display.Display().screen().root

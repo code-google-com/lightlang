@@ -26,7 +26,7 @@ import Const
 import DictsListWidgetItem
 
 
-#####
+##### Public classes #####
 class DictsListWidget(Qt.QTableWidget) :
 	def __init__(self, parent = None) :
 		Qt.QTableWidget.__init__(self, parent)

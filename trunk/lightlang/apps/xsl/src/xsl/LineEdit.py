@@ -26,7 +26,7 @@ import Const
 import IconsLoader
 
 
-#####
+##### Public classes #####
 class LineEdit(Qt.QLineEdit) :
 	def __init__(self, parent = None) :
 		Qt.QLineEdit.__init__(self, parent)

@@ -20,8 +20,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
 import sys
+
+import Qt
 import Config
 import Const
 import Settings
@@ -29,12 +30,12 @@ import IconsLoader
 import IfaSaxHandler
 
 
-#####
+##### Private constants #####
 IfaSubdir = "ifa/"
 IfaSystemDir = Config.DataRootDir+"/xsl/"+IfaSubdir
 
 
-#####
+##### Public classes #####
 class IfaMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

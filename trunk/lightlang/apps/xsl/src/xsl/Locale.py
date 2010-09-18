@@ -25,11 +25,11 @@ import Config
 import Const
 
 
-#####
+##### Private objects #####
 LocaleObject = None
 
 
-##### Public #####
+##### Public methods #####
 def locale() :
 	if LocaleObject == None :
 		initLocale()
@@ -48,7 +48,7 @@ def mainLang() :
 	return Qt.QString(lang)
 
 
-##### Private #####
+##### Private methdos #####
 def initLocale() :
 	global LocaleObject
 	LocaleObject = Qt.QLocale()

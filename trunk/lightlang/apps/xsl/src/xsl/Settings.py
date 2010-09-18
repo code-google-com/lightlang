@@ -25,20 +25,19 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 SettingsPostfix = ".conf"
 
 
-#####
+##### Private objects #####
 SettingsObject = None
 
 
-##### Public #####
+##### Public methods #####
 def settings() :
 	if SettingsObject == None :
 		initSettings()
 	return SettingsObject
-
 
 def settingsPath() :
 	if SettingsObject == None :
@@ -50,7 +49,7 @@ def settingsPath() :
 	return ( user_settings_file_path.left(index) if index >= 0 else Qt.QString() )
 
 
-##### Private #####
+##### Private methods #####
 def initSettings() :
 	my_name = Qt.QString(Const.MyName).toLower()
 

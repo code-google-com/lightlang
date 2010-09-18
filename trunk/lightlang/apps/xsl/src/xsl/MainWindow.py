@@ -40,7 +40,7 @@ import HelpBrowserWindow
 import AboutWindow
 
 
-#####
+##### Public classes #####
 class MainWindow(Qt.QMainWindow) :
 	def __init__(self, parent = None) :
 		Qt.QMainWindow.__init__(self, parent)

@@ -28,12 +28,12 @@ import sys
 import os
 
 
-#####
+##### Private constants #####
 ProcDir = "/proc/"
 LockFilePostfix = ".lock"
 
 
-##### Public #####
+##### Public methods #####
 def test() :
 	lock_file_path = Settings.settingsPath()+"/"+Qt.QString(Const.MyName).toLower()+LockFilePostfix
 	lock_file = Qt.QFile(lock_file_path)

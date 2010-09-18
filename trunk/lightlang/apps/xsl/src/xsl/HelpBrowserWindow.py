@@ -31,11 +31,11 @@ import TextSearchFrame
 import TransparentFrame
 
 
-#####
+##### Private constants #####
 HtmlDocsDir = Config.DocsDir+"/lightlang/html/"
 
 
-#####
+##### Public classes #####
 class HelpBrowserWindow(Qt.QDialog) :
 	def __init__(self, parent = None) :
 		Qt.QDialog.__init__(self, parent)

@@ -30,7 +30,7 @@ import HorizontalGrabWidget
 import DictInfoWindow
 
 
-#####
+##### Public classes #####
 class DictsListWidgetItem(Qt.QWidget) :
 	def __init__(self, dict_state, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)

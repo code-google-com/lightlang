@@ -30,7 +30,7 @@ try :
 except : pass
 
 
-#####
+##### Public classes #####
 class TrayIcon(Qt.QSystemTrayIcon) :
 	def __init__(self, parent = None) :
 		Qt.QSystemTrayIcon.__init__(self, parent)

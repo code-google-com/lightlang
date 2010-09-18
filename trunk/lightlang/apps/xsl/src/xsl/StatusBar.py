@@ -20,14 +20,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
 import sys
+
+import Qt
 import Config
 import Const
 import IconsLoader
 
 
-#####
+##### Public classes #####
 class StatusBar(Qt.QStatusBar) :
 	def __init__(self, parent = None) :
 		Qt.QStatusBar.__init__(self, parent)

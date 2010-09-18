@@ -29,7 +29,7 @@ import Locale
 import LangsList
 
 
-#####
+##### Public classes #####
 class GoogleTranslate(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)

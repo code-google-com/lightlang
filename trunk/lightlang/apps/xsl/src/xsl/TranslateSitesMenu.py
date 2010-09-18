@@ -28,12 +28,12 @@ import IconsLoader
 import TranslateSiteSaxHandler
 
 
-#####
+##### Private constants #####
 TranslateSitesSubdir = "trsites/"
 TranslateSitesSystemDir = Config.DataRootDir+"/xsl/"+TranslateSitesSubdir
 
 
-#####
+##### Public classes #####
 class TranslateSitesMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QMenu.__init__(self, title, parent)

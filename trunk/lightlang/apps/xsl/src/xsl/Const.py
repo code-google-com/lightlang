@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
+##### Public constants #####
+
 Organization = "LightLang"
 MyName = "XSL"
 Version = "6.6"

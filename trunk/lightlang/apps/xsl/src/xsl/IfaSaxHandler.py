@@ -20,14 +20,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
 import sys
+
+import Qt
 import Config
 import Const
 import Locale
 
 
-#####
+##### Public classes #####
 class IfaSaxHandler(Qt.QXmlDefaultHandler) :
 	def __init__(self, new_app_handler) :
 		Qt.QXmlDefaultHandler.__init__(self)

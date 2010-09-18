@@ -26,7 +26,7 @@ import Const
 import UserStyleCssCollection
 
 
-#####
+##### Public classes #####
 class ListBrowser(Qt.QListWidget) :
 	def __init__(self, parent = None) :
 		Qt.QListWidget.__init__(self, parent)

@@ -29,7 +29,7 @@ try : # Optional python-xlib requires
 except : pass
 
 
-#####
+##### Public classes #####
 class MouseSelector(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)

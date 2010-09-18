@@ -26,7 +26,7 @@ import Const
 import UserStyleCss
 
 
-#####
+##### Private objects #####
 DictHeaderFontBoldFlagObject = None
 DictHeaderFontItalicFlagObject = None
 DictHeaderFontLargeFlagObject = None
@@ -43,7 +43,7 @@ TransparentFrameBackgroundColorObject = None
 TransparentFrameBackgroundOpacityObject = None
 
 
-##### Public #####
+##### Public methods #####
 def dictHeaderFontBoldFlag() :
 	if DictHeaderFontBoldFlagObject == None :
 		initUserStyleCssCollection()
@@ -103,7 +103,7 @@ def transparentFrameBackgroundOpacity() :
 	return TransparentFrameBackgroundOpacityObject
 
 
-##### Private #####
+##### Private methods #####
 def initUserStyleCssCollection() :
 	global DictHeaderFontBoldFlagObject
 	global DictHeaderFontItalicFlagObject

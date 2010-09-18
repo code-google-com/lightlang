@@ -27,7 +27,7 @@ import IconsLoader
 import LangsList
 
 
-#####
+##### Private constants #####
 AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
 CaptionInfoTag = "Caption"
@@ -48,11 +48,12 @@ AllTagsList = [
 	LicenseInfoTag, CopyrightInfoTag, MiscInfoTag
 ]
 
-#####
+
+##### Private objects #####
 InfoDictObject = {}
 
 
-##### Public #####
+##### Public methods #####
 def caption(dict_name) :
 	return Qt.QString(infoByTag(CaptionInfoTag, dict_name))
 
@@ -86,6 +87,7 @@ def copyright(dict_name) :
 def miscInfo(dict_name) :
 	return Qt.QString(infoByTag(MiscInfoTag, dict_name))
 
+###
 
 def infoByTag(tag, dict_name) :
 	if not InfoDictObject.has_key(str(dict_name)) :
@@ -94,7 +96,6 @@ def infoByTag(tag, dict_name) :
 	if InfoDictObject.has_key(str(dict_name)) and InfoDictObject[str(dict_name)].has_key(str(tag)) :
 		return Qt.QString(InfoDictObject[str(dict_name)][str(tag)])
 	return tr("Unavailable")
-
 
 def clearInfo(dict_name = None) :
 	global InfoDictObject
@@ -106,7 +107,7 @@ def clearInfo(dict_name = None) :
 			InfoDictObject.pop(str(dict_name))
 
 
-##### Private #####
+##### Private methods #####
 def loadInfo(dict_name) :
 	dict_name = str(dict_name)
 

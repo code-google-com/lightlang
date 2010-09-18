@@ -25,7 +25,7 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 Sl = Config.BinsDir+"/sl"
 AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
@@ -35,7 +35,7 @@ ListSearchOption = "-l"
 IllDefinedSearchOption = "-i"
 
 
-#####
+##### Public classes #####
 class SlWordSearch(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)

@@ -32,7 +32,7 @@ try :
 except : pass
 
 
-#####
+##### Public classes #####
 class SpyMenu(Qt.QMenu) :
 	def __init__(self, title, parent = None) :
 		Qt.QObject.__init__(self, title, parent)

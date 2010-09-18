@@ -27,7 +27,7 @@ import TextBrowser
 import SlSoundSearch
 
 
-#####
+##### Public classes #####
 class TranslateBrowser(TextBrowser.TextBrowser) :
 	def __init__(self, parent = None) :
 		TextBrowser.TextBrowser.__init__(self, parent)

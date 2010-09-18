@@ -26,7 +26,7 @@ import Const
 import FictiveButtonEventFilter
 
 
-#####
+##### Public classes #####
 class EntitledMenu(Qt.QMenu) :
 	def __init__(self, icon = None, text = None, parent = None) :
 		Qt.QMenu.__init__(self, parent)

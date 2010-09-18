@@ -26,7 +26,7 @@ import Const
 import IconsLoader
 
 
-#####
+##### Public classes #####
 class TextEdit(Qt.QTextEdit) :
 	def __init__(self, parent = None) :
 		Qt.QTextEdit.__init__(self, parent)

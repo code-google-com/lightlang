@@ -25,7 +25,7 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 ResizeDirectionNone = 0
 ResizeDirectionTop = 1
 ResizeDirectionBottom = 2
@@ -37,7 +37,7 @@ ResizeDirectionBottomLeft = 6
 ResizeDirectionBottomRight = 7
 
 
-#####
+##### Public classes #####
 class PopupWindow(Qt.QFrame) :
 	def __init__(self, parent = None) :
 		Qt.QFrame.__init__(self, parent)

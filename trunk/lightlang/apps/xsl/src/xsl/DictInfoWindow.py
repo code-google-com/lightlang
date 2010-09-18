@@ -28,7 +28,7 @@ import TextBrowser
 import SlDictsInfoLoader
 
 
-#####
+##### Public classes #####
 class DictInfoWindow(Qt.QDialog) :
 	def __init__(self, dict_name, parent = None) :
 		Qt.QDialog.__init__(self, parent)

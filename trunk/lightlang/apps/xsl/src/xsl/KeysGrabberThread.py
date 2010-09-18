@@ -20,15 +20,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
 import Xlib.display
 import Xlib.XK
 import Xlib.X
+
+import Qt
 import Config
 import Const
 
 
-#####
+##### Public constants #####
 Key_L = Xlib.XK.XK_L
 Key_F1 = Xlib.XK.XK_F1
 
@@ -38,7 +39,21 @@ ShiftModifier = Xlib.X.ShiftMask
 WinModifier = Xlib.X.Mod4Mask
 
 
-##### Private #####
+##### Public classes #####
+class KeysGrabberThread(KeysGrabberThreadPrivate) :
+	_keys_grabber_thread_private_object = None
+
+	def __new__(self, parent = None) :
+		if self._keys_grabber_thread_private_object == None :
+			self._keys_grabber_thread_private_object = KeysGrabberThreadPrivate.__new__(self, parent)
+			KeysGrabberThreadPrivate.__init__(self._keys_grabber_thread_private_object, parent)
+		return self._keys_grabber_thread_private_object
+
+	def __init__(self, parent = None) :
+		pass
+
+
+##### Private classes #####
 class KeysGrabberThreadPrivate(Qt.QThread) :
 	def __init__(self, parent = None) :
 		Qt.QThread.__init__(self, parent)
@@ -98,18 +113,4 @@ class KeysGrabberThreadPrivate(Qt.QThread) :
 
 		for hotkeys_list_item in self._hotkeys_list :
 			self._root.ungrab_key(hotkeys_list_item["key"], hotkeys_list_item["modifier"])
-
-
-##### Public #####
-class KeysGrabberThread(KeysGrabberThreadPrivate) :
-	_keys_grabber_thread_private_object = None
-
-	def __new__(self, parent = None) :
-		if self._keys_grabber_thread_private_object == None :
-			self._keys_grabber_thread_private_object = KeysGrabberThreadPrivate.__new__(self, parent)
-			KeysGrabberThreadPrivate.__init__(self._keys_grabber_thread_private_object, parent)
-		return self._keys_grabber_thread_private_object
-
-	def __init__(self, parent = None) :
-		pass
 

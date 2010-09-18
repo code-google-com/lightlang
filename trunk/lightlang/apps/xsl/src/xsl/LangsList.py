@@ -25,17 +25,16 @@ import Config
 import Const
 
 
-#####
+##### Private objects #####
 LangsListObject = None
 LangsCodesDictObject = None
 
 
-##### Public #####
+##### Public methods #####
 def langsList() :
 	if LangsListObject == None :
 		initLangsList()
 	return LangsListObject
-
 
 def langName(short_name) :
 	if LangsCodesDictObject == None :
@@ -47,7 +46,7 @@ def langName(short_name) :
 		return Qt.QString(short_name)
 
 
-##### Private #####
+##### Private methods #####
 def initLangsList() :
 	global LangsListObject
 	global LangsCodesDictObject

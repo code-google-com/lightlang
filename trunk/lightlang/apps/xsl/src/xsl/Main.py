@@ -34,17 +34,17 @@ import TrayIcon
 import MainWindow
 
 
-#####
+##### Private constants #####
 TrPostfix = ".qm"
 
 TrDir = Config.DataRootDir+"/xsl/tr/"
 
 
-#####
+##### Public objects #####
 MainObject = None
 
 
-#####
+##### Public classes #####
 class Main(object) :
 	def __init__(self, argv, no_splash_flag = False, no_tray_icon = False) :
 		object.__init__(self)

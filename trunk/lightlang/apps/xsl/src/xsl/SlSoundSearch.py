@@ -25,7 +25,7 @@ import Config
 import Const
 
 
-#####
+##### Private constants #####
 Sl = Config.BinsDir+"/sl"
 AllSoundsDir = Config.DataRootDir+"/sl/sounds/"
 AudioPostfix = ".ogg"
@@ -33,7 +33,7 @@ AudioPostfix = ".ogg"
 SoundSearchOption = "-s"
 
 
-#####
+##### Public classes #####
 class SlSoundSearch(Qt.QObject) :
 	def __init__(self, parent = None) :
 		Qt.QObject.__init__(self, parent)
