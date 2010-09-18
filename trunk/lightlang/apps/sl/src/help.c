@@ -94,15 +94,15 @@ void debug(void)
 #endif
 
 #if __STDC_VERSION__ == 199901L
-	puts("C standard: C99");
+	printf("C standard: C99\n");
 #else
-	puts("C standard: Not C99");
+	printf("C standard: Not C99\n");
 #endif
 
 #ifdef __OPTIMIZE__
-	puts("Optimize: Yes");
+	printf("Optimize: Yes\n");
 #else
-	puts("Optimize: No");
+	printf("Optimize: No\n");
 #endif
 
 #ifdef __CFLAGS
@@ -110,32 +110,32 @@ void debug(void)
 #endif
 
 #if defined(linux) || defined(__linux) || defined(__linux__)
-	puts("System: Linux");
+	printf("System: Linux\n");
 #elif defined(__FreeBSD__)
-	puts("System: FreeBSD");
+	printf("System: FreeBSD\n");
 #elif defined(__NetBSD__)
-	puts("System: NetBSD");
+	printf("System: NetBSD\n");
 #elif defined(__OpenBSD__)
-	puts("System: OpenBSD");
+	printf("System: OpenBSD\n");
 #elif defined(__DragonFly__)
-	puts("System: DragonFlyBSD");
+	printf("System: DragonFlyBSD\n");
 #elif defined(sun) || defined(__sun)
-	puts("System: Solaris");
+	printf("System: Solaris\n");
 #elif defined(__CYGWIN__)
-	puts("System: Cygwin o_O ?!?");
+	printf("System: Cygwin o_O ?!?\n");
 #else
-	puts("System: Other");
+	printf("System: Other\n");
 #endif
 
 #if defined(__i386) || defined(__i386__)
-	puts("Architecture: i386");
+	printf("Architecture: i386\n");
 #elif defined(__x86_64) || defined(__x86_64__)
-	puts("Architecture: x86_64");
+	printf("Architecture: x86_64\n");
 # if defined(__amd64) || defined(__amd64__)
-	puts("Architecture: AMD64");
+	printf("Architecture: AMD64\n");
 # endif
 #else
-	puts("Architecture: Other");
+	printf("Architecture: Other\n");
 #endif
 
 	putchar('\n');

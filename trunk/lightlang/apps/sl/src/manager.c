@@ -127,11 +127,11 @@ int print_dicts_list(void)
 	extern settings_t settings;
 
 
-	puts("Established dicts:");
+	printf("Established dicts:\n");
 	if ( print_dir(ALL_DICTS_DIR) != 0 )
 		return -1;
 
-	puts("Connected dicts:");
+	printf("Connected dicts:\n");
 	if ( print_dir(settings.user_dicts_dir) != 0 )
 		return -1;
 

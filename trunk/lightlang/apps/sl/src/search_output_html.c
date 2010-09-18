@@ -62,7 +62,7 @@ void print_begin_page_html(const char *word)
 		"\t<style type=\"text/css\">\n", word, settings.locale_encoding);
 
 	if ( settings.use_css_flag ) {
-		puts("\t\t.dict_header_background {background-color: #DFEDFF;}\n"
+		printf("\t\t.dict_header_background {background-color: #DFEDFF;}\n"
 			"\t\t.dict_header_font {font-size: large; font-style: italic; font-weight: bold;}\n"
 			"\t\t.word_header_font {font-size: normal; color: #494949;}\n"
 			"\t\t.list_item_number_font {font-style: italic;}\n"
@@ -73,13 +73,13 @@ void print_begin_page_html(const char *word)
 			"\t\t.underline_font {font-decoration: underline;}\n"
 			"\t\t.word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
 			"\t\t.sound_link_font {font-size: normal;}\n"
-			"\t\t.info_font {font-style: italic;}");	
+			"\t\t.info_font {font-style: italic;}\n");	
 	}
 
-	puts("\t</style>\n"
+	printf("\t</style>\n"
 		"</head>\n"
 		"<body>\n"
-		"<!-- translate -->");
+		"<!-- translate -->\n");
 }
 
 void print_end_page_html(void)
@@ -89,12 +89,12 @@ void print_end_page_html(void)
 
 void print_separator_html(void)
 {
-	puts("\t<hr>");
+	printf("\t<hr>\n");
 }
 
 void print_newline_html(void)
 {
-	puts("<br>");
+	printf("<br>\n");
 }
 
 void print_header_html(const char *dict_name, const wchar_t *word_wc)
