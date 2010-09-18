@@ -25,6 +25,7 @@ import __builtin__
 import Qt
 import Config
 import Const
+import IconsLoader
 import Locale
 import StartupLock
 import UserStyleCss
@@ -37,7 +38,6 @@ import MainWindow
 TrPostfix = ".qm"
 
 TrDir = Config.DataRootDir+"/xsl/tr/"
-MySplash = Config.DataRootDir+"/xsl/pictures/xsl_splash.png"
 
 
 #####
@@ -85,7 +85,7 @@ class Main(object) :
 		#####
 
 		if not self._no_splash_flag :
-			self._splash_pixmap = Qt.QPixmap(MySplash)
+			self._splash_pixmap = IconsLoader.pixmap("xsl_splash")
 			self._splash = Qt.QSplashScreen(self._splash_pixmap)
 			if not self._app.isSessionRestored() :
 				self._splash.show()

@@ -24,10 +24,7 @@ import Qt
 import sys
 import Config
 import Const
-
-
-#####
-WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
+import IconsLoader
 
 
 #####
@@ -50,7 +47,7 @@ class StatusBar(Qt.QStatusBar) :
 		self._message_label.setMaximumHeight(label_height)
 		self.addWidget(self._message_label, 1)
 
-		self._wait_picture_movie = Qt.QMovie(WaitPicture)
+		self._wait_picture_movie = IconsLoader.gifMovie("circular")
 		self._wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
 		self._wait_picture_movie.jumpToFrame(0)
 		self._wait_picture_movie_label = Qt.QLabel()

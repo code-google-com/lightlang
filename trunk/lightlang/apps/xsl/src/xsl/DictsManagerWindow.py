@@ -30,8 +30,6 @@ import DictsListWidget
 
 
 #####
-WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
-
 AllDictsDir = Config.DataRootDir+"/sl/dicts/"
 
 
@@ -89,7 +87,7 @@ class DictsManagerWindow(Qt.QDialog) :
 		self._dicts_list = DictsListWidget.DictsListWidget()
 		self._stacked_widget.addWidget(self._dicts_list)
 
-		self._wait_picture_movie = Qt.QMovie(WaitPicture)
+		self._wait_picture_movie = IconsLoader.gifMovie("circular")
 		self._wait_picture_movie.setScaledSize(Qt.QSize(32, 32))
 		self._wait_picture_movie.jumpToFrame(0)
 		self._wait_picture_movie_label = Qt.QLabel()

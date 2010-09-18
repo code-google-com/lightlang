@@ -29,10 +29,6 @@ import SlDictsInfoLoader
 
 
 #####
-WaitPicture = Config.DataRootDir+"/xsl/pictures/circular.gif"
-
-
-#####
 class DictInfoWindow(Qt.QDialog) :
 	def __init__(self, dict_name, parent = None) :
 		Qt.QDialog.__init__(self, parent)
@@ -71,7 +67,7 @@ class DictInfoWindow(Qt.QDialog) :
 		self._dict_info_browser = TextBrowser.TextBrowser()
 		self._dict_info_browser_layout.addWidget(self._dict_info_browser)
 
-		self._wait_picture_movie = Qt.QMovie(WaitPicture)
+		self._wait_picture_movie = IconsLoader.gifMovie("circular")
 		icon_width = icon_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 		self._wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
 		self._wait_picture_movie.jumpToFrame(0)

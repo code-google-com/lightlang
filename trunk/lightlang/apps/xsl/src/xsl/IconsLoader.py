@@ -26,22 +26,31 @@ import Const
 
 
 #####
-IconPostfix = ".png"
+ImagePostfix = ".png"
+GifPostfix = ".gif"
 
-DefaultIconsDir = Config.DataRootDir+"/xsl/icons/"
+IconsDir = Config.DataRootDir+"/xsl/icons/"
+PicturesDir = Config.DataRootDir+"/xsl/pictures/"
+GifsDir = Config.DataRootDir+"/xsl/pictures/"
 
 
 ##### Public #####
 def icon(name, fallback_name = None) :
 	try : # FIXME: Qt-4.6 specifics
-		fallback_icon = Qt.QIcon(DefaultIconsDir+name+IconPostfix)
+		fallback_icon = Qt.QIcon(IconsDir+name+ImagePostfix)
 		if fallback_name != None :
 			fallback_icon = Qt.QIcon.fromTheme(fallback_name, fallback_icon)
 
 		return Qt.QIcon.fromTheme(name, fallback_icon)
 	except :
-		return Qt.QIcon(DefaultIconsDir+name+".png")
+		return Qt.QIcon(IconsDir+name+ImagePostfix)
 
 def iconPath(name) :
-	return Qt.QString(DefaultIconsDir+name+IconPostfix)
+	return Qt.QString(IconsDir+name+ImagePostfix)
+
+def pixmap(name) :
+	return Qt.QPixmap(PicturesDir+name+ImagePostfix)
+
+def gifMovie(name) :
+	return Qt.QMovie(GifsDir+name+GifPostfix)
 
