@@ -21,8 +21,6 @@
 
 
 import Qt
-import Config
-import Const
 import UserStyleCss
 
 
@@ -159,11 +157,11 @@ def initUserStyleCssCollection() :
 
 			if css_class_name == "dict_header_font" :
 				if css_option_name == "font-weight" :
-					DictHeaderFontBoldFlagObject = ( True if css_option_value == "bold" else False )
+					DictHeaderFontBoldFlagObject = ( css_option_value == "bold" )
 				elif css_option_name == "font-style" :
-					DictHeaderFontItalicFlagObject = ( True if css_option_value == "italic" else False )
+					DictHeaderFontItalicFlagObject = ( css_option_value == "italic" )
 				elif css_option_name == "font-size" :
-					DictHeaderFontLargeFlagObject = ( True if css_option_value == "large" else False )
+					DictHeaderFontLargeFlagObject = ( css_option_value == "large" )
 				elif css_option_name == "color" :
 					DictHeaderFontColorObject = Qt.QColor(css_option_value)
 
@@ -182,7 +180,7 @@ def initUserStyleCssCollection() :
 					else :
 						HighlightBackgroundColorObject = Qt.QColor(css_option_value)
 				if css_option_name == "opacity" :
-					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
+					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 )
 
 			elif css_class_name == "transparent_frame_background" :
 				if css_option_name == "background-color" :
@@ -191,7 +189,7 @@ def initUserStyleCssCollection() :
 					else :
 						TransparentFrameBackgroundColorObject = Qt.QColor(css_option_value)
 				if css_option_name == "opacity" :
-					TransparentFrameBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[0] else 255 )
+					TransparentFrameBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 )
 
 			css_option_pos = css_option_regexp.indexIn(css_class_body, css_option_pos + css_option_regexp.matchedLength())
 
