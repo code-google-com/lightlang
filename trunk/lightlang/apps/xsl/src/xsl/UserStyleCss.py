@@ -21,6 +21,7 @@
 
 
 import Qt
+import Utils
 import Settings
 
 
@@ -63,7 +64,7 @@ def initUserStyleCss() :
 
 	UserStyleCssObject = Qt.QString(DefaultUserStyleCss)
 
-	user_style_css_file = Qt.QFile(Settings.settingsPath()+"/"+UserStyleCssName)
+	user_style_css_file = Qt.QFile(Utils.joinPath(Settings.settingsPath(), UserStyleCssName))
 	user_style_css_file_stream = Qt.QTextStream(user_style_css_file)
 
 	if user_style_css_file.open(Qt.QIODevice.ReadOnly) :
