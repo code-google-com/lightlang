@@ -21,12 +21,28 @@
 
 
 import Qt
-import Config
-import Const
+import Settings
 
 
 ##### Private constants #####
 UserStyleCssName = "user-style.css"
+
+DefaultUserStyleCss = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
+	".red_alert_background {background-color: #FF6E6E;}\n"
+	".highlight_background {background-color: from-palette; opacity: 70;}\n"
+	".transparent_frame_background {background-color: from-palette; opacity: 180;}\n"
+	".dict_header_font {font-size: large; font-weight: bold;}\n"
+	".word_header_font {color: #494949;}\n"
+	".list_item_number_font {font-style: italic;}\n"
+	".article_number_font {font-style: italic; font-weight: bold;}\n"
+	".strong_font {font-weight: bold;}\n"
+	".italic_font {font-style: italic;}\n"
+	".green_font {color: #0A7700;}\n"
+	".underline_font {font-decoration: underline;}\n"
+	".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
+	".sound_link_font {}\n"
+	".info_font {font-style: italic;}\n"
+	".text_label_font {color: #494949; font-weight: bold;}\n")
 
 
 ##### Private objects #####
@@ -44,29 +60,10 @@ def userStyleCss() :
 ##### Private methods #####
 def initUserStyleCss() :
 	global UserStyleCssObject
-	UserStyleCssObject = Qt.QString("\n.dict_header_background {background-color: #DFEDFF;}\n"
-		".red_alert_background {background-color: #FF6E6E;}\n"
-		".highlight_background {background-color: from-palette; opacity: 70;}\n"
-		".transparent_frame_background {background-color: from-palette; opacity: 180;}\n"
-		".dict_header_font {font-size: large; font-weight: bold;}\n"
-		".word_header_font {color: #494949;}\n"
-		".list_item_number_font {font-style: italic;}\n"
-		".article_number_font {font-style: italic; font-weight: bold;}\n"
-		".strong_font {font-weight: bold;}\n"
-		".italic_font {font-style: italic;}\n"
-		".green_font {color: #0A7700;}\n"
-		".underline_font {font-decoration: underline;}\n"
-		".word_link_font {color: #DFEDFF; font-decoration: underline;}\n"
-		".sound_link_font {}\n"
-		".info_font {font-style: italic;}\n"
-		".text_label_font {color: #494949; font-weight: bold;}\n")
 
-	my_name = Qt.QString(Const.MyName).toLower()
+	UserStyleCssObject = Qt.QString(DefaultUserStyleCss)
 
-	if not Qt.QDir(Qt.QDir.homePath()+"/."+my_name).exists() :
-		Qt.QDir.home().mkdir("."+my_name)
-
-	user_style_css_file = Qt.QFile(Qt.QDir.homePath()+"/."+my_name+"/"+UserStyleCssName)
+	user_style_css_file = Qt.QFile(Settings.settingsPath()+"/"+UserStyleCssName)
 	user_style_css_file_stream = Qt.QTextStream(user_style_css_file)
 
 	if user_style_css_file.open(Qt.QIODevice.ReadOnly) :
