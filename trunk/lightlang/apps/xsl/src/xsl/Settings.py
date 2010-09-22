@@ -21,7 +21,6 @@
 
 
 import Qt
-import Config
 import Const
 import Utils
 
