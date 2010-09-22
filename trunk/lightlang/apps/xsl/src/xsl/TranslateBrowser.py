@@ -110,14 +110,11 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 				if words_list.count() <= 1 :
 					return
 
-				count = 1
-				while count < words_list.count() :
+				for count in xrange(1, words_list.count()) :
 					if not self._sound_search.checkWord(words_list[0], words_list[count]) :
 						Qt.QToolTip.showText(Qt.QCursor.pos(), tr("Sound is not full"))
 						return
-					count += 1
-			elif (str.startsWith("http:", Qt.Qt.CaseInsensitive) or
-				str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
+			elif (str.startsWith("http:", Qt.Qt.CaseInsensitive) or str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
 				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
 
 	###

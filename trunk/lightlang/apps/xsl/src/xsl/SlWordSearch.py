@@ -192,10 +192,8 @@ class SlWordSearch(Qt.QObject) :
 
 			###
 
-			parts_list_count = 1
-			while parts_list_count < parts_list.count() :
+			for parts_list_count in xrange(1, parts_list.count()) :
 				if self._caption_item_regexp.indexIn(parts_list[parts_list_count]) < 0 :
-					parts_list_count += 1
 					continue
 
 				list << "[["+self._caption_item_regexp.cap(1)+"]]"
@@ -205,8 +203,6 @@ class SlWordSearch(Qt.QObject) :
 					list << self._word_item_regexp.cap(1)
 					word_item_pos = self._word_item_regexp.indexIn(parts_list[parts_list_count], word_item_pos +
 						self._word_item_regexp.matchedLength())
-
-				parts_list_count += 1
 
 			#####
 

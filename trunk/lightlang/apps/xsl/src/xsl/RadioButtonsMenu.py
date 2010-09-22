@@ -51,11 +51,9 @@ class RadioButtonsMenu(Qt.QMenu) :
 	### Private ###
 
 	def index(self) :
-		count = 0
-		while count < len(self._actions_list) :
+		for count in xrange(len(self._actions_list)) :
 			if self._actions_list[count].isChecked() :
 				return count
-			count += 1
 
 	def setIndex(self, index) :
 		self._actions_list[index].setChecked(True)

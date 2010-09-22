@@ -75,18 +75,15 @@ class DictsListWidget(Qt.QTableWidget) :
 	def setList(self, list) :
 		self.setRowCount(0)
 
-		count = 0
-		while count < list.count() :
+		for count in xrange(list.count()) :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 			if not self._item_code_regexp.exactMatch(list[count]) :
-				count += 1
 				continue
 			dict_state_flag = bool(self._item_code_regexp.cap(1).toInt()[0])
 			dict_name = self._item_code_regexp.cap(2)
 			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state_flag, dict_name))
-			count += 1
 
-		if count > 0 :
+		if list.count() > 0 :
 			self.setCurrentCell(0, 0)
 			self.currentRowChangedSignal(0)
 
@@ -95,11 +92,9 @@ class DictsListWidget(Qt.QTableWidget) :
 	def list(self) :
 		list = Qt.QStringList()
 
-		count = 0
-		while count < self.rowCount() :
+		for count in xrange(self.rowCount()) :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 			list << Qt.QString("{%1}{%2}").arg(self.cellWidget(count, 0).dictState()).arg(self.cellWidget(count, 0).dictName())
-			count += 1
 
 		return list
 
@@ -108,12 +103,10 @@ class DictsListWidget(Qt.QTableWidget) :
 	def dictsList(self) :
 		list = Qt.QStringList()
 
-		count = 0
-		while count < self.rowCount() :
+		for count in xrange(self.rowCount()) :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 			if self.cellWidget(count, 0).dictState() :
 				list << self.cellWidget(count, 0).dictName()
-			count += 1
 
 		return list
 
@@ -136,8 +129,7 @@ class DictsListWidget(Qt.QTableWidget) :
 	###
 
 	def setFilter(self, str) :
-		count = 0
-		while count < self.rowCount() :
+		for count in xrange(self.rowCount()) :
 			item = self.cellWidget(count, 0)
 
 			dict_name = item.dictName()
@@ -148,8 +140,6 @@ class DictsListWidget(Qt.QTableWidget) :
 				self.hideRow(count)
 			else :
 				self.showRow(count)
-
-			count += 1
 
 
 	### Private ###

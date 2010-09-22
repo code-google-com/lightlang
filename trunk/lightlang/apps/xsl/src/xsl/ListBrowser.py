@@ -66,8 +66,7 @@ class ListBrowser(Qt.QListWidget) :
 	def setList(self, list) :
 		self.clear()
 
-		count = 0
-		while count < list.count() :
+		for count in xrange(list.count()) :
 			if self._info_item_regexp.exactMatch(list[count]) :
 				info_item = Qt.QListWidgetItem(self._info_item_regexp.cap(1))
 				info_item.setFlags(Qt.Qt.NoItemFlags)
@@ -82,8 +81,6 @@ class ListBrowser(Qt.QListWidget) :
 				self.addItem(caption_item)
 			else :
 				self.addItem(list[count])
-
-			count += 1
 
 	def setText(self, text) :
 		self.clear()

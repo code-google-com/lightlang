@@ -134,10 +134,8 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def historyList(self) :
 		list = Qt.QStringList()
-		count = 0
-		while count < self._history_browser.count() :
+		for count in xrange(self._history_browser.count()) :
 			list << self._history_browser.item(count).text()
-			count += 1
 		return list
 
 	def setHistoryList(self, list) :
@@ -148,12 +146,10 @@ class HistoryPanel(Qt.QDockWidget) :
 
 	def setFilter(self, word) :
 		word = word.simplified()
-		count = 0
-		while count < self._history_browser.count() :
+		for count in xrange(self._history_browser.count()) :
 			item = self._history_browser.item(count)
 			item_word = item.text();
 			item.setHidden(not item_word.startsWith(word, Qt.Qt.CaseInsensitive))
-			count += 1
 
 	def clearHistory(self) :
 		self._history_browser.clear()

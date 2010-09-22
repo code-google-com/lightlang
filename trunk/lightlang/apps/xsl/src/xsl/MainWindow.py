@@ -283,11 +283,9 @@ class MainWindow(Qt.QMainWindow) :
 			self._panels_focus_flags_list = new_panels_focus_flags_list
 
 	def activateFocus(self) :
-		count = 0
-		while count < len(self._panels_list) :
+		for count in xrange(len(self._panels_list)) :
 			if self._panels_focus_flags_list[count] :
 				self._panels_list[count].setFocus()
-			count += 1
 
 	###
 

@@ -85,8 +85,7 @@ class TranslateSitesMenu(Qt.QMenu) :
 			self.setEnabled(False)
 			return
 
-		count = 0
-		while count < translate_sites_files_list.count() :
+		for count in xrange(translate_sites_files_list.count()) :
 			translate_site_file = Qt.QFile(translate_sites_files_list[count])
 			xml_input_source = Qt.QXmlInputSource(translate_site_file)
 			xml_reader = Qt.QXmlSimpleReader()
@@ -94,7 +93,6 @@ class TranslateSitesMenu(Qt.QMenu) :
 			xml_reader.setContentHandler(xml_handler)
 			xml_reader.setErrorHandler(xml_handler)
 			xml_reader.parse(xml_input_source)
-			count += 1
 
 	def addSite(self, site_title, site_description, site_icon_name, site_url) :
 		if site_title.simplified().isEmpty() or site_url.simplified().isEmpty() :

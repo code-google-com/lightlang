@@ -87,8 +87,7 @@ class IfaMenu(Qt.QMenu) :
 			self.setEnabled(False)
 			return
 
-		count = 0
-		while count < ifa_files_list.count() :
+		for count in xrange(ifa_files_list.count()) :
 			ifa_file = Qt.QFile(ifa_files_list[count])
 			xml_input_source = Qt.QXmlInputSource(ifa_file)
 			xml_reader = Qt.QXmlSimpleReader()
@@ -96,7 +95,6 @@ class IfaMenu(Qt.QMenu) :
 			xml_reader.setContentHandler(xml_handler)
 			xml_reader.setErrorHandler(xml_handler)
 			xml_reader.parse(xml_input_source)
-			count += 1
 
 	def addApp(self, app_title, app_description, app_icon_name, app_prog_path,
 		app_prog_options, python_precode, python_postcode) :
@@ -143,27 +141,23 @@ class IfaMenu(Qt.QMenu) :
 
 	def execPrecode(self, index) :
 		from Main import MainObject as main
-		instructions = self._actions_data_list[index]["python_precode"].split("\n", Qt.QString.SkipEmptyParts)
-		count = 0
-		while count < instructions.count() :
-			instruction = instructions[count].trimmed()
-			if not instruction.simplified().isEmpty() :
+		instructions_list = self._actions_data_list[index]["python_precode"].split("\n", Qt.QString.SkipEmptyParts)
+		for count in xrange(instructions_list.count()) :
+			instructions_list_item = instructions_list[count].trimmed()
+			if not instructions_list_item.simplified().isEmpty() :
 				try :
-					exec str(instruction)
+					exec str(instructions_list_item)
 				except Exception, err1 :
-					print >> sys.stderr, Const.MyName+": IFA instruction \""+str(instruction)+"\": "+str(err1)
-			count += 1
+					print >> sys.stderr, Const.MyName+": IFA instruction \""+str(instructions_list_item)+"\": "+str(err1)
 
 	def execPostcode(self, index) :
 		from Main import MainObject as main
-		instructions = self._actions_data_list[index]["python_postcode"].split("\n", Qt.QString.SkipEmptyParts)
-		count = 0
-		while count < instructions.count() :
-			instruction = instructions[count].trimmed()
-			if not instruction.simplified().isEmpty() :
+		instructions_list = self._actions_data_list[index]["python_postcode"].split("\n", Qt.QString.SkipEmptyParts)
+		for count in xrange(instructions_list.count()) :
+			instructions_list_item = instructions_list[count].trimmed()
+			if not instructions_list_item.simplified().isEmpty() :
 				try :
-					exec str(instruction)
+					exec str(instructions_list_item)
 				except Exception, err1 :
-					print >> sys.stderr, Const.MyName+": IFA instruction \""+str(instruction)+"\": "+str(err1)
-			count += 1
+					print >> sys.stderr, Const.MyName+": IFA instruction \""+str(instructions_list_item)+"\": "+str(err1)
 

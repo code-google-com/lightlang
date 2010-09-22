@@ -220,21 +220,16 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		###
 
-		count = 0
-		while count < local_dicts_list.count() :
+		for count in xrange(local_dicts_list.count()) :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
 
 			if not self._item_code_regexp.exactMatch(local_dicts_list[count]) :
 				local_dicts_list.removeAt(count)
-				count += 1
 				continue
 
 			if not all_dicts_dir_entry_list.contains(self._item_code_regexp.cap(2)) :
 				local_dicts_list.removeAt(count)
-				count += 1
 				continue
-
-			count += 1
 
 		###
 
@@ -243,14 +238,10 @@ class DictsManagerWindow(Qt.QDialog) :
 
 		###
 
-		count = 0
-		while count < all_dicts_dir_entry_list.count() :
+		for count in xrange(all_dicts_dir_entry_list.count()) :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-
 			if not tmp_list.contains(all_dicts_dir_entry_list[count]) :
 				local_dicts_list << Qt.QString("{0}{%1}").arg(all_dicts_dir_entry_list[count])
-
-			count += 1
 
 		return local_dicts_list
 
