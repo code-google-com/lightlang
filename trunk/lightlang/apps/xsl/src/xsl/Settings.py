@@ -23,6 +23,7 @@
 import Qt
 import Config
 import Const
+import Utils
 
 
 ##### Private constants #####
@@ -43,19 +44,17 @@ def settingsPath() :
 	if SettingsObject == None :
 		initSettings()
 
-	user_settings_file_path = SettingsObject.fileName()
-
-	index = user_settings_file_path.lastIndexOf("/")
-	return ( user_settings_file_path.left(index) if index >= 0 else Qt.QString() )
+	return Utils.pathName(SettingsObject.fileName())
 
 
 ##### Private methods #####
 def initSettings() :
+	global SettingsObject
+
 	my_name = Qt.QString(Const.MyName).toLower()
 
-	if not Qt.QDir(Qt.QDir.homePath()+"/."+my_name).exists() :
+	if not Qt.QDir(Utils.joinPath(Qt.QDir.homePath(), "."+my_name)).exists() :
 		Qt.QDir.home().mkdir("."+my_name)
 
-	global SettingsObject
-	SettingsObject = Qt.QSettings(Qt.QDir.homePath()+"/."+my_name+"/"+my_name+SettingsPostfix, Qt.QSettings.IniFormat)
+	SettingsObject = Qt.QSettings(Utils.joinPath(Qt.QDir.homePath(), "."+my_name, my_name+SettingsPostfix), Qt.QSettings.IniFormat)
 

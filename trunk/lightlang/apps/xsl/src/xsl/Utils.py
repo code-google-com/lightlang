@@ -27,3 +27,8 @@ import Qt
 def joinPath(first, *others_list) :
 	return Qt.QStringList((first,)+others_list).join(Qt.QDir.separator())
 
+def pathName(path) :
+	path = Qt.QString(path)
+	index = path.lastIndexOf(Qt.QDir.separator())
+	return ( path.left(index) if index >= 0 else Qt.QString() )
+
