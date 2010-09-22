@@ -32,7 +32,7 @@ import DictInfoWindow
 
 ##### Public classes #####
 class DictsListWidgetItem(Qt.QWidget) :
-	def __init__(self, dict_state, dict_name, parent = None) :
+	def __init__(self, dict_state_flag, dict_name, parent = None) :
 		Qt.QWidget.__init__(self, parent)
 
 		if self.font().pixelSize() > 0 :
@@ -81,7 +81,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 		#####
 
 		self._enable_dict_checkbox = Qt.QCheckBox()
-		self._enable_dict_checkbox.setCheckState(dict_state)
+		self._enable_dict_checkbox.setChecked(dict_state_flag)
 		self._enable_dict_checkbox.setToolTip(tr("Enter"))
 		self._enable_dict_checkbox_layout.addWidget(self._enable_dict_checkbox)
 
@@ -143,7 +143,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 	### Public ###
 
 	def dictState(self) :
-		return self._enable_dict_checkbox.checkState()
+		return self._enable_dict_checkbox.isChecked()
 
 	def dictName(self) :
 		return Qt.QString(self._dict_name)
@@ -154,10 +154,7 @@ class DictsListWidgetItem(Qt.QWidget) :
 	###
 
 	def invertDictState(self) :
-		if self._enable_dict_checkbox.checkState() == Qt.Qt.Checked :
-			self._enable_dict_checkbox.setCheckState(Qt.Qt.Unchecked)
-		else :
-			self._enable_dict_checkbox.setCheckState(Qt.Qt.Checked)
+		self._enable_dict_checkbox.setChecked(not self._enable_dict_checkbox.isChecked())
 
 
 	### Signals ###

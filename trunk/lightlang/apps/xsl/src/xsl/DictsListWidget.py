@@ -81,9 +81,9 @@ class DictsListWidget(Qt.QTableWidget) :
 			if not self._item_code_regexp.exactMatch(list[count]) :
 				count += 1
 				continue
-			dict_state = ( Qt.Qt.Checked if self._item_code_regexp.cap(1).toInt()[0] == 1 else Qt.Qt.Unchecked )
+			dict_state_flag = bool(self._item_code_regexp.cap(1).toInt()[0])
 			dict_name = self._item_code_regexp.cap(2)
-			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state, dict_name))
+			self.insertDictItem(DictsListWidgetItem.DictsListWidgetItem(dict_state_flag, dict_name))
 			count += 1
 
 		if count > 0 :
@@ -98,9 +98,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-			enable_dict_flag = ( 1 if self.cellWidget(count, 0).dictState() == Qt.Qt.Checked else 0 )
-			dict_name = self.cellWidget(count, 0).dictName()
-			list << Qt.QString("{%1}{%2}").arg(enable_dict_flag).arg(dict_name)
+			list << Qt.QString("{%1}{%2}").arg(self.cellWidget(count, 0).dictState()).arg(self.cellWidget(count, 0).dictName())
 			count += 1
 
 		return list
@@ -113,7 +111,7 @@ class DictsListWidget(Qt.QTableWidget) :
 		count = 0
 		while count < self.rowCount() :
 			Qt.QCoreApplication.processEvents(Qt.QEventLoop.ExcludeUserInputEvents)
-			if self.cellWidget(count, 0).dictState() == Qt.Qt.Checked :
+			if self.cellWidget(count, 0).dictState() :
 				list << self.cellWidget(count, 0).dictName()
 			count += 1
 
