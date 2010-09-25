@@ -45,7 +45,7 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self._main_layout.setSpacing(0)
 		self.setLayout(self._main_layout)
 
-		self._caption_frame = Qt.QFrame()
+		self._caption_frame = Qt.QFrame(self)
 		self._caption_frame.setMouseTracking(True)
 		self._caption_frame.setFrameShape(Qt.QFrame.Box)
 		self._caption_frame.setFrameShadow(Qt.QFrame.Raised)
@@ -64,12 +64,12 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 		#####
 
-		self._caption_label = Qt.QLabel()
+		self._caption_label = Qt.QLabel(self)
 		self._caption_label.setTextFormat(Qt.Qt.RichText)
 		self._caption_label.setWordWrap(True)
 		self._caption_frame_layout.addWidget(self._caption_label)
 
-		self._close_button = Qt.QToolButton()
+		self._close_button = Qt.QToolButton(self)
 		self._close_button.setIcon(IconsLoader.icon("dialog-cancel"))
 		self._close_button.setIconSize(Qt.QSize(16, 16))
 		self._close_button.setFixedSize(Qt.QSize(16, 16))
@@ -77,10 +77,10 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 		self._close_button.setAutoRaise(True)
 		self._caption_frame_layout.addWidget(self._close_button)
 
-		self._translate_browser = TranslateBrowser.TranslateBrowser()
+		self._translate_browser = TranslateBrowser.TranslateBrowser(self)
 		self._main_layout.addWidget(self._translate_browser)
 
-		self._text_search_frame = TextSearchFrame.TextSearchFrame()
+		self._text_search_frame = TextSearchFrame.TextSearchFrame(self)
 		self._text_search_frame.hide()
 		self._main_layout.addWidget(self._text_search_frame)
 
