@@ -37,7 +37,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 		#####
 
-		self._sound_search = SlSoundSearch.SlSoundSearch()
+		self._sound_search = SlSoundSearch.SlSoundSearch(self)
 
 		self._clipboard = Qt.QApplication.clipboard()
 
@@ -133,6 +133,7 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 	def contextMenuEvent(self, event) :
 		context_menu = self.createStandardContextMenu()
 		text_cursor = self.textCursor()
+
 		if not text_cursor.selectedText().simplified().isEmpty() :
 			context_menu.addSeparator()
 			context_menu.addAction(tr("Search"), self.uFind)
@@ -140,5 +141,6 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 			context_menu.addSeparator()
 			context_menu.addAction(tr("Search (in new tab)"), self.uFindInNewTab)
 			context_menu.addAction(tr("Expanded search (in new tab)"), self.cFindInNewTab)
+
 		context_menu.exec_(event.globalPos())
 
