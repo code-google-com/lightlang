@@ -25,115 +25,100 @@ import UserStyleCss
 
 
 ##### Private objects #####
-DictHeaderFontBoldFlagObject = None
-DictHeaderFontItalicFlagObject = None
-DictHeaderFontLargeFlagObject = None
-DictHeaderFontColorObject = None
-
-DictHeaderBackgroundColorObject = None
-
-RedAlertBackgroundColorObject = None
-
-HighlightBackgroundColorObject = None
-HighlightBackgroundOpacityObject = None
-
-TransparentFrameBackgroundColorObject = None
-TransparentFrameBackgroundOpacityObject = None
+CollectionDictObject = {
+	"dict_header_font" : {
+		"bold_flag" : None,
+		"italic_flag" : None,
+		"large_flag" : None,
+		"color" : None
+	},
+	"dict_header_background" : {
+		"color" : None
+	},
+	"red_alert_background" : {
+		"color" : None
+	},
+	"highlight_background" : {
+		"color" : None,
+		"opacity" : None
+	},
+	"transparent_frame_background" : {
+		"color" : None,
+		"opacity" : None
+	}
+}
 
 
 ##### Public methods #####
 def dictHeaderFontBoldFlag() :
-	if DictHeaderFontBoldFlagObject == None :
-		initUserStyleCssCollection()
-	return DictHeaderFontBoldFlagObject
+	return option("dict_header_font", "bold_flag")
 
 def dictHeaderFontItalicFlag() :
-	if DictHeaderFontItalicFlagObject == None :
-		initUserStyleCssCollection()
-	return DictHeaderFontItalicFlagObject
+	return option("dict_header_font", "italic_flag")
 
 def dictHeaderFontLargeFlag() :
-	if DictHeaderFontLargeFlagObject == None :
-		initUserStyleCssCollection()
-	return DictHeaderFontLargeFlagObject
+	return option("dict_header_font", "large_flag")
 
 def dictHeaderFontColor() :
-	if DictHeaderFontColorObject == None :
-		initUserStyleCssCollection()
-	return Qt.QColor(DictHeaderFontColorObject)
+	return Qt.QColor(option("dict_header_font", "color"))
 
 ###
 
 def dictHeaderBackgroundColor() :
-	if DictHeaderBackgroundColorObject == None :
-		initUserStyleCssCollection()
-	return Qt.QColor(DictHeaderBackgroundColorObject)
+	return Qt.QColor(option("dict_header_background", "color"))
 
 ###
 
 def redAlertBackgroundColor() :
-	if RedAlertBackgroundColorObject == None :
-		initUserStyleCssCollection()
-	return Qt.QColor(RedAlertBackgroundColorObject)
+	return Qt.QColor(option("red_alert_background", "color"))
 
 ###
 
 def highlightBackgroundColor() :
-	if HighlightBackgroundColorObject == None :
-		initUserStyleCssCollection()
-	return Qt.QColor(HighlightBackgroundColorObject)
+	return Qt.QColor(option("highlight_background", "color"))
 
 def highlightBackgroundOpacity() :
-	if HighlightBackgroundOpacityObject == None :
-		initUserStyleCssCollection()
-	return HighlightBackgroundOpacityObject
+	return option("highlight_background", "opacity")
 
 ###
 
 def transparentFrameBackgroundColor() :
-	if TransparentFrameBackgroundColorObject == None :
-		initUserStyleCssCollection()
-	return TransparentFrameBackgroundColorObject
+	return Qt.QColor(option("transparent_frame_background", "color"))
 
 def transparentFrameBackgroundOpacity() :
-	if TransparentFrameBackgroundOpacityObject == None :
-		initUserStyleCssCollection()
-	return TransparentFrameBackgroundOpacityObject
+	return option("transparent_frame_background", "opacity")
 
 
 ##### Private methods #####
-def initUserStyleCssCollection() :
-	global DictHeaderFontBoldFlagObject
-	global DictHeaderFontItalicFlagObject
-	global DictHeaderFontLargeFlagObject
-	global DictHeaderFontColorObject
+def setOption(section_name, option_name, value) :
+	if not CollectionDictObject.has_key(section_name) :
+		CollectionDictObject[section_name] = {}
+	CollectionDictObject[section_name][option_name] = value
 
-	global DictHeaderBackgroundColorObject
+def option(section_name, option_name) :
+	if not CollectionDictObject.has_key(section_name) or not CollectionDictObject[section_name].has_key(option_name) :
+		return None
+	elif CollectionDictObject[section_name][option_name] == None :
+		initCollection()
+	return CollectionDictObject[section_name][option_name]
 
-	global RedAlertBackgroundColorObject
+###
 
-	global HighlightBackgroundColorObject
-	global HighlightBackgroundOpacityObject
+def initCollection() :
+	setOption("dict_header_font", "bold_flag", False)
+	setOption("dict_header_font", "italic_flag", False)
+	setOption("dict_header_font", "large_flag", False)
+	setOption("dict_header_font", "color", Qt.QColor())
 
-	global TransparentFrameBackgroundColorObject
-	global TransparentFrameBackgroundOpacityObject
+	setOption("dict_header_background", "color", Qt.QColor())
 
-	###
+	setOption("red_alert_background", "color", Qt.QColor())
 
-	DictHeaderFontBoldFlagObject = False
-	DictHeaderFontItalicFlagObject = False
-	DictHeaderFontLargeFlagObject = False
-	DictHeaderFontColorObject = Qt.QColor()
+	setOption("highlight_background", "color", Qt.QColor())
+	setOption("highlight_background", "opacity", 255)
 
-	DictHeaderBackgroundColorObject = Qt.QColor()
-
-	RedAlertBackgroundColorObject = Qt.QColor()
-
-	HighlightBackgroundColorObject = Qt.QColor()
-	HighlightBackgroundOpacityObject = 255
-
-	TransparentFrameBackgroundColorObject = Qt.QColor()
-	TransparentFrameBackgroundOpacityObject = 255
+	setOption("transparent_frame_background", "color", Qt.QColor())
+	setOption("transparent_frame_background", "opacity", 255)
 
 	###
 
@@ -157,39 +142,39 @@ def initUserStyleCssCollection() :
 
 			if css_class_name == "dict_header_font" :
 				if css_option_name == "font-weight" :
-					DictHeaderFontBoldFlagObject = ( css_option_value == "bold" )
+					setOption(str(css_class_name), "bold_flag", ( css_option_value == "bold" ))
 				elif css_option_name == "font-style" :
-					DictHeaderFontItalicFlagObject = ( css_option_value == "italic" )
+					setOption(str(css_class_name), "italic_flag", ( css_option_value == "italic" ))
 				elif css_option_name == "font-size" :
-					DictHeaderFontLargeFlagObject = ( css_option_value == "large" )
+					setOption(str(css_class_name), "large_flag", ( css_option_value == "large" ))
 				elif css_option_name == "color" :
-					DictHeaderFontColorObject = Qt.QColor(css_option_value)
+					setOption(str(css_class_name), "color", Qt.QColor(css_option_value))
 
 			elif css_class_name == "dict_header_background" :
 				if css_option_name == "background-color" :
-					DictHeaderBackgroundColorObject = Qt.QColor(css_option_value)
+					setOption(str(css_class_name), "color", Qt.QColor(css_option_value))
 
 			elif css_class_name == "red_alert_background" :
 				if css_option_name == "background-color" :
-					RedAlertBackgroundColorObject = Qt.QColor(css_option_value)
+					setOption(str(css_class_name), "color", Qt.QColor(css_option_value))
 
 			elif css_class_name == "highlight_background" :
 				if css_option_name == "background-color" :
 					if css_option_value == "from-palette" :
-						HighlightBackgroundColorObject = Qt.QApplication.palette().color(Qt.QPalette.Highlight)
+						setOption(str(css_class_name), "color", Qt.QApplication.palette().color(Qt.QPalette.Highlight))
 					else :
-						HighlightBackgroundColorObject = Qt.QColor(css_option_value)
+						setOption(str(css_class_name), "color", Qt.QColor(css_option_value))
 				if css_option_name == "opacity" :
-					HighlightBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 )
+					setOption(str(css_class_name), "opacity", ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 ))
 
 			elif css_class_name == "transparent_frame_background" :
 				if css_option_name == "background-color" :
 					if css_option_value == "from-palette" :
-						TransparentFrameBackgroundColorObject = Qt.QApplication.palette().color(Qt.QPalette.Window)
+						setOption(str(css_class_name), "color", Qt.QApplication.palette().color(Qt.QPalette.Window))
 					else :
-						TransparentFrameBackgroundColorObject = Qt.QColor(css_option_value)
+						setOption(str(css_class_name), "color", Qt.QColor(css_option_value))
 				if css_option_name == "opacity" :
-					TransparentFrameBackgroundOpacityObject = ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 )
+					setOption(str(css_class_name), "opacity", ( css_option_value.toInt()[0] if css_option_value.toInt()[1] else 255 ))
 
 			css_option_pos = css_option_regexp.indexIn(css_class_body, css_option_pos + css_option_regexp.matchedLength())
 
