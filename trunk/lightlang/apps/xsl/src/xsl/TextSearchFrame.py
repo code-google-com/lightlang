@@ -43,33 +43,33 @@ class TextSearchFrame(Qt.QFrame) :
 
 		#####
 
-		self._close_button = Qt.QToolButton()
+		self._close_button = Qt.QToolButton(self)
 		self._close_button.setIcon(IconsLoader.icon("dialog-cancel"))
 		self._close_button.setIconSize(Qt.QSize(16, 16))
 		self._main_layout.addWidget(self._close_button)
 
-		self._vertical_frame1 = Qt.QFrame()
+		self._vertical_frame1 = Qt.QFrame(self)
 		self._vertical_frame1.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self._vertical_frame1.setMinimumSize(22, 22)
 		self._main_layout.addWidget(self._vertical_frame1)
 
-		self._line_edit_label = Qt.QLabel(tr("Search:"))
+		self._line_edit_label = Qt.QLabel(tr("Search:"), self)
 		self._main_layout.addWidget(self._line_edit_label)
 
-		self._line_edit = LineEdit.LineEdit()
+		self._line_edit = LineEdit.LineEdit(self)
 		self._main_layout.addWidget(self._line_edit)
 
-		self._vertical_frame2 = Qt.QFrame()
+		self._vertical_frame2 = Qt.QFrame(self)
 		self._vertical_frame2.setFrameStyle(Qt.QFrame.VLine|Qt.QFrame.Sunken)
 		self._main_layout.addWidget(self._vertical_frame2)
 
-		self._next_button = Qt.QToolButton()
+		self._next_button = Qt.QToolButton(self)
 		self._next_button.setIcon(IconsLoader.icon("go-down"))
 		self._next_button.setIconSize(Qt.QSize(16, 16))
 		self._next_button.setEnabled(False)
 		self._main_layout.addWidget(self._next_button)
 
-		self._previous_button = Qt.QToolButton()
+		self._previous_button = Qt.QToolButton(self)
 		self._previous_button.setIcon(IconsLoader.icon("go-up"))
 		self._previous_button.setIconSize(Qt.QSize(16, 16))
 		self._previous_button.setEnabled(False)
@@ -80,8 +80,9 @@ class TextSearchFrame(Qt.QFrame) :
 		self._line_edit_default_palette = Qt.QPalette(self._line_edit.palette())
 
 		self._line_edit_red_alert_palette = Qt.QPalette()
-		if UserStyleCssCollection.redAlertBackgroundColor().isValid() :
-			self._line_edit_red_alert_palette.setColor(Qt.QPalette.Base, UserStyleCssCollection.redAlertBackgroundColor())
+		alert_color = UserStyleCssCollection.option("red_alert_background", "color")
+		if alert_color.isValid() :
+			self._line_edit_red_alert_palette.setColor(Qt.QPalette.Base, alert_color)
 
 		#####
 
