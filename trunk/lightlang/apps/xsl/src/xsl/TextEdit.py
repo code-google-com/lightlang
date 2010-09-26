@@ -43,7 +43,7 @@ class TextEdit(Qt.QTextEdit) :
 
 		#####
 
-		self._clear_button = Qt.QToolButton()
+		self._clear_button = Qt.QToolButton(self)
 		self._clear_button.setIcon(IconsLoader.icon("edit-clear-locationbar-rtl"))
 		self._clear_button.setIconSize(Qt.QSize(16, 16))
 		self._clear_button.setCursor(Qt.Qt.ArrowCursor)
