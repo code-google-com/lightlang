@@ -21,8 +21,6 @@
 
 
 import Qt
-import Config
-import Const
 import TextBrowser
 import SlSoundSearch
 
@@ -98,15 +96,15 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 
 	### Handlers ###
 
-	def setCursorInfo(self, str) :
-		if not str.simplified().isEmpty() :
-			if str.startsWith("#s_") :
-				str.remove(0, str.indexOf("_") + 1)
-				str = str.simplified()
-				if str.isEmpty() :
+	def setCursorInfo(self, info) :
+		if not info.simplified().isEmpty() :
+			if info.startsWith("#s_") :
+				info.remove(0, info.indexOf("_") + 1)
+				info = info.simplified()
+				if info.isEmpty() :
 					return
 
-				words_list = str.split(Qt.QRegExp("\\W+"), Qt.QString.SkipEmptyParts)
+				words_list = info.split(Qt.QRegExp("\\W+"), Qt.QString.SkipEmptyParts)
 				if words_list.count() <= 1 :
 					return
 
@@ -114,8 +112,8 @@ class TranslateBrowser(TextBrowser.TextBrowser) :
 					if not self._sound_search.checkWord(words_list[0], words_list[count]) :
 						Qt.QToolTip.showText(Qt.QCursor.pos(), tr("Sound is not full"))
 						return
-			elif (str.startsWith("http:", Qt.Qt.CaseInsensitive) or str.startsWith("mailto:", Qt.Qt.CaseInsensitive)) :
-				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
+			elif info.startsWith("http:", Qt.Qt.CaseInsensitive) or info.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), info)
 
 	###
 

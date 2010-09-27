@@ -23,8 +23,6 @@
 import sys
 
 import Qt
-import Config
-import Const
 import IconsLoader
 
 
@@ -83,8 +81,8 @@ class StatusBar(Qt.QStatusBar) :
 
 	###
 
-	def showStatusMessage(self, text, timeout = 2000) :
-		self._message_label.setText(text)
+	def showStatusMessage(self, message, timeout = 2000) :
+		self._message_label.setText(message)
 		if timeout != 0 :
 			self._timer.start(timeout)
 

@@ -21,8 +21,7 @@
 
 
 import Qt
-import Config
-import Const
+import Utils
 import Settings
 import UserStyleCss
 import IconsLoader
@@ -104,9 +103,8 @@ class TranslateWindow(PopupWindow.PopupWindow) :
 
 	### Public ###
 
-	def setCaption(self, str) :
-		self._caption_label.setText(Qt.QString("<html><head><style>%1</style></head>"
-			"<body><font class=\"text_label_font\">%2</font></body></html>").arg(UserStyleCss.userStyleCss()).arg(str))
+	def setCaption(self, caption) :
+		self._caption_label.setText(Utils.styledHtml(UserStyleCss.userStyleCss(), caption))
 
 	def setText(self, text) :
 		self._translate_browser.setText(text)

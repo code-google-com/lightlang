@@ -20,22 +20,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 
-import Qt
-import Config
-import Const
-import Settings
 import sys
 import os
 
+import Qt
+import Const
+import Utils
+import Settings
+
 
 ##### Private constants #####
-ProcDir = "/proc/"
+ProcDir = "/proc"
 LockFilePostfix = ".lock"
 
 
 ##### Public methods #####
 def test() :
-	lock_file_path = Settings.settingsPath()+"/"+Qt.QString(Const.MyName).toLower()+LockFilePostfix
+	lock_file_path = Utils.joinPath(Settings.settingsPath(), Qt.QString(Const.MyName).toLower()+LockFilePostfix)
 	lock_file = Qt.QFile(lock_file_path)
 	lock_file_stream = Qt.QTextStream(lock_file)
 
@@ -50,7 +51,7 @@ def test() :
 		return
 
 	old_pid = Qt.QString(lock_file_stream.readLine())
-	if old_pid.length() and Qt.QDir(ProcDir+old_pid).exists() and not Qt.QApplication.instance().isSessionRestored() :
+	if old_pid.length() and Qt.QDir(Utils.joinPath(ProcDir, old_pid)).exists() and not Qt.QApplication.instance().isSessionRestored() :
 		Qt.QMessageBox.warning(None, Const.MyName,
 			tr("Oops, %1 process is already running, kill old process and try again.\n"
 				"If not, remove lock file \"%2\"").arg(Const.MyName).arg(lock_file_path))

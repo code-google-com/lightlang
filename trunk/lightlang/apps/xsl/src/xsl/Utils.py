@@ -34,6 +34,6 @@ def pathName(path) :
 
 ###
 
-def simpleHtml(style, body) :
+def styledHtml(style, body) :
 	return Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(style).arg(body)
 

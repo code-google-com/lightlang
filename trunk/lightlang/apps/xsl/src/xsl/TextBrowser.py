@@ -64,7 +64,7 @@ class TextBrowser(Qt.QTextBrowser) :
 		if index >= 0 :
 			self.setHtml(Qt.QString(text).insert(index, UserStyleCss.userStyleCss()))
 		else :
-			self.setHtml(Utils.simpleHtml(UserStyleCss.userStyleCss(), text))
+			self.setHtml(Utils.styledHtml(UserStyleCss.userStyleCss(), text))
 
 	def text(self) :
 		self.clearSpecials()
@@ -176,10 +176,10 @@ class TextBrowser(Qt.QTextBrowser) :
 
 	### Private ###
 
-	def setCursorInfo(self, str) :
-		if not str.simplified().isEmpty() :
-			if str.startsWith("http:", Qt.Qt.CaseInsensitive) or str.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
-				Qt.QToolTip.showText(Qt.QCursor.pos(), str)
+	def setCursorInfo(self, info) :
+		if not info.simplified().isEmpty() :
+			if info.startsWith("http:", Qt.Qt.CaseInsensitive) or info.startsWith("mailto:", Qt.Qt.CaseInsensitive) :
+				Qt.QToolTip.showText(Qt.QCursor.pos(), info)
 
 
 	### Signals ###
@@ -193,8 +193,8 @@ class TextBrowser(Qt.QTextBrowser) :
 	def setFoundRequestSignal(self, found_flag) :
 		self.emit(Qt.SIGNAL("setFoundRequest(bool)"), found_flag)
 
-	def statusChangedSignal(self, str) :
-		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
+	def statusChangedSignal(self, status) :
+		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), status)
 
 	def backwardRequestSignal(self) :
 		self.emit(Qt.SIGNAL("backwardRequest()"))

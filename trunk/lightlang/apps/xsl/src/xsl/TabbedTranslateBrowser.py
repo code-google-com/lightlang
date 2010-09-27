@@ -21,8 +21,6 @@
 
 
 import Qt
-import Config
-import Const
 import IconsLoader
 import TranslateBrowser
 import TextSearchFrame
@@ -248,8 +246,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	def cFindRequestSignal(self, word) :
 		self.emit(Qt.SIGNAL("cFindRequest(const QString &)"), word)
 
-	def statusChangedSignal(self, str) :
-		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), str)
+	def statusChangedSignal(self, status) :
+		self.emit(Qt.SIGNAL("statusChanged(const QString &)"), status)
 
 
 	### Handlers ###
