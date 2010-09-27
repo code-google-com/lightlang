@@ -21,8 +21,7 @@
 
 
 import Qt
-import Config
-import Const
+import Utils
 import UserStyleCss
 import UserStyleCssCollection
 import ChromeScrollBar
@@ -40,14 +39,14 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		self._zoom_count = 0
 
-		self._highlight_color = UserStyleCssCollection.highlightBackgroundColor()
-		self._highlight_color.setAlpha(UserStyleCssCollection.highlightBackgroundOpacity())
+		self._highlight_color = UserStyleCssCollection.option("highlight_background", "color")
+		self._highlight_color.setAlpha(UserStyleCssCollection.option("highlight_background", "opacity"))
 
-		# setSource() dont accept user-style.css
+		# setSource() does not accept user-style.css
 
 		#####
 
-		self._chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar()
+		self._chrome_scroll_bar = ChromeScrollBar.ChromeScrollBar(self)
 		self.setVerticalScrollBar(self._chrome_scroll_bar)
 
 		#####
@@ -63,11 +62,9 @@ class TextBrowser(Qt.QTextBrowser) :
 
 		index = text.indexOf("</style>")
 		if index >= 0 :
-			text = Qt.QString(text).insert(index, UserStyleCss.userStyleCss())
+			self.setHtml(Qt.QString(text).insert(index, UserStyleCss.userStyleCss()))
 		else :
-			text = ( Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>")
-				.arg(UserStyleCss.userStyleCss()).arg(text) )
-		self.setHtml(text)
+			self.setHtml(Utils.simpleHtml(UserStyleCss.userStyleCss(), text))
 
 	def text(self) :
 		self.clearSpecials()

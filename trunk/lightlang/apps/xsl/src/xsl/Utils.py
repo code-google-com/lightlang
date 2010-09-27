@@ -32,3 +32,8 @@ def pathName(path) :
 	index = path.lastIndexOf(Qt.QDir.separator())
 	return ( path.left(index) if index >= 0 else Qt.QString() )
 
+###
+
+def simpleHtml(style, body) :
+	return Qt.QString("<html><head><style>%1</style></head><body>%2</body></html>").arg(style).arg(body)
+
