@@ -49,25 +49,25 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 
 		#####
 
-		self._tab_widget = Qt.QTabWidget()
+		self._tab_widget = Qt.QTabWidget(self)
 		self._tab_widget.setTabsClosable(True)
 		self._main_layout.addWidget(self._tab_widget)
 
-		self._add_tab_button = Qt.QToolButton()
+		self._add_tab_button = Qt.QToolButton(self)
 		self._add_tab_button.setIcon(IconsLoader.icon("tab-new"))
 		self._add_tab_button.setIconSize(Qt.QSize(16, 16))
 		self._add_tab_button.setCursor(Qt.Qt.ArrowCursor)
 		self._add_tab_button.setAutoRaise(True)
 		self._tab_widget.setCornerWidget(self._add_tab_button, Qt.Qt.TopLeftCorner)
 
-		self._remove_tab_button = Qt.QToolButton()
+		self._remove_tab_button = Qt.QToolButton(self)
 		self._remove_tab_button.setIcon(IconsLoader.icon("tab-close"))
 		self._remove_tab_button.setIconSize(Qt.QSize(16, 16))
 		self._remove_tab_button.setCursor(Qt.Qt.ArrowCursor)
 		self._remove_tab_button.setAutoRaise(True)
 		self._tab_widget.setCornerWidget(self._remove_tab_button, Qt.Qt.TopRightCorner)
 
-		self._text_search_frame = TextSearchFrame.TextSearchFrame()
+		self._text_search_frame = TextSearchFrame.TextSearchFrame(self)
 		self._text_search_frame.hide()
 		self._main_layout.addWidget(self._text_search_frame)
 
@@ -102,7 +102,7 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 	###
 
 	def addTab(self) :
-		self._translate_browsers_list.append(TranslateBrowser.TranslateBrowser())
+		self._translate_browsers_list.append(TranslateBrowser.TranslateBrowser(self))
 		index = len(self._translate_browsers_list) - 1
 
 		self.connect(self._translate_browsers_list[index], Qt.SIGNAL("newTabRequest()"), self.addTab)
@@ -124,7 +124,8 @@ class TabbedTranslateBrowser(Qt.QWidget) :
 		index = ( self._tab_widget.currentIndex() if index < 0 else index )
 
 		self._tab_widget.removeTab(index)
-		self._translate_browsers_list.pop(index)
+		translate_browser = self._translate_browsers_list.pop(index)
+		del translate_browser
 
 		if self._tab_widget.count() == 0 :
 			self.addTab()
