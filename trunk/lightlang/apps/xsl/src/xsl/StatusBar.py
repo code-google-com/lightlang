@@ -35,13 +35,13 @@ class StatusBar(Qt.QStatusBar) :
 
 		self._activation_semaphore = 0
 
-		self._timer = Qt.QTimer()
+		self._timer = Qt.QTimer(self)
 
 		#####
 
 		icon_width = icon_height = label_height = self.style().pixelMetric(Qt.QStyle.PM_SmallIconSize)
 
-		self._message_label = Qt.QLabel()
+		self._message_label = Qt.QLabel(self)
 		self._message_label.setTextFormat(Qt.Qt.PlainText)
 		self._message_label.setMaximumHeight(label_height)
 		self.addWidget(self._message_label, 1)
@@ -49,7 +49,7 @@ class StatusBar(Qt.QStatusBar) :
 		self._wait_picture_movie = IconsLoader.gifMovie("circular")
 		self._wait_picture_movie.setScaledSize(Qt.QSize(icon_width, icon_height))
 		self._wait_picture_movie.jumpToFrame(0)
-		self._wait_picture_movie_label = Qt.QLabel()
+		self._wait_picture_movie_label = Qt.QLabel(self)
 		self._wait_picture_movie_label.setMovie(self._wait_picture_movie)
 		self._wait_picture_movie_label.hide()
 		self.addWidget(self._wait_picture_movie_label)
