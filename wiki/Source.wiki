@@ -1,0 +1,9 @@
+#labels Featured,Git
+Исходный код компонентов LightLang располагается в Git-репозиториях на [http://github.com GitHub].
+
+= Получение копии =
+
+Для получения рабочей копии главных веток LightLang, воспользуйтесь командой git clone:
+|| Проект || Команда ||
+|| LightLang || git clone git://github.com/mdevaev/lightlang.git ||
+|| LightLang Editor || git clone git://github.com/mdevaev/lightlang-editor.git ||
