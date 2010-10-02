@@ -14,5 +14,7 @@
 
 = Подробнее о Git =
 [http://www.ibm.com/developerworks/ru/library/l-git_1/ IBM Developerworks, Часть 1]
+
 [http://www.ibm.com/developerworks/ru/library/l-git_2/ IBM Developerworks, Часть 2]
+
 [http://habrahabr.ru/blogs/development/68341/ Git для переходящих с SVN]
