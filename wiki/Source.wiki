@@ -6,7 +6,7 @@
 || *Проект* || *Команда* ||
 || LightLang || git clone git://github.com/mdevaev/lightlang.git ||
 || LightLang Editor || git clone git://github.com/mdevaev/lightlang-editor.git ||
-|| Converter || git clone git://github.com/mdevaev/lightlang-converter.git ||
+|| Converter || git clone git://github.com/mdevaev/lightlang-converters.git ||
 || SLog || git clone git://github.com/mdevaev/slog.git ||
 
 = Коммит =
